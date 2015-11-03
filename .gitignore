@@ -1,0 +1,11 @@
+ClassPrj/Library/
+ClassPrj/Temp/
+ClassPrj/obj/
+ClassPrj/Xcode
+*.csproj
+*.sln
+*.DS_Store
+*.suo
+*.unityproj
+*.sln
+*.userprefs
