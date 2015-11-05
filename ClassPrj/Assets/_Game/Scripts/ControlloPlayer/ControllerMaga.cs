@@ -1,22 +1,25 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(Animator))]
-
-
-public class ControllerMaga : MonoBehaviour {
-
+public class ControllerMaga : MonoBehaviour
+{
     #region Variabili PUBLIC
-    [Range(0.3f,1f)]
-    public float distanzaDaTerra = 0.3f;
-    [Range(4f, 10f)]
-    public float forzaSalto =4f;
-    public bool corsaPerDefault = false;
-    #endregion
 
-    #region Variabili PRIVATE 
+    [Range(0.3f, 1f)]
+    public float distanzaDaTerra = 0.3f;
+
+    [Range(4f, 10f)]
+    public float forzaSalto = 4f;
+
+    public bool corsaPerDefault = false;
+
+    #endregion Variabili PUBLIC
+
+    #region Variabili PRIVATE
+
     private float h, v, rotazione;
     private float velocitaSpostamento;
     private float altezzaCapsula;
@@ -32,19 +35,20 @@ public class ControllerMaga : MonoBehaviour {
     private bool rimaniBasso;
     private bool attacco1 = false;
     private bool attacco2 = false;
-    #endregion
 
-    void Start () {
-        
+    #endregion Variabili PRIVATE
+
+    private void Start()
+    {
         rigidBody = GetComponent<Rigidbody>();
         animatore = GetComponent<Animator>();
         capsula = GetComponent<CapsuleCollider>();
         altezzaCapsula = capsula.height;
-        capsulaCentro = new Vector3(0.0f,capsula.center.y,0.0f);
-	}
-	
-	void Update () {
+        capsulaCentro = new Vector3(0.0f, capsula.center.y, 0.0f);
+    }
 
+    private void Update()
+    {
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
 
@@ -52,58 +56,55 @@ public class ControllerMaga : MonoBehaviour {
         rotazione = Mathf.Atan2(h, v);
         velocitaSpostamento = 0.5f;
 
-        if (!Input.GetKey(KeyCode.LeftShift) && corsaPerDefault || 
+        if (!Input.GetKey(KeyCode.LeftShift) && corsaPerDefault ||
             !corsaPerDefault && Input.GetKey(KeyCode.LeftShift))
         {
             velocitaSpostamento = 1f;
         }
 
-       /* ACCOVACCIAMENTO 
-       if (!voglioSaltare && aTerra && Input.GetKey(KeyCode.C))
-        {
-            abbassato = true;
-            capsula.center = capsulaCentro * meta;
-            capsula.height = capsula.height * meta;
-        }
-        else
-        {
-            if (!rimaniBasso)
-            {
-                abbassato = false;
-                capsula.height = altezzaCapsula;
-                capsula.center = capsulaCentro;
-                rimaniBasso = false;
-            }
-        }
-        */
-        if(Input.GetMouseButtonDown(0) && !attacco2 )
+        /* ACCOVACCIAMENTO
+        if (!voglioSaltare && aTerra && Input.GetKey(KeyCode.C))
+         {
+             abbassato = true;
+             capsula.center = capsulaCentro * meta;
+             capsula.height = capsula.height * meta;
+         }
+         else
+         {
+             if (!rimaniBasso)
+             {
+                 abbassato = false;
+                 capsula.height = altezzaCapsula;
+                 capsula.center = capsulaCentro;
+                 rimaniBasso = false;
+             }
+         }
+         */
+        if (Input.GetMouseButtonDown(0) && !attacco2)
         {
             attacco1 = true;
             attacco2 = false;
         }
-        else if(Input.GetMouseButtonDown(1) && !attacco1)
+        else if (Input.GetMouseButtonDown(1) && !attacco1)
         {
             attacco2 = true;
             attacco1 = false;
         }
-        //DEBUG Bool Attacco
-        Debug.Log(attacco1 + "o" + attacco2);
 
         if (Input.GetButtonDown("Jump") && !voglioSaltare)
         {
             voglioSaltare = true;
         }
+    }
 
-	}
-
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         aTerra = false;
 
         RaycastHit hit;
 
         Debug.DrawLine(transform.position + (Vector3.up * 0.1f), transform.position + (Vector3.down * 0.1f), Color.blue);
-        if (Physics.Raycast(transform.position + (Vector3.up *0.1f),Vector3.down,out hit , distanzaDaTerra))
+        if (Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out hit, distanzaDaTerra))
         {
             aTerra = true;
             animatore.applyRootMotion = true;
