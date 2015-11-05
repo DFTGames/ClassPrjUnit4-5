@@ -1976,9 +1976,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 143682}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c520feb0f7137594180c266be49861cf, type: 3}
+  m_Script: {fileID: 11500000, guid: 07029b7c8a2fb754baef0eafb3e52fdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distanzaDaTerra: .300000012
+  forzaSalto: 4
+  corsaPerDefault: 0
 --- !u!136 &13618738
 CapsuleCollider:
   m_ObjectHideFlags: 1
