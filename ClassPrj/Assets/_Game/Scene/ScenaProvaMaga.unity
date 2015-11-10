@@ -226,6 +226,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 11413474, guid: d48220f252749544b95890be49038c7c, type: 2}
+      propertyPath: DampTime
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d48220f252749544b95890be49038c7c, type: 2}
   m_IsPrefabParent: 0
