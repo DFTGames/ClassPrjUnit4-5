@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 2eb841ed17a74ce459ed8eac2b537b6e
+labels:
+- Fade
+- Fading
+- Shader
+- Camera
+- Transparent
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
