@@ -115,13 +115,13 @@ public class ControllerMaga : MonoBehaviour
             animatore.applyRootMotion = false;
         }
 
-        /*SALTO
+        ///*SALTO
         if(voglioSaltare && aTerra && !abbassato)
         {
             rigidBody.velocity = new Vector3(rigidBody.velocity.x, forzaSalto, rigidBody.velocity.z);
         }
         voglioSaltare = false;
-        */
+       // */
         /*CONTROLLO ABBASSATO
         Ray ray = new Ray(transform.position + (Vector3.up * capsulaCentro.y), Vector3.up);
 
@@ -143,9 +143,9 @@ public class ControllerMaga : MonoBehaviour
         attacco2 = false;
         //animatore.SetBool("Crouch", abbassato);
 
-        /*
+        ///*
         if (!aTerra)
             animatore.SetFloat("Jump", rigidBody.velocity.y);
-        */
+        //*/
     }
 }
