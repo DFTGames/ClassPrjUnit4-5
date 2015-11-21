@@ -8,6 +8,7 @@
     RequireComponent(typeof(SphereCollider))]
 public class FSM : MonoBehaviour
 {
+    public int classeGoblin = 1;
     public float quantoCiVedoSenzaOcchiali = 10f;
     public float alphaGrad = 140f;
     public float ampiezza = 3f;
@@ -16,7 +17,7 @@ public class FSM : MonoBehaviour
     public bool inZonaAttacco { get; set; }
     public float distanzaAttaccoGoblinArco = 7f;
     public float distanzaAttaccoGoblinSpada = 2f;
-
+    
     private SphereCollider colliderSferaVista;
 
     private IStato statoCorrente;
@@ -28,6 +29,11 @@ public class FSM : MonoBehaviour
     private void ControlloVista(bool visto)
     {
         obiettivoInVista = visto;
+    }
+
+    private void ControlloInZonaAttacco(bool possoAttaccare)
+    {
+        inZonaAttacco = possoAttaccare;
     }
 
     private void Start()
