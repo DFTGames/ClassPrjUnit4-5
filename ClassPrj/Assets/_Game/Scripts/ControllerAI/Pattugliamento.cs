@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Pattugliamento : MonoBehaviour
-{
 
-    public class Pattugliamo : IStato
+
+    public class Pattugliamento : IStato
     {
 
         public string Nome { get; set; }
@@ -91,4 +90,4 @@ public class Pattugliamento : MonoBehaviour
 
         }
     }
-}
+
