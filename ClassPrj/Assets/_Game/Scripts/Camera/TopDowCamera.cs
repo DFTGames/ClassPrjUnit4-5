@@ -21,9 +21,8 @@ public class TopDowCamera : MonoBehaviour {
     void Start () {
 
         myTransform = GetComponent<Transform>();
-       // TAG Player
+        // TAG Player
         Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-      
     }
 	
 	// Update is called once per frame
