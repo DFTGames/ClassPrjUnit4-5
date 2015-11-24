@@ -68,11 +68,11 @@ public class GameDataEditor : EditorWindow
         }
         else
         {
-            GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
+            GUILayout.BeginVertical(EditorStyles.objectFieldThumb);
             if (GUILayout.Button("Crea il DataBase"))
             {
-                EditorPrefs.DeleteKey(STR_PercorsoConfig);
                 string tmpStr = "Assets";
+               
                 if (percorso == null || percorso == string.Empty  )
                 {
                     string tmpPercosro = EditorUtility.OpenFolderPanel("Percorso per Database", tmpStr, "");
@@ -88,11 +88,11 @@ public class GameDataEditor : EditorWindow
                         AssetDatabase.Refresh();
                         ProjectWindowUtil.ShowCreatedAsset(gameData);
                     }
-                    EditorGUILayout.HelpBox("DataBase Mancante", MessageType.Error);
-                    GUILayout.EndHorizontal();
-
                 }
+                
             }
+            EditorGUILayout.HelpBox("DataBase Mancante", MessageType.Error);
+            GUILayout.EndVertical();
         }
 
     }
