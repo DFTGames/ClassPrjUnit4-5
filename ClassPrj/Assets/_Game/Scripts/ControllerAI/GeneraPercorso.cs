@@ -19,7 +19,11 @@ public class GeneraPercorso : MonoBehaviour
     void OnDrawGizmos()
     {
        for (int i=0; i<PercorsoA.Length;i++)
-            Gizmos.DrawIcon(PercorsoA[i].position, "1.png", true);
+            Gizmos.DrawIcon(PercorsoA[i].position, "3.png", true);
+        for (int i = 0; i < PercorsoB.Length; i++)
+            Gizmos.DrawIcon(PercorsoB[i].position, "2.png", true);
+        for (int i = 0; i < PercorsoC.Length; i++)
+            Gizmos.DrawIcon(PercorsoC[i].position, "1.png", true);
     }
 
     public Transform[] Itinerario(TipoPercorso sceltaPercorso)
@@ -35,5 +39,6 @@ public class GeneraPercorso : MonoBehaviour
             default: return null;               
         }    
     }
+   
 }
 
