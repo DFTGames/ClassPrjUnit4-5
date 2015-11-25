@@ -1,12 +1,7 @@
 fileFormatVersion: 2
-guid: 0e6601e8dfd2e934ca1d243eb528b2c3
-labels:
-- Pooling
-- Script
-- Pool
-- Manager
-- Tool
-- DFTGames
+guid: 950d5f20c30a534498a4d3ad062fde6f
+timeCreated: 1448441756
+licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences: []

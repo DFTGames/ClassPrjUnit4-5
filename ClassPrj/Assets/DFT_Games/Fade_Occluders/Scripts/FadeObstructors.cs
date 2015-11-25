@@ -22,7 +22,8 @@ using UnityEngine;
 
 namespace DFTGames.Tools
 {
-    [RequireComponent(typeof(Camera))]
+    [AddComponentMenu("Camera/Fade obstructors by raycast"),
+     RequireComponent(typeof(Camera))]
     public class FadeObstructors : FadeObstructorsBaseClass
     {
         // This function is called every fixed framerate frame, if the MonoBehaviour is enabled
@@ -36,6 +37,7 @@ namespace DFTGames.Tools
 #else
             RaycastHit[] hit = Physics.RaycastAll(myTransform.position, myTransform.forward, (playerTransform.position - myTransform.position).magnitude + offset, layersToFade);
 #endif
+            Debug.DrawLine(myTransform.position, playerTransform.position + (myTransform.forward * offset), fadingColorToUse, Time.fixedDeltaTime);
             List<int> renderersIdsHitInThisFrame = new List<int>();
             if (hit != null)
             {

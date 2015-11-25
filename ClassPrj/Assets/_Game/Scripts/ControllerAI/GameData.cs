@@ -1,8 +1,12 @@
 ﻿using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditorInternal;
 
 [System.Serializable]
 public class GameData : ScriptableObject
 {
+
     public enum Amicizie
     {
         Neutro,
@@ -10,22 +14,21 @@ public class GameData : ScriptableObject
         Nemico
     }
 
-    public enum TipoEsseri
+    public enum TipiDiEsseriA
     {
-        goblinAggressivo,
-        goblinNeutro,
-        goblinBuono,
-        Player,
-        Elfo
+        goblinAggressivo =1,
+        goblinNeutro  =2,
+        goblinBuono =3,
+        Player =4,
     }
-
-    public string[] tipoEssere = new string[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
-
-    public classeAmicizie[] matriceAmicizie = new classeAmicizie[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
+    public List<classeSogg> listaClasse = new List<classeSogg>();
+    
 }
 
 [System.Serializable]
-public class classeAmicizie
+public class classeSogg 
 {
-    public GameData.Amicizie[] elementoAmicizia = new GameData.Amicizie[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
+    public GameData.TipiDiEsseriA EsseriA;
+    public GameData.Amicizie[,] Amicizie = new GameData.Amicizie[10,10];
+    
 }
