@@ -107,11 +107,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 26144287}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .281971455, y: 0, z: -4.57999992}
+  m_LocalPosition: {x: 0, y: -1.63, z: -4.15914726}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_Father: {fileID: 287861362}
+  m_RootOrder: 0
 --- !u!1 &155128843
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +235,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: .281971455, y: 1.63, z: -.420852721}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 26144288}
+  - {fileID: 642810069}
+  - {fileID: 2112981491}
+  - {fileID: 313665298}
   m_Father: {fileID: 0}
   m_RootOrder: 7
 --- !u!114 &287861363
@@ -282,11 +286,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 313665297}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.95802832, y: 0, z: -2.49085259}
+  m_LocalPosition: {x: -8.23999977, y: -1.63, z: -2.06999993}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_Father: {fileID: 287861362}
+  m_RootOrder: 3
 --- !u!1 &433893154
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,11 +340,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 642810068}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .281971455, y: 0, z: 2.6400001}
+  m_LocalPosition: {x: 0, y: -1.63, z: 3.06085277}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_Father: {fileID: 287861362}
+  m_RootOrder: 1
 --- !u!1 &1800922251
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,11 +613,11 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2112981490}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.3900001, y: 0, z: -.420852721}
+  m_LocalPosition: {x: 3.10802865, y: -1.63, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_Father: {fileID: 287861362}
+  m_RootOrder: 2
 --- !u!1001 &2131619520
 Prefab:
   m_ObjectHideFlags: 0
