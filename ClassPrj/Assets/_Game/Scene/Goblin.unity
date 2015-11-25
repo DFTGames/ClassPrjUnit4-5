@@ -457,50 +457,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: alphaGrad
-      value: 50.7375298
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: quantoCiVedoSenzaOcchiali
-      value: 17.583004
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: ampiezza
-      value: 3.13000011
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: velocitaOscillazioneVista
-      value: 2.06999993
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: fadingColorToUse.r
-      value: .801470578
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: fadingColorToUse.g
-      value: .447880626
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: fadingColorToUse.b
-      value: .447880626
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: distanzaAttaccoGoblinArco
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: distanzaAttaccoGoblinSpada
-      value: 7.19999981
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: visualizzaHandleVista
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: visualizzaHandleAttacco
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
   m_IsPrefabParent: 0

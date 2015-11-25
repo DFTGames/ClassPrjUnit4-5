@@ -19,7 +19,7 @@ public class GeneraPercorso : MonoBehaviour
     public LayerMask layersToFade ;
     private RaycastHit hitinfo;
     private Vector3 nuovaPosizione;
-    public bool aderenzaTerreno = false;
+    public bool aderenzaTerreno = false;  //CI VORREBBE UN TRIGGER MA NON SO COME SI FA
     private float quantoSpostaOggettoSeColpito=0.5f;
     //RISOLVERE IL PROBLEMA DEL LAYERMASK NEL RAYCAST
     void OnDrawGizmos()
