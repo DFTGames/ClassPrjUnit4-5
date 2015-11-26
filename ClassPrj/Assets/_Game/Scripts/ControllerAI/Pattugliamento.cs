@@ -17,25 +17,20 @@ using System.Collections;
         private Animator Animatore;
 
         public void Esecuzione()
-        {
-            Agente.speed = 0.5f;
-            if (Agente.remainingDistance < 0.1f && !CambiaDirezione)
-            {
-                CambiaDirezione = true;
-
-            }
-            else if(CambiaDirezione)
+        {          
+            if (Agente.remainingDistance <= Agente.stoppingDistance)
+           
                {
                 indiceDestinazioni = indiceDestinazioni < Destinazioni.Length - 1 ?
                     ++indiceDestinazioni : 0;
                 ProssimaDirezione = Destinazioni[indiceDestinazioni];
                 Agente.SetDestination(ProssimaDirezione.position);
-                Agente.speed = 0.5f;
+              //  Agente.speed = 0.5f;
                 CambiaDirezione = false;
 
             }
-            Animatore.SetFloat("Velocita", Agente.speed);
-}
+            Animatore.SetFloat("Velocita", 0.5f);
+    }
 
         public void EsecuzioneTerminata()
         {
