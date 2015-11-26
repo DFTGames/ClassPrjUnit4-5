@@ -17,7 +17,6 @@ public class Inseguimento : IStato
         agente = Cervello.GetComponent<NavMeshAgent>();
         PersonaggioDaInseguire = GameObject.FindGameObjectWithTag("Player");
         animatore = Cervello.gameObject.GetComponent<Animator>();
-        agente.speed = 1f;
     }
 
     public void PreparoEsecuzione()
@@ -28,7 +27,8 @@ public class Inseguimento : IStato
     public void Esecuzione()
     {
         agente.destination = PersonaggioDaInseguire.transform.position;
-        animatore.SetFloat("Velocita", agente.speed);
+        agente.speed = 3.5f;
+        animatore.SetFloat("Velocita", 1f);
     }
 
     public void EsecuzioneTerminata()
