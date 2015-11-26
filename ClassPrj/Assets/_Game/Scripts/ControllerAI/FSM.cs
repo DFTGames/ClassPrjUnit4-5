@@ -20,6 +20,8 @@ public class FSM : MonoBehaviour
     public float distanzaAttaccoGoblinArco = 7f;
     public float distanzaAttaccoGoblinSpada = 2f;
 
+    public float dimensioneHandleVista = 5f;
+    public float dimensioneHandleDistArmi = 5f;
     private SphereCollider colliderSferaVista;
 
     private IStato statoCorrente;
