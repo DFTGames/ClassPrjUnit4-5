@@ -1,6 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+Descrizione eella classe "GeneraPercorso" nel Gdd
+
+Questo script viene attaccato a un gameobject ,"GeneraPercorso", nella hierarchy e al suo interno 
+vengono messi dei gameobject vuoti che corrispondono a punti posizione nella scena .
+L'ordine di sequenza di tali punti mi delinea il percorso che verra seguito dal soggetto designato
+
+Variabili :
+-una enumerazione sul TipoPercorso , con dentro il nome di ciascun percorso
+-Schiera di gameobject contententi i posizionatori
+
+Lo script viene eseguito nella scena in quanto c'e il metodo void OnDrawGizmos()
+che me lo esegue in questo contesto.
+
+Ogni qualvolta si attiva la scena cliccandoci sopra viene eseguito un ciclo dove ciascuna 
+scheera di posizionatori viene sistemata a un offset di distanza sopra l'oggetto che sta
+sopra la sua verticale, in modo da avere un allineamento corretto anche al di sopra di supercifi
+
+NOMI VARIABILI :
+ - Transform[] PercorsoA,PercorsoB,PercorsoC
+
+ENUMERAZIONE :
+ - TipoPercorso.A,TipoPercorso.B,TipoPercorso.C
+
+*/
+
+
 public enum TipoPercorso
 {
     A,
@@ -8,52 +35,28 @@ public enum TipoPercorso
     C
 }
 
-
 public class GeneraPercorso : MonoBehaviour
 {
-
     public Transform[] PercorsoA;
     public Transform[] PercorsoB;
     public Transform[] PercorsoC;
 
-    public LayerMask layersToFade ;
     private RaycastHit hitinfo;
     private Vector3 nuovaPosizione;
-    public bool aderenzaTerreno = false;  //CI VORREBBE UN TRIGGER MA NON SO COME SI FA
-    private float quantoSpostaOggettoSeColpito=0.5f;
-    //RISOLVERE IL PROBLEMA DEL LAYERMASK NEL RAYCAST
+    public float offsetSpostaOggetto = 0.5f;
+
     void OnDrawGizmos()
     {
-          //CHIEDERE A PINO SE E' CORRETTO QUESTO PROCEDIMENTO...E DOVE C'E 0 METTERE LA Y DEL GOBLIN
-            if (!aderenzaTerreno)
-            {
-                for (int i = 0; i < PercorsoA.Length; i++)
-                {
-                    Vector3 tempPos = new Vector3(PercorsoA[i].position.x, 0, PercorsoA[i].position.z);
-                    PercorsoA[i].position = tempPos;
-                }
-                for (int i = 0; i < PercorsoB.Length; i++)
-                {         
-                    Vector3 tempPos = new Vector3(PercorsoB[i].position.x, 0, PercorsoB[i].position.z);
-                    PercorsoB[i].position = tempPos;
-                }
-                for (int i = 0; i < PercorsoC.Length; i++)
-                {
-                    Vector3 tempPos = new Vector3(PercorsoC[i].position.x, 0, PercorsoC[i].position.z);
-                    PercorsoC[i].position = tempPos;
-                }
-                aderenzaTerreno = true;
-            }
-       //PINO PERDONAMI
         for (int i = 0; i < PercorsoA.Length; i++)
         {
             Gizmos.DrawIcon(PercorsoA[i].position, "3.png", true);
-            Ray raggio =new Ray(new Vector3(PercorsoA[i].position.x, 1000f, PercorsoA[i].position.z), Vector3.down);
-            if (Physics.Raycast(raggio, out hitinfo, layersToFade.value))
+            Ray raggio = new Ray(new Vector3(PercorsoA[i].position.x, 1000f, PercorsoA[i].position.z), Vector3.down);
+            if (Physics.Raycast(raggio, out hitinfo))
             {
-                nuovaPosizione = new Vector3(PercorsoA[i].position.x, PercorsoA[i].position.y, hitinfo.point.z + quantoSpostaOggettoSeColpito);
+                nuovaPosizione = new Vector3(PercorsoA[i].position.x, hitinfo.point.y + offsetSpostaOggetto, PercorsoA[i].position.z);
                 PercorsoA[i].position = nuovaPosizione;
             }
+
         }
         for (int i = 0; i < PercorsoB.Length; i++)
         {
@@ -61,19 +64,21 @@ public class GeneraPercorso : MonoBehaviour
             Ray raggio = new Ray(new Vector3(PercorsoB[i].position.x, 1000f, PercorsoB[i].position.z), Vector3.down);
             if (Physics.Raycast(raggio, out hitinfo))
             {
-                nuovaPosizione = new Vector3(PercorsoB[i].position.x, PercorsoB[i].position.y, hitinfo.point.z + quantoSpostaOggettoSeColpito);
+                nuovaPosizione = new Vector3(PercorsoB[i].position.x, hitinfo.point.y + offsetSpostaOggetto, PercorsoB[i].position.z);
                 PercorsoB[i].position = nuovaPosizione;
             }
         }
+
         for (int i = 0; i < PercorsoC.Length; i++)
         {
             Gizmos.DrawIcon(PercorsoC[i].position, "1.png", true);
             Ray raggio = new Ray(new Vector3(PercorsoC[i].position.x, 1000f, PercorsoC[i].position.z), Vector3.down);
             if (Physics.Raycast(raggio, out hitinfo))
             {
-                nuovaPosizione = new Vector3(PercorsoC[i].position.x, PercorsoC[i].position.y, hitinfo.point.z + quantoSpostaOggettoSeColpito);
+                nuovaPosizione = new Vector3(PercorsoC[i].position.x, hitinfo.point.y + offsetSpostaOggetto, PercorsoC[i].position.z);
                 PercorsoC[i].position = nuovaPosizione;
             }
+
         }
     }
 
@@ -82,13 +87,13 @@ public class GeneraPercorso : MonoBehaviour
         switch (sceltaPercorso)
         {
             case TipoPercorso.A:
-                return PercorsoA;         
+                return PercorsoA;
             case TipoPercorso.B:
-               return PercorsoB;              
+                return PercorsoB;
             case TipoPercorso.C:
-                return PercorsoC;               
-            default: return null;               
-        }    
+                return PercorsoC;
+            default: return null;
+        }
     }
 
 }
