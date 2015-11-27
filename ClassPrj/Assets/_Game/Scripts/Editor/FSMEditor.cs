@@ -2,6 +2,30 @@
 using System.Collections;
 using UnityEditor;
 
+/*
+Descrizione della classe "FSMEditor" nel Gdd
+
+Questa classe viene messa dentro la cartella editor in quanto viene eseguita non in 
+modalita run-time
+Mi disegna una maschera nel inspector con dentro 
+
+- Impostazione Arco e Distanza Visiva 
+    Mi permette di  impostare l'arco e il campo di azione della vista 
+    Presente un flag per selezionare o deselezionare la rappresentazione nella scena
+- Impostazione ampiezza e velocita visiva
+    Mi permette di  impostare i dati relativi alla sensibilita della vista nel tempo 
+    Abbiamo impotizzato un andamento sinusoidale per rendere piu' simile al comportamento
+    effettivo di tale senso.
+- Impostazione distanza arco e spada
+    Si imposta la distanza di attaco della spada e arco (per ora solo questi 2), cioe' e' la
+    distanza sotto la quale i colpi arrecono danno all'avversario
+    Presente un flag per selezionare o deselezionare la rappresentazione nella scena
+
+Ciascuna voce e' predisposta per fare l'Undo e Redo in Edit
+
+DICHIARAZIONI nello script  : Utilizza la referenza alla classe FSM
+*/
+
 namespace DFTGames.Tools.EditorTools
 {
     [CustomEditor(typeof(FSM))]
@@ -28,7 +52,7 @@ namespace DFTGames.Tools.EditorTools
             Commons.DrawTexture(ResourceHelper.LogoFSM);
             EditorGUILayout.Separator();
             EditorGUILayout.BeginVertical(EditorStyles.objectFieldThumb);
-            EditorGUILayout.LabelField("IMPOSTAZIONE ARCO E DISTANZA VISIVA");
+            EditorGUILayout.LabelField("IMPOSTAZIONE VISTA");
             bool tmpBool = EditorGUILayout.Toggle(new GUIContent("Vis. Area Vista", "Visualizza nella scena gli Handle della Vista"), vista.visualizzaHandleVista);
             if (tmpBool != vista.visualizzaHandleVista)
             {
@@ -70,7 +94,7 @@ namespace DFTGames.Tools.EditorTools
             EditorGUILayout.BeginVertical(EditorStyles.objectFieldThumb);
             EditorGUILayout.Separator();
 
-            EditorGUILayout.LabelField("IMPOSTAZIONE AMPIEZZA E VELOCITA VISIVA");
+            EditorGUILayout.LabelField("IMPOSTAZIONE PERCEZIONE VISIVA");
             tmpAmp = EditorGUILayout.Slider(new GUIContent("Ampiezza Percezione Vista", "Dimensione Ampiezza"), vista.ampiezza, 0f, 5f);
             if (tmpAmp != vista.ampiezza)
             {
@@ -92,7 +116,7 @@ namespace DFTGames.Tools.EditorTools
             EditorGUILayout.BeginVertical(EditorStyles.objectFieldThumb);
             EditorGUILayout.Separator();
 
-            EditorGUILayout.LabelField("IMPOSTAZIONE DISTANZA ARCO E SPADA");
+            EditorGUILayout.LabelField("IMPOSTAZIONE ARMI");
             bool tmpBol = EditorGUILayout.Toggle(new GUIContent("Vis. Area Attacco", "Visualizza nella scena gli Handle della Distanza Attacco"), vista.visualizzaHandleAttacco);
             if (tmpBol != vista.visualizzaHandleAttacco)
             {
@@ -103,7 +127,7 @@ namespace DFTGames.Tools.EditorTools
             }
             if (vista.visualizzaHandleAttacco)
             {
-                tmpDistArco = EditorGUILayout.Slider(new GUIContent("Arco Distanza Attacco", "Distanza Di Attacco del Arco Goblin"), vista.distanzaAttaccoGoblinArco, 0.1f, 30f);
+                tmpDistArco = EditorGUILayout.Slider(new GUIContent("Arco Dist. Attacco", "Distanza Di Attacco del Arco Goblin"), vista.distanzaAttaccoGoblinArco, 0.1f, 30f);
                 if (tmpDistArco != vista.distanzaAttaccoGoblinArco)
                 {
                     isDirty = true;
@@ -111,7 +135,7 @@ namespace DFTGames.Tools.EditorTools
                     vista.distanzaAttaccoGoblinArco = tmpDistArco;
                 }
 
-                tmpDistSpada = EditorGUILayout.Slider(new GUIContent("Spada Distanza Attacco", "Distanza Di Attacco del Spada Goblin"), vista.distanzaAttaccoGoblinSpada, 0.1f, 30f);
+                tmpDistSpada = EditorGUILayout.Slider(new GUIContent("Spada Dist. Attacco", "Distanza Di Attacco del Spada Goblin"), vista.distanzaAttaccoGoblinSpada, 0.1f, 30f);
                 if (tmpDistSpada != vista.distanzaAttaccoGoblinSpada)
                 {
                     isDirty = true;
