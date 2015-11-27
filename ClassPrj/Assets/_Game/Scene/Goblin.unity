@@ -441,7 +441,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
       propertyPath: quantoCiVedoSenzaOcchiali
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
       propertyPath: dimensioneHandleDistArmi
@@ -453,7 +453,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
       propertyPath: alphaGrad
-      value: 75
+      value: 61
       objectReference: {fileID: 0}
     - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
       propertyPath: distanzaAttaccoGoblinArco
@@ -521,7 +521,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 1
 --- !u!1 &2112981490
 GameObject:
   m_ObjectHideFlags: 0
