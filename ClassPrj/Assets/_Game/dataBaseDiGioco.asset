@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Name: dataBaseDiGioco
   m_EditorClassIdentifier: 
   tipoEssere:
-  - 
-  - 
-  - 
+  - Player
+  - GameController
+  - player
   matriceAmicizie:
-  - elementoAmicizia: 000000000000000000000000
-  - elementoAmicizia: 000000000000000000000000
-  - elementoAmicizia: 000000000000000000000000
+  - elementoAmicizia: 000000000100000001000000
+  - elementoAmicizia: 010000000100000001000000
+  - elementoAmicizia: 010000000100000001000000

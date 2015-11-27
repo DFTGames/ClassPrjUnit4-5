@@ -351,7 +351,9 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -429,11 +431,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
       propertyPath: visualizzaHandleVista
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
       propertyPath: visualizzaHandleAttacco
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
       propertyPath: dimensioneHandleVista
