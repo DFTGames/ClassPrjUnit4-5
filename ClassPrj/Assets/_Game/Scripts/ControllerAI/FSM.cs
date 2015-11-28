@@ -11,13 +11,17 @@ public class FSM : MonoBehaviour
     public int classeGoblin = 1;
     public float quantoCiVedoSenzaOcchiali = 10f;
     public float alphaGrad = 140f;
+    public bool visualizzaHandleVista = true;
     public float ampiezza = 3f;
     public float velocitaOscillazioneVista = 2f;
     public bool obiettivoInVista { get; set; }
     public bool inZonaAttacco { get; set; }
+    public bool visualizzaHandleAttacco = true;
     public float distanzaAttaccoGoblinArco = 7f;
     public float distanzaAttaccoGoblinSpada = 2f;
-    
+
+    public float dimensioneHandleVista = 5f;
+    public float dimensioneHandleDistArmi = 5f;
     private SphereCollider colliderSferaVista;
 
     private IStato statoCorrente;

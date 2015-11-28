@@ -8,3 +8,11 @@ ClassPrj/Xcode
 *.suo
 *.unityproj
 *.userprefs
+Isola/Library
+Isola/Temp
+Isola/obj
+Isola/Xcode
+Isola/Assets/UF Creator LITE/Demo_Scenes
+Isola/Assets/Free_Rocks/demo
+Isola/Assets/Water FX Pack/Demo Scenes
+Library/

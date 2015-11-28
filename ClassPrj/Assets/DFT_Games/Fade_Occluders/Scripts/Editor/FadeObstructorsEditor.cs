@@ -51,13 +51,15 @@ namespace DFTGames.Tools.EditorTools
                 Undo.RecordObject(fader, "Ignore triggers");
                 fader.ignoreTriggers = tmpBool;
             }
-            Color tmpColor = EditorGUILayout.ColorField(new GUIContent("Fade Color", "The color to use"), fader.fadingColorToUse);
+            Commons.SetColors(backColorOriginal, labelColor);
+            Color tmpColor = EditorGUILayout.ColorField(new GUIContent("Fade Color", "Color shade and alpha to use during the fading"), fader.fadingColorToUse);
             if (tmpColor != fader.fadingColorToUse)
             {
                 isDirty = true;
                 Undo.RecordObject(fader, "Fading Color");
                 fader.fadingColorToUse = tmpColor;
             }
+            Commons.SetColors(backColor, labelColor);
             LayerMask tmpMask = Commons.LayerMaskField(new GUIContent("Layers to fade", "The layers we want to fade. The layers we want to fade. IF YOU USE MULTIPLE INSTANCES OF THIS SCRIPT ON THE SASME CAMERA MAKE SURE THAT EACH INSTANCE MANAGES ONLY ITS OWN LAYERS!"), fader.layersToFade);
             if (tmpMask != fader.layersToFade)
             {

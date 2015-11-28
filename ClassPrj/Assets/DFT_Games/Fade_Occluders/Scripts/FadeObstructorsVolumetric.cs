@@ -22,7 +22,8 @@ using UnityEngine;
 
 namespace DFTGames.Tools
 {
-    [RequireComponent(typeof(Camera)), RequireComponent(typeof(Rigidbody))]
+    [AddComponentMenu("Camera/Fade obstructors by volume"),
+     RequireComponent(typeof(Camera)), RequireComponent(typeof(Rigidbody))]
     public class FadeObstructorsVolumetric : FadeObstructorsBaseClass
     {
         public static bool commonVolume = true;

@@ -1,0 +1,179 @@
+fileFormatVersion: 2
+guid: 93172f4ec5d19f84f93e485fe7a17d4c
+timeCreated: 1448086564
+licenseType: Free
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: BN_Head
+    100002: BN_Hips
+    100004: BN_LeftArm
+    100006: BN_LeftFoot
+    100008: BN_LeftForeArm
+    100010: BN_LeftHand
+    100012: BN_LeftHandIndex1
+    100014: BN_LeftHandIndex2
+    100016: BN_LeftHandIndex3
+    100018: BN_LeftHandMiddle1
+    100020: BN_LeftHandMiddle2
+    100022: BN_LeftHandMiddle3
+    100024: BN_LeftHandPinky1
+    100026: BN_LeftHandPinky2
+    100028: BN_LeftHandPinky3
+    100030: BN_LeftHandRing1
+    100032: BN_LeftHandRing2
+    100034: BN_LeftHandRing3
+    100036: BN_LeftHandThumb1
+    100038: BN_LeftHandThumb2
+    100040: BN_LeftHandThumb3
+    100042: BN_LeftLeg
+    100044: BN_LeftShoulder
+    100046: BN_LeftToeBase
+    100048: BN_LeftUpLeg
+    100050: BN_Neck
+    100052: BN_RightArm
+    100054: BN_RightFoot
+    100056: BN_RightForeArm
+    100058: BN_RightHand
+    100060: BN_RightHandIndex1
+    100062: BN_RightHandIndex2
+    100064: BN_RightHandIndex3
+    100066: BN_RightHandMiddle1
+    100068: BN_RightHandMiddle2
+    100070: BN_RightHandMiddle3
+    100072: BN_RightHandPinky1
+    100074: BN_RightHandPinky2
+    100076: BN_RightHandPinky3
+    100078: BN_RightHandRing1
+    100080: BN_RightHandRing2
+    100082: BN_RightHandRing3
+    100084: BN_RightHandThumb1
+    100086: BN_RightHandThumb2
+    100088: BN_RightHandThumb3
+    100090: BN_RightLeg
+    100092: BN_RightShoulder
+    100094: BN_RightToeBase
+    100096: BN_RightUpLeg
+    100098: BN_Spine
+    100100: BN_Spine1
+    100102: Root
+    100104: //RootNode
+    400000: BN_Head
+    400002: BN_Hips
+    400004: BN_LeftArm
+    400006: BN_LeftFoot
+    400008: BN_LeftForeArm
+    400010: BN_LeftHand
+    400012: BN_LeftHandIndex1
+    400014: BN_LeftHandIndex2
+    400016: BN_LeftHandIndex3
+    400018: BN_LeftHandMiddle1
+    400020: BN_LeftHandMiddle2
+    400022: BN_LeftHandMiddle3
+    400024: BN_LeftHandPinky1
+    400026: BN_LeftHandPinky2
+    400028: BN_LeftHandPinky3
+    400030: BN_LeftHandRing1
+    400032: BN_LeftHandRing2
+    400034: BN_LeftHandRing3
+    400036: BN_LeftHandThumb1
+    400038: BN_LeftHandThumb2
+    400040: BN_LeftHandThumb3
+    400042: BN_LeftLeg
+    400044: BN_LeftShoulder
+    400046: BN_LeftToeBase
+    400048: BN_LeftUpLeg
+    400050: BN_Neck
+    400052: BN_RightArm
+    400054: BN_RightFoot
+    400056: BN_RightForeArm
+    400058: BN_RightHand
+    400060: BN_RightHandIndex1
+    400062: BN_RightHandIndex2
+    400064: BN_RightHandIndex3
+    400066: BN_RightHandMiddle1
+    400068: BN_RightHandMiddle2
+    400070: BN_RightHandMiddle3
+    400072: BN_RightHandPinky1
+    400074: BN_RightHandPinky2
+    400076: BN_RightHandPinky3
+    400078: BN_RightHandRing1
+    400080: BN_RightHandRing2
+    400082: BN_RightHandRing3
+    400084: BN_RightHandThumb1
+    400086: BN_RightHandThumb2
+    400088: BN_RightHandThumb3
+    400090: BN_RightLeg
+    400092: BN_RightShoulder
+    400094: BN_RightToeBase
+    400096: BN_RightUpLeg
+    400098: BN_Spine
+    400100: BN_Spine1
+    400102: Root
+    400104: //RootNode
+    7400000: mixamo.com
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
