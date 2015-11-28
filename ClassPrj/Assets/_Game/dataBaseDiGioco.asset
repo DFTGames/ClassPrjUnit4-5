@@ -15,7 +15,9 @@ MonoBehaviour:
   - Player
   - GameController
   - player
+  - goblinAggressivo
   matriceAmicizie:
-  - elementoAmicizia: 010000000000000002000000
-  - elementoAmicizia: 000000000200000000000000
-  - elementoAmicizia: 020000000000000001000000
+  - elementoAmicizia: 01000000000000000200000002000000
+  - elementoAmicizia: 00000000020000000000000000000000
+  - elementoAmicizia: 02000000000000000100000002000000
+  - elementoAmicizia: 02000000000000000200000001000000

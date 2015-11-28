@@ -356,7 +356,7 @@ GameObject:
   - 114: {fileID: 11460444}
   m_Layer: 0
   m_Name: Goblin_Ranger_R3
-  m_TagString: Player
+  m_TagString: goblinAggressivo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1767,7 +1767,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 134618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: .247999996, z: -6.96000004}
+  m_LocalPosition: {x: 0, y: .247999996, z: -.300000012}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 469790}
@@ -1937,7 +1937,9 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -1961,7 +1963,9 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -1985,7 +1989,9 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -2084,14 +2090,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   classeGoblin: 1
-  quantoCiVedoSenzaOcchiali: 17.583004
-  alphaGrad: 50.7375298
+  quantoCiVedoSenzaOcchiali: 20
+  alphaGrad: 75
   visualizzaHandleVista: 0
   ampiezza: 3.13000011
   velocitaOscillazioneVista: 2.06999993
-  visualizzaHandleAttacco: 0
-  distanzaAttaccoGoblinArco: 10
-  distanzaAttaccoGoblinSpada: 7.19999981
+  visualizzaHandleAttacco: 1
+  distanzaAttaccoGoblinArco: 8.67620087
+  distanzaAttaccoGoblinSpada: 9.95979786
+  dimensioneHandleVista: 4.9000001
+  dimensioneHandleDistArmi: 15
 --- !u!135 &13541922
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -2135,7 +2143,9 @@ SkinnedMeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -2221,7 +2231,9 @@ SkinnedMeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}

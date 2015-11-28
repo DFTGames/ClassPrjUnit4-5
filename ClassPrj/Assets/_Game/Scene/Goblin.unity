@@ -381,7 +381,9 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -457,41 +459,32 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: visualizzaHandleVista
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: visualizzaHandleAttacco
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: dimensioneHandleVista
-      value: 4.9000001
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: quantoCiVedoSenzaOcchiali
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: dimensioneHandleDistArmi
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: distanzaAttaccoGoblinSpada
-      value: 9.95979786
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: alphaGrad
-      value: 75
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: distanzaAttaccoGoblinArco
-      value: 8.67620087
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &1805365727 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 134618, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
+  m_PrefabInternal: {fileID: 1805365726}
+--- !u!114 &1805365728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1805365727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3179355963043e4d822004af60d0189, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: ece412ab7843d1c449cea4b2a0744f35, type: 2}
+  nemici:
+  - Player
+  - player
+  amici:
+  - GameController
+  indifferenti:
+  - goblinAggressivo
 --- !u!1 &1969569603
 GameObject:
   m_ObjectHideFlags: 0
