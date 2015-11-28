@@ -431,11 +431,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
       propertyPath: visualizzaHandleVista
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
       propertyPath: visualizzaHandleAttacco
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
       propertyPath: dimensioneHandleVista
@@ -460,6 +460,18 @@ Prefab:
     - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
       propertyPath: distanzaAttaccoGoblinArco
       value: 8.67620087
+      objectReference: {fileID: 0}
+    - target: {fileID: 9514582, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19586884, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
+      propertyPath: m_StoppingDistance
+      value: .800000012
+      objectReference: {fileID: 0}
+    - target: {fileID: 19586884, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
+      propertyPath: m_Speed
+      value: 1.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
