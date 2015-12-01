@@ -8,6 +8,7 @@
     RequireComponent(typeof(SphereCollider))]
 public class FSM : MonoBehaviour
 {
+    public Transform obiettivoNemico;
     public int classeGoblin = 1;
     public float quantoCiVedoSenzaOcchiali = 10f;
     public float alphaGrad = 140f;
@@ -30,18 +31,10 @@ public class FSM : MonoBehaviour
     private IStato inseguimento;
    // private IStato attacco;
 
-    private void ControlloVista(bool visto)
-    {
-        obiettivoInVista = visto;
-    }
-
-    private void ControlloInZonaAttacco(bool possoAttaccare)
-    {
-        inZonaAttacco = possoAttaccare;
-    }
-
+   
     private void Start()
     {
+        obiettivoNemico = null;
         obiettivoInVista = false;
         inZonaAttacco = false;
         colliderSferaVista = GetComponent<SphereCollider>();
