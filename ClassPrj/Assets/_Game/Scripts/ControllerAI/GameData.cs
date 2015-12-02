@@ -16,7 +16,7 @@ public class GameData : ScriptableObject
     public string[] tagEssere = new string[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
     public classeAmicizie[] matriceAmicizie = new classeAmicizie[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
     //Usato per memorizzare lo stato dei bottoni (cliccato o non cliccato)
-    public classeBottoni[] matriceBottoni = new classeBottoni[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
+//public classeBottoni[] matriceBottoni = new classeBottoni[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
 }
 
 [System.Serializable]

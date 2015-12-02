@@ -23,7 +23,6 @@ namespace DFTGames.Tools.EditorTools
         Texture icon3 = EditorGUIUtility.LoadRequired(string.Format("{0}/icon3.png", ResourceHelper.DFTGamesFolderPath)) as Texture;    //Neutro
 
 
-
         [PreferenceItem("Alleanze")]
         private static void preferenzeDiGameGUI()
         {
@@ -48,13 +47,11 @@ namespace DFTGames.Tools.EditorTools
         }
 
 
-
         [MenuItem("Window/ToolsGame/Configurazione Diplomazia %&D")]
         private static void Init()
         {
             EditorWindow.GetWindow<GameDataEditor>("Editor Alleanze");
         }
-
 
 
         private void OnEnable()
@@ -65,8 +62,6 @@ namespace DFTGames.Tools.EditorTools
                 gameData = AssetDatabase.LoadAssetAtPath<GameData>(percorso + STR_DatabaseDiGioco2);
             }
         }
-
-
 
 
         private void OnGUI()
@@ -112,20 +107,16 @@ namespace DFTGames.Tools.EditorTools
         }
 
 
-
-
         private void GestisciDiplomazia()
         {
             GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
             GUIStyle stileEtichetta = new GUIStyle(GUI.skin.GetStyle("Label"));
             stileEtichetta.alignment = TextAnchor.MiddleCenter;
             stileEtichetta.fontStyle = FontStyle.Bold;
-            // stileEtichetta.normal.textColor = Color.black;
             stileEtichetta.fontSize = 14;
             GUIStyle stileEtichetta2 = new GUIStyle(GUI.skin.GetStyle("Label"));
             stileEtichetta2.alignment = TextAnchor.MiddleLeft;
             stileEtichetta2.fontStyle = FontStyle.Bold;
-            // stileEtichetta2.normal.textColor = Color.black;
             stileEtichetta2.fontSize = 11;
             GUILayout.Label("Gestione Diplomazia", stileEtichetta);
             GUILayout.EndHorizontal();
@@ -148,17 +139,13 @@ namespace DFTGames.Tools.EditorTools
                 int vecchio = gameData.tagEssere.Length;
                 int differenzaLunghezze = UnityEditorInternal.InternalEditorUtility.tags.Length - 5 - gameData.tagEssere.Length;
                 Array.Resize<string>(ref gameData.tagEssere, UnityEditorInternal.InternalEditorUtility.tags.Length - 5);
-                Array.Resize<classeBottoni>(ref gameData.matriceBottoni, UnityEditorInternal.InternalEditorUtility.tags.Length - 5);
                 Array.Resize<classeAmicizie>(ref gameData.matriceAmicizie, UnityEditorInternal.InternalEditorUtility.tags.Length - 5);
 
-                for (int i = 0; i < gameData.matriceBottoni.Length; i++)
+                for (int i = 0; i < gameData.tagEssere.Length; i++)
                 {
-                    if (gameData.matriceBottoni[i] == null)
-                        gameData.matriceBottoni[i] = new classeBottoni();
                     if (gameData.matriceAmicizie[i] == null)
                         gameData.matriceAmicizie[i] = new classeAmicizie();
 
-                    Array.Resize<bool>(ref gameData.matriceBottoni[i].elementoBottoni, UnityEditorInternal.InternalEditorUtility.tags.Length - 5);
                     Array.Resize<Amicizie>(ref gameData.matriceAmicizie[i].elementoAmicizia, UnityEditorInternal.InternalEditorUtility.tags.Length - 5);
                 }
 
@@ -170,8 +157,6 @@ namespace DFTGames.Tools.EditorTools
 
                         for (int j = 0; j < UnityEditorInternal.InternalEditorUtility.tags.Length - 5; j++)
                         {
-                            gameData.matriceBottoni[i] = new classeBottoni();
-                            gameData.matriceBottoni[i].elementoBottoni[j] = false;
                             gameData.matriceAmicizie[i].elementoAmicizia[j] = Amicizie.Neutro;
                             EditorUtility.SetDirty(gameData);
                             AssetDatabase.SaveAssets();
@@ -213,9 +198,8 @@ namespace DFTGames.Tools.EditorTools
                             break;
                     }
                     //qui mostra il bottone con la texture recuperata in base al valore dell'Enum della matriceAmicizie
-                    gameData.matriceBottoni[i].elementoBottoni[j] = GUILayout.Button(new GUIContent(tmp), GUIStyle.none, GUILayout.Width(110), GUILayout.Height(80));
                     //Qui se clicchiamo il bottone deve assegnare un icona differente in base all'indice "di click"
-                    if (gameData.matriceBottoni[i].elementoBottoni[j])
+                    if (GUILayout.Button(new GUIContent(tmp), GUIStyle.none, GUILayout.Width(110), GUILayout.Height(80)))
                     {
                         //valore dell'Enum usato come indice per l'icona
                         int numIcona = (int)gameData.matriceAmicizie[i].elementoAmicizia[j];
@@ -234,8 +218,6 @@ namespace DFTGames.Tools.EditorTools
         }
 
 
-
-
         private void resettaParametri()
         {
             for (int r = 0; r < UnityEditorInternal.InternalEditorUtility.tags.Length - 5; r++)
@@ -246,8 +228,6 @@ namespace DFTGames.Tools.EditorTools
             {
                 for (int c = 0; c < UnityEditorInternal.InternalEditorUtility.tags.Length - 5; c++)
                 {
-                    gameData.matriceBottoni[r] = new classeBottoni();
-                    gameData.matriceBottoni[r].elementoBottoni[c] = false;
                     gameData.matriceAmicizie[r].elementoAmicizia[c] = Amicizie.Neutro;
                 }
             }
