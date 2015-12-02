@@ -31,11 +31,11 @@ public class VisualizzaAmicizie : MonoBehaviour
             {
                 for(int j = 0; j < item.tagEssere.Length; j++)
                 {
-                    if (item.matriceAmicizie[i].elementoAmicizia[j] == GameData.Amicizie.Nemico)
+                    if (item.matriceAmicizie[i].elementoAmicizia[j] == Amicizie.Nemico)
                         numeroNemici++;
-                    else if (item.matriceAmicizie[i].elementoAmicizia[j] == GameData.Amicizie.Alleato)
+                    else if (item.matriceAmicizie[i].elementoAmicizia[j] == Amicizie.Alleato)
                         numeroAmici++;
-                    else if (item.matriceAmicizie[i].elementoAmicizia[j]== GameData.Amicizie.Neutro)
+                    else if (item.matriceAmicizie[i].elementoAmicizia[j]== Amicizie.Neutro)
                         numeroIndifferenti++;
                 }
               
@@ -59,18 +59,18 @@ public class VisualizzaAmicizie : MonoBehaviour
                 {
                     for (int j = 0; j < item.tagEssere.Length; j++)
                     {
-                        if (item.matriceAmicizie[i].elementoAmicizia[j] == GameData.Amicizie.Nemico)
+                        if (item.matriceAmicizie[i].elementoAmicizia[j] ==Amicizie.Nemico)
                         {
                             nemici[a] = item.tagEssere[j];
                             a++;
                         }
                             
-                        else if (item.matriceAmicizie[i].elementoAmicizia[j] == GameData.Amicizie.Alleato)
+                        else if (item.matriceAmicizie[i].elementoAmicizia[j] == Amicizie.Alleato)
                         {
                             amici[b] = item.tagEssere[j];
                             b++;
                         }
-                        else if (item.matriceAmicizie[i].elementoAmicizia[j] == GameData.Amicizie.Neutro)
+                        else if (item.matriceAmicizie[i].elementoAmicizia[j] == Amicizie.Neutro)
                         {
                             indifferenti[c] = item.tagEssere[j];
                             c++;
