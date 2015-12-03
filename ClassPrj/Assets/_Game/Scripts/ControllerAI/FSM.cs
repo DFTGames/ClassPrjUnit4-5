@@ -8,7 +8,7 @@
     RequireComponent(typeof(SphereCollider))]
 public class FSM : MonoBehaviour
 {
-    public Transform obiettivoNemico;
+   
     public int classeGoblin = 1;
     public float quantoCiVedoSenzaOcchiali = 10f;
     public float alphaGrad = 140f;
@@ -29,9 +29,26 @@ public class FSM : MonoBehaviour
     private IStato statoPrecedente;
     private IStato pattugliamento;
     private IStato inseguimento;
-   // private IStato attacco;
+    // private IStato attacco;
 
-   
+    private Transform obiettivoNemico;
+
+    public Transform ObiettivoNemico
+    {
+        get
+        {
+            return obiettivoNemico;
+        }
+
+        set
+        {
+
+            obiettivoNemico = value;
+            obiettivoInVista = value == null ? false : true;
+        }
+    }
+
+
     private void Start()
     {
         obiettivoNemico = null;
@@ -59,7 +76,7 @@ public class FSM : MonoBehaviour
             statoPrecedente = statoCorrente;
         }
 
-        statoCorrente.Esecuzione();
+      
         if (obiettivoInVista)
         {
             if (!inZonaAttacco)
@@ -69,6 +86,10 @@ public class FSM : MonoBehaviour
         }
         else
             statoCorrente = pattugliamento;
+
+        statoCorrente.Esecuzione();
+
+        Debug.Log(ObiettivoNemico);
     }
 
     private void FixedUpdate()
