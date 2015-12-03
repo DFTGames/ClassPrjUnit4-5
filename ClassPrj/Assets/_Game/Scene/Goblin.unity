@@ -427,55 +427,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 484638, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
       propertyPath: m_RootOrder
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: visualizzaHandleVista
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: visualizzaHandleAttacco
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: dimensioneHandleVista
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: quantoCiVedoSenzaOcchiali
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: dimensioneHandleDistArmi
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: distanzaAttaccoGoblinSpada
-      value: 9.95979786
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: alphaGrad
-      value: 61
-      objectReference: {fileID: 0}
-    - target: {fileID: 11460444, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: distanzaAttaccoGoblinArco
-      value: 8.67620087
-      objectReference: {fileID: 0}
-    - target: {fileID: 9514582, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 19586884, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: m_StoppingDistance
-      value: .800000012
-      objectReference: {fileID: 0}
-    - target: {fileID: 19586884, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: m_Speed
-      value: 1.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 134618, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: m_TagString
-      value: goblin
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
@@ -615,25 +567,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
---- !u!1 &1997147356 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 134618, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-  m_PrefabInternal: {fileID: 1805365726}
---- !u!114 &1997147358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1997147356}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 362d33a78ab9c7540aa8f2b157815857, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: b3a2f832ac28c994786aa8f0d978dcfd, type: 2}
-  nemici: []
-  amici: []
-  indifferenti: []
 --- !u!1 &2112981490
 GameObject:
   m_ObjectHideFlags: 0
