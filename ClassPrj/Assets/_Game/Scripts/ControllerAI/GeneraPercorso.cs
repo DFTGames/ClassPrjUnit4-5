@@ -45,42 +45,49 @@ public class GeneraPercorso : MonoBehaviour
     private Vector3 nuovaPosizione;
     public float offsetSpostaOggetto = 0.5f;
 
+
     void OnDrawGizmos()
     {
-        for (int i = 0; i < PercorsoA.Length; i++)
+        if (Application.isPlaying)
+            return;
         {
-            Gizmos.DrawIcon(PercorsoA[i].position, "3.png", true);
-            Ray raggio = new Ray(new Vector3(PercorsoA[i].position.x, 1000f, PercorsoA[i].position.z), Vector3.down);
-            if (Physics.Raycast(raggio, out hitinfo))
+
+            for (int i = 0; i < PercorsoA.Length; i++)
             {
-                nuovaPosizione = new Vector3(PercorsoA[i].position.x, hitinfo.point.y + offsetSpostaOggetto, PercorsoA[i].position.z);
-                PercorsoA[i].position = nuovaPosizione;
+               
+                Ray raggio = new Ray(new Vector3(PercorsoA[i].position.x, 1000f, PercorsoA[i].position.z), Vector3.down);
+                if (Physics.Raycast(raggio, out hitinfo))
+                {
+                    nuovaPosizione = new Vector3(PercorsoA[i].position.x, hitinfo.point.y + offsetSpostaOggetto, PercorsoA[i].position.z);
+                    PercorsoA[i].position = nuovaPosizione;
+                }
+                Gizmos.DrawIcon(PercorsoA[i].position, "3.png", true);
+
+            }
+            for (int i = 0; i < PercorsoB.Length; i++)
+            {
+                Ray raggio = new Ray(new Vector3(PercorsoB[i].position.x, 1000f, PercorsoB[i].position.z), Vector3.down);
+                if (Physics.Raycast(raggio, out hitinfo))
+                {
+                    nuovaPosizione = new Vector3(PercorsoB[i].position.x, hitinfo.point.y + offsetSpostaOggetto, PercorsoB[i].position.z);
+                    PercorsoB[i].position = nuovaPosizione;
+                }
+                Gizmos.DrawIcon(PercorsoB[i].position, "2.png", true);
             }
 
-        }
-        for (int i = 0; i < PercorsoB.Length; i++)
-        {
-            Gizmos.DrawIcon(PercorsoB[i].position, "2.png", true);
-            Ray raggio = new Ray(new Vector3(PercorsoB[i].position.x, 1000f, PercorsoB[i].position.z), Vector3.down);
-            if (Physics.Raycast(raggio, out hitinfo))
+            for (int i = 0; i < PercorsoC.Length; i++)
             {
-                nuovaPosizione = new Vector3(PercorsoB[i].position.x, hitinfo.point.y + offsetSpostaOggetto, PercorsoB[i].position.z);
-                PercorsoB[i].position = nuovaPosizione;
+                Ray raggio = new Ray(new Vector3(PercorsoC[i].position.x, 1000f, PercorsoC[i].position.z), Vector3.down);
+                if (Physics.Raycast(raggio, out hitinfo))
+                {
+                    nuovaPosizione = new Vector3(PercorsoC[i].position.x, hitinfo.point.y + offsetSpostaOggetto, PercorsoC[i].position.z);
+                    PercorsoC[i].position = nuovaPosizione;
+                }
+                Gizmos.DrawIcon(PercorsoC[i].position, "1.png", true);
             }
-        }
-
-        for (int i = 0; i < PercorsoC.Length; i++)
-        {
-            Gizmos.DrawIcon(PercorsoC[i].position, "1.png", true);
-            Ray raggio = new Ray(new Vector3(PercorsoC[i].position.x, 1000f, PercorsoC[i].position.z), Vector3.down);
-            if (Physics.Raycast(raggio, out hitinfo))
-            {
-                nuovaPosizione = new Vector3(PercorsoC[i].position.x, hitinfo.point.y + offsetSpostaOggetto, PercorsoC[i].position.z);
-                PercorsoC[i].position = nuovaPosizione;
-            }
-
         }
     }
+
 
     public Transform[] Itinerario(TipoPercorso sceltaPercorso)
     {
@@ -96,5 +103,6 @@ public class GeneraPercorso : MonoBehaviour
         }
     }
 
+ 
 }
 
