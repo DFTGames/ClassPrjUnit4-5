@@ -556,9 +556,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: b3a2f832ac28c994786aa8f0d978dcfd, type: 2}
-  nemici: []
+  nemici:
+  - Player
+  - player
   amici: []
-  indifferenti: []
+  indifferenti:
+  - GameController
+  - goblin
 --- !u!1 &2112981490
 GameObject:
   m_ObjectHideFlags: 0
@@ -603,7 +607,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 417064, guid: 2795a7b0792c9f1488f6a0e5617609ca, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 20.1499996
+      value: 2.80999994
       objectReference: {fileID: 0}
     - target: {fileID: 417064, guid: 2795a7b0792c9f1488f6a0e5617609ca, type: 2}
       propertyPath: m_LocalRotation.x
@@ -623,7 +627,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 417064, guid: 2795a7b0792c9f1488f6a0e5617609ca, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 11446088, guid: 2795a7b0792c9f1488f6a0e5617609ca, type: 2}
       propertyPath: corsaPerDefault
