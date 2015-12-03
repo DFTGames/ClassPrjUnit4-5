@@ -354,9 +354,10 @@ GameObject:
   - 135: {fileID: 13541922}
   - 114: {fileID: 11453088}
   - 114: {fileID: 11460444}
+  - 114: {fileID: 11471518}
   m_Layer: 0
   m_Name: Goblin_Ranger_R3
-  m_TagString: Player
+  m_TagString: goblin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1767,7 +1768,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 134618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: .247999996, z: -6.96000004}
+  m_LocalPosition: {x: 0, y: .247999996, z: -.300000012}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 469790}
@@ -1937,7 +1938,9 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -1961,7 +1964,9 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -1985,7 +1990,9 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -2039,7 +2046,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 6dbc2b339ff1d5f4686b9016a6de7b7c, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -2072,6 +2079,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87fac803f685099498c906e0f39a2498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  listaNemiciDentroNonVisti: []
+  listaNemiciVisti: []
 --- !u!114 &11460444
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2084,14 +2093,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   classeGoblin: 1
-  quantoCiVedoSenzaOcchiali: 17.583004
-  alphaGrad: 50.7375298
-  visualizzaHandleVista: 0
+  quantoCiVedoSenzaOcchiali: 15
+  alphaGrad: 61
+  visualizzaHandleVista: 1
   ampiezza: 3.13000011
   velocitaOscillazioneVista: 2.06999993
   visualizzaHandleAttacco: 0
-  distanzaAttaccoGoblinArco: 10
-  distanzaAttaccoGoblinSpada: 7.19999981
+  distanzaAttaccoGoblinArco: 8.67620087
+  distanzaAttaccoGoblinSpada: 9.95979786
+  dimensioneHandleVista: 4
+  dimensioneHandleDistArmi: 15
+--- !u!114 &11471518
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 134618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 362d33a78ab9c7540aa8f2b157815857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: 93339774b2e0092428118a91b67c8376, type: 2}
+  nemici:
+  - Player
+  - player
+  amici: []
+  indifferenti:
+  - GameController
+  - goblin
+  - Fire
 --- !u!135 &13541922
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -2135,7 +2166,9 @@ SkinnedMeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -2221,7 +2254,9 @@ SkinnedMeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_MinimumChartSize: 4
   m_AutoUVMaxDistance: .5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -2252,11 +2287,11 @@ NavMeshAgent:
   m_GameObject: {fileID: 134618}
   m_Enabled: 1
   m_Radius: .200000003
-  m_Speed: 3.5
+  m_Speed: 1.75
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: .800000012
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

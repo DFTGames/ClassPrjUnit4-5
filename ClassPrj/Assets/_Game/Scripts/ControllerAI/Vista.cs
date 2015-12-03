@@ -1,20 +1,19 @@
 ﻿/*
 1)Start:Per prima cosa raccolgo tutti i tag dei nemici di questo personaggio in base a quanto mostrato nel database
-e li raccolgo nella schiera di stringhe "Nemici"
-2)OnTriggerEnter: ogni volta che entra qualcuno nello sphereCollider controllo se è un nemico e quindi se fa parte della schiera Nemici che ho messo da parte,
+e li raccolgo nella lista di stringhe "Nemici"
+2)OnTriggerEnter: ogni volta che entra qualcuno nello sphereCollider controllo se è un nemico e quindi se fa parte della lista Nemici che ho messo da parte,
 se trovo il suo tag nella lista dei nemici interrompo la ricerca e lo aggiungo nella lista chiamata "listaNemiciDentroNonVisti"
 3)Update:
-  a)se ci sono nemici nella listaNemiciDentroNonVisti chiamo il metodo "ValutaSeAggiungereInListaVisti" che valuta se ogni singolo elemento di questa
+  a)se ci sono nemici nella listaNemiciDentroNonVisti controllo se è il caso di aggiungerli nella lista "listaNemiciVisti" che valuta se ogni singolo elemento di questa
   lista rientra nell'angolo di visuale, se rientra in quest'angolo(e se il raggio che parte dal personaggio e arriva al suo nemico
   non colpisce un ostacolo) vuol dire che è stato visto e quindi lo sposto in un'altra lista chiamata "listaNemiciVisti" e lo rimuovo
   dalla listaNemiciDentroNonVisti. Altrimenti non lo sposto.
-  b)se ci sono elementi nella listaNemiciVisti, devo controllare se si spostano nella zona oltre l'angolo cioè se vanno fuori visuale, quindi richiamo il metodo
-  "ValutaSeAggiungereInListaNonVisti" in cui controllo se il nemico si è spostato o meno nella zona non visibile(ma sempre dentro la sfera), se è così lo trasferisco nella lista
+  b)se ci sono elementi nella listaNemiciVisti, devo controllare se si spostano nella zona oltre l'angolo cioè se vanno fuori visuale, quindi
+  controllo se il nemico si è spostato o meno nella zona non visibile(ma sempre dentro la sfera), se è così lo trasferisco nella lista
   listaNemiciDentroNonVisti, e lo rimuovo dalla listaNemiciVisti.
   Inoltre, sempre se ci sono elementi nella listaNemiciVisti, se non sto ancora inseguendo nessuno(oppure se la persona che stavo inseguendo esce dalla lista dei visti
   quindi non è più visto), cerco un altro nemico da inseguire che sarà il più vicino tra quelli che sto vedendo.
-  Per trovare il più vicino, richiamo il metodo "ChiInseguire" che restituisce un trasform, che sarà il nemico che voglio inseguire, inoltre questo valore lo passerò al cervello
-  per fargli capire chi deve inseguire e dirò al cervello che la sua variabile obiettivoInVista=true, che gli permetterà di attivare l'inseguimento.
+  inoltre questo valore lo passerò al cervello.  
   c)Altrimenti cioè se non ci sono più nemici nella listaNemiciVisti ma poco prima ne stavo inseguendo uno, dico al cervello che può smettere di inseguire e tornare a pattugliare,
   indicandogli che non ci sono più obiettivi nemici e  impostando il suo ObiettivoInVista=false, farò terminare lo stato corrente di inseguimento e farò
   ripartire il prossimo stato cioè il pattugliamento.
@@ -27,8 +26,6 @@ using UnityEngine;
 
 public class Vista : MonoBehaviour
 {
-    public Transform obiettivoDaInseguire;
-
     private RaycastHit hit;
     private float alphaGradMezzi;
     private Vector3 vettoreDaTransformAObiettivo;
@@ -39,41 +36,31 @@ public class Vista : MonoBehaviour
 
     private SphereCollider colliderSfera;
     private FSM mioCervello;
-    private string[] Nemici;
+    private List<string> Nemici = null;
 
     public List<Transform> listaNemiciDentroNonVisti;
 
     public List<Transform> listaNemiciVisti;
 
-    public bool hoSceltoChiInseguire = false;
     private float distanzaMinore = 0f;
-
-    private Transform elemento;
-
+    private List<Transform> tmpDaELiminare;
+  
     private void Start()
     {
         listaNemiciDentroNonVisti = new List<Transform>();
         mioCervello = GetComponent<FSM>();
         colliderSfera = GetComponent<SphereCollider>();
-        obiettivoDaInseguire = null;
-
-        Nemici = new string[GetComponent<VisualizzaAmicizie>().nemici.Length];
-
-        for (int i = 0; i < Nemici.Length; i++)
-            Nemici[i] = GetComponent<VisualizzaAmicizie>().nemici[i];
+        mioCervello.ObiettivoNemico = null;
+        
+        alphaGradMezzi = (mioCervello.alphaGrad) * 0.5f;
+        Nemici = new List<string>(GetComponent<VisualizzaAmicizie>().nemici);
+        tmpDaELiminare= new List<Transform>();
     }
 
     private void OnTriggerEnter(Collider coll)
     {
-        for (int i = 0; i < Nemici.Length; i++)
-        {
-            if (coll.CompareTag(Nemici[i]))
-            {
-                listaNemiciDentroNonVisti.Add(coll.transform);
-
-                break;
-            }
-        }
+        if (Nemici.Contains(coll.tag))
+            listaNemiciDentroNonVisti.Add(coll.transform);
     }
 
     private void OnTriggerExit(Collider coll)
@@ -87,118 +74,123 @@ public class Vista : MonoBehaviour
     private void Update()
     {
         if (listaNemiciDentroNonVisti.Count > 0)
-            ValutaSeAggiungereInListaVisti();
+        {  //valuto se aggiungere in listaNemiciVisti
+            for (int i = 0; i < listaNemiciDentroNonVisti.Count; i++)
+            {
+                CalcolaAngolo(listaNemiciDentroNonVisti, i);
+
+                if (angoloTraForwardEObiettivo < alphaGradMezzi)
+                {
+                    if (Physics.Raycast(transform.position + transform.up * 0.5f, vettoreDaTransformAObiettivo, out hit, colliderSfera.radius))
+                    {
+                        if (hit.collider.transform == listaNemiciDentroNonVisti[i])
+                        {
+                            listaNemiciVisti.Add(listaNemiciDentroNonVisti[i]);
+                            tmpDaELiminare.Add(listaNemiciDentroNonVisti[i]);
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < tmpDaELiminare.Count; i++)
+            {
+                listaNemiciDentroNonVisti.Remove(tmpDaELiminare[i]);
+            }
+            tmpDaELiminare.Clear();
+        }
 
         if (listaNemiciVisti.Count > 0)
-        {
-            ValutaSeAggiungereInListaNonVisti();
-            if (!listaNemiciVisti.Contains(obiettivoDaInseguire))
-
+        {  //valuto se aggiungere in listaDentroNemiciNonVisti
+            for (int i = 0; i < listaNemiciVisti.Count; i++)
             {
-                obiettivoDaInseguire = ChiInseguire();
-                mioCervello.obiettivoNemico = obiettivoDaInseguire;
-                mioCervello.obiettivoInVista = true;
-            }
-        }
-        else if (hoSceltoChiInseguire)
-        {
-            obiettivoDaInseguire = null;
-            mioCervello.obiettivoNemico = obiettivoDaInseguire;
-            mioCervello.obiettivoInVista = false;
-            hoSceltoChiInseguire = false;
-        }
+                CalcolaAngolo(listaNemiciVisti, i);
 
-        if (hoSceltoChiInseguire)
-            Debug.DrawLine(transform.position, obiettivoDaInseguire.position, Color.red);
-    }
-
-    private void ValutaSeAggiungereInListaVisti()
-    {
-        for (int i = 0; i < listaNemiciDentroNonVisti.Count; i++)
-        {
-            alphaGradMezzi = (mioCervello.alphaGrad) * 0.5f;
-            vettoreDaTransformAObiettivo = (listaNemiciDentroNonVisti[i].position - transform.position).normalized;
-            prodottoScalare = Vector3.Dot(vettoreDaTransformAObiettivo, transform.forward);
-            prodottoMagnitudini = vettoreDaTransformAObiettivo.magnitude * transform.forward.magnitude;
-            angoloTraForwardEObiettivo = Mathf.Acos((prodottoScalare / prodottoMagnitudini)) * Mathf.Rad2Deg;
-
-            if (angoloTraForwardEObiettivo < alphaGradMezzi)
-            {
-                if (Physics.Raycast(transform.position + transform.up * 0.5f, vettoreDaTransformAObiettivo, out hit, colliderSfera.radius))
+                if (angoloTraForwardEObiettivo > alphaGradMezzi)
                 {
-                    if (hit.collider.name.Equals(listaNemiciDentroNonVisti[i].name))
+                    listaNemiciDentroNonVisti.Add(listaNemiciVisti[i]);
+                    tmpDaELiminare.Add(listaNemiciVisti[i]);
+                }
+                else
+                {
+                    if (Physics.Raycast(transform.position + transform.up * 0.5f, vettoreDaTransformAObiettivo, out hit, colliderSfera.radius))
                     {
-                        elemento = listaNemiciDentroNonVisti[i];
-                        listaNemiciVisti.Add(elemento);
-                        listaNemiciDentroNonVisti.RemoveAt(i);
+                        if (!hit.collider.transform == listaNemiciVisti[i])
+                        {
+                            listaNemiciDentroNonVisti.Add(listaNemiciVisti[i]);
+                            tmpDaELiminare.Add(listaNemiciVisti[i]);
+                        }
                     }
                 }
             }
-        }
-    }
-
-    private void ValutaSeAggiungereInListaNonVisti()
-    {
-        for (int i = 0; i < listaNemiciVisti.Count; i++)
-        {
-            alphaGradMezzi = (mioCervello.alphaGrad) * 0.5f;
-            vettoreDaTransformAObiettivo = (listaNemiciVisti[i].position - transform.position).normalized;
-            prodottoScalare = Vector3.Dot(vettoreDaTransformAObiettivo, transform.forward);
-            prodottoMagnitudini = vettoreDaTransformAObiettivo.magnitude * transform.forward.magnitude;
-            angoloTraForwardEObiettivo = Mathf.Acos((prodottoScalare / prodottoMagnitudini)) * Mathf.Rad2Deg;
-
-            if (angoloTraForwardEObiettivo > alphaGradMezzi)
+            for (int i = 0; i < tmpDaELiminare.Count; i++)
             {
-                elemento = listaNemiciVisti[i];
-                listaNemiciDentroNonVisti.Add(elemento);
-                listaNemiciVisti.RemoveAt(i);
+                listaNemiciVisti.Remove(tmpDaELiminare[i]);
             }
+            tmpDaELiminare.Clear();
+        }
+
+        /*PER PINO: NON SONO CONVINTA DI QUESTA CORREZIONE:
+        Siccome se obiettivonemico è nullo io scelgo qualcuno da inseguire quindi 
+        nel momento in cui scelgo, obiettivonemico sarà diverso da null.
+        quando faccio l'else sotto in cui dico se è diverso da null mettilo a null
+        praticamente fa ping pong tra null e non null ogni volta ch eentra nell'update
+        (nel cervello ho messo un debug log di obiettivo nemico e in console puoi vedere che passa da null
+        a maga e viceversa continuamente quando vede la maga).
+        Invece cambiando l'if come ho messo qui sotto commento e eliminando l'else sotto 
+        , non fa ping pong, cioè se non sta inseguendo qualcuno
+        trova qualcuno da inseguire e se ha trovato qualcuno d ainseguire non ci entra più in questo 
+        if finchè questo qualcuno non esce dalla lista dei visti.
+        Altrimenti se lascio questo controllo come lo hai messo tu e levo l'else sotto
+        per non fargli fare ping pong, seguirà per sempre quello che sta inseguendo.
+        Quindi:
+        Per me al posto dell'if qui sotto va messo questo:
+       if (!listaNemiciVisti.Contains(mioCervello.ObiettivoNemico))
+       e va levato l'else in basso(vedi commento sotto)*/
+        
+        if (mioCervello.ObiettivoNemico == null)
+        {   //scelgo chi inseguire:
+
+            Transform obiettivoTemporaneoDaInseguire = null;
+            int vicino = -1;
+            float distanzaMinore = float.MaxValue;
+            if (listaNemiciVisti.Count > 1)
+            {
+                for (int j = 0; j < listaNemiciVisti.Count; j++)
+                {
+                    float distanzaElementoAttuale = (listaNemiciVisti[j].position - transform.position).magnitude;
+                    if (distanzaElementoAttuale < distanzaMinore)
+                    {
+                        distanzaMinore = distanzaElementoAttuale;
+                        vicino = j;
+                    }
+                }
+                obiettivoTemporaneoDaInseguire = listaNemiciVisti[vicino];
+            }
+            else if (listaNemiciVisti.Count == 1)
+            {
+                obiettivoTemporaneoDaInseguire = listaNemiciVisti[0];
+            }            
             else
             {
-                if (Physics.Raycast(transform.position + transform.up * 0.5f, vettoreDaTransformAObiettivo, out hit, colliderSfera.radius))
-                {
-                    if (!hit.collider.name.Equals(listaNemiciVisti[i].name))
-                    {
-                        elemento = listaNemiciVisti[i];
-                        listaNemiciDentroNonVisti.Add(elemento);
-                        listaNemiciVisti.RemoveAt(i);
-                    }
-                }
+                obiettivoTemporaneoDaInseguire = null;
             }
+            mioCervello.ObiettivoNemico = obiettivoTemporaneoDaInseguire;
         }
+         
+        else
+              mioCervello.ObiettivoNemico = null;
+
+      /* PER PINO: 
+      Per me va cancellato l'else qui sopra*/
+
+        if (mioCervello.ObiettivoNemico != null)
+            Debug.DrawLine(transform.position + Vector3.up, mioCervello.ObiettivoNemico.position + Vector3.up, Color.red, Time.deltaTime);
     }
 
-    /// <summary>
-    /// Metodo che seleziona l'obiettivo più vicino da inseguire.
-    /// </summary>
-    /// <returns></returns>
-    private Transform ChiInseguire()
+    private void CalcolaAngolo(List<Transform> daTrattare, int i)
     {
-        Transform obiettivoTemporaneoDaInseguire = null;
-        hoSceltoChiInseguire = true;
-        if (listaNemiciVisti.Count > 1)
-        {
-            for (int j = 0; j < listaNemiciVisti.Count - 1; j++)
-            {
-                float distanzaElementoAttuale = (listaNemiciVisti[j].position - transform.position).magnitude;
-                float distanzaElementoSuccessivo = (listaNemiciVisti[j + 1].position - transform.position).magnitude;
-                if (distanzaElementoAttuale <= distanzaElementoSuccessivo)
-
-                    obiettivoTemporaneoDaInseguire = listaNemiciVisti[j];
-                else
-
-                    obiettivoTemporaneoDaInseguire = listaNemiciVisti[j + 1];
-            }
-        }
-        else if (listaNemiciVisti.Count == 1)
-        {
-            obiettivoTemporaneoDaInseguire = listaNemiciVisti[0];
-        }
-        else
-        {
-            hoSceltoChiInseguire = false;
-            obiettivoTemporaneoDaInseguire = null;
-        }
-        return obiettivoTemporaneoDaInseguire;
+        vettoreDaTransformAObiettivo = (daTrattare[i].position - transform.position).normalized;
+        prodottoScalare = Vector3.Dot(vettoreDaTransformAObiettivo, transform.forward);
+        prodottoMagnitudini = vettoreDaTransformAObiettivo.magnitude * transform.forward.magnitude;
+        angoloTraForwardEObiettivo = Mathf.Acos((prodottoScalare / prodottoMagnitudini)) * Mathf.Rad2Deg;
     }
 }
