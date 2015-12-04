@@ -2122,7 +2122,6 @@ MonoBehaviour:
   indifferenti:
   - GameController
   - goblin
-  - Fire
 --- !u!135 &13541922
 SphereCollider:
   m_ObjectHideFlags: 1
