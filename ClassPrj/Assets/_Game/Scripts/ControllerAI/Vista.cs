@@ -13,7 +13,7 @@ se trovo il suo tag nella lista dei nemici interrompo la ricerca e lo aggiungo n
   listaNemiciDentroNonVisti, e lo rimuovo dalla listaNemiciVisti.
   Inoltre, sempre se ci sono elementi nella listaNemiciVisti, se non sto ancora inseguendo nessuno(oppure se la persona che stavo inseguendo esce dalla lista dei visti
   quindi non è più visto), cerco un altro nemico da inseguire che sarà il più vicino tra quelli che sto vedendo.
-  inoltre questo valore lo passerò al cervello.  
+  inoltre questo valore lo passerò al cervello.
   c)Altrimenti cioè se non ci sono più nemici nella listaNemiciVisti ma poco prima ne stavo inseguendo uno, dico al cervello che può smettere di inseguire e tornare a pattugliare,
   indicandogli che non ci sono più obiettivi nemici e  impostando il suo ObiettivoInVista=false, farò terminare lo stato corrente di inseguimento e farò
   ripartire il prossimo stato cioè il pattugliamento.
@@ -44,17 +44,17 @@ public class Vista : MonoBehaviour
 
     private float distanzaMinore = 0f;
     private List<Transform> tmpDaELiminare;
-  
+
     private void Start()
     {
         listaNemiciDentroNonVisti = new List<Transform>();
         mioCervello = GetComponent<FSM>();
         colliderSfera = GetComponent<SphereCollider>();
         mioCervello.ObiettivoNemico = null;
-        
+
         alphaGradMezzi = (mioCervello.alphaGrad) * 0.5f;
         Nemici = new List<string>(GetComponent<VisualizzaAmicizie>().nemici);
-        tmpDaELiminare= new List<Transform>();
+        tmpDaELiminare = new List<Transform>();
     }
 
     private void OnTriggerEnter(Collider coll)
@@ -128,27 +128,8 @@ public class Vista : MonoBehaviour
             tmpDaELiminare.Clear();
         }
 
-        /*PER PINO: NON SONO CONVINTA DI QUESTA CORREZIONE:
-        Siccome se obiettivonemico è nullo io scelgo qualcuno da inseguire quindi 
-        nel momento in cui scelgo, obiettivonemico sarà diverso da null.
-        quando faccio l'else sotto in cui dico se è diverso da null mettilo a null
-        praticamente fa ping pong tra null e non null ogni volta ch eentra nell'update
-        (nel cervello ho messo un debug log di obiettivo nemico e in console puoi vedere che passa da null
-        a maga e viceversa continuamente quando vede la maga).
-        Invece cambiando l'if come ho messo qui sotto commento e eliminando l'else sotto 
-        , non fa ping pong, cioè se non sta inseguendo qualcuno
-        trova qualcuno da inseguire e se ha trovato qualcuno d ainseguire non ci entra più in questo 
-        if finchè questo qualcuno non esce dalla lista dei visti.
-        Altrimenti se lascio questo controllo come lo hai messo tu e levo l'else sotto
-        per non fargli fare ping pong, seguirà per sempre quello che sta inseguendo.
-        Quindi:
-        Per me al posto dell'if qui sotto va messo questo:
-       if (!listaNemiciVisti.Contains(mioCervello.ObiettivoNemico))
-       e va levato l'else in basso(vedi commento sotto)*/
-        
         if (mioCervello.ObiettivoNemico == null)
         {   //scelgo chi inseguire:
-
             Transform obiettivoTemporaneoDaInseguire = null;
             int vicino = -1;
             float distanzaMinore = float.MaxValue;
@@ -168,22 +149,20 @@ public class Vista : MonoBehaviour
             else if (listaNemiciVisti.Count == 1)
             {
                 obiettivoTemporaneoDaInseguire = listaNemiciVisti[0];
-            }            
+            }
             else
             {
                 obiettivoTemporaneoDaInseguire = null;
             }
             mioCervello.ObiettivoNemico = obiettivoTemporaneoDaInseguire;
         }
-         
-        else
-              mioCervello.ObiettivoNemico = null;
-
-      /* PER PINO: 
-      Per me va cancellato l'else qui sopra*/
 
         if (mioCervello.ObiettivoNemico != null)
+        {
             Debug.DrawLine(transform.position + Vector3.up, mioCervello.ObiettivoNemico.position + Vector3.up, Color.red, Time.deltaTime);
+            if (!listaNemiciVisti.Contains(mioCervello.ObiettivoNemico))
+                mioCervello.ObiettivoNemico = null;
+        }
     }
 
     private void CalcolaAngolo(List<Transform> daTrattare, int i)

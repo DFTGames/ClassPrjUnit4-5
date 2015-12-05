@@ -24,7 +24,7 @@ public class Inseguimento : IStato
 
     public void Esecuzione()
     {
-        agente.destination = Cervello.obiettivoNemico.position;	//Se serve aggiugnere .Position
+        agente.destination = Cervello.ObiettivoNemico.position;	//Se serve aggiugnere .Position
         agente.speed = 3.5f;
         animatore.SetFloat("Velocita", 1f);
     }
