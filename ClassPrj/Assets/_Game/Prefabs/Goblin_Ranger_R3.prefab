@@ -1768,7 +1768,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 134618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: .247999996, z: -.300000012}
+  m_LocalPosition: {x: 0, y: .247999996, z: 23.4699993}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 469790}
@@ -2115,13 +2115,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 11400000, guid: 93339774b2e0092428118a91b67c8376, type: 2}
-  nemici:
-  - Player
-  - player
+  nemici: []
   amici: []
-  indifferenti:
-  - GameController
-  - goblin
+  indifferenti: []
 --- !u!135 &13541922
 SphereCollider:
   m_ObjectHideFlags: 1

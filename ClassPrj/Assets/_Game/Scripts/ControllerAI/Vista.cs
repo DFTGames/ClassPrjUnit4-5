@@ -59,7 +59,7 @@ public class Vista : MonoBehaviour
 
     private void OnTriggerEnter(Collider coll)
     {
-        if (Nemici.Contains(coll.tag))
+        if (Nemici.Contains(coll.tag) && !coll.isTrigger)
             listaNemiciDentroNonVisti.Add(coll.transform);
     }
 
