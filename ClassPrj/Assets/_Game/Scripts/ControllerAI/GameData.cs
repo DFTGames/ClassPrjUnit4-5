@@ -1,34 +1,32 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditorInternal;
+using UnityEngine;
+
+/// <summary>
+/// Tipi di relazione possibili
+/// </summary>
+public enum Amicizie
+{
+    Neutro = 1,
+    Alleato = 2,
+    Nemico = 3
+}
 
 [System.Serializable]
 public class GameData : ScriptableObject
 {
-
-    public enum Amicizie
-    {
-        Neutro,
-        Alleato,
-        Nemico
-    }
-
-    public enum TipiDiEsseriA
-    {
-        goblinAggressivo =1,
-        goblinNeutro  =2,
-        goblinBuono =3,
-        Player =4,
-    }
-    public List<classeSogg> listaClasse = new List<classeSogg>();
-    
+    public string[] tagEssere = new string[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
+    public classeAmicizie[] matriceAmicizie = new classeAmicizie[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
+    //Usato per memorizzare lo stato dei bottoni (cliccato o non cliccato)
+//public classeBottoni[] matriceBottoni = new classeBottoni[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
 }
 
 [System.Serializable]
-public class classeSogg 
+public class classeAmicizie
 {
-    public GameData.TipiDiEsseriA EsseriA;
-    public GameData.Amicizie[,] Amicizie = new GameData.Amicizie[10,10];
-    
+    public Amicizie[] elementoAmicizia = new Amicizie[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
+}
+
+[System.Serializable]
+public class classeBottoni
+{
+    public bool[] elementoBottoni = new bool[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
 }
