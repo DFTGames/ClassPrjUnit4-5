@@ -12,14 +12,12 @@ MonoBehaviour:
   m_Name: dataBaseDiGioco
   m_EditorClassIdentifier: 
   tagEssere:
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - GameController
+  - player
+  - goblin
   matriceAmicizie:
-  - elementoAmicizia: 0000000000000000000000000000000000000000
-  - elementoAmicizia: 0000000000000000000000000000000000000000
-  - elementoAmicizia: 0000000000000000000000000000000000000000
-  - elementoAmicizia: 0000000000000000000000000000000000000000
-  - elementoAmicizia: 0000000000000000000000000000000000000000
+  - elementoAmicizia: 01000000010000000100000001000000
+  - elementoAmicizia: 01000000010000000100000001000000
+  - elementoAmicizia: 01000000010000000100000001000000
+  - elementoAmicizia: 01000000010000000100000001000000
