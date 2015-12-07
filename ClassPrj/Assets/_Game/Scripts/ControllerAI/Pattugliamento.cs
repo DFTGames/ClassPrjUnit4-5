@@ -47,7 +47,7 @@ using System.Collections;
             if (MioCervello.classeGoblin == 1)
             {
                 Destinazioni = new Transform[GameObject.Find("GeneraPercorso").GetComponent
-                    <GeneraPercorso>().Itinerario(TipoPercorso.A).Length];
+                    <GeneraPercorso>().Itinerario(TipoPercorso.A).Count];
                 for (int i = 0; i < Destinazioni.Length; i++)
                 {
                     Destinazioni[i] =
@@ -57,7 +57,7 @@ using System.Collections;
             else if (MioCervello.classeGoblin == 2)
             {
                 Destinazioni = new Transform[GameObject.Find("GeneraPercoso").GetComponent
-                    <GeneraPercorso>().Itinerario(TipoPercorso.B).Length];
+                    <GeneraPercorso>().Itinerario(TipoPercorso.B).Count];
                 for (int i = 0; i < Destinazioni.Length; i++)
                 {
                     Destinazioni[i] = 
@@ -68,7 +68,7 @@ using System.Collections;
                 {
                     Destinazioni = new
                 Transform[GameObject.Find("GeneraPercorso").GetComponent<GeneraPercorso>().Itinerario
-                (TipoPercorso.C).Length];
+                (TipoPercorso.C).Count];
                     for (int i = 0; i < Destinazioni.Length; i++)
                     {
                         Destinazioni[i] = GameObject.Find("GeneraPercorso").GetComponent<GeneraPercorso>
