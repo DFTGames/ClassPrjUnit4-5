@@ -27,5 +27,9 @@ namespace DFTGames.Tools.EditorTools
         public static Texture LogoFadeObstructors = EditorGUIUtility.LoadRequired(string.Format("{0}/fo_inspector_header.png", DFTGamesFolderPath)) as Texture;
         public static Texture LogoFadeObstructorsVolumetric = EditorGUIUtility.LoadRequired(string.Format("{0}/fov_inspector_header.png", DFTGamesFolderPath)) as Texture;
         public static Texture LogoFSM = EditorGUIUtility.LoadRequired(string.Format("{0}/Logogruppo.png", DFTGamesFolderPath)) as Texture;
+        public static Texture Icon1= EditorGUIUtility.LoadRequired(string.Format("{0}/3.png", DFTGamesFolderPath)) as Texture;
+
+
+
     }
 }
