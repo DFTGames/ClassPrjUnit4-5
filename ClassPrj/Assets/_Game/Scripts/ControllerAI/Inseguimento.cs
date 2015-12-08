@@ -12,7 +12,8 @@ public class Inseguimento : IStato
 
     public void Inizializza(FSM oggetto)
     {
-        Cervello = oggetto;
+        
+        Cervello = oggetto;  
         agente = Cervello.GetComponent<NavMeshAgent>();
         animatore = Cervello.gameObject.GetComponent<Animator>();
     }
@@ -24,9 +25,16 @@ public class Inseguimento : IStato
 
     public void Esecuzione()
     {
-        agente.destination = Cervello.ObiettivoNemico.position;	//Se serve aggiugnere .Position
-        agente.speed = 3.5f;
-        animatore.SetFloat("Velocita", 1f);
+
+       
+       
+           Debug.Log(Cervello.ObiettivoNemico);
+        if (Cervello.ObiettivoNemico != null)
+        {
+            agente.destination = Cervello.ObiettivoNemico.position; //Se serve aggiugnere .Position
+            agente.speed = 3.5f;
+            animatore.SetFloat("Velocita", 1f);
+        }
     }
 
     public void EsecuzioneTerminata()
