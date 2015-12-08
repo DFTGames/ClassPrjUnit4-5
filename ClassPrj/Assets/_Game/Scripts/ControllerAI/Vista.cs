@@ -49,7 +49,7 @@ public class Vista : MonoBehaviour
     {
         listaNemiciDentroNonVisti = new List<Transform>();
         mioCervello = GetComponent<FSM>();
-        colliderSfera = GetComponent<SphereCollider>();
+        colliderSfera = mioCervello.ColliderSferaVista;
         mioCervello.ObiettivoNemico = null;
 
         alphaGradMezzi = (mioCervello.alphaGrad) * 0.5f;
@@ -59,7 +59,7 @@ public class Vista : MonoBehaviour
 
     private void OnTriggerEnter(Collider coll)
     {
-        if (Nemici.Contains(coll.tag) && !coll.isTrigger)
+        if (Nemici.Contains(coll.tag))
             listaNemiciDentroNonVisti.Add(coll.transform);
     }
 

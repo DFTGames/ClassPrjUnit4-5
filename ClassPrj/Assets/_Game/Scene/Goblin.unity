@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 26144288}
   m_Layer: 0
-  m_Name: GameObject (1)
+  m_Name: ' Nodo1'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -253,13 +253,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73f26aa4c7c862348ad31b204b758e82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PercorsoA:
-  - {fileID: 313665298}
-  - {fileID: 26144288}
-  - {fileID: 642810069}
-  - {fileID: 2112981491}
-  PercorsoB: []
-  PercorsoC: []
+  Percorso: []
+  colore: {r: 0, g: 0, b: 0, a: 1}
   offsetSpostaOggetto: .5
 --- !u!1 &313665297
 GameObject:
@@ -270,7 +265,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 313665298}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: ' Nodo4'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -297,7 +292,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 642810069}
   m_Layer: 0
-  m_Name: GameObject (2)
+  m_Name: ' Nodo2'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -428,10 +423,6 @@ Prefab:
     - target: {fileID: 484638, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 19586884, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-      propertyPath: m_Speed
-      value: 1.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
@@ -580,7 +571,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 2112981491}
   m_Layer: 0
-  m_Name: GameObject (3)
+  m_Name: ' Nodo3'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
