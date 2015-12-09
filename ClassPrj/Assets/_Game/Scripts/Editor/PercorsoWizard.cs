@@ -7,7 +7,7 @@ public class PercorsoWizard : ScriptableWizard
 {
 
     public GameObject padrePercorso;
-    public Color colorePadre;
+    public Color colorePadre=Color.black;
 
     private int contaPercorsi = 0;
    
