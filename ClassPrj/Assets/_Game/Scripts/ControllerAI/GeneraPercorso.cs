@@ -38,7 +38,14 @@ public enum TipoPercorso
 
 public class GeneraPercorso : MonoBehaviour
 {
-    public List<Transform> Percorso = new List<Transform>();
+    //public List<Transform> Percorso = new List<Transform>();
+    public Transform this [int idx]
+    {
+        get
+        {
+            return transform.GetChild(idx);
+        }
+    }
 
     public Color colore = Color.black;
     private RaycastHit hitinfo;
@@ -49,17 +56,17 @@ public class GeneraPercorso : MonoBehaviour
     {
         if (Application.isPlaying)
             return;
-        if (Percorso.Count > 0)
+        if (transform.childCount > 0)
         {
 
-            for (int i = 0; i < Percorso.Count; i++)
+            for (int i = 0; i < transform.childCount; i++)
             {
 
-                Ray raggio = new Ray(new Vector3(Percorso[i].transform.position.x, 1000f, Percorso[i].transform.position.z), Vector3.down);
+                Ray raggio = new Ray(new Vector3(this[i].transform.position.x, 1000f, this[i].transform.position.z), Vector3.down);
                 if (Physics.Raycast(raggio, out hitinfo))
                 {
-                    nuovaPosizione = new Vector3(Percorso[i].transform.position.x, hitinfo.point.y + offsetSpostaOggetto, Percorso[i].transform.position.z);
-                    Percorso[i].transform.position = nuovaPosizione;
+                    nuovaPosizione = new Vector3(this[i].transform.position.x, hitinfo.point.y + offsetSpostaOggetto, this[i].transform.position.z);
+                    this[i].transform.position = nuovaPosizione;
                 }
                 //   Gizmos.DrawIcon(Percorso[i].transform.position, "3.png", true);
 
@@ -68,13 +75,13 @@ public class GeneraPercorso : MonoBehaviour
 
     }
 
-    public List<Transform> Itinerario(TipoPercorso sceltaPercorso)
+    public Transform Itinerario(TipoPercorso sceltaPercorso,int idx)
     {
 
         switch (sceltaPercorso)
         {
             case TipoPercorso.A:
-                return Percorso;
+                return this[idx];
 
             default: return null;
 
