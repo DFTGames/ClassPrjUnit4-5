@@ -43,7 +43,7 @@ public class PercorsoWizard : ScriptableWizard
         padrePercorso = tmpGbj;
         Selection.activeTransform = padrePercorso.transform;
         tmpGbj.transform.position = Vector3.zero;
-        GeneraPercorso tmpGeneraPercorso = tmpGbj.AddComponent<GeneraPercorso>();
+        GestorePercorso tmpGeneraPercorso = tmpGbj.AddComponent<GestorePercorso>();
         tmpGeneraPercorso.colore =colorePadre;
   
 
