@@ -4,8 +4,7 @@
 /// cervello
 /// </summary>
 [RequireComponent(typeof(NavMeshAgent)),
-    RequireComponent(typeof(Animator)),
-    RequireComponent(typeof(SphereCollider))]
+    RequireComponent(typeof(Animator))]
 public class FSM : MonoBehaviour
 {
     public int classeGoblin = 1;
@@ -19,18 +18,16 @@ public class FSM : MonoBehaviour
     public bool visualizzaHandleAttacco = true;
     public float distanzaAttaccoGoblinArco = 7f;
     public float distanzaAttaccoGoblinSpada = 2f;
-
     public float dimensioneHandleVista = 5f;
     public float dimensioneHandleDistArmi = 5f;
-    private SphereCollider colliderSferaVista;
 
+    private SphereCollider colliderSferaVista;
+    private Transform obiettivoNemico;
     private IStato statoCorrente;
     private IStato statoPrecedente;
     private IStato pattugliamento;
     private IStato inseguimento;
     // private IStato attacco;
-
-    private Transform obiettivoNemico;
 
     public Transform ObiettivoNemico
     {
@@ -46,21 +43,30 @@ public class FSM : MonoBehaviour
         }
     }
 
+    public SphereCollider ColliderSferaVista
+    {
+        get
+        {
+            return colliderSferaVista;
+        }
+    }
+
     private void Start()
     {
         obiettivoNemico = null;
         obiettivoInVista = false;
         inZonaAttacco = false;
-        colliderSferaVista = GetComponent<SphereCollider>();
+        colliderSferaVista = GetComponentInChildren<SphereCollider>();
         colliderSferaVista.radius = quantoCiVedoSenzaOcchiali;
-        pattugliamento = new Pattugliamento();
+         pattugliamento = new Pattugliamento();
         inseguimento = new Inseguimento();
         //Levare commento sotto quando qualcuno implementa lo stato di attacco:
         //  attacco = new Attacco();
-        //  attacco.Inizializza(this);
-        pattugliamento.Inizializza(this);
+         //attacco.Inizializza(this);
+          pattugliamento.Inizializza(this);
         inseguimento.Inizializza(this);
         statoCorrente = pattugliamento;
+        
     }
 
     private void Update()
@@ -77,11 +83,11 @@ public class FSM : MonoBehaviour
         {
             if (!inZonaAttacco)
                 statoCorrente = inseguimento;
-            /* else
-                 statoCorrente = attacco;*/  //levare il commento quando qualcuno implementa lo stato di attacco
+           /*  else
+                 statoCorrente = attacco;*/ //levare il commento quando qualcuno implementa lo stato di attacco
         }
-        else
-            statoCorrente = pattugliamento;
+            else
+                statoCorrente = pattugliamento;
 
         statoCorrente.Esecuzione();
     }
