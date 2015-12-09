@@ -6,6 +6,7 @@ TagManager:
   tags:
   - player
   - goblin
+  - Fire
   layers:
   - Default
   - TransparentFX

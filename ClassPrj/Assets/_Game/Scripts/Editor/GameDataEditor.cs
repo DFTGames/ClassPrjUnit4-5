@@ -66,10 +66,9 @@ namespace DFTGames.Tools.EditorTools
 
         private void OnGUI()
         {
-            posizioneScroll = EditorGUILayout.BeginScrollView(posizioneScroll,false, false);
-
             if (gameData != null)
             {
+                
                 GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);  
                 GUILayout.Label("Editor by DFT Students", GUI.skin.GetStyle("Label"));
                 GUILayout.EndHorizontal();
@@ -103,7 +102,6 @@ namespace DFTGames.Tools.EditorTools
                 EditorGUILayout.HelpBox("DataBase Mancante", MessageType.Error);
                 GUILayout.EndHorizontal();
             }
-            EditorGUILayout.EndScrollView();
         }
 
 
@@ -208,6 +206,7 @@ namespace DFTGames.Tools.EditorTools
                         numIcona = numIcona <= 3 ? numIcona : 1;
                         gameData.matriceAmicizie[i].elementoAmicizia[j] = (Amicizie)numIcona;
                         gameData.matriceAmicizie[j].elementoAmicizia[i] = (Amicizie)numIcona;
+                        EditorUtility.SetDirty(gameData);
                         AssetDatabase.SaveAssets();
                         //Debug.Log("cliccato bottone: " + i + "," + j + " - ValEnum: " + (Amicizie)numIcona);
                     }

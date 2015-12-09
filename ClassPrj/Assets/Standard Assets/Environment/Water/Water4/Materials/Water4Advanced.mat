@@ -66,18 +66,18 @@ Material:
           m_Offset: {x: 0, y: 0}
       data:
         first:
-          name: _ShoreTex
-        second:
-          m_Texture: {fileID: 2800000, guid: 36dd0b22da8874ed38075789055ca664, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 1, y: 1}
-      data:
-        first:
           name: _ReflectiveColorCube
         second:
           m_Texture: {fileID: 8900000, guid: 0620bdf0302d84423be4aa15b82a0e11, type: 2}
           m_Scale: {x: .150000006, y: .100000001}
           m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _ShoreTex
+        second:
+          m_Texture: {fileID: 2800000, guid: 36dd0b22da8874ed38075789055ca664, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 1, y: 1}
       data:
         first:
           name: _WavesTex
@@ -255,10 +255,6 @@ Material:
         second: {r: 1, g: 1, b: 0, a: 0}
       data:
         first:
-          name: _BumpMap_ST
-        second: {r: 1, g: 1, b: 0, a: 0}
-      data:
-        first:
           name: _Displacement
         second: {r: 6.6371665, g: 20.3539829, b: -1, a: -.681415975}
       data:
@@ -267,8 +263,8 @@ Material:
         second: {r: 1, g: 1, b: .100000001, a: .100000001}
       data:
         first:
-          name: _SpecularColor
-        second: {r: .917910457, g: .917910457, b: .917910457, a: 1}
+          name: _BumpMap_ST
+        second: {r: 1, g: 1, b: 0, a: 0}
       data:
         first:
           name: _RefrColor
@@ -297,6 +293,22 @@ Material:
         first:
           name: _RefractionTex_ST
         second: {r: 1, g: 1, b: 0, a: 0}
+      data:
+        first:
+          name: _ReflectiveColorCube_ST
+        second: {r: 1, g: 1, b: 0, a: 0}
+      data:
+        first:
+          name: _WaveOffset
+        second: {r: 1, g: 1, b: -.00999999978, a: -.00999999978}
+      data:
+        first:
+          name: _WaveScale4
+        second: {r: .100000001, g: .100000001, b: .00999999978, a: .00999999978}
+      data:
+        first:
+          name: _SpecularColor
+        second: {r: .917910457, g: .917910457, b: .917910457, a: 1}
       data:
         first:
           name: _DistortParams
@@ -361,18 +373,6 @@ Material:
         first:
           name: _GDirectionCD
         second: {r: .70338881, g: -.679999888, b: .717573524, a: -.200000003}
-      data:
-        first:
-          name: _ReflectiveColorCube_ST
-        second: {r: 1, g: 1, b: 0, a: 0}
-      data:
-        first:
-          name: _WaveScale4
-        second: {r: .100000001, g: .100000001, b: .00999999978, a: .00999999978}
-      data:
-        first:
-          name: _WaveOffset
-        second: {r: 1, g: 1, b: -.00999999978, a: -.00999999978}
       data:
         first:
           name: _DepthColor
