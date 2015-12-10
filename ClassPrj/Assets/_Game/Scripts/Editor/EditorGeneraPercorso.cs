@@ -17,25 +17,13 @@ public class EditorGeneraPercorso : Editor
 
     private void OnSceneGUI()
     {
+        //MODIFICATO USANDO GLI ITWEEN (Si trovano nel GestorePercorso )
+
         for (int i = 1; i < me.transform.childCount; i++)
         {
-            me.transform.GetChild(i - 1).name = " Nodo" + (i ); //queste 2 linee fanno in modo che se cambio ordine dei nodi la prox volta che seleziono
-            me.transform.GetChild(i).name = " Nodo" + (i +1);  // il percorso lui mi riordina i nomi correttamente
-            // Modifica Per Cambiare colori della texture
-            Texture2D text= (Texture2D)ResourceHelper.Icon2;
-            Color tmpColor = me.colore;
-            for (int y = 0; y < text.height; y++)
-            {
-                for (int x = 0; x < text.width; x++)
-                {
-                    text.SetPixel(x, y, tmpColor);
+            me.transform.GetChild(i - 1).name = " Nodo" + (i); //queste 2 linee fanno in modo che se cambio ordine dei nodi la prox volta che seleziono
+            me.transform.GetChild(i).name = " Nodo" + (i + 1);  // il percorso lui mi riordina i nomi correttamente  
 
-                }
-            }
-            text.Apply();
-            Handles.DrawAAPolyLine(text, HandleUtility.GetHandleSize(me.transform.GetChild(i - 1).position), me.transform.GetChild(i - 1).position, me.transform.GetChild(i).position);
-            //fine Modifica
-            //Originale==>   Handles.DrawAAPolyLine((Texture2D)ResourceHelper.Icon2, HandleUtility.GetHandleSize(me.transform.GetChild(i - 1).position), me.transform.GetChild(i-1).position,me.transform.GetChild(i).position);
         }
         Event e = Event.current;
         Vector2 mousePos = e.mousePosition;
@@ -47,15 +35,12 @@ public class EditorGeneraPercorso : Editor
                 GameObject nuovo = new GameObject("Nuovo Nodo");
                 nuovo.transform.position = hit.point;
                 nuovo.transform.parent = me.transform;
-          //      me.Percorso.Add(nuovo.transform);
                 var utility = typeof(EditorGUIUtility);
                 var impostaIcona = utility.GetMethod("SetIconForObject", BindingFlags.NonPublic | BindingFlags.Static);
                 impostaIcona.Invoke(null, new object[] { nuovo, ResourceHelper.Icon1 });
                 e.Use();
 
             }
-
-
 
         }
     }

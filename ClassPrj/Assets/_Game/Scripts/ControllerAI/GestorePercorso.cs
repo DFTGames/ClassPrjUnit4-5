@@ -53,10 +53,10 @@ public class GestorePercorso : MonoBehaviour
             return;
         if (transform.childCount > 0)
         {
-
+            Transform[] path = new Transform[transform.childCount];
             for (int i = 0; i < transform.childCount; i++)
             {
-
+                path[i] = transform.GetChild(i);
                 Ray raggio = new Ray(new Vector3(this[i].transform.position.x, 1000f, this[i].transform.position.z), Vector3.down);
                 if (Physics.Raycast(raggio, out hitinfo))
                 {
@@ -65,6 +65,10 @@ public class GestorePercorso : MonoBehaviour
                 }      
 
             }
+            
+            if (transform.childCount>1)
+            iTween.DrawPathGizmos(path, colore);
+           // iTween.DrawLineHandles(path, colore);
         }
 
     }
