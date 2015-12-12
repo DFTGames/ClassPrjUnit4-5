@@ -5,10 +5,9 @@ using System.Collections.Generic;
 public enum TipidiMaga
 {
     maschile,
-    Femminile
+    femminile
 }
-//SI
-// Come diceva Pino per ogni razza o tipo maschio femmina 
+
 public enum Proprieta
 {
     Character,
@@ -23,23 +22,22 @@ public enum Proprieta
 [System.Serializable]
 public class caratteristichePersonaggio : ScriptableObject
 {
-    public GameObject character;
-    public string[] schieraTipiR = new string[Enum.GetValues(typeof(TipidiMaga)).Length];
+    public  GameObject character_M;
+    public GameObject character_F;
+
+    public string Maschio = "Maschio";
+    public string Femmine = "Femmine";
     public string[] schieraProprietaC = new string[Enum.GetValues(typeof(Proprieta)).Length];
-    public valoriPropieta[] matriceProprieta = new valoriPropieta[Enum.GetValues(typeof(TipidiMaga)).Length];
-    public List<String> classePersonaggio;
+    public List<ClasseValorPersonaggio> matriceProprietaM;
+    public List<ClasseValorPersonaggio> matriceProprietaF;
+    public List<String> classePersonaggio=new List<string>();
 }
 
-[System.Serializable]
-public class valoriPropieta
-{
-    public ClasseValorPersonaggio[] elementoProprieta = new ClasseValorPersonaggio[Enum.GetValues(typeof(Proprieta)).Length];
-}
 
 [System.Serializable]
 public class ClasseValorPersonaggio
 {
-    public string nome;
+    public string nome="nessun nome";
     public float Vita = 10f;
     public int Livello = 0;
     public float Mana = 10f;
