@@ -12,8 +12,8 @@ namespace DFTGames.Tools.EditorTools
         private Color OriginalBg = GUI.backgroundColor;
         private Color OriginalCont = GUI.contentColor;
         private Color OriginalColor = GUI.color;
-        private const string STR_PercorsoConfig2 = "PercorsoConfigurazione";
-        private const string STR_DatabaseDiGioco2 = "/dataBaseDiGioco.asset";
+        private const string STR_PercorsoConfig = "PercorsoConfigurazione";
+        private const string STR_DatabaseDiGioco = "/dataBaseDiGioco.asset";
         private static bool preferenzeCaricate = false;
         private static string percorso;
         private Vector2 posizioneScroll;
@@ -28,7 +28,7 @@ namespace DFTGames.Tools.EditorTools
         {
             if (!preferenzeCaricate)
             {
-                percorso = EditorPrefs.GetString(STR_PercorsoConfig2);
+                percorso = EditorPrefs.GetString(STR_PercorsoConfig);
                 preferenzeCaricate = true;
             }
             GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
@@ -39,7 +39,7 @@ namespace DFTGames.Tools.EditorTools
                 if (tmpPercosro != string.Empty)
                 {
                     percorso = "Assets" + tmpPercosro.Substring(Application.dataPath.Length);
-                    EditorPrefs.SetString(STR_PercorsoConfig2, percorso);
+                    EditorPrefs.SetString(STR_PercorsoConfig, percorso);
                 }
             }
             GUILayout.Label(percorso);
@@ -56,10 +56,10 @@ namespace DFTGames.Tools.EditorTools
 
         private void OnEnable()
         {
-            if (EditorPrefs.HasKey(STR_PercorsoConfig2))
+            if (EditorPrefs.HasKey(STR_PercorsoConfig))
             {
-                percorso = EditorPrefs.GetString(STR_PercorsoConfig2);
-                gameData = AssetDatabase.LoadAssetAtPath<GameData>(percorso + STR_DatabaseDiGioco2);
+                percorso = EditorPrefs.GetString(STR_PercorsoConfig);
+                gameData = AssetDatabase.LoadAssetAtPath<GameData>(percorso + STR_DatabaseDiGioco);
             }
         }
 
@@ -87,13 +87,13 @@ namespace DFTGames.Tools.EditorTools
                         if (tmpPercosro != string.Empty)
                         {
                             percorso = "Assets" + tmpPercosro.Substring(Application.dataPath.Length);
-                            EditorPrefs.SetString(STR_PercorsoConfig2, percorso);
+                            EditorPrefs.SetString(STR_PercorsoConfig, percorso);
                         }
                     }
                     if (percorso != string.Empty)
                     {
                         gameData = ScriptableObject.CreateInstance<GameData>();
-                        AssetDatabase.CreateAsset(gameData, percorso + STR_DatabaseDiGioco2);
+                        AssetDatabase.CreateAsset(gameData, percorso + STR_DatabaseDiGioco);
                         AssetDatabase.Refresh();
                         ProjectWindowUtil.ShowCreatedAsset(gameData);
                     }
@@ -137,12 +137,12 @@ namespace DFTGames.Tools.EditorTools
                 int vecchio = gameData.tagEssere.Length;
                 int differenzaLunghezze = UnityEditorInternal.InternalEditorUtility.tags.Length - 5 - gameData.tagEssere.Length;
                 Array.Resize<string>(ref gameData.tagEssere, UnityEditorInternal.InternalEditorUtility.tags.Length - 5);
-                Array.Resize<classeAmicizie>(ref gameData.matriceAmicizie, UnityEditorInternal.InternalEditorUtility.tags.Length - 5);
+                Array.Resize<classiAmicizie>(ref gameData.matriceAmicizie, UnityEditorInternal.InternalEditorUtility.tags.Length - 5);
 
                 for (int i = 0; i < gameData.tagEssere.Length; i++)
                 {
                     if (gameData.matriceAmicizie[i] == null)
-                        gameData.matriceAmicizie[i] = new classeAmicizie();
+                        gameData.matriceAmicizie[i] = new classiAmicizie();
 
                     Array.Resize<Amicizie>(ref gameData.matriceAmicizie[i].elementoAmicizia, UnityEditorInternal.InternalEditorUtility.tags.Length - 5);
                 }
