@@ -7,6 +7,8 @@ TagManager:
   - player
   - goblin
   - Fire
+  - GruppoPercorsi
+  - New Tag
   layers:
   - Default
   - TransparentFX
