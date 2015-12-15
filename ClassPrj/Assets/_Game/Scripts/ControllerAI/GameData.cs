@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
@@ -15,6 +16,7 @@ public class GameData : ScriptableObject
 {
     public string[] tagEssere = new string[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
     public classiAmicizie[] matriceAmicizie = new classiAmicizie[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
+    public int[] indexPercorsi; //index riferimento al nome percorso (vedi EditorPercorsiClass) 
 }
 [System.Serializable]
 public class classiAmicizie
