@@ -68,12 +68,19 @@ namespace DFTGames.Tools.EditorTools
         {
             if (gameData != null)
             {
-                
-                GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);  
+
+                GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
                 GUILayout.Label("Editor by DFT Students", GUI.skin.GetStyle("Label"));
                 GUILayout.EndHorizontal();
                 EditorGUILayout.Separator();
                 GestisciDiplomazia();
+                //Inizializzazione e set valori default=-1 index percorso
+                if (gameData.indexPercorsi == null)
+                {
+                    gameData.indexPercorsi = new int[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
+                    for (int i = 0; i < gameData.tagEssere.Length; i++)
+                        gameData.indexPercorsi[i] = -1;
+                }
             }
             else
             {
@@ -130,7 +137,7 @@ namespace DFTGames.Tools.EditorTools
             GUILayout.BeginVertical(EditorStyles.objectFieldThumb);
             GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
             GUILayout.Label(new GUIContent("Matrice Amicizie"), stileEtichetta, GUILayout.Width(130));
-            
+
             //codice necessario in caso di aggiunta o rimozione di un tag:
             if (gameData.tagEssere.Length != UnityEditorInternal.InternalEditorUtility.tags.Length - 5)
             {
@@ -144,6 +151,7 @@ namespace DFTGames.Tools.EditorTools
                     if (gameData.matriceAmicizie[i] == null)
                         gameData.matriceAmicizie[i] = new classiAmicizie();
 
+
                     Array.Resize<Amicizie>(ref gameData.matriceAmicizie[i].elementoAmicizia, UnityEditorInternal.InternalEditorUtility.tags.Length - 5);
                 }
 
@@ -152,7 +160,7 @@ namespace DFTGames.Tools.EditorTools
                     for (int i = vecchio; i < UnityEditorInternal.InternalEditorUtility.tags.Length - 5; i++)
                     {
                         gameData.tagEssere[i] = UnityEditorInternal.InternalEditorUtility.tags[i + 5];
-
+                        gameData.indexPercorsi[i] = -1; //provvisorio finche si usano i tag
                         for (int j = 0; j < UnityEditorInternal.InternalEditorUtility.tags.Length - 5; j++)
                         {
                             gameData.matriceAmicizie[i].elementoAmicizia[j] = Amicizie.Neutro;
@@ -162,7 +170,7 @@ namespace DFTGames.Tools.EditorTools
                     }
                 }
             }
-            
+
             //codice necessario per l'aggiornamento dei dati in caso qualcosa venga modificato
             for (int i = 0; i < gameData.tagEssere.Length; i++)
             {
@@ -192,7 +200,7 @@ namespace DFTGames.Tools.EditorTools
                             tmp = icon2;
                             break;
                         default:
-                            tmp = icon3;    
+                            tmp = icon3;
                             break;
                     }
                     //qui mostra il bottone con la texture recuperata in base al valore dell'Enum della matriceAmicizie
