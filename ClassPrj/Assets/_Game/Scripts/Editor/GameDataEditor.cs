@@ -8,12 +8,13 @@ namespace DFTGames.Tools.EditorTools
     public class GameDataEditor : EditorWindow
     {
         public GameData gameData;
+        public const string STR_PercorsoConfig = "PercorsoConfigurazione";
+        public const string STR_DatabaseDiGioco = "/dataBaseDiGioco.asset";
 
         private Color OriginalBg = GUI.backgroundColor;
         private Color OriginalCont = GUI.contentColor;
         private Color OriginalColor = GUI.color;
-        private const string STR_PercorsoConfig = "PercorsoConfigurazione";
-        private const string STR_DatabaseDiGioco = "/dataBaseDiGioco.asset";
+      
         private static bool preferenzeCaricate = false;
         private static string percorso;
         private Vector2 posizioneScroll;
