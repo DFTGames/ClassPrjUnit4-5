@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
 /*
 Descrizione della classe "GeneraPercorso" nel Gdd
 
@@ -47,6 +48,7 @@ public class GestorePercorso : MonoBehaviour
     private Vector3 nuovaPosizione;
     public float offsetSpostaOggetto = 0.5f;
 
+  
     void OnDrawGizmos()
     {
         if (Application.isPlaying)

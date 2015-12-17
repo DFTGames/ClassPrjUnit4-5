@@ -7,6 +7,6 @@ using System.Collections.Generic;
 
 public class PercorsiClass : ScriptableObject
 {
-    public List<string> nomePercorsi = new List<string>();
-  
+    public Dictionary<int, string> nomePercorsi = new Dictionary<int, string>();
+
 }

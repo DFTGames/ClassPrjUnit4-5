@@ -8,8 +8,6 @@ public class PercorsoWizard : ScriptableWizard
 
     public GameObject padrePercorso;
     public Color colorePadre=Color.black;
-
-    private int contaPercorsi = 0;
    
 
     [MenuItem("Window/AggiungiPercorso Wizard")]
@@ -38,8 +36,7 @@ public class PercorsoWizard : ScriptableWizard
 
     void OnWizardOtherButton()
     {
-        contaPercorsi++;
-        GameObject tmpGbj = new GameObject("Percorso_" + contaPercorsi.ToString());
+        GameObject tmpGbj = new GameObject("Percorso");
         padrePercorso = tmpGbj;
         Selection.activeTransform = padrePercorso.transform;
         tmpGbj.transform.position = Vector3.zero;
