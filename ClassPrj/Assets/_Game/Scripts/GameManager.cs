@@ -1,31 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-
- 
     public Text nomeText;
     public Text valoreVitaText;
     public Text valoreAttaccoText;
     public Text valoreTipoText;
     public Text valoreDifesaText;
     public Slider sliderVita;
-    
 
     private static GameManager me;
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
     private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
     private bool fatto = false;
     private float vitaAttuale;
-    private float vitaMassima=0f;
+    private float vitaMassima = 0f;
 
     public static string tagEssere = null;
     private string tagDellAltro = null;
-    float ritardo = 0f;
+    private float ritardo = 0f;
     private RaycastHit hit;
     private Collider precedente = null;
     private Collider attuale = null;
@@ -40,19 +35,15 @@ public class GameManager : MonoBehaviour
         set
         {
             vitaAttuale = Mathf.Clamp(value, 0, vitaMassima);
-          
         }
     }
 
-    void Start()
+    private void Start()
     {
         me = this;
 
-       
-
         //carico diplomazia
         datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
-
 
         //carico dati personaggio
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
@@ -65,42 +56,37 @@ public class GameManager : MonoBehaviour
         valoreAttaccoText.text = datiPersonaggio.Dati.Attacco.ToString();
         valoreDifesaText.text = datiPersonaggio.Dati.difesa.ToString();
         sliderVita.minValue = 0f;
-        sliderVita.maxValue= vitaMassima;
+        sliderVita.maxValue = vitaMassima;
         sliderVita.value = datiPersonaggio.Dati.Vita;
         VitaAttuale = datiPersonaggio.Dati.Vita;
-     
-        }
+    }
 
-  
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-       if (datiPersonaggio.Dati.Vita != vitaAttuale)
+        if (datiPersonaggio.Dati.Vita != vitaAttuale)
         {
-           
             valoreVitaText.text = VitaAttuale.ToString();
-            sliderVita.value = VitaAttuale;                    
+            sliderVita.value = VitaAttuale;
             datiPersonaggio.Dati.Vita = VitaAttuale;
             datiPersonaggio.Salva();
         }
-        
+
         if (tagEssere != null)
         {
-            ritardo +=Time.deltaTime;
+            ritardo += Time.deltaTime;
             if (ritardo > 3f)
             {
                 ritardo = 0f;
                 tagEssere = null;
-            }            
+            }
         }
 
-           if (Input.GetMouseButtonDown(0))
-           {
+        if (Input.GetMouseButtonDown(0))
+        {
             //controllo se il raggio colpisce qualsce qualcosa e non colpisce qualcosa che riguarda il canvas:
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit) && !EventSystem.current.IsPointerOverGameObject())
             {
-
-               
                 attuale = hit.collider;
                 tagDellAltro = hit.collider.tag;
                 if (precedente != attuale)
@@ -111,16 +97,9 @@ public class GameManager : MonoBehaviour
                 }
                 if (attuale.transform.FindChild("quadDiSelezione"))
                     attuale.transform.FindChild("quadDiSelezione").gameObject.SetActive(true);
-            
-               
-
-           } 
-           }
-
-
+            }
+        }
     }
-
-
 
     public void BottoneDichiaroGuerra()
     {
@@ -134,21 +113,21 @@ public class GameManager : MonoBehaviour
                     {
                         if (datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] != Amicizie.Nemico)
                         {
-                            datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] =Amicizie.Nemico;
+                            datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] = Amicizie.Nemico;
                             datiDiplomazia.Dati.matriceAmicizie[j].elementoAmicizia[i] = Amicizie.Nemico;
 
                             datiDiplomazia.Salva();
-                            
+
                             tagEssere = tagDellAltro;
-                         
+
                             break;
                         }
                     }
-                  
                 }
             }
         }
     }
+
     public void BottoneMiAlleo()
     {
         for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
@@ -168,11 +147,9 @@ public class GameManager : MonoBehaviour
 
                             tagEssere = tagDellAltro;
 
-                            
                             break;
                         }
                     }
-
                 }
             }
         }
@@ -181,7 +158,6 @@ public class GameManager : MonoBehaviour
     public void BottoneRiceviDanno()
     {
         VitaAttuale -= 1f;
-        
     }
 
     public void BottonePozioneVita()
