@@ -24,34 +24,44 @@ MonoBehaviour:
   - Attacco
   - Difesa
   matriceProprieta:
-  - nomeM: Afterburner
-    nomeF: Bandit_Supply_1A(Gr)
+  - nomeM: Maga
+    nomeF: Maga
     classe: mago
-    Vita: 10
-    Livello: 0
-    Mana: 10
+    Vita: 100
+    Livello: 30
+    Mana: 1
     Xp: 0
-    Attacco: 10
-    difesa: 20
-  - nomeM: LOD3_unwrapped@Standing_2H_Magic_Area_Attack_02
-    nomeF: Bandit_Supply_1C(Gr)
+    Attacco: 25
+    difesa: 7
+  - nomeM: Bandit_Supply_1A(Gr)
+    nomeF: Goblin_Ranger_R3
     classe: guerriero
-    Vita: 500
-    Livello: 0
-    Mana: 200
+    Vita: 50
+    Livello: 20
+    Mana: 1
     Xp: 0
     Attacco: 10
-    difesa: 20
-  - nomeM: 3rd Person Controller
-    nomeF: Arrow_01_R3
+    difesa: 4
+  - nomeM: Bandit_Supply_1A(Gr)
+    nomeF: 3rd Person Controller
+    classe: arciere
+    Vita: 30
+    Livello: 60
+    Mana: 1
+    Xp: 0
+    Attacco: 2
+    difesa: 9
+  - nomeM: Afterburner
+    nomeF: Bandit_Supply_1D(Gr)
     classe: guaritore
-    Vita: 10
-    Livello: 0
-    Mana: 10
+    Vita: 80
+    Livello: 80
+    Mana: 1
     Xp: 0
-    Attacco: 10
-    difesa: 20
+    Attacco: 14
+    difesa: 12
   classePersonaggio:
   - mago
   - guerriero
+  - arciere
   - guaritore
