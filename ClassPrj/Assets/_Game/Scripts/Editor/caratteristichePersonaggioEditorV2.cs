@@ -131,7 +131,7 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
         if (GUILayout.Button("+", GUILayout.Width(100f)))
         {
             
-            string tmp = _caratteristichePersonaggioV2.classePersonaggio.Count.ToString();
+            string tmp = "nessuna classe";
             _caratteristichePersonaggioV2.classePersonaggio.Add(tmp);
             ClasseValorPersonaggioV2 tmpC = new ClasseValorPersonaggioV2();
             ClasseValorPersonaggioV2 tmpF= new ClasseValorPersonaggioV2();
@@ -179,9 +179,9 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
                 stringsProperty_F.RemoveAt(i);
             }
             if(_caratteristichePersonaggioV2.classePersonaggio[i] == "nessuna classe")
-                 GUILayout.Label(new GUIContent("Classe_" + i.ToString()), stileEtichetta, GUILayout.Width(150));
+                 GUILayout.Label(new GUIContent(_caratteristichePersonaggioV2.classePersonaggio[i]), stileEtichetta, GUILayout.Width(150));
             else 
-                 GUILayout.Label(new GUIContent("Classe_" + _caratteristichePersonaggioV2.classePersonaggio[i]), stileEtichetta, GUILayout.Width(150));
+                 GUILayout.Label(new GUIContent(_caratteristichePersonaggioV2.classePersonaggio[i]), stileEtichetta, GUILayout.Width(150));
            
 
 
@@ -325,7 +325,7 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
     {
       
         for (int i = 0; i < _caratteristichePersonaggioV2.classePersonaggio.Count; i++)
-            _caratteristichePersonaggioV2.classePersonaggio[i] = i.ToString();
+            _caratteristichePersonaggioV2.classePersonaggio[i] = "nessuna classe";
 
         for (int r = 0; r < _caratteristichePersonaggioV2.classePersonaggio.Count; r++)
         {

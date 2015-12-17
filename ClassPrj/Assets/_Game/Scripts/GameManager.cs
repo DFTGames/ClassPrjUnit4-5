@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -95,22 +96,22 @@ public class GameManager : MonoBehaviour
 
            if (Input.GetMouseButtonDown(0))
            {
-             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
-           {
+            //controllo se il raggio colpisce qualsce qualcosa e non colpisce qualcosa che riguarda il canvas:
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit) && !EventSystem.current.IsPointerOverGameObject())
+            {
 
-              
-                   Debug.Log(hit.collider.tag);
-                   attuale = hit.collider;
-                   tagDellAltro = hit.collider.tag;
-                   if (precedente != attuale)
-                   {
-                       if (precedente != null && precedente.transform.FindChild("quadDiSelezione") && precedente.transform.FindChild("quadDiSelezione").gameObject.activeInHierarchy)
-                           precedente.transform.FindChild("quadDiSelezione").gameObject.SetActive(false);
-                       precedente = attuale;
-                   }
-                   if (attuale.transform.FindChild("quadDiSelezione"))
-                       attuale.transform.FindChild("quadDiSelezione").gameObject.SetActive(true);
-
+               
+                attuale = hit.collider;
+                tagDellAltro = hit.collider.tag;
+                if (precedente != attuale)
+                {
+                    if (precedente != null && precedente.transform.FindChild("quadDiSelezione") && precedente.transform.FindChild("quadDiSelezione").gameObject.activeInHierarchy)
+                        precedente.transform.FindChild("quadDiSelezione").gameObject.SetActive(false);
+                    precedente = attuale;
+                }
+                if (attuale.transform.FindChild("quadDiSelezione"))
+                    attuale.transform.FindChild("quadDiSelezione").gameObject.SetActive(true);
+            
                
 
            } 
