@@ -44,6 +44,7 @@ public class Vista : MonoBehaviour
 
     private float distanzaMinore = 0f;
     private List<Transform> tmpDaELiminare;
+    private bool amicizieCambiate = false;
 
     private void Start()
     {
@@ -51,10 +52,9 @@ public class Vista : MonoBehaviour
         mioCervello = GetComponent<FSM>();
         colliderSfera = mioCervello.ColliderSferaVista;
         mioCervello.ObiettivoNemico = null;
-
         alphaGradMezzi = (mioCervello.alphaGrad) * 0.5f;
-        Nemici = new List<string>(GetComponent<VisualizzaAmicizie>().nemici);
         tmpDaELiminare = new List<Transform>();
+        Nemici = new List<string>(GetComponent<VisualizzaAmicizie>().nemici);
     }
 
     private void OnTriggerEnter(Collider coll)
@@ -69,6 +69,30 @@ public class Vista : MonoBehaviour
             listaNemiciDentroNonVisti.Remove(coll.transform);
         else if (listaNemiciVisti.Contains(coll.transform))
             listaNemiciVisti.Remove(coll.transform);
+    }
+
+    private void OnTriggerStay(Collider coll)
+    {
+        if (Nemici.Contains(coll.tag) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
+            listaNemiciDentroNonVisti.Add(coll.transform);
+
+        if (GameManager.tagEssere != null && gameObject.CompareTag(GameManager.tagEssere))
+        {
+            Nemici = new List<string>(GetComponent<VisualizzaAmicizie>().nemici);
+
+            if (Nemici.Contains(coll.tag) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
+
+                listaNemiciDentroNonVisti.Add(coll.transform);
+            else if (!Nemici.Contains(coll.tag))
+            {
+                if (listaNemiciVisti.Contains(coll.transform))
+
+                    listaNemiciVisti.Remove(coll.transform);
+                else if (listaNemiciDentroNonVisti.Contains(coll.transform))
+
+                    listaNemiciDentroNonVisti.Remove(coll.transform);
+            }
+        }
     }
 
     private void Update()

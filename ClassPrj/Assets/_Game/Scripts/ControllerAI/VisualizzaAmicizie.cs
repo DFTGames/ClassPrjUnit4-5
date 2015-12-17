@@ -23,16 +23,16 @@ public class VisualizzaAmicizie : MonoBehaviour
       
         Visualizza();
     }
+  
 
     void Update()
     {
-        if (GameManager.tagEssere==gameObject.tag)
-        {            
+      if(GameManager.tagEssere!=null && gameObject.CompareTag(GameManager.tagEssere))
+        {
             Visualizza();
-           
         }
     }
-
+    
     private void Visualizza()
     {
         datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);

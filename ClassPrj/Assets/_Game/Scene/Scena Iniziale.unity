@@ -334,7 +334,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 92009375}
-  - 114: {fileID: 92009376}
   - 114: {fileID: 92009377}
   m_Layer: 0
   m_Name: Game Manager
@@ -355,41 +354,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
---- !u!114 &92009376
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 92009374}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 836d04e767fd5e646ba84838f2e8248f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AnimatoreMenu: {fileID: 474120813}
-  AltrieMenu1: {fileID: 1039144101}
-  AltrieMenu2: {fileID: 1759262904}
-  BottoneCaricaOff: {fileID: 118241487}
-  EliminaPartita: {fileID: 716922965}
-  CasellaTipo: {fileID: 200291853}
-  ValoreVita: {fileID: 1443053725}
-  ValoreAttacco: {fileID: 1129036780}
-  ValoreDifesa: {fileID: 1621348772}
-  TestoNome: {fileID: 1978404885}
-  Errore: {fileID: 1086616455}
-  ErroreCaricamento: {fileID: 1759243120}
-  VitaAttuale: {fileID: 1081027606}
-  AttaccoAtuale: {fileID: 1768783779}
-  DifesaAttuale: {fileID: 874491714}
-  dataBaseIniziale: {fileID: 0}
-  ElencoCartelle: {fileID: 1559976459}
-  indiceButton: 0
-  VitaMagaRossa: 5
-  AttaccoMagaRossa: 5
-  DifesaMagaRossa: 2
-  VitaMagaVerde: 10
-  AttaccoMagaVerde: 3
-  DifesaMagaVerde: 2
 --- !u!114 &92009377
 MonoBehaviour:
   m_ObjectHideFlags: 0
