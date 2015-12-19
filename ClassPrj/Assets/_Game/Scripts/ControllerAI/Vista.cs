@@ -54,12 +54,12 @@ public class Vista : MonoBehaviour
         mioCervello.ObiettivoNemico = null;
         alphaGradMezzi = (mioCervello.alphaGrad) * 0.5f;
         tmpDaELiminare = new List<Transform>();
-        Nemici = new List<string>(GetComponent<VisualizzaAmicizie>().nemici);
+       
     }
 
     private void OnTriggerEnter(Collider coll)
     {
-        if (Nemici.Contains(coll.tag))
+        if (GameManager.dizionarioDiNemici[gameObject.tag].Contains(coll.tag))
             listaNemiciDentroNonVisti.Add(coll.transform);
     }
 
@@ -73,26 +73,14 @@ public class Vista : MonoBehaviour
 
     private void OnTriggerStay(Collider coll)
     {
-        if (Nemici.Contains(coll.tag) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
+        if (GameManager.dizionarioDiNemici[gameObject.tag].Contains(coll.tag) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
             listaNemiciDentroNonVisti.Add(coll.transform);
 
-        if (GameManager.tagEssere != null && gameObject.CompareTag(GameManager.tagEssere))
-        {
-            Nemici = new List<string>(GetComponent<VisualizzaAmicizie>().nemici);
+        else if (listaNemiciVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[gameObject.tag].Contains(coll.tag))
+            listaNemiciVisti.Remove(coll.transform);
 
-            if (Nemici.Contains(coll.tag) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
-
-                listaNemiciDentroNonVisti.Add(coll.transform);
-            else if (!Nemici.Contains(coll.tag))
-            {
-                if (listaNemiciVisti.Contains(coll.transform))
-
-                    listaNemiciVisti.Remove(coll.transform);
-                else if (listaNemiciDentroNonVisti.Contains(coll.transform))
-
-                    listaNemiciDentroNonVisti.Remove(coll.transform);
-            }
-        }
+        else if (listaNemiciDentroNonVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[gameObject.tag].Contains(coll.tag))
+            listaNemiciDentroNonVisti.Remove(coll.transform);
     }
 
     private void Update()

@@ -32,14 +32,7 @@ public class ManagerIniziale : MonoBehaviour
 
     private int indiceButton = 0;
     private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
-    //per il momento
-    /*  private float VitaMagaRossa = 5f;
-      private float AttaccoMagaRossa = 5f;
-      private float DifesaMagaRossa = 2f;
-
-      private float VitaMagaVerde = 10f;
-      private float AttaccoMagaVerde = 3f;
-      private float DifesaMagaVerde = 2f;*/
+   
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
     private static ManagerIniziale Me;
 
