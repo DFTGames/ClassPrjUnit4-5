@@ -41,7 +41,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 6
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_LightmapsMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -66,7 +66,8 @@ LightmapSettings:
     m_FinalGather: 0
     m_FinalGatherRayCount: 1024
     m_ReflectionCompression: 2
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000001, guid: c4fad3d6cd68cd04c97c6fbc2452bba5,
+    type: 2}
   m_RuntimeCPUUsage: 25
 --- !u!196 &4
 NavMeshSettings:
@@ -1698,81 +1699,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 579349273}
---- !u!1 &607713623
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 607713624}
-  - 33: {fileID: 607713627}
-  - 64: {fileID: 607713626}
-  - 23: {fileID: 607713625}
-  m_Layer: 0
-  m_Name: quadDiSelezione
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &607713624
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 607713623}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: 0.03, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1805365727}
-  m_RootOrder: 4
---- !u!23 &607713625
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 607713623}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_Materials:
-  - {fileID: 2100000, guid: 2d64e9df6895cd149a403dceabe5a1f6, type: 2}
-  m_SubsetIndices: 
-  m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
-  m_ReflectionProbeUsage: 1
-  m_ProbeAnchor: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
---- !u!64 &607713626
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 607713623}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Convex: 1
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
---- !u!33 &607713627
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 607713623}
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &690395850
 GameObject:
   m_ObjectHideFlags: 0
@@ -3303,10 +3229,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
   m_IsPrefabParent: 0
---- !u!4 &1805365727 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 484638, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
-  m_PrefabInternal: {fileID: 1805365726}
 --- !u!1 &1816885460
 GameObject:
   m_ObjectHideFlags: 0
@@ -3696,11 +3618,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 11471518, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
+    - target: {fileID: 0}
       propertyPath: nemici.Array.size
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 11471518, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
+    - target: {fileID: 0}
       propertyPath: indifferenti.Array.size
       value: 6
       objectReference: {fileID: 0}
@@ -3744,35 +3666,40 @@ Prefab:
       propertyPath: m_Name
       value: Goblin_Ranger_R3 (1)
       objectReference: {fileID: 0}
-    - target: {fileID: 11471518, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
+    - target: {fileID: 0}
       propertyPath: nemici.Array.data[0]
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 11471518, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
+    - target: {fileID: 0}
       propertyPath: indifferenti.Array.data[0]
       value: GameController
       objectReference: {fileID: 0}
-    - target: {fileID: 11471518, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
+    - target: {fileID: 0}
       propertyPath: indifferenti.Array.data[1]
       value: player
       objectReference: {fileID: 0}
-    - target: {fileID: 11471518, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
+    - target: {fileID: 0}
       propertyPath: indifferenti.Array.data[2]
       value: goblin
       objectReference: {fileID: 0}
-    - target: {fileID: 11471518, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
+    - target: {fileID: 0}
       propertyPath: indifferenti.Array.data[3]
       value: Fire
       objectReference: {fileID: 0}
-    - target: {fileID: 11471518, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
+    - target: {fileID: 0}
       propertyPath: indifferenti.Array.data[4]
       value: GruppoPercorsi
       objectReference: {fileID: 0}
-    - target: {fileID: 11471518, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
+    - target: {fileID: 0}
       propertyPath: indifferenti.Array.data[5]
       value: New Tag
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 479000, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 90b0e344077c02443a718aee3f4630f3, type: 2}
   m_IsPrefabParent: 0
 --- !u!4 &1996924947 stripped

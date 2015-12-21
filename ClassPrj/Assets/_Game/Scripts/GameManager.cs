@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -10,6 +11,10 @@ public class GameManager : MonoBehaviour
     public Text valoreTipoText;
     public Text valoreDifesaText;
     public Slider sliderVita;
+    public static Dictionary<string, List<string>> dizionarioDiNemici = new Dictionary<string, List<string>>();
+    public static Dictionary<string, List<string>> dizionarioDiAmici = new Dictionary<string, List<string>>();
+    public static Dictionary<string, List<string>> dizionarioDiIndifferenti = new Dictionary<string, List<string>>();
+
 
     private static GameManager me;
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
@@ -17,6 +22,7 @@ public class GameManager : MonoBehaviour
     private bool fatto = false;
     private float vitaAttuale;
     private float vitaMassima = 0f;
+
 
     public static string tagEssere = null;
     private string tagDellAltro = null;
@@ -59,6 +65,59 @@ public class GameManager : MonoBehaviour
         sliderVita.maxValue = vitaMassima;
         sliderVita.value = datiPersonaggio.Dati.Vita;
         VitaAttuale = datiPersonaggio.Dati.Vita;
+
+        RecuperaDizionariDiplomazia();
+    }
+
+    private void RecuperaDizionariDiplomazia()
+    {
+        dizionarioDiNemici.Clear();
+        dizionarioDiIndifferenti.Clear();
+        dizionarioDiAmici.Clear();
+        List<string> tmpNemici = null;
+        List<string> tmpAmici = null;
+        List<string> tmpIndifferenti = null;
+        for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
+        {
+            tmpNemici = new List<string>();
+            tmpIndifferenti = new List<string>();
+            tmpAmici = new List<string>();
+            for (int j = 0; j < datiDiplomazia.Dati.tipoEssere.Length; j++)
+            {
+                switch (datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j])
+                {
+                    case Amicizie.Neutro:
+                        if (!tmpIndifferenti.Contains(datiDiplomazia.Dati.tipoEssere[j]))
+                        {
+                            tmpIndifferenti.Add(datiDiplomazia.Dati.tipoEssere[j]);
+                        }
+                        break;
+
+                    case Amicizie.Alleato:
+                        if (!tmpAmici.Contains(datiDiplomazia.Dati.tipoEssere[j]))
+                        {
+                            tmpAmici.Add(datiDiplomazia.Dati.tipoEssere[j]);
+                        }
+                        break;
+
+                    case Amicizie.Nemico:
+                        if (!tmpNemici.Contains(datiDiplomazia.Dati.tipoEssere[j]))
+                        {
+                            tmpNemici.Add(datiDiplomazia.Dati.tipoEssere[j]);
+                        }
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+            if (!dizionarioDiNemici.ContainsKey(datiDiplomazia.Dati.tipoEssere[i]))
+                dizionarioDiNemici.Add(datiDiplomazia.Dati.tipoEssere[i], tmpNemici);
+            if (!dizionarioDiAmici.ContainsKey(datiDiplomazia.Dati.tipoEssere[i]))
+                dizionarioDiAmici.Add(datiDiplomazia.Dati.tipoEssere[i], tmpAmici);
+            if (!dizionarioDiIndifferenti.ContainsKey(datiDiplomazia.Dati.tipoEssere[i]))
+                dizionarioDiIndifferenti.Add(datiDiplomazia.Dati.tipoEssere[i], tmpIndifferenti);
+        }
     }
 
     // Update is called once per frame
@@ -126,6 +185,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        RecuperaDizionariDiplomazia();
     }
 
     public void BottoneMiAlleo()
@@ -153,6 +213,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        RecuperaDizionariDiplomazia();
     }
 
     public void BottoneRiceviDanno()
