@@ -11,27 +11,27 @@ namespace DFTGames.Tools.EditorTools
     public class EditorPercorsiClass : EditorWindow
     {
 
-        public PercorsiClass percorsi;
+        public static PercorsiClass percorsi;
         public GameData gameData1;
-        public string[] nomePercorsi;
+        public int[] indexPercorsi;
+        public static string[] nomePercorsi;
 
         public int contaPercorso;
 
         private Color OriginalBg = GUI.backgroundColor;
         private Color OriginalCont = GUI.contentColor;
         private Color OriginalColor = GUI.color;
-        private const string STR_PercorsoConfig2 = "PercorsoConfigurazione";  //Path memorizzazione del Percorso
-        private const string STR_DatabaseDiGioco2 = "/dataBasePercorso.asset";
+        public const string STR_PercorsoConfig2 = "PercorsoConfigurazione";  //Path memorizzazione del Percorso
+        public const string STR_DatabaseDiGioco2 = "/dataBasePercorso.asset";
 
         private static bool preferenzePercorsiCaricate = false;
         private static string pathPercorsi;
+        private bool resetIndexObject = false;
+
 
         public bool caricaMatricePercorsi;
-      
+
         private int indice = 1;
-        private bool controlloGameObject = false;
-
-
 
         [PreferenceItem("Percorsi")]
         private static void preferenzeDiGameGUI()
@@ -67,6 +67,7 @@ namespace DFTGames.Tools.EditorTools
 
         private void OnEnable()
         {
+            resetIndexObject = false;
             if (EditorPrefs.HasKey(STR_PercorsoConfig2))
             {
                 pathPercorsi = EditorPrefs.GetString(STR_PercorsoConfig2);
@@ -83,10 +84,28 @@ namespace DFTGames.Tools.EditorTools
 
         }
 
+        void OnDisable()            //controlla la lista percorsi con i percorsi e se non c'e assegnazione mette indexpercorso del oggetto a default(-1) 
+        {
+            if (!resetIndexObject) return;
+
+            GameObject tmpObj = GameObject.Find("PadrePercorso");
+
+            if (tmpObj != null)
+                for (int i = 0; i < tmpObj.transform.childCount; i++)
+                {
+                    Transform tmpPercorso = tmpObj.transform.GetChild(i);
+                    int tmpPercorsoIndex = tmpPercorso.GetComponent<GestorePercorso>().indexPercorso;
+
+                    if (tmpPercorsoIndex != -1 && !percorsi.indexPercorsi.Contains(tmpPercorsoIndex))
+                    {
+                        tmpPercorsoIndex = -1;
+                        tmpPercorso.name = "Percorso";
+                    }
+                }
+        }
+
         private void OnGUI()
         {
-
-
             if (gameData1 == null)
             {
 
@@ -149,18 +168,22 @@ namespace DFTGames.Tools.EditorTools
                         ProjectWindowUtil.ShowCreatedAsset(percorsi);
                         caricaMatricePercorsi = false;
 
+
                     }
                     //  resettaPercorsi();
                 }
                 EditorGUILayout.HelpBox("DataBasePercorsi Mancante", MessageType.Error);
                 GUILayout.EndHorizontal();
             }
+
         }
 
         private void resetta()
         {
             percorsi.nomePercorsi.Clear();
+            percorsi.indexPercorsi.Clear();
             ResettaIndexGameData1(-1);
+
         }
 
         private void InserisciModificaPercorsi()
@@ -180,12 +203,15 @@ namespace DFTGames.Tools.EditorTools
             stileEtichetta.fontSize = 12;
             GUILayout.EndHorizontal();
             if (percorsi.nomePercorsi.Count > 0)
+
                 if (GUILayout.Button("Resetta", GUILayout.Width(100f)))
                 {
                     resetta();
-                    ResettaIndexGameData1(-1);
                     EditorUtility.SetDirty(percorsi);
                     AssetDatabase.SaveAssets();
+                    percorsi.indexPercorsi.Clear();
+                    percorsi.nomePercorsi.Clear();
+                    resetIndexObject = true;
                 }
             EditorGUILayout.Separator();
             GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
@@ -195,44 +221,53 @@ namespace DFTGames.Tools.EditorTools
             if (GUILayout.Button(" + ", GUILayout.Width(30)))
             {
                 string tmp = "nome percorso";
+                int indexx = trovaIndexLibero(percorsi.indexPercorsi);
 
-                int indexx;
-                if (percorsi.nomePercorsi.Count == 0) indexx = 1;
-                else
-                    indexx = percorsi.nomePercorsi.Keys.Max() + 1;
-
-                percorsi.nomePercorsi.Add(indexx, tmp);
+                percorsi.indexPercorsi.Add(indexx);
+                percorsi.nomePercorsi.Add(tmp);
+                ordinaClasseListaDouble(ref percorsi.indexPercorsi, ref percorsi.nomePercorsi);
                 EditorUtility.SetDirty(percorsi);
                 AssetDatabase.SaveAssets();
+
             }
             GUILayout.EndHorizontal();
 
-            List<int> index = new List<int>(percorsi.nomePercorsi.Keys);
-
-            foreach (int key in index)
-
+            if (percorsi.nomePercorsi.Count > 0)
             {
-                GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                GUILayout.Label("ID   " + key);
-                string tmp = EditorGUILayout.TextField(percorsi.nomePercorsi[key]);
-                if (tmp != percorsi.nomePercorsi[key])
+                for (int i = 0; i < percorsi.indexPercorsi.Count; i++)
+
                 {
-                    percorsi.nomePercorsi[key] = tmp;
-                    EditorUtility.SetDirty(percorsi);
-                    AssetDatabase.SaveAssets();
+                    GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
+                    GUILayout.Label("ID   " + percorsi.indexPercorsi[i]);
+                    string tmp = EditorGUILayout.TextField(percorsi.nomePercorsi[i]);
+
+                    if (tmp != percorsi.nomePercorsi[i])
+                    {
+
+                        percorsi.nomePercorsi[i] = tmp;
+                        EditorUtility.SetDirty(percorsi);
+                        AssetDatabase.SaveAssets();
+                    }
+                    if (GUILayout.Button(" - ", GUILayout.Width(30)))  //mi permette di cancellare le righe
+                    {
+                        ResettaIndexGameData1(percorsi.indexPercorsi[i]);
+                        percorsi.indexPercorsi.RemoveAt(i);
+                        percorsi.nomePercorsi.RemoveAt(i);
+                        EditorUtility.SetDirty(percorsi);
+                        EditorUtility.SetDirty(gameData1);
+                        AssetDatabase.SaveAssets();
+                        resetIndexObject = true;
+
+                    }
+
+                    GUILayout.EndHorizontal();
                 }
-                if (GUILayout.Button(" - ", GUILayout.Width(30)))  //mi permette di cancellare le righe
-                {
-                    percorsi.nomePercorsi.Remove(key);
-                    EditorUtility.SetDirty(percorsi);
-                    AssetDatabase.SaveAssets();
-                    ResettaIndexGameData1(key);
-                }
-                GUILayout.EndHorizontal();
+
+
+                GUILayout.EndVertical();
+                caricaMatricePercorsi = false;
             }
 
-            GUILayout.EndVertical();
-            caricaMatricePercorsi = false;
         }
 
         private void GestisciPercorsi()
@@ -275,10 +310,17 @@ namespace DFTGames.Tools.EditorTools
                     {
                         GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
                         EditorGUILayout.LabelField(gameData1.tagEssere[i], stileEtichetta2, GUILayout.Width(130));
-                        int index = gameData1.indexPercorsi[i];
-                        gameData1.indexPercorsi[i] = EditorGUILayout.Popup(index, nomePercorsi);
 
-                        if (index != gameData1.indexPercorsi[i]) setDirtyPersonaggi = true;
+                        int index = Array.IndexOf(indexPercorsi, gameData1.indexPercorsi[i]);  //trova l'indice nella matrice che corrisponde al valore del campo indexPercorsi nella matrice diplomazia
+                        int index2 = index;
+
+                        index = EditorGUILayout.Popup(index, nomePercorsi); //assegna index selezionato della matrice
+
+                        if (index != index2)   //se e' stato fatto modifica
+                        {
+                            gameData1.indexPercorsi[i] = indexPercorsi[index];
+                            setDirtyPersonaggi = true;
+                        }
                         GUILayout.EndHorizontal();
                     }
                 }
@@ -294,12 +336,14 @@ namespace DFTGames.Tools.EditorTools
 
         void CaricaMatrice()   //mi carica i percorsi nella matrice ..ho dovuto usarla perche  EditorGUILayout.Popup mi accetta una schiera di stringhe
         {
-
+            //come da comsiglio di piero ..potevo usare direttamente nel EditorGUILayout.Popup la lista.ToArray..ormai l'avevo gia fatto quindi AMEN 
             if (percorsi.nomePercorsi.Count < 1) return;
             nomePercorsi = new string[percorsi.nomePercorsi.Count];
-            //  nomePercorsi = percorsi.nomePercorsi.ToArray(); 
-            nomePercorsi = percorsi.nomePercorsi.Values.ToArray();
+            nomePercorsi = percorsi.nomePercorsi.ToArray();
+            indexPercorsi = new int[percorsi.indexPercorsi.Count];
+            indexPercorsi = percorsi.indexPercorsi.ToArray();
             caricaMatricePercorsi = true;
+
         }
 
         void ResettaIndexGameData1(int key)  //mi resetta(default = -1) i valori del indexPercorso GameData
@@ -311,9 +355,33 @@ namespace DFTGames.Tools.EditorTools
                     gameData1.indexPercorsi[i] = -1;
             }
 
-
         }
 
+        private void ordinaClasseListaDouble(ref List<int> indexPercorsi, ref List<string> nomePercorsi) //mi effettua lo sort del index e stringa(questo costruito io)
+        {
+            List<int> tmpindex = new List<int>(indexPercorsi); //passaggio per valore IMPORTANTE
+            List<string> tmpPercorsi = new List<string>(nomePercorsi);  //passaggio per valore IMPORTANTE
+
+            indexPercorsi.Sort();
+
+            for (int i = 0; i < tmpindex.Count; i++)
+                nomePercorsi[i] = tmpPercorsi[tmpindex.IndexOf(indexPercorsi[i])];           //mi ordina la lista percorso sulla base della lista index riordinata con lo sort
+        }
+
+        private int trovaIndexLibero(List<int> indexPercorsi)   //mi trova l'index libero ciclando
+        {
+            int tmp = 0;
+            if (percorsi.indexPercorsi.Count > 0)
+            {
+
+                for (int i = 0; i < indexPercorsi.Count; i++)
+                {
+                    if (tmp < indexPercorsi[i] - 1) break;
+                    tmp = indexPercorsi[i];
+                }
+            }
+            return ++tmp;
+        }
 
     }
 
