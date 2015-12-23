@@ -46,11 +46,25 @@ public class GestorePercorso : MonoBehaviour
 
     public float offsetSpostaOggetto = 0.5f;
     public Color colore = Color.black;
-    public int  indexPercorso=-1;
+    private int indexPercorso=-1;
 
     private RaycastHit hitinfo;
-    private Vector3 nuovaPosizione; 
-   
+    private Vector3 nuovaPosizione;
+
+    public int IndexPercorso
+    {
+        get
+        {
+            return indexPercorso;
+        }
+
+        set
+        {
+            if (value < 0) gameObject.name = "Percorso";
+            else indexPercorso = value;
+        }
+    }
+
     void OnDrawGizmos()
     {
         if (Application.isPlaying)

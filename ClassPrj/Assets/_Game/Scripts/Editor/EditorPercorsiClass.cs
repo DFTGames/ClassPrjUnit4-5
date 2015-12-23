@@ -94,12 +94,11 @@ namespace DFTGames.Tools.EditorTools
                 for (int i = 0; i < tmpObj.transform.childCount; i++)
                 {
                     Transform tmpPercorso = tmpObj.transform.GetChild(i);
-                    int tmpPercorsoIndex = tmpPercorso.GetComponent<GestorePercorso>().indexPercorso;
+                    int tmpPercorsoIndex = tmpPercorso.GetComponent<GestorePercorso>().IndexPercorso;
 
                     if (tmpPercorsoIndex != -1 && !percorsi.indexPercorsi.Contains(tmpPercorsoIndex))
                     {
                         tmpPercorsoIndex = -1;
-                        tmpPercorso.name = "Percorso";
                     }
                 }
         }

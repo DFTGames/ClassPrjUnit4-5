@@ -11,9 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2944e3484e1c545478c8085848587dbb, type: 3}
   m_Name: dataBasePercorso
   m_EditorClassIdentifier: 
-  indexPercorsi: 01000000020000000300000004000000
+  indexPercorsi: 010000000200000003000000
   nomePercorsi:
-  - 1
   - nome percorso
-  - nome percorso
-  - nome percorso
+  - dd
+  - 33333

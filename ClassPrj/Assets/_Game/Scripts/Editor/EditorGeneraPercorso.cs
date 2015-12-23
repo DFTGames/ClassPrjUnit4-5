@@ -81,7 +81,7 @@ namespace DFTGames.Tools.EditorTools
             stileEtichetta2.alignment = TextAnchor.MiddleLeft;
             stileEtichetta2.fontStyle = FontStyle.Italic;
             stileEtichetta2.fontSize = 11;
-            EditorGUILayout.LabelField("IndexPercorso  "+ me.indexPercorso.ToString(),stileEtichetta2, GUILayout.Width(130));
+            EditorGUILayout.LabelField("IndexPercorso  "+ me.IndexPercorso.ToString(),stileEtichetta2, GUILayout.Width(130));
 
             if (Selection.activeTransform != thiss  )
             {        
@@ -111,9 +111,9 @@ namespace DFTGames.Tools.EditorTools
                 {                       
                     for (int i = 0; i < tmpObj.transform.childCount; i++)
                     {
-                        int numDaTogliere = tmpObj.transform.GetChild(i).GetComponent<GestorePercorso>().indexPercorso;
+                        int numDaTogliere = tmpObj.transform.GetChild(i).GetComponent<GestorePercorso>().IndexPercorso;
 
-                        if ((numDaTogliere > -1 && numDaTogliere != me.indexPercorso) && tmpIndexLiberi.Contains(numDaTogliere))
+                        if ((numDaTogliere > -1 && numDaTogliere != me.IndexPercorso) && tmpIndexLiberi.Contains(numDaTogliere))
                         {             
                             int tmp = tmpIndexLiberi.IndexOf(numDaTogliere);
                             tmpIndexLiberi.Remove(numDaTogliere); //Debug.Log("Sto togliendio index " + numDaTogliere);
@@ -129,7 +129,7 @@ namespace DFTGames.Tools.EditorTools
             {
                 EditorGUILayout.HelpBox(" Lista dei Percorsi Finita....Inserirli in Windows ToolGame", MessageType.Error);
                 EditorGUILayout.Separator();
-                me.indexPercorso = -1;
+                me.IndexPercorso = -1;
                 return;
             }
             EditorGUILayout.Separator();
@@ -140,13 +140,13 @@ namespace DFTGames.Tools.EditorTools
             me.offsetSpostaOggetto = EditorGUILayout.Slider(new GUIContent("OffsetSollevaOggetto", "Di quando l'oggetto va sollevato dalla superficie"), me.offsetSpostaOggetto, 0, 2);
             me.colore = EditorGUILayout.ColorField(new GUIContent("Colore Percorso", "Imposta il colore dei nodi dei percorsi"), me.colore);
 
-            int index = tmpIndexLiberi.IndexOf(me.indexPercorso);
+            int index = tmpIndexLiberi.IndexOf(me.IndexPercorso);
             int index2 = index;
             index = EditorGUILayout.Popup("Percorsi Disponibili", index, tmpPercorsiLiberi.ToArray()); //assegna index selezionato nella lista dei Liberi
 
             if (index > -1  && (index != index2 || tmpPercorsiLiberi[index] != me.gameObject.name))
             {
-                me.indexPercorso = tmpIndexLiberi[index];
+                me.IndexPercorso = tmpIndexLiberi[index];
                 me.gameObject.name = tmpPercorsiLiberi[index];
             }
 
