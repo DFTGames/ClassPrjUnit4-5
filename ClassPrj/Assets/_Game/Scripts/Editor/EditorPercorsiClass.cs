@@ -11,10 +11,8 @@ namespace DFTGames.Tools.EditorTools
     public class EditorPercorsiClass : EditorWindow
     {
 
-        public static PercorsiClass percorsi;
+        public PercorsiClass percorsi;
         public GameData gameData1;
-        public int[] indexPercorsi;
-        public static string[] nomePercorsi;
 
         public int contaPercorso;
 
@@ -27,9 +25,6 @@ namespace DFTGames.Tools.EditorTools
         private static bool preferenzePercorsiCaricate = false;
         private static string pathPercorsi;
         private bool resetIndexObject = false;
-
-
-        public bool caricaMatricePercorsi;
 
         private int indice = 1;
 
@@ -165,8 +160,7 @@ namespace DFTGames.Tools.EditorTools
                         AssetDatabase.CreateAsset(percorsi, pathPercorsi + STR_DatabaseDiGioco2);
                         AssetDatabase.Refresh();
                         ProjectWindowUtil.ShowCreatedAsset(percorsi);
-                        caricaMatricePercorsi = false;
-
+             
 
                     }
                     //  resettaPercorsi();
@@ -264,7 +258,7 @@ namespace DFTGames.Tools.EditorTools
 
 
                 GUILayout.EndVertical();
-                caricaMatricePercorsi = false;
+   
             }
 
         }
@@ -275,8 +269,8 @@ namespace DFTGames.Tools.EditorTools
             if (gameData1 == null || percorsi == null) return;
             if (percorsi.nomePercorsi.Count < 1) return;
 
-            if (!caricaMatricePercorsi) CaricaMatrice();
-            if (gameData1 != null && percorsi != null && nomePercorsi[0] != string.Empty && nomePercorsi[0] != null)  //Paranoia Luc_Code
+      
+            if (gameData1 != null && percorsi != null && percorsi.nomePercorsi[0] != string.Empty && percorsi.nomePercorsi[0] != null)  //Paranoia Luc_Code
             {
                 GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
                 GUIStyle stileEtichetta = new GUIStyle(GUI.skin.GetStyle("Label"));
@@ -310,14 +304,14 @@ namespace DFTGames.Tools.EditorTools
                         GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
                         EditorGUILayout.LabelField(gameData1.tagEssere[i], stileEtichetta2, GUILayout.Width(130));
 
-                        int index = Array.IndexOf(indexPercorsi, gameData1.indexPercorsi[i]);  //trova l'indice nella matrice che corrisponde al valore del campo indexPercorsi nella matrice diplomazia
+                        int index = Array.IndexOf(percorsi.indexPercorsi.ToArray(), gameData1.indexPercorsi[i]);  //trova l'indice nella matrice che corrisponde al valore del campo indexPercorsi nella matrice diplomazia
                         int index2 = index;
 
-                        index = EditorGUILayout.Popup(index, nomePercorsi); //assegna index selezionato della matrice
+                        index = EditorGUILayout.Popup(index, percorsi.nomePercorsi.ToArray()); //assegna index selezionato della matrice
 
                         if (index != index2)   //se e' stato fatto modifica
                         {
-                            gameData1.indexPercorsi[i] = indexPercorsi[index];
+                            gameData1.indexPercorsi[i] = percorsi.indexPercorsi[index];
                             setDirtyPersonaggi = true;
                         }
                         GUILayout.EndHorizontal();
@@ -333,17 +327,7 @@ namespace DFTGames.Tools.EditorTools
             }
         }
 
-        void CaricaMatrice()   //mi carica i percorsi nella matrice ..ho dovuto usarla perche  EditorGUILayout.Popup mi accetta una schiera di stringhe
-        {
-            //come da comsiglio di piero ..potevo usare direttamente nel EditorGUILayout.Popup la lista.ToArray..ormai l'avevo gia fatto quindi AMEN 
-            if (percorsi.nomePercorsi.Count < 1) return;
-            nomePercorsi = new string[percorsi.nomePercorsi.Count];
-            nomePercorsi = percorsi.nomePercorsi.ToArray();
-            indexPercorsi = new int[percorsi.indexPercorsi.Count];
-            indexPercorsi = percorsi.indexPercorsi.ToArray();
-            caricaMatricePercorsi = true;
-
-        }
+  
 
         void ResettaIndexGameData1(int key)  //mi resetta(default = -1) i valori del indexPercorso GameData
         {                                    // se key=-1 mi resetta tutti i valori..altrimenti solo il valore corrispondente

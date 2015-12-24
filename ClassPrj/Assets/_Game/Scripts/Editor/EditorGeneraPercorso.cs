@@ -125,6 +125,7 @@ namespace DFTGames.Tools.EditorTools
                 }        
 
             }
+      
             if (tmpPercorsiLiberi.Count < 1)
             {
                 EditorGUILayout.HelpBox(" Lista dei Percorsi Finita....Inserirli in Windows ToolGame", MessageType.Error);
@@ -148,9 +149,15 @@ namespace DFTGames.Tools.EditorTools
             {
                 me.IndexPercorso = tmpIndexLiberi[index];
                 me.gameObject.name = tmpPercorsiLiberi[index];
+             
             }
-
-        }   
+            if (GUI.changed)
+            {
+                EditorUtility.SetDirty(target);  //Problema..NON MI SALVA
+                AssetDatabase.SaveAssets();
+            }
+       
+        }
        
     }
 }

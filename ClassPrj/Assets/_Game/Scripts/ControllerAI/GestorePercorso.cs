@@ -51,7 +51,7 @@ public class GestorePercorso : MonoBehaviour
     private RaycastHit hitinfo;
     private Vector3 nuovaPosizione;
 
-    public int IndexPercorso
+    public int IndexPercorso  //questa proprieta mi setta solo se il valore e' -1..(perche farlo completo era un casino con gli editor)
     {
         get
         {
@@ -61,7 +61,7 @@ public class GestorePercorso : MonoBehaviour
         set
         {
             if (value < 0) gameObject.name = "Percorso";
-            else indexPercorso = value;
+            indexPercorso = value;
         }
     }
 
