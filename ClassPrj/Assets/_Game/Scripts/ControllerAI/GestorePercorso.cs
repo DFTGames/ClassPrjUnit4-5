@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 
 /*
@@ -33,7 +34,7 @@ ENUMERAZIONE :
 public class GestorePercorso : MonoBehaviour
 {
     //public List<Transform> Percorso = new List<Transform>();
-    public Transform this [int idx]
+    public Transform this[int idx]
     {
         get
         {
@@ -43,12 +44,14 @@ public class GestorePercorso : MonoBehaviour
         }
     }
 
+    public float offsetSpostaOggetto = 0.5f;
     public Color colore = Color.black;
+    public int IndexPercorso = -1;
+
     private RaycastHit hitinfo;
     private Vector3 nuovaPosizione;
-    public float offsetSpostaOggetto = 0.5f;
 
-  
+
     void OnDrawGizmos()
     {
         if (Application.isPlaying)
@@ -64,15 +67,16 @@ public class GestorePercorso : MonoBehaviour
                 {
                     nuovaPosizione = new Vector3(this[i].transform.position.x, hitinfo.point.y + offsetSpostaOggetto, this[i].transform.position.z);
                     this[i].transform.position = nuovaPosizione;
-                }      
+                }
 
             }
-            
-            if (transform.childCount>1)
-            iTween.DrawPathGizmos(path, colore);
-           // iTween.DrawLineHandles(path, colore);
+
+            if (transform.childCount > 1)
+                iTween.DrawPathGizmos(path, colore);
+            // iTween.DrawLineHandles(path, colore);
         }
 
     }
+
 
 }

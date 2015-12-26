@@ -6,8 +6,7 @@
 [RequireComponent(typeof(NavMeshAgent)),
     RequireComponent(typeof(Animator))]
 public class FSM : MonoBehaviour
-{
-    public int classeGoblin = 1;
+{   
     public float quantoCiVedoSenzaOcchiali = 10f;
     public float alphaGrad = 140f;
     public bool visualizzaHandleVista = true;
@@ -21,6 +20,7 @@ public class FSM : MonoBehaviour
     public float dimensioneHandleVista = 5f;
     public float dimensioneHandleDistArmi = 5f;
 
+    private int indexPercorso = -1;
     private SphereCollider colliderSferaVista;
     private Transform obiettivoNemico;
     private IStato statoCorrente;
@@ -50,6 +50,22 @@ public class FSM : MonoBehaviour
             return colliderSferaVista;
         }
     }
+
+
+   
+public int IndexPercorso
+{
+   get
+   {
+       return indexPercorso;
+   }
+
+   set
+   {    if (value < 0) indexPercorso = -1;   
+            else
+                indexPercorso = value;
+   }
+}
 
     private void Start()
     {
