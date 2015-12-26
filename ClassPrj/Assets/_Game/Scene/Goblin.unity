@@ -1381,7 +1381,7 @@ GameObject:
   - 4: {fileID: 480582841}
   - 114: {fileID: 480582842}
   m_Layer: 0
-  m_Name: La valle Incanatata
+  m_Name: Percorso della Morte
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1423,6 +1423,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offsetSpostaOggetto: .5
   colore: {r: .296798587, g: .477941155, b: .122999564, a: 1}
+  IndexPercorso: 2
 --- !u!1 &491587769
 GameObject:
   m_ObjectHideFlags: 0
@@ -1860,7 +1861,7 @@ GameObject:
   - 4: {fileID: 674786147}
   - 114: {fileID: 674786148}
   m_Layer: 0
-  m_Name: Itinerario Pineta incantata
+  m_Name: Percorso insanguinato
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1904,6 +1905,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offsetSpostaOggetto: .5
   colore: {r: .737292707, g: .141922578, b: .772058845, a: 1}
+  IndexPercorso: 3
 --- !u!1 &693205380
 GameObject:
   m_ObjectHideFlags: 0
@@ -2385,7 +2387,7 @@ GameObject:
   - 4: {fileID: 912213982}
   - 114: {fileID: 912213983}
   m_Layer: 0
-  m_Name: Persorso insanguinato
+  m_Name: Sentiero della Disgrazia
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2430,6 +2432,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offsetSpostaOggetto: .5
   colore: {r: .823529422, g: .435986161, b: .435986161, a: 1}
+  IndexPercorso: 4
 --- !u!1 &912564789
 GameObject:
   m_ObjectHideFlags: 0
@@ -2554,7 +2557,7 @@ GameObject:
   - 4: {fileID: 983394494}
   - 114: {fileID: 983394495}
   m_Layer: 0
-  m_Name: Sentiero della Disgrazia
+  m_Name: Itinerario Pineta incantata
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2597,6 +2600,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offsetSpostaOggetto: .5
   colore: {r: .245999143, g: .669117689, b: .669117689, a: 1}
+  IndexPercorso: 5
 --- !u!1 &1010680541
 GameObject:
   m_ObjectHideFlags: 0
@@ -3051,7 +3055,7 @@ GameObject:
   - 4: {fileID: 1308191725}
   - 114: {fileID: 1308191726}
   m_Layer: 0
-  m_Name: Percorso della Morte
+  m_Name: Vialone delle Ninfee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3093,6 +3097,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offsetSpostaOggetto: .5
   colore: {r: .23356998, g: .691176474, b: .172794119, a: 1}
+  IndexPercorso: 6
 --- !u!1 &1323359616
 GameObject:
   m_ObjectHideFlags: 0
@@ -3392,7 +3397,7 @@ GameObject:
   - 4: {fileID: 1412109794}
   - 114: {fileID: 1412109795}
   m_Layer: 0
-  m_Name: Vialone delle Ninfee
+  m_Name: La valle Incanatata
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3435,6 +3440,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offsetSpostaOggetto: .5
   colore: {r: .816176474, g: .288062274, b: .288062274, a: 1}
+  IndexPercorso: 1
 --- !u!1 &1418895512
 GameObject:
   m_ObjectHideFlags: 0
@@ -4474,6 +4480,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1862283244}
+  - 114: {fileID: 1862283245}
   m_Layer: 0
   m_Name: PadrePercorso
   m_TagString: Untagged
@@ -4499,6 +4506,17 @@ Transform:
   - {fileID: 674786147}
   m_Father: {fileID: 0}
   m_RootOrder: 9
+--- !u!114 &1862283245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1862283243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3890328f78e532d4f8829b994e5d754e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1879741194
 GameObject:
   m_ObjectHideFlags: 0

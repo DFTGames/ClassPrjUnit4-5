@@ -34,7 +34,7 @@ ENUMERAZIONE :
 public class GestorePercorso : MonoBehaviour
 {
     //public List<Transform> Percorso = new List<Transform>();
-    public Transform this [int idx]
+    public Transform this[int idx]
     {
         get
         {
@@ -46,24 +46,11 @@ public class GestorePercorso : MonoBehaviour
 
     public float offsetSpostaOggetto = 0.5f;
     public Color colore = Color.black;
-    private int indexPercorso=-1;
+    public int IndexPercorso = -1;
 
     private RaycastHit hitinfo;
     private Vector3 nuovaPosizione;
 
-    public int IndexPercorso  //questa proprieta mi setta solo se il valore e' -1..(perche farlo completo era un casino con gli editor)
-    {
-        get
-        {
-            return indexPercorso;
-        }
-
-        set
-        {
-            if (value < 0) gameObject.name = "Percorso";
-            indexPercorso = value;
-        }
-    }
 
     void OnDrawGizmos()
     {
@@ -91,5 +78,5 @@ public class GestorePercorso : MonoBehaviour
 
     }
 
-  
+
 }

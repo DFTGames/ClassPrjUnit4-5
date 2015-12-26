@@ -26,7 +26,7 @@ namespace DFTGames.Tools.EditorTools
 
         void OnEnable()
         {
-          
+
             me = (GestorePercorso)target;
 
             if (EditorPrefs.HasKey(EditorPercorsiClass.STR_PercorsoConfig2))
@@ -35,7 +35,7 @@ namespace DFTGames.Tools.EditorTools
                 percorsi = AssetDatabase.LoadAssetAtPath<PercorsiClass>(pathPercorsi + EditorPercorsiClass.STR_DatabaseDiGioco2);
 
             }
-      
+
         }
 
         private void OnSceneGUI()
@@ -75,16 +75,16 @@ namespace DFTGames.Tools.EditorTools
                 EditorGUILayout.Separator();
                 return;
             }
-      
+
             EditorGUILayout.Separator();
             GUIStyle stileEtichetta2 = new GUIStyle(GUI.skin.GetStyle("Label"));
             stileEtichetta2.alignment = TextAnchor.MiddleLeft;
             stileEtichetta2.fontStyle = FontStyle.Italic;
             stileEtichetta2.fontSize = 11;
-            EditorGUILayout.LabelField("IndexPercorso  "+ me.IndexPercorso.ToString(),stileEtichetta2, GUILayout.Width(130));
+            EditorGUILayout.LabelField("IndexPercorso  " + me.IndexPercorso.ToString(), stileEtichetta2, GUILayout.Width(130));
 
-            if (Selection.activeTransform != thiss  )
-            {        
+            if (Selection.activeTransform != thiss)
+            {
                 thiss = Selection.activeTransform;
                 percorsiDisponibili = percorsi.nomePercorsi;
                 indexDisponibili = percorsi.indexPercorsi;
@@ -99,7 +99,7 @@ namespace DFTGames.Tools.EditorTools
                 }
 
                 GameObject tmpObj = GameObject.Find("PadrePercorso");
-                      
+
                 if (GameObject.Find("PadrePercorso") == null)
                 {
                     EditorGUILayout.HelpBox(" GameObject GruppoPercorsi Mancante", MessageType.Error);
@@ -108,29 +108,29 @@ namespace DFTGames.Tools.EditorTools
                 }
 
                 else   //carica nella lista gli index dei percoorsi utilizzati     
-                {                       
+                {
                     for (int i = 0; i < tmpObj.transform.childCount; i++)
                     {
                         int numDaTogliere = tmpObj.transform.GetChild(i).GetComponent<GestorePercorso>().IndexPercorso;
 
                         if ((numDaTogliere > -1 && numDaTogliere != me.IndexPercorso) && tmpIndexLiberi.Contains(numDaTogliere))
-                        {             
+                        {
                             int tmp = tmpIndexLiberi.IndexOf(numDaTogliere);
                             tmpIndexLiberi.Remove(numDaTogliere); //Debug.Log("Sto togliendio index " + numDaTogliere);
                             tmpPercorsiLiberi.RemoveAt(tmp); //Debug.Log("Sto togliendio percorso " + tmp);
 
                         }
                     }
-                 
-                }        
+
+                }
 
             }
-      
+
             if (tmpPercorsiLiberi.Count < 1)
             {
                 EditorGUILayout.HelpBox(" Lista dei Percorsi Finita....Inserirli in Windows ToolGame", MessageType.Error);
                 EditorGUILayout.Separator();
-                me.IndexPercorso = -1;
+                me.IndexPercorso = -1; me.gameObject.name = "Percorso";  //da togliere se riesco a mettere la proprieta nel gestorePercorso
                 return;
             }
             EditorGUILayout.Separator();
@@ -145,20 +145,21 @@ namespace DFTGames.Tools.EditorTools
             int index2 = index;
             index = EditorGUILayout.Popup("Percorsi Disponibili", index, tmpPercorsiLiberi.ToArray()); //assegna index selezionato nella lista dei Liberi
 
-            if (index > -1  && (index != index2 || tmpPercorsiLiberi[index] != me.gameObject.name))
+            if (index > -1 && (index != index2 || tmpPercorsiLiberi[index] != me.gameObject.name))
             {
                 me.IndexPercorso = tmpIndexLiberi[index];
                 me.gameObject.name = tmpPercorsiLiberi[index];
-             
+
             }
             if (GUI.changed)
             {
-                EditorUtility.SetDirty(target);  //Problema..NON MI SALVA
-                AssetDatabase.SaveAssets();
+                EditorUtility.SetDirty(target);
+
             }
-       
+
+
         }
-       
+
     }
 }
 

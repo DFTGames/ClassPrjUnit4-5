@@ -63,48 +63,19 @@ public class Pattugliamento : IStato
     {
 
         //*****************************
-        //-VEDERE SE E' CORRETTO ...Se occorre recuperare il GestorePErcorso in questo modo..oppure era meglio assegnare la referenza al gestorePercorso nel database dei percorsi
+        
         //-Vedere se meglio con impostazione nostra di indiceDestionazioni oppure fare in modo che a ogni chiamata al Gestore PErcorso si incrementa da solo
         if (MioCervello.IndexPercorso < 0) return;
         Agente = MioCervello.gameObject.GetComponent<NavMeshAgent>();
         Animatore = MioCervello.gameObject.GetComponent<Animator>();
 
-        GameObject tmpObj = GameObject.Find("PadrePercorso");
+        PadreGestore tmpObj = GameObject.Find("PadrePercorso").GetComponent<PadreGestore>();
 
         if (tmpObj == null) return;
-        for (int i = 0; i < tmpObj.transform.childCount; i++)        
-        if (tmpObj.transform.GetChild(i).GetComponent<GestorePercorso>().IndexPercorso == MioCervello.IndexPercorso)
-        {
-            Percorso = tmpObj.transform.GetChild(i).GetComponent<GestorePercorso>();
-                indiceDestinazioni = -1;
-                break;
-        }
-        //********************************
-        /*
-        if (MioCervello.IndexPercorso == 1)
-        {
-            Percorso = GameObject.Find("Percorso_1").GetComponent
-                <GestorePercorso>();
-            indiceDestinazioni = -1;
 
-        }
-        else if (MioCervello.IndexPercorso == 2)
-        {
-            Percorso = GameObject.Find("Percorso_2").GetComponent
-                <GestorePercorso>();
-            indiceDestinazioni = -1;
-
-        }
-        else if (MioCervello.IndexPercorso == 3)
-        {
-            Percorso = GameObject.Find("Percorso_3").GetComponent
-                <GestorePercorso>();
-            indiceDestinazioni = -1;
-
-        }
-        
-        else Debug.Log("IMPOSTAZIONE NON DETERMINATA");
-        */
+        Percorso =tmpObj[MioCervello.IndexPercorso];
+        indiceDestinazioni = -1;
+   
 
     }
 
