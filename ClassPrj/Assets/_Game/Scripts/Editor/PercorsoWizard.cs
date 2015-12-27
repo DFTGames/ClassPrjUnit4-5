@@ -5,10 +5,9 @@ using System.Collections.Generic;
 
 public class PercorsoWizard : ScriptableWizard
 {
-
-    public GameObject padrePercorso;
-    public Color colorePadre=Color.black;
-   
+    private GameObject padrePercorso;
+    public GameObject percorso;
+    public Color colore=Color.black;
 
     [MenuItem("Window/AggiungiPercorso Wizard")]
     static void CreateWizard()
@@ -30,18 +29,22 @@ public class PercorsoWizard : ScriptableWizard
 
     void OnWizardUpdate()
     {
-        errorString = "Per Inserire i WayPoint dentro ai padri..selezionarli , premere ALT+Ctrl e click sulla scena";
-      
+        errorString = "Per Inserire i WayPoint dentro ai padri..selezionarli , premere ALT+Ctrl e click sulla scena *** Assegnare i nomi dei percorsi dentro al Percorso stesso";
+     
     }
 
     void OnWizardOtherButton()
     {
+        padrePercorso = GameObject.Find("PadrePercorso");
+        if (!padrePercorso) padrePercorso = new GameObject("PadrePercorso");
+     
         GameObject tmpGbj = new GameObject("Percorso");
-        padrePercorso = tmpGbj;
-        Selection.activeTransform = padrePercorso.transform;
-        tmpGbj.transform.position = Vector3.zero;
-        GestorePercorso tmpGeneraPercorso = tmpGbj.AddComponent<GestorePercorso>();
-        tmpGeneraPercorso.colore =colorePadre;
+        tmpGbj.transform.parent = padrePercorso.transform;
+        percorso = tmpGbj;
+        Selection.activeTransform = percorso.transform;
+        percorso.transform.position = Vector3.zero;
+        GestorePercorso tmpGeneraPercorso = percorso.AddComponent<GestorePercorso>();
+        tmpGeneraPercorso.colore =colore;
   
 
     }

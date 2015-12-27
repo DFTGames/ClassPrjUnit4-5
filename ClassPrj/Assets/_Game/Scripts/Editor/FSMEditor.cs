@@ -52,6 +52,9 @@ namespace DFTGames.Tools.EditorTools
             Commons.DrawTexture(ResourceHelper.LogoFSM);
             EditorGUILayout.Separator();
             EditorGUILayout.BeginVertical(EditorStyles.objectFieldThumb);
+            EditorGUILayout.LabelField("Indice Percorso   " + vista.IndexPercorso); //Lo devo abbellire...Ci metto il nome del percorso a cui si riferisce
+            EditorGUILayout.Separator();
+            EditorGUILayout.BeginVertical(EditorStyles.objectFieldThumb);
             EditorGUILayout.LabelField("IMPOSTAZIONE VISTA");
             bool tmpBool = EditorGUILayout.Toggle(new GUIContent("Vis. Area Vista", "Visualizza nella scena gli Handle della Vista"), vista.visualizzaHandleVista);
             if (tmpBool != vista.visualizzaHandleVista)
