@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/DFTGames/ClassPrjUnit4-5.png?label=ready&title=Ready)](https://waffle.io/DFTGames/ClassPrjUnit4-5)
 Progetto di classe - Unità 4 e 5
 ================================
 
