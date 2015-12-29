@@ -123,7 +123,7 @@ namespace DFTGames.Tools.EditorTools
             GUIStyle stileEtichetta2 = new GUIStyle(GUI.skin.GetStyle("Label"));
             stileEtichetta2.alignment = TextAnchor.MiddleLeft;
             stileEtichetta2.fontStyle = FontStyle.Bold;
-            stileEtichetta2.fontSize = 11;
+            stileEtichetta2.fontSize = 11;           
             GUILayout.Label("Gestione Diplomazia", stileEtichetta);
             GUILayout.EndHorizontal();
             GUILayout.BeginVertical(EditorStyles.objectFieldThumb);
@@ -137,7 +137,7 @@ namespace DFTGames.Tools.EditorTools
             GUILayout.EndHorizontal();
             GUILayout.BeginVertical(EditorStyles.objectFieldThumb);
             GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-            GUILayout.Label(new GUIContent("Matrice Amicizie"), stileEtichetta, GUILayout.Width(130));
+            GUILayout.Label(new GUIContent("Matrice Amicizie"), stileEtichetta, GUILayout.Width(140));
 
             //codice necessario in caso di aggiunta o rimozione di un tag:
             if (gameData.tagEssere.Length != UnityEditorInternal.InternalEditorUtility.tags.Length - 5)
@@ -175,7 +175,9 @@ namespace DFTGames.Tools.EditorTools
             //codice necessario per l'aggiornamento dei dati in caso qualcosa venga modificato
             for (int i = 0; i < gameData.tagEssere.Length; i++)
             {
-                EditorGUILayout.LabelField(gameData.tagEssere[i], stileEtichetta2, GUILayout.Width(130));
+                
+                 EditorGUILayout.LabelField(gameData.tagEssere[gameData.tagEssere.Length - i-1], stileEtichetta2, GUILayout.Width(140));
+             //   Debug.Log("Displau prima serie  " + gameData.tagEssere[i]);
             }
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -183,9 +185,15 @@ namespace DFTGames.Tools.EditorTools
             GUILayout.BeginVertical((EditorStyles.objectFieldThumb));
             for (int i = 0; i < gameData.tagEssere.Length; i++)
             {
+             //   Debug.Log("Linghezza totale" + gameData.tagEssere.Length);
+            //    Debug.Log("Tag" + (gameData.tagEssere.Length - i));
                 GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                EditorGUILayout.LabelField(gameData.tagEssere[i], stileEtichetta2, GUILayout.Width(130));
-                for (int j = 0; j < gameData.tagEssere.Length; j++)
+                EditorGUILayout.LabelField(gameData.tagEssere[i], stileEtichetta2, GUILayout.Width(140));
+              
+                //  GUI.Label(new Rect(400, 200, 200, 60), "color");
+
+                //  EditorGUILayout.LabelField(gameData.tagEssere[(gameData.tagEssere.Length - i - 1)], stileEtichetta2, GUILayout.Width(130));
+                for (int j = 0; j < (gameData.tagEssere.Length - i); j++)
                 {
                     //Qui recupera la texture da mettere al bottone che si sta mostrando
                     Texture tmp = new Texture();
@@ -206,7 +214,7 @@ namespace DFTGames.Tools.EditorTools
                     }
                     //qui mostra il bottone con la texture recuperata in base al valore dell'Enum della matriceAmicizie
                     //Qui se clicchiamo il bottone deve assegnare un icona differente in base all'indice "di click"
-                    if (GUILayout.Button(new GUIContent(tmp), GUIStyle.none, GUILayout.Width(110), GUILayout.Height(80)))
+                    if (GUILayout.Button(new GUIContent(tmp), GUIStyle.none, GUILayout.Width(140), GUILayout.Height(80)))
                     {
                         //valore dell'Enum usato come indice per l'icona
                         int numIcona = (int)gameData.matriceAmicizie[i].elementoAmicizia[j];
@@ -214,15 +222,17 @@ namespace DFTGames.Tools.EditorTools
                         numIcona++;
                         numIcona = numIcona <= 3 ? numIcona : 1;
                         gameData.matriceAmicizie[i].elementoAmicizia[j] = (Amicizie)numIcona;
-                        gameData.matriceAmicizie[j].elementoAmicizia[i] = (Amicizie)numIcona;
+                      //  gameData.matriceAmicizie[j].elementoAmicizia[i] = (Amicizie)numIcona;
                         EditorUtility.SetDirty(gameData);
                         AssetDatabase.SaveAssets();
                         //Debug.Log("cliccato bottone: " + i + "," + j + " - ValEnum: " + (Amicizie)numIcona);
                     }
                 }
+
                 GUILayout.EndHorizontal();
             }
             GUILayout.EndVertical();
+           
         }
 
 

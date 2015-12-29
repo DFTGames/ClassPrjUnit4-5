@@ -126,12 +126,14 @@ public class ManagerIniziale : MonoBehaviour
             datiPersonaggio.Salva();
         }
 
+
         datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
         if (datiDiplomazia.Dati.tipoEssere[0] == null)
         {
             for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
             {
                 datiDiplomazia.Dati.tipoEssere[i] = databseInizialeAmicizie.tagEssere[i];
+              
             }
             for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
             {
@@ -223,7 +225,8 @@ public class ManagerIniziale : MonoBehaviour
 
         VitaAttuale.text = datiPersonaggio.Dati.Vita.ToString();
         AttaccoAtuale.text = datiPersonaggio.Dati.Attacco.ToString();
-        DifesaAttuale.text = datiPersonaggio.Dati.difesa.ToString();
+        DifesaAttuale.text = datiPersonaggio.Dati.difesa.ToString(); 
+
     }
 
     public void CancellaPartita()
