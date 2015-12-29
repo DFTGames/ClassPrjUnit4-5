@@ -59,6 +59,7 @@ public class Vista : MonoBehaviour
 
     private void OnTriggerEnter(Collider coll)
     {
+        if (!GameManager.dizionarioDiNemici.ContainsKey(gameObject.tag)) return;
         if (GameManager.dizionarioDiNemici[gameObject.tag].Contains(coll.tag))
             listaNemiciDentroNonVisti.Add(coll.transform);
     }
@@ -73,6 +74,7 @@ public class Vista : MonoBehaviour
 
     private void OnTriggerStay(Collider coll)
     {
+        if (!GameManager.dizionarioDiNemici.ContainsKey(gameObject.tag)) return;
         if (GameManager.dizionarioDiNemici[gameObject.tag].Contains(coll.tag) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
             listaNemiciDentroNonVisti.Add(coll.transform);
 
