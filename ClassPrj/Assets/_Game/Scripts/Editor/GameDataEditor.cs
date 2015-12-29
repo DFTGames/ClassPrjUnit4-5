@@ -174,10 +174,8 @@ namespace DFTGames.Tools.EditorTools
 
             //codice necessario per l'aggiornamento dei dati in caso qualcosa venga modificato
             for (int i = 0; i < gameData.tagEssere.Length; i++)
-            {
-                
+            {             
                  EditorGUILayout.LabelField(gameData.tagEssere[gameData.tagEssere.Length - i-1], stileEtichetta2, GUILayout.Width(140));
-             //   Debug.Log("Displau prima serie  " + gameData.tagEssere[i]);
             }
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -185,14 +183,10 @@ namespace DFTGames.Tools.EditorTools
             GUILayout.BeginVertical((EditorStyles.objectFieldThumb));
             for (int i = 0; i < gameData.tagEssere.Length; i++)
             {
-             //   Debug.Log("Linghezza totale" + gameData.tagEssere.Length);
-            //    Debug.Log("Tag" + (gameData.tagEssere.Length - i));
+
                 GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
                 EditorGUILayout.LabelField(gameData.tagEssere[i], stileEtichetta2, GUILayout.Width(140));
-              
-                //  GUI.Label(new Rect(400, 200, 200, 60), "color");
-
-                //  EditorGUILayout.LabelField(gameData.tagEssere[(gameData.tagEssere.Length - i - 1)], stileEtichetta2, GUILayout.Width(130));
+     
                 for (int j = 0; j < (gameData.tagEssere.Length - i); j++)
                 {
                     //Qui recupera la texture da mettere al bottone che si sta mostrando
