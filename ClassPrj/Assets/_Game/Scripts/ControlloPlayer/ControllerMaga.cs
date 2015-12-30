@@ -46,6 +46,7 @@ public class ControllerMaga : MonoBehaviour
 
     private void Update()
     {
+        if (Application.loadedLevel == 0) return;
         h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
 
