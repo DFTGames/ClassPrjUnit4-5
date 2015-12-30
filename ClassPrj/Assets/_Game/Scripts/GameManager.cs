@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -11,25 +12,30 @@ public class GameManager : MonoBehaviour
     public Text valoreTipoText;
     public Text valoreDifesaText;
     public Slider sliderVita;
+    public static string tagEssere = null;
+    public static string tagDiColuiCheVuoleCambiareAmicizia = "Player";
+    public static Transform signoloEssereT = null;
+    public static List<string> nemici = null;
+    public static int contatoreDaCambiare = 0;
     public static Dictionary<string, List<string>> dizionarioDiNemici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiAmici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiIndifferenti = new Dictionary<string, List<string>>();
 
-
     private static GameManager me;
-    private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
+    public Serializzabile<AmicizieSerializzabili> datiDiplomazia;
     private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
     private bool fatto = false;
     private float vitaAttuale;
     private float vitaMassima = 0f;
 
-
-    public static string tagEssere = null;
     private string tagDellAltro = null;
-    private float ritardo = 0f;
+
     private RaycastHit hit;
     private Collider precedente = null;
     private Collider attuale = null;
+    private float ritardo = 0f;
+    private string nomeScenaDaCaricare = string.Empty;
+    private int numeroScena = 0;
 
     public float VitaAttuale
     {
@@ -44,6 +50,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+  
+  
     private void Start()
     {
         me = this;
@@ -54,6 +62,13 @@ public class GameManager : MonoBehaviour
         //carico dati personaggio
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
 
+        
+        if(GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)")!=null)
+             GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").transform.position = GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
+        else
+            Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity);
+
+       
         vitaMassima = datiPersonaggio.Dati.VitaMassima;
         //visualizzo dati personaggio:
         nomeText.text = Statici.nomePersonaggio;
@@ -123,6 +138,15 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+
+        
+        if (Application.loadedLevelName == nomeScenaDaCaricare && !nomeScenaDaCaricare.Equals(string.Empty) && GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)")!=null)//+
+        {
+            GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").transform.position = GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
+            
+            nomeScenaDaCaricare = string.Empty;
+        }
+
         if (datiPersonaggio.Dati.Vita != vitaAttuale)
         {
             valoreVitaText.text = VitaAttuale.ToString();
@@ -131,40 +155,32 @@ public class GameManager : MonoBehaviour
             datiPersonaggio.Salva();
         }
 
-        if (tagEssere != null)
-        {
-            ritardo += Time.deltaTime;
-            if (ritardo > 3f)
-            {
-                ritardo = 0f;
-                tagEssere = null;
-            }
-        }
-
         if (Input.GetMouseButtonDown(0))
         {
-            //controllo se il raggio colpisce qualsce qualcosa e non colpisce qualcosa che riguarda il canvas:
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit) && !EventSystem.current.IsPointerOverGameObject())
             {
-                attuale = hit.collider;
-                tagDellAltro = hit.collider.tag;
-                if (precedente != attuale)
-                {
-                    if (precedente != null && precedente.transform.FindChild("quadDiSelezione") && precedente.transform.FindChild("quadDiSelezione").gameObject.activeInHierarchy)
-                        precedente.transform.FindChild("quadDiSelezione").gameObject.SetActive(false);
-                    precedente = attuale;
-                }
-                if (attuale.transform.FindChild("quadDiSelezione"))
-                    attuale.transform.FindChild("quadDiSelezione").gameObject.SetActive(true);
+               
+                    attuale = hit.collider;
+                    tagDellAltro = hit.collider.tag;
+                    
+                    if (precedente != attuale)
+                    {
+                        if (precedente != null && precedente.transform.FindChild("quadDiSelezione") && precedente.transform.FindChild("quadDiSelezione").gameObject.activeInHierarchy)
+                            precedente.transform.FindChild("quadDiSelezione").gameObject.SetActive(false);
+                        precedente = attuale;
+                    }
+                    if (attuale.transform.FindChild("quadDiSelezione"))
+                        attuale.transform.FindChild("quadDiSelezione").gameObject.SetActive(true);
+                
             }
         }
     }
 
-    public void BottoneDichiaroGuerra()
+    public void DichiaroGuerra()
     {
         for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
         {
-            if (datiDiplomazia.Dati.tipoEssere[i].Equals("Player"))
+            if (datiDiplomazia.Dati.tipoEssere[i].Equals(tagDiColuiCheVuoleCambiareAmicizia))
             {
                 for (int j = 0; j < datiDiplomazia.Dati.tipoEssere.Length; j++)
                 {
@@ -177,8 +193,6 @@ public class GameManager : MonoBehaviour
 
                             datiDiplomazia.Salva();
 
-                            tagEssere = tagDellAltro;
-
                             break;
                         }
                     }
@@ -188,11 +202,11 @@ public class GameManager : MonoBehaviour
         RecuperaDizionariDiplomazia();
     }
 
-    public void BottoneMiAlleo()
+    public void MiAlleo()
     {
         for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
         {
-            if (datiDiplomazia.Dati.tipoEssere[i].Equals("Player"))
+            if (datiDiplomazia.Dati.tipoEssere[i].Equals(tagDiColuiCheVuoleCambiareAmicizia))
             {
                 for (int j = 0; j < datiDiplomazia.Dati.tipoEssere.Length; j++)
                 {
@@ -204,8 +218,6 @@ public class GameManager : MonoBehaviour
                             datiDiplomazia.Dati.matriceAmicizie[j].elementoAmicizia[i] = Amicizie.Alleato;
 
                             datiDiplomazia.Salva();
-
-                            tagEssere = tagDellAltro;
 
                             break;
                         }
@@ -225,4 +237,40 @@ public class GameManager : MonoBehaviour
     {
         VitaAttuale += 1f;
     }
-}
+
+    public static void MemorizzaCheckPoint(string nomeCheckPoint)
+    {
+        me.datiPersonaggio.Dati.posizioneCheckPoint = nomeCheckPoint;
+        me.datiPersonaggio.Salva();
+    }
+    public static void MemorizzaProssimaScena(string nomeScena, string nomeCheck)
+    {
+        
+        me.datiPersonaggio.Dati.posizioneCheckPoint = nomeCheck;
+        me.datiPersonaggio.Dati.nomeScena = nomeScena;
+
+      /*  Scene tmpProvanumeroscena = SceneManager.GetSceneByName(nomeScena);
+        me.numeroScena = tmpProvanumeroscena.buildIndex;//perchè restituisce -1?mistero della fede...
+        me.datiPersonaggio.Dati.nomeScena = nomeScena;*/
+
+        me.datiPersonaggio.Salva();
+       
+        SceneManager.LoadScene(nomeScena);
+
+        me.nomeScenaDaCaricare = nomeScena;
+       
+    }
+
+   /* void OnLevelWasLoaded(int level)
+    {
+        Debug.Log(numeroScena);
+        if(level==numeroScena)
+        {
+            
+            GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").transform.position = GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
+        }
+
+    }*/
+
+
+    }
