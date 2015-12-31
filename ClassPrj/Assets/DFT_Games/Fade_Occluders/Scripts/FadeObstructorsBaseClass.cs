@@ -39,6 +39,7 @@ namespace DFTGames.Tools
         public float offset = -0.5f;
         public string playerTag = "Player";
 
+
         protected Transform myTransform;
         protected Dictionary<int, ShaderData> modifiedShaders = new Dictionary<int, ShaderData>();
         protected Shader transparentShader;
@@ -46,6 +47,7 @@ namespace DFTGames.Tools
         // Use this for initialization
         public virtual void Start()
         {
+  
             myTransform = transform;
             transparentShader = Shader.Find("Transparent/Diffuse");
             // Find the player if the target has not been assigned
