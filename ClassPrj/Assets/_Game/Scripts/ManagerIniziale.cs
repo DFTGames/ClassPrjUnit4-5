@@ -195,7 +195,9 @@ public class ManagerIniziale : MonoBehaviour
         {
             for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
             {
-                datiDiplomazia.Dati.tipoEssere[i] = databseInizialeAmicizie.tagEssere[i];
+                datiDiplomazia.Dati.tipoEssere[i] = databseInizialeAmicizie.tagEssere[i];               
+
+                datiDiplomazia.Dati.indexPercorsi[i] = databseInizialeAmicizie.indexPercorsi[i];
             }
             for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
             {
