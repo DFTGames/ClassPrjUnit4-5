@@ -11,11 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2944e3484e1c545478c8085848587dbb, type: 3}
   m_Name: dataBasePercorso
   m_EditorClassIdentifier: 
-  indexPercorsi: 010000000200000003000000040000000500000006000000
+  indexPercorsi: 01000000020000000300000004000000
   nomePercorsi:
-  - La valle Incanatata
-  - Percorso della Morte
-  - Percorso insanguinato
-  - Sentiero della Disgrazia
-  - Itinerario Pineta incantata
-  - Vialone delle Ninfee
+  - fdsfds
+  - dd
+  - ee
+  - rr

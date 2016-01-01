@@ -107,7 +107,7 @@ namespace DFTGames.Tools.EditorTools
                     return;
                 }
 
-                else   //carica nella lista gli index dei percoorsi utilizzati     
+                else   //carica nella lista gli index dei percorsi utilizzati     
                 {
                     for (int i = 0; i < tmpObj.transform.childCount; i++)
                     {

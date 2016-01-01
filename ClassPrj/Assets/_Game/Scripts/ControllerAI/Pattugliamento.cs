@@ -31,7 +31,7 @@ public class Pattugliamento : IStato
         amicizie = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);        
         for (int i = 0; i < amicizie.Dati.indexPercorsi.Length; i++)
 
-            if (MioCervello.gameObject.tag == amicizie.Dati.tagEssere[i]) MioCervello.IndexPercorso = amicizie.Dati.indexPercorsi[i];
+            if (MioCervello.gameObject.tag == amicizie.Dati.tipoEssere[i]) MioCervello.IndexPercorso = amicizie.Dati.indexPercorsi[i];
 
         //***
     }
@@ -63,16 +63,17 @@ public class Pattugliamento : IStato
     {
 
         //*****************************
-        
+
         //-Vedere se meglio con impostazione nostra di indiceDestionazioni oppure fare in modo che a ogni chiamata al Gestore PErcorso si incrementa da solo
+        if (MioCervello == null) return;
         if (MioCervello.IndexPercorso < 0) return;
         Agente = MioCervello.gameObject.GetComponent<NavMeshAgent>();
         Animatore = MioCervello.gameObject.GetComponent<Animator>();
 
         PadreGestore tmpObj = GameObject.Find("PadrePercorso").GetComponent<PadreGestore>();
-
+       // Debug.Log("Nome" + tmpObj.name + "percorso" + tmpObj[MioCervello.IndexPercorso]);
         if (tmpObj == null) return;
-
+       
         Percorso =tmpObj[MioCervello.IndexPercorso];
         indiceDestinazioni = -1;
    

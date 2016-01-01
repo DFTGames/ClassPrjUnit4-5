@@ -24,8 +24,4 @@ public class classiAmicizie
     public Amicizie[] elementoAmicizia = new Amicizie[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
 }
 
-[System.Serializable]
-public class classeBottoni
-{
-    public bool[] elementoBottoni = new bool[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
-}
+
