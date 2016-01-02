@@ -62,7 +62,7 @@ public class ManagerIniziale : MonoBehaviour
         Me = this;
       //  CasellaTipo.text = TipoMaga.magaRossa.ToString();
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-       
+        Statici.CopiaIlDB();
     }
 
     public void NuovaPartita()
