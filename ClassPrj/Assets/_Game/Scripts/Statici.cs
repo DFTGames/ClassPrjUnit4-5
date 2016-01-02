@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Mono.Data.Sqlite;
 
-public static class Statici
+public class Statici
 {
     public const string NomeFilePersonaggio = "Personaggio.dat";
     public const string nomeFileDiplomazia = "diplomazia.dat";
@@ -23,6 +23,11 @@ public static class Statici
         conn = new SqliteConnection("URI=file:" + destinazione);
         conn.StateChange += Conn_StateChange;
         conn.Open();
+        while (conn.State != System.Data.ConnectionState.Open)
+        {
+            // Aspetta
+        }
+        conn.Close();
     }
 
     private static void Conn_StateChange(object sender, System.Data.StateChangeEventArgs e)
@@ -30,7 +35,6 @@ public static class Statici
         if (e.CurrentState == System.Data.ConnectionState.Open)
         {
             Debug.Log("Aperta!");
-            conn.Close();
         }
         else if (e.CurrentState == System.Data.ConnectionState.Closed)
         {

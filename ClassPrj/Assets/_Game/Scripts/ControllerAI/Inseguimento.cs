@@ -28,7 +28,7 @@ public class Inseguimento : IStato
 
        
        
-           Debug.Log(Cervello.ObiettivoNemico);
+          
         if (Cervello.ObiettivoNemico != null)
         {
             agente.destination = Cervello.ObiettivoNemico.position; //Se serve aggiugnere .Position
