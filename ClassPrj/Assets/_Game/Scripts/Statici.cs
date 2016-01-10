@@ -8,7 +8,7 @@ public class Statici
 {
     public const string NomeFilePersonaggio = "Personaggio.dat";
     public const string nomeFileDiplomazia = "diplomazia.dat";
-    public static string nomePersonaggio = "nomePersonaggio";
+    public static string nomePersonaggio = string.Empty;
 
     static string origine = Application.streamingAssetsPath + "/dbgioco.db";
     static string destinazione = Application.persistentDataPath + "/dbgioco.db";

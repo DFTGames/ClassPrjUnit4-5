@@ -278,10 +278,13 @@ public class ManagerIniziale : MonoBehaviour
         {
             if(pannelloImmagineSfondo.GetComponent<Image>().color.a>0f)
                 pannelloImmagineSfondo.GetComponent<Image>().color -= new Color(0f, 0f, 0f, 0.1f)*Time.deltaTime*1.5f;
-            Target = GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").GetComponent<Transform>();
-            Obiettivo = new Vector3(Target.position.x, Target.position.y + altezza, Target.position.z + ZOffSet);
+            if (GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)") != null)
+            {
+                Target = GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").GetComponent<Transform>();
+                Obiettivo = new Vector3(Target.position.x, Target.position.y + altezza, Target.position.z + ZOffSet);
 
-            CambiaPosizioneTelecamera();
+                CambiaPosizioneTelecamera();
+            }
         }else  if (ElencoSessi.value == 0  && nuovaPartita && !caricaPartita)
         {
 
