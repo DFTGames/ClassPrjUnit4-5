@@ -9,7 +9,6 @@ public class Pattugliamento : IStato
     public string Nome { get; set; }
 
     private int indiceDestinazioni = 0;
-    private bool CambiaDirezione = false;
     private FSM MioCervello;
     private NavMeshAgent Agente;
     private Transform ProssimaDirezione;
@@ -18,37 +17,18 @@ public class Pattugliamento : IStato
     private Animator Animatore;
 
     //******
-    private Serializzabile<AmicizieSerializzabili> amicizie;
+    private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
     //*******
-
-    void Start()
-    {
-        //*****    AGGIUNTO...MI TROVA L'INDICE DEL PERCORSO DEL CERVELLO(PERSONAGGIO) A CUI E' ATTACCATO
-        //VALUTARE SE E' CORRETTO CERCARLO DA QUA ..O ALTROVE..
-        //.Andrebbe fatto dopo che il cervello e' stato istanziato...(OnEnable viene prima dello start..quindi se lo metto dentro a questo metodo
-        //e il cervello viene creato dopo non penso vada bene...bohhh
-
-        amicizie = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);        
-        for (int i = 0; i < amicizie.Dati.indexPercorsi.Length; i++)
-
-            if (MioCervello.gameObject.tag == amicizie.Dati.tipoEssere[i]) MioCervello.IndexPercorso = amicizie.Dati.indexPercorsi[i];
-
-        //***
-    }
 
     public void Esecuzione()
     {
-        if (Percorso != null)
+        if (Percorso != null && Percorso.transform.childCount>0)
         {
             if (Agente.remainingDistance <= Agente.stoppingDistance)
-
-            {
+            {    
                 indiceDestinazioni = indiceDestinazioni < Percorso.transform.childCount ? ++indiceDestinazioni : 0;
                 ProssimaDirezione = Percorso[indiceDestinazioni];
                 Agente.SetDestination(ProssimaDirezione.position);
-                //  Agente.speed = 0.5f;
-                CambiaDirezione = false;
-
             }
             Animatore.SetFloat("Velocita", 0.5f);
         }
@@ -61,8 +41,17 @@ public class Pattugliamento : IStato
 
     public void Inizializza(FSM oggetto)
     {
+        datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
+        MioCervello = oggetto;
 
-        //*****************************
+        // ..MI TROVA L'INDICE DEL PERCORSO DEL CERVELLO(PERSONAGGIO) A CUI E' ATTACCATO
+        for (int i = 0; i < datiDiplomazia.Dati.indexPercorsi.Length; i++)
+        {
+            if (MioCervello.gameObject.tag == datiDiplomazia.Dati.tipoEssere[i])
+            {  
+                MioCervello.IndexPercorso = datiDiplomazia.Dati.indexPercorsi[i];
+            }
+        }
 
         //-Vedere se meglio con impostazione nostra di indiceDestionazioni oppure fare in modo che a ogni chiamata al Gestore PErcorso si incrementa da solo
         if (MioCervello == null) return;
@@ -71,13 +60,10 @@ public class Pattugliamento : IStato
         Animatore = MioCervello.gameObject.GetComponent<Animator>();
 
         PadreGestore tmpObj = GameObject.Find("PadrePercorso").GetComponent<PadreGestore>();
-       // Debug.Log("Nome" + tmpObj.name + "percorso" + tmpObj[MioCervello.IndexPercorso]);
         if (tmpObj == null) return;
        
         Percorso =tmpObj[MioCervello.IndexPercorso];
         indiceDestinazioni = -1;
-   
-
     }
 
     public void PreparoEsecuzione()
