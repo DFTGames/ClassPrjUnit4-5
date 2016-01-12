@@ -37,7 +37,7 @@ public class PercorsoWizard : ScriptableWizard
     {
         padrePercorso = GameObject.Find("PadrePercorso");
         if (!padrePercorso) padrePercorso = new GameObject("PadrePercorso");
-     
+        padrePercorso.AddComponent<PadreGestore>();
         GameObject tmpGbj = new GameObject("Percorso");
         tmpGbj.transform.parent = padrePercorso.transform;
         percorso = tmpGbj;

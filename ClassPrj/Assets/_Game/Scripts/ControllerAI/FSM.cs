@@ -20,7 +20,7 @@ public class FSM : MonoBehaviour
     public float dimensioneHandleVista = 5f;
     public float dimensioneHandleDistArmi = 5f;
 
-    private int indexPercorso = 5;
+    private int indexPercorso = -1;
     private SphereCollider colliderSferaVista;
     private Transform obiettivoNemico;
     private IStato statoCorrente;

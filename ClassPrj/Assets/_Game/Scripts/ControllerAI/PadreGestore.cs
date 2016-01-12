@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PadreGestore : MonoBehaviour {
-
-  
-public GestorePercorso this[int adx]
+public class PadreGestore : MonoBehaviour
+{
+    public GestorePercorso this[int adx]
     {
         get
         {
-            GestorePercorso tmp = transform.GetChild(adx).GetComponent<GestorePercorso>();
-            if (tmp.IndexPercorso == adx) return tmp;
-            else return null;
+            GestorePercorso tmp = null;
+            for (int i = 0; i < transform.childCount; i++)
+            {
 
+                if (transform.GetChild(i).GetComponent<GestorePercorso>().IndexPercorso == adx)
+                {
+                    tmp = transform.GetChild(i).GetComponent<GestorePercorso>();
+                    return tmp;
+                }
+            }
+            return tmp;
         }
-     
     }
-    
-
 }
