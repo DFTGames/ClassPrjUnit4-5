@@ -26,22 +26,22 @@ MonoBehaviour:
   matriceProprieta:
   - nomeM: MagoBluM
     nomeF: MagaRossaF
-    classe: blurossi
-    Vita: 1000
-    Livello: 0
-    Mana: 90
-    Xp: 0
+    classe: classe1
+    Vita: 52
+    Livello: 5
+    Mana: 10
+    Xp: 4
     Attacco: 10
     difesa: 20
   - nomeM: MagoVerdeM
     nomeF: MagaFucsiaF
-    classe: verdifuxia
-    Vita: 500
-    Livello: 0
+    classe: classe2
+    Vita: 33
+    Livello: 10
     Mana: 10
-    Xp: 0
+    Xp: 8
     Attacco: 10
-    difesa: 12
+    difesa: 20
   classePersonaggio:
-  - blurossi
-  - verdifuxia
+  - classe1
+  - classe2

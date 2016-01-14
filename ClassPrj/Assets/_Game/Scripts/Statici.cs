@@ -10,6 +10,15 @@ public class Statici
     public const string nomeFileDiplomazia = "diplomazia.dat";
     public static string nomePersonaggio = string.Empty;
 
+    public const string STR_PercorsoConfig = "PercorsoConfigurazione";
+    public const string STR_DatabaseDiGioco = "/dataBaseDiGioco.asset";
+
+    public const string STR_PercorsoConfig2 = "PercorsoConfigurazione";  //Path memorizzazione del Percorso
+    public const string STR_DatabaseDiGioco2 = "/dataBasePercorso.asset";
+
+    public const string STR_PercorsoConfig3 = "PercorsoConfigurazione";
+    public const string STR_DatabaseDiGioco3 = "/dataBasePersonaggioV2.asset";
+
     static string origine = Application.streamingAssetsPath + "/dbgioco.db";
     static string destinazione = Application.persistentDataPath + "/dbgioco.db";
     static SqliteConnection conn;

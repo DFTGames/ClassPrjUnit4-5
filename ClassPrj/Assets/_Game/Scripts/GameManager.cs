@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public static Dictionary<string, List<string>> dizionarioDiIndifferenti = new Dictionary<string, List<string>>();
 
     private static GameManager me;
-    public Serializzabile<AmicizieSerializzabili> datiDiplomazia;
+    private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
     private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
     private bool fatto = false;
     private float vitaAttuale;
@@ -260,17 +260,6 @@ public class GameManager : MonoBehaviour
         me.nomeScenaDaCaricare = nomeScena;
        
     }
-
-   /* void OnLevelWasLoaded(int level)
-    {
-        Debug.Log(numeroScena);
-        if(level==numeroScena)
-        {
-            
-            GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").transform.position = GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
-        }
-
-    }*/
 
 
     }

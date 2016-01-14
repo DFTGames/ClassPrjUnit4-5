@@ -9,7 +9,7 @@ using System;
 namespace DFTGames.Tools.EditorTools
 {
     [CustomEditor(typeof(GestorePercorso))]
-    public class EditorGeneraPercorso : Editor
+    public class EditorGestorePercorso : Editor
     {
         RaycastHit hit;
         GestorePercorso me;
@@ -29,10 +29,10 @@ namespace DFTGames.Tools.EditorTools
 
             me = (GestorePercorso)target;
 
-            if (EditorPrefs.HasKey(EditorPercorsiClass.STR_PercorsoConfig2))
+            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig2))
             {
-                string pathPercorsi = EditorPrefs.GetString(EditorPercorsiClass.STR_PercorsoConfig2);
-                percorsi = AssetDatabase.LoadAssetAtPath<PercorsiClass>(pathPercorsi + EditorPercorsiClass.STR_DatabaseDiGioco2);
+                string pathPercorsi = EditorPrefs.GetString(Statici.STR_PercorsoConfig2);
+                percorsi = AssetDatabase.LoadAssetAtPath<PercorsiClass>(pathPercorsi + Statici.STR_DatabaseDiGioco2);
 
             }
 
@@ -61,8 +61,9 @@ namespace DFTGames.Tools.EditorTools
                     var utility = typeof(EditorGUIUtility);
                     var impostaIcona = utility.GetMethod("SetIconForObject", BindingFlags.NonPublic | BindingFlags.Static);
                     impostaIcona.Invoke(null, new object[] { nuovo, ResourceHelper.Icon1 });
-                    e.Use();
-
+                    e.Use();                  
+                   UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+                    //AGGIUNTO MarkSceneDirty (si ringrazia Armando della dftStudent che ha fornito la classe) PER OVVIARE AL BUG DI UNITY DOVE UN PERCORSO CREATO VIA SCRIPT NON ME LO VEDE DA SALVARE QUANDO SI CAMBIA SCENA
                 }
             }
         }
@@ -151,6 +152,11 @@ namespace DFTGames.Tools.EditorTools
                 me.gameObject.name = tmpPercorsiLiberi[index];
 
             }
+            //********* messo anche qua..non so se e' corretto (per farmi salvare quando cambio i nomi dei percorsi
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+            //AGGIUNTO MarkSceneDirty (si ringrazia Armando della dftStudent che ha fornito la classe) PER OVVIARE AL BUG DI UNITY DOVE UN PERCORSO CREATO VIA SCRIPT NON ME LO VEDE DA SALVARE QUANDO SI CAMBIA SCENA
+            //*********
+            EditorGUILayout.EndVertical();
             if (GUI.changed)
             {
                 EditorUtility.SetDirty(target);

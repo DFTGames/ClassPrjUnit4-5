@@ -4,6 +4,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEditor;
 
 internal enum Sesso
 {
@@ -84,13 +85,42 @@ public class ManagerIniziale : MonoBehaviour
         }
     }
 
+    void Metodo_Charlie()   //metodo per assegnare gli asset dentro l'inspector... By Luca del dftStudent
+    {
+
+        if (databseInizialeAmicizie == null)
+        {
+            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig))
+            {
+                string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig); 
+                databseInizialeAmicizie = AssetDatabase.LoadAssetAtPath<GameData>(percorso + Statici.STR_DatabaseDiGioco);
+             
+            }
+        }
+        if (databaseInizialeProprieta == null)  
+        {
+            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig3))
+            {
+                string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig3); 
+                databaseInizialeProprieta = AssetDatabase.LoadAssetAtPath<caratteristichePersonaggioV2>(percorso + Statici.STR_DatabaseDiGioco3);
+             
+
+            }
+        }
+
+    }
+
     // Use this for initialization
     private void Start()
     {
+
+#if UNITY_EDITOR
+        Metodo_Charlie();
+#endif
+
         Me = this;
         cameraT = Camera.main.transform;
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-
 
         //istanzio tutti i personaggi
         for (int i = 0; i < databaseInizialeProprieta.matriceProprieta.Count; i++)
@@ -104,6 +134,8 @@ public class ManagerIniziale : MonoBehaviour
 
         Statici.CopiaIlDB();
     }
+
+
 
     public void NuovaPartita()
     {
@@ -131,6 +163,7 @@ public class ManagerIniziale : MonoBehaviour
             Destroy(GameObject.Find(databaseInizialeProprieta.matriceProprieta[i].nomeF + "(Clone)"));
 
         }
+
         SerializzaPercorsi();
         CanvasDaInstanziare.SetActive(true);
         CanvasDaDisabilitare.SetActive(false);
@@ -221,12 +254,16 @@ public class ManagerIniziale : MonoBehaviour
 
     private void SerializzaPercorsi()
     {
-
+        //SISTEMARE LA INDEX PERCORSI..DOVE VIENE RICHIAMATA (IN NUOVA SCENA OCCORRE CAMBIARE...)
         //controllo se ci sono index percorsi cambiati..se non lo sono esce dal metodo...senno alimenta di nuovo il file
-        if (datiDiplomazia.Dati.indexPercorsi.Equals(databseInizialeAmicizie.indexPercorsi)) return;
+         if (datiDiplomazia == null || databseInizialeAmicizie == null) return;
+        if (datiDiplomazia.Dati.indexPercorsi.Equals(databseInizialeAmicizie.indexPercorsi)) return;  //Ho messo il controllo su 2 righe per evitare che se uno e' nullo ..in questa riga mi da errore...CONTROLLARE SE METODO E' CORRETTO
 
         for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
+        {
             datiDiplomazia.Dati.indexPercorsi[i] = databseInizialeAmicizie.indexPercorsi[i];
+
+        }
 
         datiDiplomazia.Salva();
     }
@@ -288,8 +325,8 @@ public class ManagerIniziale : MonoBehaviour
         }
         else if (caricaPartita && !nuovaPartita)//+
         {
-            if(pannelloImmagineSfondo.GetComponent<Image>().color.a>0f)
-                pannelloImmagineSfondo.GetComponent<Image>().color -= new Color(0f, 0f, 0f, 0.1f)*Time.deltaTime*1.5f;
+            if (pannelloImmagineSfondo.GetComponent<Image>().color.a > 0f)
+                pannelloImmagineSfondo.GetComponent<Image>().color -= new Color(0f, 0f, 0f, 0.1f) * Time.deltaTime * 1.5f;
             if (GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)") != null)
             {
                 Target = GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").GetComponent<Transform>();
@@ -298,7 +335,7 @@ public class ManagerIniziale : MonoBehaviour
                 CambiaPosizioneTelecamera();
             }
         }
-        else  if (ElencoSessi.value == 0  && nuovaPartita && !caricaPartita)
+        else if (ElencoSessi.value == 0 && nuovaPartita && !caricaPartita)
         {
 
             if (pannelloImmagineSfondo.GetComponent<Image>().color.a > 0f)
@@ -334,6 +371,7 @@ public class ManagerIniziale : MonoBehaviour
 
     public void RecuperaElencoCartelle()
     {
+
         ErroreCaricamento.text = string.Empty;
         Dropdown.OptionData Tmp = null;
         ElencoCartelle.options.Clear();
@@ -361,6 +399,8 @@ public class ManagerIniziale : MonoBehaviour
             BottoneCaricaOff.interactable = false;
             EliminaPartita.interactable = false;
             ErroreCaricamento.text = "Non ci sono partite salvate";
+
+            // RISOLVERE CON PIERO IL DPSPLAY VUOTO QUANDO SI CANCELLANO LE CARTELLE
         }
 
     }
@@ -381,11 +421,22 @@ public class ManagerIniziale : MonoBehaviour
         if (tmpGOPrecedente != null)
         {
             tmpGOPrecedente.transform.position = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].position;
-            tmpGOPrecedente.transform.rotation = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].rotation;//+
+            tmpGOPrecedente.transform.rotation = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].rotation;
         }
-        GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").transform.position = posizioneCameraCarica.position;
-        GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").transform.rotation = posizioneCameraCarica.rotation;//+
-        tmpGOPrecedente = GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)");
+
+        if (datiPersonaggio == null) return;
+
+        if (GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)") == null)
+        {
+            ErroreCaricamento.text = "Errore..Questo personaggio non e' valido";
+            return;
+        }
+
+        GameObject tmOj = GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)");
+
+        tmOj.transform.position = posizioneCameraCarica.position;
+        tmOj.transform.rotation = posizioneCameraCarica.rotation;
+        tmpGOPrecedente = tmOj;
 
     }
 
@@ -393,9 +444,11 @@ public class ManagerIniziale : MonoBehaviour
     {
         if (Directory.Exists(Path.Combine
             (Application.persistentDataPath, Statici.nomePersonaggio)))
-
+        {
             Directory.Delete(Path.Combine
             (Application.persistentDataPath, Statici.nomePersonaggio), true);
+            RecuperaElencoCartelle();
+        }
     }
 
     public void RecuperaSesso()

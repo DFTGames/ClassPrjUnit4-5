@@ -11,8 +11,8 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
     private Color OriginalBg = GUI.backgroundColor;
     private Color OriginalCont = GUI.contentColor;
     private Color OriginalColor = GUI.color;
-    private const string STR_PercorsoConfig = "PercorsoConfigurazione";
-    private const string STR_DatabaseDiGioco = "/dataBasePersonaggioV2.asset";
+  //  private const string STR_PercorsoConfig3 = "PercorsoConfigurazione";
+  //  private const string STR_DatabaseDiGioco3 = "/dataBasePersonaggioV2.asset";
     private static bool preferenzeCaricate = false;
     private static string percorso;
    
@@ -32,7 +32,7 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
     {
         if (!preferenzeCaricate)
         {
-            percorso = EditorPrefs.GetString(STR_PercorsoConfig);
+            percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig3);
             preferenzeCaricate = true;
         }
         GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
@@ -43,7 +43,7 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
             if (tmpPercosro != string.Empty)
             {
                 percorso = "Assets" + tmpPercosro.Substring(Application.dataPath.Length);
-                EditorPrefs.SetString(STR_PercorsoConfig, percorso);
+                EditorPrefs.SetString(Statici.STR_PercorsoConfig3, percorso);
             }
         }
         GUILayout.Label(percorso);
@@ -58,10 +58,10 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
 
     private void OnEnable()
     {
-        if (EditorPrefs.HasKey(STR_PercorsoConfig))
+        if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig3))
         {
-            percorso = EditorPrefs.GetString(STR_PercorsoConfig);
-            _caratteristichePersonaggioV2 = AssetDatabase.LoadAssetAtPath<caratteristichePersonaggioV2>(percorso + STR_DatabaseDiGioco);
+            percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig3);
+            _caratteristichePersonaggioV2 = AssetDatabase.LoadAssetAtPath<caratteristichePersonaggioV2>(percorso + Statici.STR_DatabaseDiGioco3);
           
 
         }
@@ -90,7 +90,7 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
                     if (tmpPercosro != string.Empty)
                     {
                         percorso = "Assets" + tmpPercosro.Substring(Application.dataPath.Length);
-                        EditorPrefs.SetString(STR_PercorsoConfig, percorso);
+                        EditorPrefs.SetString(Statici.STR_PercorsoConfig3, percorso);
                     }
                 }
                 if (percorso != string.Empty)
@@ -98,7 +98,7 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
                 _caratteristichePersonaggioV2.classePersonaggio = new System.Collections.Generic.List<String>();
               
 
-                AssetDatabase.CreateAsset(_caratteristichePersonaggioV2, percorso + STR_DatabaseDiGioco);
+                AssetDatabase.CreateAsset(_caratteristichePersonaggioV2, percorso + Statici.STR_DatabaseDiGioco3);
                 AssetDatabase.Refresh();
                 ProjectWindowUtil.ShowCreatedAsset(_caratteristichePersonaggioV2);
                 resettaParametri();

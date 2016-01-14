@@ -93,7 +93,7 @@ public class ControllerMaga : MonoBehaviour
         }
         else if (animatore.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f && !animatore.IsInTransition(0) && attacco2)
         {
-            Debug.Log("Ops");
+          
             attacco2 = false;
         }
         if (Input.GetButtonDown("Jump") && aTerra && !voglioSaltare &&
