@@ -8,8 +8,8 @@ namespace DFTGames.Tools.EditorTools
     public class GameDataEditor : EditorWindow
     {
         public GameData gameData;
-        public const string STR_PercorsoConfig = "PercorsoConfigurazione";
-        public const string STR_DatabaseDiGioco = "/dataBaseDiGioco.asset";
+     //   public const string STR_PercorsoConfig = "PercorsoConfigurazione";
+     //   public const string STR_DatabaseDiGioco = "/dataBaseDiGioco.asset";
 
         private Color OriginalBg = GUI.backgroundColor;
         private Color OriginalCont = GUI.contentColor;
@@ -29,7 +29,7 @@ namespace DFTGames.Tools.EditorTools
         {
             if (!preferenzeCaricate)
             {
-                percorso = EditorPrefs.GetString(STR_PercorsoConfig);
+                percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig);
                 preferenzeCaricate = true;
             }
             GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
@@ -40,7 +40,7 @@ namespace DFTGames.Tools.EditorTools
                 if (tmpPercosro != string.Empty)
                 {
                     percorso = "Assets" + tmpPercosro.Substring(Application.dataPath.Length);
-                    EditorPrefs.SetString(STR_PercorsoConfig, percorso);
+                    EditorPrefs.SetString(Statici.STR_PercorsoConfig, percorso);
                 }
             }
             GUILayout.Label(percorso);
@@ -57,10 +57,10 @@ namespace DFTGames.Tools.EditorTools
 
         private void OnEnable()
         {
-            if (EditorPrefs.HasKey(STR_PercorsoConfig))
+            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig))
             {
-                percorso = EditorPrefs.GetString(STR_PercorsoConfig);
-                gameData = AssetDatabase.LoadAssetAtPath<GameData>(percorso + STR_DatabaseDiGioco);
+                percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig);
+                gameData = AssetDatabase.LoadAssetAtPath<GameData>(percorso + Statici.STR_DatabaseDiGioco);
             }
         }
 
@@ -95,13 +95,13 @@ namespace DFTGames.Tools.EditorTools
                         if (tmpPercosro != string.Empty)
                         {
                             percorso = "Assets" + tmpPercosro.Substring(Application.dataPath.Length);
-                            EditorPrefs.SetString(STR_PercorsoConfig, percorso);
+                            EditorPrefs.SetString(Statici.STR_PercorsoConfig, percorso);
                         }
                     }
                     if (percorso != string.Empty)
                     {
                         gameData = ScriptableObject.CreateInstance<GameData>();
-                        AssetDatabase.CreateAsset(gameData, percorso + STR_DatabaseDiGioco);
+                        AssetDatabase.CreateAsset(gameData, percorso + Statici.STR_DatabaseDiGioco);
                         AssetDatabase.Refresh();
                         ProjectWindowUtil.ShowCreatedAsset(gameData);
                     }

@@ -738,10 +738,8 @@ MonoBehaviour:
   VitaAttuale: {fileID: 1081027606}
   AttaccoAtuale: {fileID: 1768783779}
   DifesaAttuale: {fileID: 874491714}
-  databseInizialeAmicizie: {fileID: 11400000, guid: 1f4a373869586784888e39b7d1e52245,
-    type: 2}
-  databaseInizialeProprieta: {fileID: 11400000, guid: f711d7c5d4610f640b8d93cc49a87796,
-    type: 2}
+  databseInizialeAmicizie: {fileID: 0}
+  databaseInizialeProprieta: {fileID: 0}
   ElencoCartelle: {fileID: 1559976459}
   ElencoSessi: {fileID: 561501324}
   CanvasDaInstanziare: {fileID: 1222440454}
