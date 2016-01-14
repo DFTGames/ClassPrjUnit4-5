@@ -54,7 +54,7 @@ namespace DFTGames.Tools.EditorTools
 
 
         [MenuItem("Window/ToolsGame/Configurazione Percorsi %&P")]
-        private static void Init()
+         private static void Init()
         {
             EditorWindow.GetWindow<EditorPercorsiClass>("Editor PErcorsiClass");
         }

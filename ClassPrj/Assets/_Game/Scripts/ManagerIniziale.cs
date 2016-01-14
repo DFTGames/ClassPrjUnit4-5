@@ -223,8 +223,9 @@ public class ManagerIniziale : MonoBehaviour
     {
 
         //controllo se ci sono index percorsi cambiati..se non lo sono esce dal metodo...senno alimenta di nuovo il file
-        if (datiDiplomazia.Dati.indexPercorsi.Equals(databseInizialeAmicizie.indexPercorsi)) return;
-
+         if (datiDiplomazia == null || databseInizialeAmicizie == null) return;     
+         if (datiDiplomazia.Dati.indexPercorsi.Equals(databseInizialeAmicizie.indexPercorsi)) return;  //Ho messo il controllo su 2 righe per evitare che se uno e' nullo ..in questa riga mi da errore...CONTROLLARE SE METODO E' CORRETTO
+       
         for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
             datiDiplomazia.Dati.indexPercorsi[i] = databseInizialeAmicizie.indexPercorsi[i];
 
@@ -334,6 +335,7 @@ public class ManagerIniziale : MonoBehaviour
 
     public void RecuperaElencoCartelle()
     {
+    
         ErroreCaricamento.text = string.Empty;
         Dropdown.OptionData Tmp = null;
         ElencoCartelle.options.Clear();
@@ -361,8 +363,10 @@ public class ManagerIniziale : MonoBehaviour
             BottoneCaricaOff.interactable = false;
             EliminaPartita.interactable = false;
             ErroreCaricamento.text = "Non ci sono partite salvate";
-        }
 
+           // RISOLVERE CON PIERO IL DPSPLAY VUOTO QUANDO SI CANCELLANO LE CARTELLE
+        }
+          
     }
 
     public void RecuperaDatiGiocatore()
@@ -381,11 +385,22 @@ public class ManagerIniziale : MonoBehaviour
         if (tmpGOPrecedente != null)
         {
             tmpGOPrecedente.transform.position = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].position;
-            tmpGOPrecedente.transform.rotation = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].rotation;//+
+            tmpGOPrecedente.transform.rotation = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].rotation;
         }
-        GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").transform.position = posizioneCameraCarica.position;
-        GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").transform.rotation = posizioneCameraCarica.rotation;//+
-        tmpGOPrecedente = GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)");
+
+        if (datiPersonaggio == null) return;
+  
+        if (GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)") == null)
+        {
+            ErroreCaricamento.text = "Errore..Questo personaggio non e' valido";
+            return;
+        }
+
+        GameObject tmOj = GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)");
+     
+        tmOj.transform.position = posizioneCameraCarica.position;
+        tmOj.transform.rotation = posizioneCameraCarica.rotation;
+        tmpGOPrecedente = tmOj;
 
     }
 
@@ -393,9 +408,11 @@ public class ManagerIniziale : MonoBehaviour
     {
         if (Directory.Exists(Path.Combine
             (Application.persistentDataPath, Statici.nomePersonaggio)))
-
+        {
             Directory.Delete(Path.Combine
             (Application.persistentDataPath, Statici.nomePersonaggio), true);
+            RecuperaElencoCartelle();
+        }
     }
 
     public void RecuperaSesso()

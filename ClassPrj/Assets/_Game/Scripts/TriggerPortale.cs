@@ -9,9 +9,7 @@ public class TriggerPortale : MonoBehaviour {
         if (coll.CompareTag("Player"))
         {
             
-            GameManager.MemorizzaProssimaScena(destinazione, transform.Find("ritornoPortale").name);
-            
-
+            GameManager.MemorizzaProssimaScena(destinazione,transform.name+"RitornoPortale");
             
         }
     }

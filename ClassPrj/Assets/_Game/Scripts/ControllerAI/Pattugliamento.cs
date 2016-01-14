@@ -12,13 +12,12 @@ public class Pattugliamento : IStato
     private FSM MioCervello;
     private NavMeshAgent Agente;
     private Transform ProssimaDirezione;
-    //  private Transform[] Destinazioni;
+
     private GestorePercorso Percorso=null;
     private Animator Animatore;
 
-    //******
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
-    //*******
+ 
 
     public void Esecuzione()
     {
@@ -48,19 +47,22 @@ public class Pattugliamento : IStato
         for (int i = 0; i < datiDiplomazia.Dati.indexPercorsi.Length; i++)
         {
             if (MioCervello.gameObject.tag == datiDiplomazia.Dati.tipoEssere[i])
-            {  
+            {                
                 MioCervello.IndexPercorso = datiDiplomazia.Dati.indexPercorsi[i];
             }
         }
 
+       
         //-Vedere se meglio con impostazione nostra di indiceDestionazioni oppure fare in modo che a ogni chiamata al Gestore PErcorso si incrementa da solo
         if (MioCervello == null) return;
         if (MioCervello.IndexPercorso < 0) return;
         Agente = MioCervello.gameObject.GetComponent<NavMeshAgent>();
         Animatore = MioCervello.gameObject.GetComponent<Animator>();
 
-        PadreGestore tmpObj = GameObject.Find("PadrePercorso").GetComponent<PadreGestore>();
-        if (tmpObj == null) return;
+        GameObject tm = GameObject.Find("PadrePercorso");
+        if (tm == null) return;
+        PadreGestore tmpObj = tm.GetComponent<PadreGestore>();
+        if (tmpObj == null) return;  //Paranoia luc-Code
        
         Percorso =tmpObj[MioCervello.IndexPercorso];
         indiceDestinazioni = -1;

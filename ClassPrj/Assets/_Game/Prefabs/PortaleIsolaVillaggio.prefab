@@ -26,7 +26,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 463016}
   m_Layer: 0
-  m_Name: ritornoPortale
+  m_Name: PortaleIsolaVillaggioRitornoPortale
   m_TagString: Untagged
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
