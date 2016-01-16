@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c331718fc5e40c4bbcb6d56fa30783d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  destinazione: ScenaProvaCastello
+  destinazione: Castello
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
