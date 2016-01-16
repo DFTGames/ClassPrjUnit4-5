@@ -152,17 +152,15 @@ namespace DFTGames.Tools.EditorTools
                 me.gameObject.name = tmpPercorsiLiberi[index];
 
             }
-            //********* messo anche qua..non so se e' corretto (per farmi salvare quando cambio i nomi dei percorsi
-            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
-            //AGGIUNTO MarkSceneDirty (si ringrazia Armando della dftStudent che ha fornito la classe) PER OVVIARE AL BUG DI UNITY DOVE UN PERCORSO CREATO VIA SCRIPT NON ME LO VEDE DA SALVARE QUANDO SI CAMBIA SCENA
-            //*********
             EditorGUILayout.EndVertical();
             if (GUI.changed)
             {
                 EditorUtility.SetDirty(target);
-
+                //********* messo anche qua..non so se e' corretto (per farmi salvare quando cambio i nomi dei percorsi
+                UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+                //AGGIUNTO MarkSceneDirty (si ringrazia Armando della dftStudent che ha fornito la classe) PER OVVIARE AL BUG DI UNITY DOVE UN PERCORSO CREATO VIA SCRIPT NON ME LO VEDE DA SALVARE QUANDO SI CAMBIA SCENA
+                //*********
             }
-
 
         }
 

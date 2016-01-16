@@ -8,7 +8,7 @@ public class TriggerPortale : MonoBehaviour {
     {
         if (coll.CompareTag("Player"))
         {
-            
+            GestoreCanvasAltreScene.nomeProssimaScena = destinazione;
             GameManager.MemorizzaProssimaScena(destinazione,transform.name+"RitornoPortale");
             
         }
