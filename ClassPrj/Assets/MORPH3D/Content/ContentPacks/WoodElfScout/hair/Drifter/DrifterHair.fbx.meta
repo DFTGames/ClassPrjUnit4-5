@@ -1,0 +1,116 @@
+fileFormatVersion: 2
+guid: 62f6bbcbcdb933340a9e7c5b3bcfe446
+timeCreated: 1446067584
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: abdomen
+    100002: abdomen2
+    100004: chest
+    100006: //RootNode
+    100008: Genesis2Male
+    100010: Gn2MaleDrift_87108
+    100012: Gn2MaleDrift_87108_Feathered.Shape
+    100014: Gn2MaleDrift_87108_Opaque.Shape
+    100016: head
+    100018: hip
+    100020: lCollar
+    100022: lowerJaw
+    100024: lShldr
+    100026: neck
+    100028: rCollar
+    100030: rShldr
+    100032: Drifter Hair
+    400000: abdomen
+    400002: abdomen2
+    400004: chest
+    400006: //RootNode
+    400008: Genesis2Male
+    400010: Gn2MaleDrift_87108
+    400012: Gn2MaleDrift_87108_Feathered.Shape
+    400014: Gn2MaleDrift_87108_Opaque.Shape
+    400016: head
+    400018: hip
+    400020: lCollar
+    400022: lowerJaw
+    400024: lShldr
+    400026: neck
+    400028: rCollar
+    400030: rShldr
+    400032: Drifter Hair
+    4300000: Gn2MaleDrift_87108_Opaque.Shape
+    4300002: Gn2MaleDrift_87108_Feathered.Shape
+    9500000: //RootNode
+    11400000: Drifter Hair
+    11400002: Drifter Hair
+    11400004: Gn2MaleDrift_87108_Feathered.Shape
+    11400006: Gn2MaleDrift_87108_Feathered.Shape
+    11400008: Gn2MaleDrift_87108_Opaque.Shape
+    11400010: Gn2MaleDrift_87108_Opaque.Shape
+    13700000: Gn2MaleDrift_87108_Feathered.Shape
+    13700002: Gn2MaleDrift_87108_Opaque.Shape
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

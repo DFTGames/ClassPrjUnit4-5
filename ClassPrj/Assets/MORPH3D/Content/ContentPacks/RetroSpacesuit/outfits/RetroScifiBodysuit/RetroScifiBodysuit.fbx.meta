@@ -1,0 +1,173 @@
+fileFormatVersion: 2
+guid: 50fbed2262a024d68b0c5ed9a6b3deea
+timeCreated: 1441852628
+licenseType: Store
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: 060Suit_20429.Shape_LOD0
+    100002: 060Suit_20429.Shape_LOD1
+    100004: 060Suit_20429.Shape_LOD2
+    100006: 060Suit_20429.Shape_LOD3
+    100008: abdomen
+    100010: abdomen2
+    100012: chest
+    100014: Genesis 2 Female
+    100016: head
+    100018: hip
+    100020: lBigToe
+    100022: lCollar
+    100024: lFoot
+    100026: lPectoral
+    100028: lShin
+    100030: lShldr
+    100032: lSmallToe1
+    100034: lSmallToe2
+    100036: lSmallToe3
+    100038: lSmallToe4
+    100040: lThigh
+    100042: lToe
+    100044: neck
+    100046: pelvis
+    100048: rBigToe
+    100050: rCollar
+    100052: //RootNode
+    100054: rFoot
+    100056: rPectoral
+    100058: rShin
+    100060: rShldr
+    100062: rSmallToe1
+    100064: rSmallToe2
+    100066: rSmallToe3
+    100068: rSmallToe4
+    100070: rThigh
+    100072: rToe
+    100074: SciFiRetro
+    100076: 060Suit_20429
+    100078: Genesis2Female
+    400000: 060Suit_20429.Shape_LOD0
+    400002: 060Suit_20429.Shape_LOD1
+    400004: 060Suit_20429.Shape_LOD2
+    400006: 060Suit_20429.Shape_LOD3
+    400008: abdomen
+    400010: abdomen2
+    400012: chest
+    400014: Genesis 2 Female
+    400016: head
+    400018: hip
+    400020: lBigToe
+    400022: lCollar
+    400024: lFoot
+    400026: lPectoral
+    400028: lShin
+    400030: lShldr
+    400032: lSmallToe1
+    400034: lSmallToe2
+    400036: lSmallToe3
+    400038: lSmallToe4
+    400040: lThigh
+    400042: lToe
+    400044: neck
+    400046: pelvis
+    400048: rBigToe
+    400050: rCollar
+    400052: //RootNode
+    400054: rFoot
+    400056: rPectoral
+    400058: rShin
+    400060: rShldr
+    400062: rSmallToe1
+    400064: rSmallToe2
+    400066: rSmallToe3
+    400068: rSmallToe4
+    400070: rThigh
+    400072: rToe
+    400074: SciFiRetro
+    400076: 060Suit_20429
+    400078: Genesis2Female
+    4300000: 060Suit_20429.Shape_LOD0
+    4300002: 060Suit_20429.Shape_LOD1
+    4300004: 060Suit_20429.Shape_LOD2
+    4300006: 060Suit_20429.Shape_LOD3
+    9500000: //RootNode
+    11400000: 060Suit_20429.Shape_LOD0
+    11400002: 060Suit_20429.Shape_LOD0
+    11400004: 060Suit_20429.Shape_LOD1
+    11400006: 060Suit_20429.Shape_LOD1
+    11400008: 060Suit_20429.Shape_LOD2
+    11400010: 060Suit_20429.Shape_LOD2
+    11400012: 060Suit_20429.Shape_LOD3
+    11400014: 060Suit_20429.Shape_LOD3
+    11400016: SciFiRetro
+    11400018: SciFiRetro
+    13700000: 060Suit_20429.Shape_LOD0
+    13700002: 060Suit_20429.Shape_LOD1
+    13700004: 060Suit_20429.Shape_LOD2
+    13700006: 060Suit_20429.Shape_LOD3
+    20500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages:
+    - .25
+    - .125
+    - .0625
+    - .00999999978
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

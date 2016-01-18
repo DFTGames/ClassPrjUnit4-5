@@ -1,0 +1,375 @@
+fileFormatVersion: 2
+guid: 36d0f89f7f08441cbb45503b639a83e8
+timeCreated: 1441926962
+licenseType: Store
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: abdomen
+    100002: abdomen2
+    100004: //RootNode
+    100006: chest
+    100008: Genesis 2 Female
+    100010: head
+    100012: hip
+    100014: hip
+    100016: hip
+    100018: KBattleSuit
+    100020: KBattleSuit_24385.Shape_LOD0
+    100022: KBattleSuit_24385.Shape_LOD1
+    100024: KBattleSuit_24385.Shape_LOD2
+    100026: KBattleSuit_24385.Shape_LOD3
+    100028: KBoots_11742L.Shape_LOD0
+    100030: KBoots_11742L.Shape_LOD1
+    100032: KBoots_11742L.Shape_LOD2
+    100034: KBoots_11742L.Shape_LOD3
+    100036: KBoots_11742R.Shape_LOD0
+    100038: KBoots_11742R.Shape_LOD1
+    100040: KBoots_11742R.Shape_LOD2
+    100042: KBoots_11742R.Shape_LOD3
+    100044: lBigToe
+    100046: lBigToe
+    100048: lCarpal1
+    100050: lCarpal2
+    100052: lCollar
+    100054: Left Battlesuit Boot
+    100056: lFoot
+    100058: lFoot
+    100060: lFoot
+    100062: lForeArm
+    100064: lHand
+    100066: lowerJaw
+    100068: lPectoral
+    100070: lShin
+    100072: lShin
+    100074: lShin
+    100076: lShldr
+    100078: lSmallToe1
+    100080: lSmallToe1
+    100082: lSmallToe2
+    100084: lSmallToe2
+    100086: lSmallToe3
+    100088: lSmallToe3
+    100090: lSmallToe4
+    100092: lSmallToe4
+    100094: lThigh
+    100096: lThigh
+    100098: lThigh
+    100100: lThumb1
+    100102: lToe
+    100104: lToe
+    100106: lToe
+    100108: neck
+    100110: pelvis
+    100112: pelvis
+    100114: pelvis
+    100116: rBigToe
+    100118: rBigToe
+    100120: rCarpal1
+    100122: rCarpal2
+    100124: rCollar
+    100126: rFoot
+    100128: rFoot
+    100130: rFoot
+    100132: rForeArm
+    100134: rHand
+    100136: Right Battlesuit Boot
+    100138: rPectoral
+    100140: rShin
+    100142: rShin
+    100144: rShin
+    100146: rShldr
+    100148: rSmallToe1
+    100150: rSmallToe1
+    100152: rSmallToe2
+    100154: rSmallToe2
+    100156: rSmallToe3
+    100158: rSmallToe3
+    100160: rSmallToe4
+    100162: rSmallToe4
+    100164: rThigh
+    100166: rThigh
+    100168: rThigh
+    100170: rThumb1
+    100172: rToe
+    100174: rToe
+    100176: rToe
+    100178: Genesis2Female
+    100180: hip 1
+    100182: hip 2
+    100184: KBattleSuit_24385
+    100186: KBoots_11742L
+    100188: KBoots_11742R
+    100190: lBigToe 1
+    100192: lFoot 1
+    100194: lFoot 2
+    100196: lShin 1
+    100198: lShin 2
+    100200: lSmallToe1 1
+    100202: lSmallToe2 1
+    100204: lSmallToe3 1
+    100206: lSmallToe4 1
+    100208: lThigh 1
+    100210: lThigh 2
+    100212: lToe 1
+    100214: lToe 2
+    100216: pelvis 1
+    100218: pelvis 2
+    100220: rBigToe 1
+    100222: rFoot 1
+    100224: rFoot 2
+    100226: rShin 1
+    100228: rShin 2
+    100230: rSmallToe1 1
+    100232: rSmallToe2 1
+    100234: rSmallToe3 1
+    100236: rSmallToe4 1
+    100238: rThigh 1
+    100240: rThigh 2
+    100242: rToe 1
+    100244: rToe 2
+    400000: abdomen
+    400002: abdomen2
+    400004: //RootNode
+    400006: chest
+    400008: Genesis 2 Female
+    400010: head
+    400012: hip
+    400014: hip
+    400016: hip
+    400018: KBattleSuit
+    400020: KBattleSuit_24385.Shape_LOD0
+    400022: KBattleSuit_24385.Shape_LOD1
+    400024: KBattleSuit_24385.Shape_LOD2
+    400026: KBattleSuit_24385.Shape_LOD3
+    400028: KBoots_11742L.Shape_LOD0
+    400030: KBoots_11742L.Shape_LOD1
+    400032: KBoots_11742L.Shape_LOD2
+    400034: KBoots_11742L.Shape_LOD3
+    400036: KBoots_11742R.Shape_LOD0
+    400038: KBoots_11742R.Shape_LOD1
+    400040: KBoots_11742R.Shape_LOD2
+    400042: KBoots_11742R.Shape_LOD3
+    400044: lBigToe
+    400046: lBigToe
+    400048: lCarpal1
+    400050: lCarpal2
+    400052: lCollar
+    400054: Left Battlesuit Boot
+    400056: lFoot
+    400058: lFoot
+    400060: lFoot
+    400062: lForeArm
+    400064: lHand
+    400066: lowerJaw
+    400068: lPectoral
+    400070: lShin
+    400072: lShin
+    400074: lShin
+    400076: lShldr
+    400078: lSmallToe1
+    400080: lSmallToe1
+    400082: lSmallToe2
+    400084: lSmallToe2
+    400086: lSmallToe3
+    400088: lSmallToe3
+    400090: lSmallToe4
+    400092: lSmallToe4
+    400094: lThigh
+    400096: lThigh
+    400098: lThigh
+    400100: lThumb1
+    400102: lToe
+    400104: lToe
+    400106: lToe
+    400108: neck
+    400110: pelvis
+    400112: pelvis
+    400114: pelvis
+    400116: rBigToe
+    400118: rBigToe
+    400120: rCarpal1
+    400122: rCarpal2
+    400124: rCollar
+    400126: rFoot
+    400128: rFoot
+    400130: rFoot
+    400132: rForeArm
+    400134: rHand
+    400136: Right Battlesuit Boot
+    400138: rPectoral
+    400140: rShin
+    400142: rShin
+    400144: rShin
+    400146: rShldr
+    400148: rSmallToe1
+    400150: rSmallToe1
+    400152: rSmallToe2
+    400154: rSmallToe2
+    400156: rSmallToe3
+    400158: rSmallToe3
+    400160: rSmallToe4
+    400162: rSmallToe4
+    400164: rThigh
+    400166: rThigh
+    400168: rThigh
+    400170: rThumb1
+    400172: rToe
+    400174: rToe
+    400176: rToe
+    400178: Genesis2Female
+    400180: hip 1
+    400182: hip 2
+    400184: KBattleSuit_24385
+    400186: KBoots_11742L
+    400188: KBoots_11742R
+    400190: lBigToe 1
+    400192: lFoot 1
+    400194: lFoot 2
+    400196: lShin 1
+    400198: lShin 2
+    400200: lSmallToe1 1
+    400202: lSmallToe2 1
+    400204: lSmallToe3 1
+    400206: lSmallToe4 1
+    400208: lThigh 1
+    400210: lThigh 2
+    400212: lToe 1
+    400214: lToe 2
+    400216: pelvis 1
+    400218: pelvis 2
+    400220: rBigToe 1
+    400222: rFoot 1
+    400224: rFoot 2
+    400226: rShin 1
+    400228: rShin 2
+    400230: rSmallToe1 1
+    400232: rSmallToe2 1
+    400234: rSmallToe3 1
+    400236: rSmallToe4 1
+    400238: rThigh 1
+    400240: rThigh 2
+    400242: rToe 1
+    400244: rToe 2
+    4300000: KBoots_11742L.Shape_LOD0
+    4300002: KBoots_11742L.Shape_LOD1
+    4300004: KBoots_11742L.Shape_LOD2
+    4300006: KBoots_11742L.Shape_LOD3
+    4300008: KBoots_11742R.Shape_LOD0
+    4300010: KBoots_11742R.Shape_LOD1
+    4300012: KBoots_11742R.Shape_LOD2
+    4300014: KBoots_11742R.Shape_LOD3
+    4300016: KBattleSuit_24385.Shape_LOD0
+    4300018: KBattleSuit_24385.Shape_LOD1
+    4300020: KBattleSuit_24385.Shape_LOD2
+    4300022: KBattleSuit_24385.Shape_LOD3
+    9500000: //RootNode
+    11400000: KBattleSuit
+    11400002: KBattleSuit
+    11400004: KBattleSuit_24385.Shape_LOD0
+    11400006: KBattleSuit_24385.Shape_LOD0
+    11400008: KBattleSuit_24385.Shape_LOD1
+    11400010: KBattleSuit_24385.Shape_LOD1
+    11400012: KBattleSuit_24385.Shape_LOD2
+    11400014: KBattleSuit_24385.Shape_LOD2
+    11400016: KBattleSuit_24385.Shape_LOD3
+    11400018: KBattleSuit_24385.Shape_LOD3
+    11400020: KBoots_11742L.Shape_LOD0
+    11400022: KBoots_11742L.Shape_LOD0
+    11400024: KBoots_11742L.Shape_LOD1
+    11400026: KBoots_11742L.Shape_LOD1
+    11400028: KBoots_11742L.Shape_LOD2
+    11400030: KBoots_11742L.Shape_LOD2
+    11400032: KBoots_11742L.Shape_LOD3
+    11400034: KBoots_11742L.Shape_LOD3
+    11400036: KBoots_11742R.Shape_LOD0
+    11400038: KBoots_11742R.Shape_LOD0
+    11400040: KBoots_11742R.Shape_LOD1
+    11400042: KBoots_11742R.Shape_LOD1
+    11400044: KBoots_11742R.Shape_LOD2
+    11400046: KBoots_11742R.Shape_LOD2
+    11400048: KBoots_11742R.Shape_LOD3
+    11400050: KBoots_11742R.Shape_LOD3
+    11400052: Left Battlesuit Boot
+    11400054: Left Battlesuit Boot
+    11400056: Right Battlesuit Boot
+    11400058: Right Battlesuit Boot
+    13700000: KBattleSuit_24385.Shape_LOD0
+    13700002: KBattleSuit_24385.Shape_LOD1
+    13700004: KBattleSuit_24385.Shape_LOD2
+    13700006: KBattleSuit_24385.Shape_LOD3
+    13700008: KBoots_11742L.Shape_LOD0
+    13700010: KBoots_11742L.Shape_LOD1
+    13700012: KBoots_11742L.Shape_LOD2
+    13700014: KBoots_11742L.Shape_LOD3
+    13700016: KBoots_11742R.Shape_LOD0
+    13700018: KBoots_11742R.Shape_LOD1
+    13700020: KBoots_11742R.Shape_LOD2
+    13700022: KBoots_11742R.Shape_LOD3
+    20500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages:
+    - .25
+    - .125
+    - .0625
+    - .00999999978
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,104 @@
+fileFormatVersion: 2
+guid: 74fe4f1fb7098e943841c3c6875ece2a
+timeCreated: 1447787589
+licenseType: Store
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: abdomen
+    100002: abdomen2
+    100004: chest
+    100006: Genesis2Female
+    100008: head
+    100010: hip
+    100012: //RootNode
+    100014: neck
+    100016: ValKeikoPT_29247
+    100018: ValKeikoPT_29247.Shape_feathered
+    100020: ValKeikoPT_29247.Shape_opaque
+    100022: Keiko Ponytail
+    400000: abdomen
+    400002: abdomen2
+    400004: chest
+    400006: Genesis2Female
+    400008: head
+    400010: hip
+    400012: //RootNode
+    400014: neck
+    400016: ValKeikoPT_29247
+    400018: ValKeikoPT_29247.Shape_feathered
+    400020: ValKeikoPT_29247.Shape_opaque
+    400022: Keiko Ponytail
+    4300000: ValKeikoPT_29247.Shape_opaque
+    4300002: ValKeikoPT_29247.Shape_feathered
+    9500000: //RootNode
+    11400000: Keiko Ponytail
+    11400002: Keiko Ponytail
+    11400004: ValKeikoPT_29247.Shape_feathered
+    11400006: ValKeikoPT_29247.Shape_feathered
+    11400008: ValKeikoPT_29247.Shape_opaque
+    11400010: ValKeikoPT_29247.Shape_opaque
+    13700000: ValKeikoPT_29247.Shape_feathered
+    13700002: ValKeikoPT_29247.Shape_opaque
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,114 @@
+fileFormatVersion: 2
+guid: 091f292e40bcd184cabea08bc401db2f
+timeCreated: 1445293521
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: abdomen
+    100002: abdomen2
+    100004: chest
+    100006: Genesis2Female
+    100008: head
+    100010: hip
+    100012: lCollar
+    100014: lShldr
+    100016: neck
+    100018: rCollar
+    100020: rShldr
+    100022: //RootNode
+    100024: ValShortPTH_19013
+    100026: ValShortPTH_19013.Shape_feathered
+    100028: ValShortPTH_19013.Shape_opaque
+    100030: Short Ponytail
+    400000: abdomen
+    400002: abdomen2
+    400004: chest
+    400006: Genesis2Female
+    400008: head
+    400010: hip
+    400012: lCollar
+    400014: lShldr
+    400016: neck
+    400018: rCollar
+    400020: rShldr
+    400022: //RootNode
+    400024: ValShortPTH_19013
+    400026: ValShortPTH_19013.Shape_feathered
+    400028: ValShortPTH_19013.Shape_opaque
+    400030: Short Ponytail
+    4300000: ValShortPTH_19013.Shape_opaque
+    4300002: ValShortPTH_19013.Shape_feathered
+    9500000: //RootNode
+    11400000: Short Ponytail
+    11400002: Short Ponytail
+    11400004: ValShortPTH_19013.Shape_feathered
+    11400006: ValShortPTH_19013.Shape_feathered
+    11400008: ValShortPTH_19013.Shape_opaque
+    11400010: ValShortPTH_19013.Shape_opaque
+    13700000: ValShortPTH_19013.Shape_feathered
+    13700002: ValShortPTH_19013.Shape_opaque
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

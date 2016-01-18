@@ -1,0 +1,725 @@
+fileFormatVersion: 2
+guid: e2813ce596860428e8c43bfe6f90f23b
+timeCreated: 1441854981
+licenseType: Store
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: abdomen
+    100002: abdomen
+    100004: abdomen
+    100006: abdomen
+    100008: abdomen2
+    100010: abdomen2
+    100012: abdomen2
+    100014: abdomen2
+    100016: chest
+    100018: chest
+    100020: chest
+    100022: chest
+    100024: Genesis 2 Female
+    100026: head
+    100028: hip
+    100030: hip
+    100032: hip
+    100034: hip
+    100036: hip
+    100038: hip
+    100040: lBigToe
+    100042: lBigToe
+    100044: lCarpal1
+    100046: lCarpal1
+    100048: lCarpal2
+    100050: lCarpal2
+    100052: lCollar
+    100054: lCollar
+    100056: lCollar
+    100058: LeftMechGirlBoot
+    100060: LeftMechGirlGlove
+    100062: lFoot
+    100064: lFoot
+    100066: lForeArm
+    100068: lForeArm
+    100070: lHand
+    100072: lHand
+    100074: lIndex1
+    100076: lIndex1
+    100078: lIndex2
+    100080: lIndex2
+    100082: lMid1
+    100084: lMid1
+    100086: lMid2
+    100088: lMid2
+    100090: lMid3
+    100092: lMid3
+    100094: lowerJaw
+    100096: lPectoral
+    100098: lPinky1
+    100100: lPinky1
+    100102: lPinky2
+    100104: lPinky2
+    100106: lRing1
+    100108: lRing1
+    100110: lRing2
+    100112: lRing2
+    100114: lRing3
+    100116: lRing3
+    100118: lShin
+    100120: lShin
+    100122: lShin
+    100124: lShldr
+    100126: lShldr
+    100128: lShldr
+    100130: lSmallToe1
+    100132: lSmallToe1
+    100134: lSmallToe2
+    100136: lSmallToe2
+    100138: lSmallToe3
+    100140: lSmallToe3
+    100142: lSmallToe4
+    100144: lSmallToe4
+    100146: lThigh
+    100148: lThigh
+    100150: lThigh
+    100152: lThigh
+    100154: lThumb1
+    100156: lThumb1
+    100158: lThumb2
+    100160: lThumb2
+    100162: lThumb3
+    100164: lThumb3
+    100166: lToe
+    100168: lToe
+    100170: //RootNode
+    100172: MechGirl Leggings
+    100174: MechGirl Leggings_11630.Shape_LOD0
+    100176: MechGirl Leggings_11630.Shape_LOD1
+    100178: MechGirl Leggings_11630.Shape_LOD2
+    100180: MechGirl Leggings_11630.Shape_LOD3
+    100182: MechGirlBoots_14142L.Shape_LOD0
+    100184: MechGirlBoots_14142L.Shape_LOD1
+    100186: MechGirlBoots_14142L.Shape_LOD2
+    100188: MechGirlBoots_14142L.Shape_LOD3
+    100190: MechGirlBoots_14142R.Shape_LOD0
+    100192: MechGirlBoots_14142R.Shape_LOD1
+    100194: MechGirlBoots_14142R.Shape_LOD2
+    100196: MechGirlBoots_14142R.Shape_LOD3
+    100198: MechGirlGloves_9560L.Shape_LOD0
+    100200: MechGirlGloves_9560L.Shape_LOD1
+    100202: MechGirlGloves_9560L.Shape_LOD2
+    100204: MechGirlGloves_9560L.Shape_LOD3
+    100206: MechGirlGloves_9560R.Shape_LOD0
+    100208: MechGirlGloves_9560R.Shape_LOD1
+    100210: MechGirlGloves_9560R.Shape_LOD2
+    100212: MechGirlGloves_9560R.Shape_LOD3
+    100214: MechGirlSuit
+    100216: MechGirlSuit_8368.Shape_LOD0
+    100218: MechGirlSuit_8368.Shape_LOD1
+    100220: MechGirlSuit_8368.Shape_LOD2
+    100222: MechGirlSuit_8368.Shape_LOD3
+    100224: neck
+    100226: pelvis
+    100228: pelvis
+    100230: pelvis
+    100232: pelvis
+    100234: rBigToe
+    100236: rBigToe
+    100238: rCarpal1
+    100240: rCarpal1
+    100242: rCarpal2
+    100244: rCarpal2
+    100246: rCollar
+    100248: rCollar
+    100250: rCollar
+    100252: rFoot
+    100254: rFoot
+    100256: rForeArm
+    100258: rForeArm
+    100260: rHand
+    100262: rHand
+    100264: RightMechGirlBoot
+    100266: RightMechGirlGlove
+    100268: rIndex1
+    100270: rIndex1
+    100272: rIndex2
+    100274: rIndex2
+    100276: rMid1
+    100278: rMid1
+    100280: rMid2
+    100282: rMid2
+    100284: rMid3
+    100286: rMid3
+    100288: rPectoral
+    100290: rPinky1
+    100292: rPinky1
+    100294: rPinky2
+    100296: rPinky2
+    100298: rRing1
+    100300: rRing1
+    100302: rRing2
+    100304: rRing2
+    100306: rRing3
+    100308: rRing3
+    100310: rShin
+    100312: rShin
+    100314: rShin
+    100316: rShldr
+    100318: rShldr
+    100320: rShldr
+    100322: rSmallToe1
+    100324: rSmallToe1
+    100326: rSmallToe2
+    100328: rSmallToe2
+    100330: rSmallToe3
+    100332: rSmallToe3
+    100334: rSmallToe4
+    100336: rSmallToe4
+    100338: rThigh
+    100340: rThigh
+    100342: rThigh
+    100344: rThigh
+    100346: rThumb1
+    100348: rThumb1
+    100350: rThumb2
+    100352: rThumb2
+    100354: rThumb3
+    100356: rThumb3
+    100358: rToe
+    100360: rToe
+    100362: abdomen 1
+    100364: abdomen 2
+    100366: abdomen 3
+    100368: abdomen2 1
+    100370: abdomen2 2
+    100372: abdomen2 3
+    100374: chest 1
+    100376: chest 2
+    100378: chest 3
+    100380: Genesis2Female
+    100382: hip 1
+    100384: hip 2
+    100386: hip 3
+    100388: hip 4
+    100390: hip 5
+    100392: lBigToe 1
+    100394: lCarpal1 1
+    100396: lCarpal2 1
+    100398: lCollar 1
+    100400: lCollar 2
+    100402: lFoot 1
+    100404: lForeArm 1
+    100406: lHand 1
+    100408: lIndex1 1
+    100410: lIndex2 1
+    100412: lMid1 1
+    100414: lMid2 1
+    100416: lMid3 1
+    100418: lPinky1 1
+    100420: lPinky2 1
+    100422: lRing1 1
+    100424: lRing2 1
+    100426: lRing3 1
+    100428: lShin 1
+    100430: lShin 2
+    100432: lShldr 1
+    100434: lShldr 2
+    100436: lSmallToe1 1
+    100438: lSmallToe2 1
+    100440: lSmallToe3 1
+    100442: lSmallToe4 1
+    100444: lThigh 1
+    100446: lThigh 2
+    100448: lThigh 3
+    100450: lThumb1 1
+    100452: lThumb2 1
+    100454: lThumb3 1
+    100456: lToe 1
+    100458: MechGirl Leggings_11630
+    100460: MechGirlBoots_14142L
+    100462: MechGirlBoots_14142R
+    100464: MechGirlGloves_9560L
+    100466: MechGirlGloves_9560R
+    100468: MechGirlSuit_8368
+    100470: pelvis 1
+    100472: pelvis 2
+    100474: pelvis 3
+    100476: rBigToe 1
+    100478: rCarpal1 1
+    100480: rCarpal2 1
+    100482: rCollar 1
+    100484: rCollar 2
+    100486: rFoot 1
+    100488: rForeArm 1
+    100490: rHand 1
+    100492: rIndex1 1
+    100494: rIndex2 1
+    100496: rMid1 1
+    100498: rMid2 1
+    100500: rMid3 1
+    100502: rPinky1 1
+    100504: rPinky2 1
+    100506: rRing1 1
+    100508: rRing2 1
+    100510: rRing3 1
+    100512: rShin 1
+    100514: rShin 2
+    100516: rShldr 1
+    100518: rShldr 2
+    100520: rSmallToe1 1
+    100522: rSmallToe2 1
+    100524: rSmallToe3 1
+    100526: rSmallToe4 1
+    100528: rThigh 1
+    100530: rThigh 2
+    100532: rThigh 3
+    100534: rThumb1 1
+    100536: rThumb2 1
+    100538: rThumb3 1
+    100540: rToe 1
+    400000: abdomen
+    400002: abdomen
+    400004: abdomen
+    400006: abdomen
+    400008: abdomen2
+    400010: abdomen2
+    400012: abdomen2
+    400014: abdomen2
+    400016: chest
+    400018: chest
+    400020: chest
+    400022: chest
+    400024: Genesis 2 Female
+    400026: head
+    400028: hip
+    400030: hip
+    400032: hip
+    400034: hip
+    400036: hip
+    400038: hip
+    400040: lBigToe
+    400042: lBigToe
+    400044: lCarpal1
+    400046: lCarpal1
+    400048: lCarpal2
+    400050: lCarpal2
+    400052: lCollar
+    400054: lCollar
+    400056: lCollar
+    400058: LeftMechGirlBoot
+    400060: LeftMechGirlGlove
+    400062: lFoot
+    400064: lFoot
+    400066: lForeArm
+    400068: lForeArm
+    400070: lHand
+    400072: lHand
+    400074: lIndex1
+    400076: lIndex1
+    400078: lIndex2
+    400080: lIndex2
+    400082: lMid1
+    400084: lMid1
+    400086: lMid2
+    400088: lMid2
+    400090: lMid3
+    400092: lMid3
+    400094: lowerJaw
+    400096: lPectoral
+    400098: lPinky1
+    400100: lPinky1
+    400102: lPinky2
+    400104: lPinky2
+    400106: lRing1
+    400108: lRing1
+    400110: lRing2
+    400112: lRing2
+    400114: lRing3
+    400116: lRing3
+    400118: lShin
+    400120: lShin
+    400122: lShin
+    400124: lShldr
+    400126: lShldr
+    400128: lShldr
+    400130: lSmallToe1
+    400132: lSmallToe1
+    400134: lSmallToe2
+    400136: lSmallToe2
+    400138: lSmallToe3
+    400140: lSmallToe3
+    400142: lSmallToe4
+    400144: lSmallToe4
+    400146: lThigh
+    400148: lThigh
+    400150: lThigh
+    400152: lThigh
+    400154: lThumb1
+    400156: lThumb1
+    400158: lThumb2
+    400160: lThumb2
+    400162: lThumb3
+    400164: lThumb3
+    400166: lToe
+    400168: lToe
+    400170: //RootNode
+    400172: MechGirl Leggings
+    400174: MechGirl Leggings_11630.Shape_LOD0
+    400176: MechGirl Leggings_11630.Shape_LOD1
+    400178: MechGirl Leggings_11630.Shape_LOD2
+    400180: MechGirl Leggings_11630.Shape_LOD3
+    400182: MechGirlBoots_14142L.Shape_LOD0
+    400184: MechGirlBoots_14142L.Shape_LOD1
+    400186: MechGirlBoots_14142L.Shape_LOD2
+    400188: MechGirlBoots_14142L.Shape_LOD3
+    400190: MechGirlBoots_14142R.Shape_LOD0
+    400192: MechGirlBoots_14142R.Shape_LOD1
+    400194: MechGirlBoots_14142R.Shape_LOD2
+    400196: MechGirlBoots_14142R.Shape_LOD3
+    400198: MechGirlGloves_9560L.Shape_LOD0
+    400200: MechGirlGloves_9560L.Shape_LOD1
+    400202: MechGirlGloves_9560L.Shape_LOD2
+    400204: MechGirlGloves_9560L.Shape_LOD3
+    400206: MechGirlGloves_9560R.Shape_LOD0
+    400208: MechGirlGloves_9560R.Shape_LOD1
+    400210: MechGirlGloves_9560R.Shape_LOD2
+    400212: MechGirlGloves_9560R.Shape_LOD3
+    400214: MechGirlSuit
+    400216: MechGirlSuit_8368.Shape_LOD0
+    400218: MechGirlSuit_8368.Shape_LOD1
+    400220: MechGirlSuit_8368.Shape_LOD2
+    400222: MechGirlSuit_8368.Shape_LOD3
+    400224: neck
+    400226: pelvis
+    400228: pelvis
+    400230: pelvis
+    400232: pelvis
+    400234: rBigToe
+    400236: rBigToe
+    400238: rCarpal1
+    400240: rCarpal1
+    400242: rCarpal2
+    400244: rCarpal2
+    400246: rCollar
+    400248: rCollar
+    400250: rCollar
+    400252: rFoot
+    400254: rFoot
+    400256: rForeArm
+    400258: rForeArm
+    400260: rHand
+    400262: rHand
+    400264: RightMechGirlBoot
+    400266: RightMechGirlGlove
+    400268: rIndex1
+    400270: rIndex1
+    400272: rIndex2
+    400274: rIndex2
+    400276: rMid1
+    400278: rMid1
+    400280: rMid2
+    400282: rMid2
+    400284: rMid3
+    400286: rMid3
+    400288: rPectoral
+    400290: rPinky1
+    400292: rPinky1
+    400294: rPinky2
+    400296: rPinky2
+    400298: rRing1
+    400300: rRing1
+    400302: rRing2
+    400304: rRing2
+    400306: rRing3
+    400308: rRing3
+    400310: rShin
+    400312: rShin
+    400314: rShin
+    400316: rShldr
+    400318: rShldr
+    400320: rShldr
+    400322: rSmallToe1
+    400324: rSmallToe1
+    400326: rSmallToe2
+    400328: rSmallToe2
+    400330: rSmallToe3
+    400332: rSmallToe3
+    400334: rSmallToe4
+    400336: rSmallToe4
+    400338: rThigh
+    400340: rThigh
+    400342: rThigh
+    400344: rThigh
+    400346: rThumb1
+    400348: rThumb1
+    400350: rThumb2
+    400352: rThumb2
+    400354: rThumb3
+    400356: rThumb3
+    400358: rToe
+    400360: rToe
+    400362: abdomen 1
+    400364: abdomen 2
+    400366: abdomen 3
+    400368: abdomen2 1
+    400370: abdomen2 2
+    400372: abdomen2 3
+    400374: chest 1
+    400376: chest 2
+    400378: chest 3
+    400380: Genesis2Female
+    400382: hip 1
+    400384: hip 2
+    400386: hip 3
+    400388: hip 4
+    400390: hip 5
+    400392: lBigToe 1
+    400394: lCarpal1 1
+    400396: lCarpal2 1
+    400398: lCollar 1
+    400400: lCollar 2
+    400402: lFoot 1
+    400404: lForeArm 1
+    400406: lHand 1
+    400408: lIndex1 1
+    400410: lIndex2 1
+    400412: lMid1 1
+    400414: lMid2 1
+    400416: lMid3 1
+    400418: lPinky1 1
+    400420: lPinky2 1
+    400422: lRing1 1
+    400424: lRing2 1
+    400426: lRing3 1
+    400428: lShin 1
+    400430: lShin 2
+    400432: lShldr 1
+    400434: lShldr 2
+    400436: lSmallToe1 1
+    400438: lSmallToe2 1
+    400440: lSmallToe3 1
+    400442: lSmallToe4 1
+    400444: lThigh 1
+    400446: lThigh 2
+    400448: lThigh 3
+    400450: lThumb1 1
+    400452: lThumb2 1
+    400454: lThumb3 1
+    400456: lToe 1
+    400458: MechGirl Leggings_11630
+    400460: MechGirlBoots_14142L
+    400462: MechGirlBoots_14142R
+    400464: MechGirlGloves_9560L
+    400466: MechGirlGloves_9560R
+    400468: MechGirlSuit_8368
+    400470: pelvis 1
+    400472: pelvis 2
+    400474: pelvis 3
+    400476: rBigToe 1
+    400478: rCarpal1 1
+    400480: rCarpal2 1
+    400482: rCollar 1
+    400484: rCollar 2
+    400486: rFoot 1
+    400488: rForeArm 1
+    400490: rHand 1
+    400492: rIndex1 1
+    400494: rIndex2 1
+    400496: rMid1 1
+    400498: rMid2 1
+    400500: rMid3 1
+    400502: rPinky1 1
+    400504: rPinky2 1
+    400506: rRing1 1
+    400508: rRing2 1
+    400510: rRing3 1
+    400512: rShin 1
+    400514: rShin 2
+    400516: rShldr 1
+    400518: rShldr 2
+    400520: rSmallToe1 1
+    400522: rSmallToe2 1
+    400524: rSmallToe3 1
+    400526: rSmallToe4 1
+    400528: rThigh 1
+    400530: rThigh 2
+    400532: rThigh 3
+    400534: rThumb1 1
+    400536: rThumb2 1
+    400538: rThumb3 1
+    400540: rToe 1
+    4300000: MechGirlBoots_14142L.Shape_LOD0
+    4300002: MechGirlBoots_14142L.Shape_LOD1
+    4300004: MechGirlBoots_14142L.Shape_LOD2
+    4300006: MechGirlBoots_14142L.Shape_LOD3
+    4300008: MechGirlBoots_14142R.Shape_LOD0
+    4300010: MechGirlBoots_14142R.Shape_LOD1
+    4300012: MechGirlBoots_14142R.Shape_LOD2
+    4300014: MechGirlBoots_14142R.Shape_LOD3
+    4300016: MechGirlGloves_9560R.Shape_LOD0
+    4300018: MechGirlGloves_9560R.Shape_LOD1
+    4300020: MechGirlGloves_9560R.Shape_LOD2
+    4300022: MechGirlGloves_9560R.Shape_LOD3
+    4300024: MechGirl Leggings_11630.Shape_LOD0
+    4300026: MechGirl Leggings_11630.Shape_LOD1
+    4300028: MechGirl Leggings_11630.Shape_LOD2
+    4300030: MechGirl Leggings_11630.Shape_LOD3
+    4300032: MechGirlSuit_8368.Shape_LOD0
+    4300034: MechGirlSuit_8368.Shape_LOD1
+    4300036: MechGirlSuit_8368.Shape_LOD2
+    4300038: MechGirlSuit_8368.Shape_LOD3
+    4300040: MechGirlGloves_9560L.Shape_LOD0
+    4300042: MechGirlGloves_9560L.Shape_LOD1
+    4300044: MechGirlGloves_9560L.Shape_LOD2
+    4300046: MechGirlGloves_9560L.Shape_LOD3
+    9500000: //RootNode
+    11400000: LeftMechGirlBoot
+    11400002: LeftMechGirlBoot
+    11400004: LeftMechGirlGlove
+    11400006: LeftMechGirlGlove
+    11400008: MechGirl Leggings
+    11400010: MechGirl Leggings
+    11400012: MechGirl Leggings_11630.Shape_LOD0
+    11400014: MechGirl Leggings_11630.Shape_LOD0
+    11400016: MechGirl Leggings_11630.Shape_LOD1
+    11400018: MechGirl Leggings_11630.Shape_LOD1
+    11400020: MechGirl Leggings_11630.Shape_LOD2
+    11400022: MechGirl Leggings_11630.Shape_LOD2
+    11400024: MechGirl Leggings_11630.Shape_LOD3
+    11400026: MechGirl Leggings_11630.Shape_LOD3
+    11400028: MechGirlBoots_14142L.Shape_LOD0
+    11400030: MechGirlBoots_14142L.Shape_LOD0
+    11400032: MechGirlBoots_14142L.Shape_LOD1
+    11400034: MechGirlBoots_14142L.Shape_LOD1
+    11400036: MechGirlBoots_14142L.Shape_LOD2
+    11400038: MechGirlBoots_14142L.Shape_LOD2
+    11400040: MechGirlBoots_14142L.Shape_LOD3
+    11400042: MechGirlBoots_14142L.Shape_LOD3
+    11400044: MechGirlBoots_14142R.Shape_LOD0
+    11400046: MechGirlBoots_14142R.Shape_LOD0
+    11400048: MechGirlBoots_14142R.Shape_LOD1
+    11400050: MechGirlBoots_14142R.Shape_LOD1
+    11400052: MechGirlBoots_14142R.Shape_LOD2
+    11400054: MechGirlBoots_14142R.Shape_LOD2
+    11400056: MechGirlBoots_14142R.Shape_LOD3
+    11400058: MechGirlBoots_14142R.Shape_LOD3
+    11400060: MechGirlGloves_9560L.Shape_LOD0
+    11400062: MechGirlGloves_9560L.Shape_LOD0
+    11400064: MechGirlGloves_9560L.Shape_LOD1
+    11400066: MechGirlGloves_9560L.Shape_LOD1
+    11400068: MechGirlGloves_9560L.Shape_LOD2
+    11400070: MechGirlGloves_9560L.Shape_LOD2
+    11400072: MechGirlGloves_9560L.Shape_LOD3
+    11400074: MechGirlGloves_9560L.Shape_LOD3
+    11400076: MechGirlGloves_9560R.Shape_LOD0
+    11400078: MechGirlGloves_9560R.Shape_LOD0
+    11400080: MechGirlGloves_9560R.Shape_LOD1
+    11400082: MechGirlGloves_9560R.Shape_LOD1
+    11400084: MechGirlGloves_9560R.Shape_LOD2
+    11400086: MechGirlGloves_9560R.Shape_LOD2
+    11400088: MechGirlGloves_9560R.Shape_LOD3
+    11400090: MechGirlGloves_9560R.Shape_LOD3
+    11400092: MechGirlSuit
+    11400094: MechGirlSuit
+    11400096: MechGirlSuit_8368.Shape_LOD0
+    11400098: MechGirlSuit_8368.Shape_LOD0
+    11400100: MechGirlSuit_8368.Shape_LOD1
+    11400102: MechGirlSuit_8368.Shape_LOD1
+    11400104: MechGirlSuit_8368.Shape_LOD2
+    11400106: MechGirlSuit_8368.Shape_LOD2
+    11400108: MechGirlSuit_8368.Shape_LOD3
+    11400110: MechGirlSuit_8368.Shape_LOD3
+    11400112: RightMechGirlBoot
+    11400114: RightMechGirlBoot
+    11400116: RightMechGirlGlove
+    11400118: RightMechGirlGlove
+    13700000: MechGirl Leggings_11630.Shape_LOD0
+    13700002: MechGirl Leggings_11630.Shape_LOD1
+    13700004: MechGirl Leggings_11630.Shape_LOD2
+    13700006: MechGirl Leggings_11630.Shape_LOD3
+    13700008: MechGirlBoots_14142L.Shape_LOD0
+    13700010: MechGirlBoots_14142L.Shape_LOD1
+    13700012: MechGirlBoots_14142L.Shape_LOD2
+    13700014: MechGirlBoots_14142L.Shape_LOD3
+    13700016: MechGirlBoots_14142R.Shape_LOD0
+    13700018: MechGirlBoots_14142R.Shape_LOD1
+    13700020: MechGirlBoots_14142R.Shape_LOD2
+    13700022: MechGirlBoots_14142R.Shape_LOD3
+    13700024: MechGirlGloves_9560L.Shape_LOD0
+    13700026: MechGirlGloves_9560L.Shape_LOD1
+    13700028: MechGirlGloves_9560L.Shape_LOD2
+    13700030: MechGirlGloves_9560L.Shape_LOD3
+    13700032: MechGirlGloves_9560R.Shape_LOD0
+    13700034: MechGirlGloves_9560R.Shape_LOD1
+    13700036: MechGirlGloves_9560R.Shape_LOD2
+    13700038: MechGirlGloves_9560R.Shape_LOD3
+    13700040: MechGirlSuit_8368.Shape_LOD0
+    13700042: MechGirlSuit_8368.Shape_LOD1
+    13700044: MechGirlSuit_8368.Shape_LOD2
+    13700046: MechGirlSuit_8368.Shape_LOD3
+    20500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages:
+    - .25
+    - .125
+    - .0625
+    - .00999999978
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
