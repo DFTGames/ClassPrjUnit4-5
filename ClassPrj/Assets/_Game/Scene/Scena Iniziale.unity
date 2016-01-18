@@ -501,7 +501,7 @@ MonoBehaviour:
   ElencoCartelle: {fileID: 1559976459}
   ElencoSessi: {fileID: 561501324}
   posizioneInizialeCamera: {fileID: 352820453}
-  pannelloImmagineSfondo: {fileID: 1598338940}
+  pannelloImmagineSfondo: {fileID: 1598338942}
   nomeScenaText: {fileID: 725031264}
   posizioneCameraCarica: {fileID: 169889387}
   altezza: 3
@@ -1926,7 +1926,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 402882, guid: a3ece763241e9d241b5b9acb4dc4bb42, type: 2}
       propertyPath: m_RootOrder
-      value: 15
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 156492, guid: a3ece763241e9d241b5b9acb4dc4bb42, type: 2}
       propertyPath: m_Name
@@ -2048,7 +2048,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 402882, guid: a3ece763241e9d241b5b9acb4dc4bb42, type: 2}
       propertyPath: m_RootOrder
-      value: 13
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 156492, guid: a3ece763241e9d241b5b9acb4dc4bb42, type: 2}
       propertyPath: m_Name
@@ -2798,7 +2798,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 402882, guid: a3ece763241e9d241b5b9acb4dc4bb42, type: 2}
       propertyPath: m_RootOrder
-      value: 14
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 156492, guid: a3ece763241e9d241b5b9acb4dc4bb42, type: 2}
       propertyPath: m_Name
@@ -2920,7 +2920,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 402882, guid: a3ece763241e9d241b5b9acb4dc4bb42, type: 2}
       propertyPath: m_RootOrder
-      value: 12
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 156492, guid: a3ece763241e9d241b5b9acb4dc4bb42, type: 2}
       propertyPath: m_Name

@@ -35,7 +35,7 @@ public class ManagerIniziale : MonoBehaviour
     public Dropdown ElencoSessi;
 
     public Transform posizioneInizialeCamera;
-    public GameObject pannelloImmagineSfondo;
+    public Image pannelloImmagineSfondo;
     public Text nomeScenaText;
 
     private int indiceButton = 0;
@@ -318,7 +318,7 @@ public class ManagerIniziale : MonoBehaviour
 
         if ((!nuovaPartita && !caricaPartita) || (caricaPartita && !personaggiInCarica))
         {
-            Image tmpImage = pannelloImmagineSfondo.GetComponent<Image>();
+            Image tmpImage = pannelloImmagineSfondo;
             if (tmpImage.color.a < 1f)                
                 tmpImage.color += new Color(0f, 0f, 0f, 0.2f) * Time.deltaTime * 3f;
 
@@ -329,8 +329,7 @@ public class ManagerIniziale : MonoBehaviour
         }
         else if (caricaPartita && !nuovaPartita)//+
         {
-
-            Image tmpImage = pannelloImmagineSfondo.GetComponent<Image>();
+            Image tmpImage = pannelloImmagineSfondo;
             if (tmpImage.color.a > 0f)
                 tmpImage.color -= new Color(0f, 0f, 0f, 0.1f) * Time.deltaTime * 1.5f;
             if (GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)") != null)
@@ -343,7 +342,7 @@ public class ManagerIniziale : MonoBehaviour
         }
         else if (ElencoSessi.value == 0 && nuovaPartita && !caricaPartita)
         {
-            Image tmpImage = pannelloImmagineSfondo.GetComponent<Image>();
+            Image tmpImage = pannelloImmagineSfondo;
             if (tmpImage.color.a > 0f)
                 tmpImage.color -= new Color(0f, 0f, 0f, 0.1f) * Time.deltaTime * 1.5f;
 
@@ -354,8 +353,7 @@ public class ManagerIniziale : MonoBehaviour
         }
         else if (ElencoSessi.value == 1 && nuovaPartita && !caricaPartita)
         {
-
-            Image tmpImage = pannelloImmagineSfondo.GetComponent<Image>();
+            Image tmpImage = pannelloImmagineSfondo;
             if (tmpImage.color.a > 0f)
                 tmpImage.color -= new Color(0f, 0f, 0f, 0.1f) * Time.deltaTime * 1.5f;
             Target = GameObject.Find(databaseInizialeProprieta.matriceProprieta[IndiceButton].nomeF + "(Clone)").GetComponent<Transform>();
@@ -365,7 +363,7 @@ public class ManagerIniziale : MonoBehaviour
         }
 
         //mentre sto caricando una nuova scena faccio spuntare un immagine di sfondo e il nome della scena facendo scomparire eventuali pannelli attivi:
-        if (Application.isLoadingLevel && pannelloImmagineSfondo.GetComponent<Image>().color.a!=1f)
+        if (Application.isLoadingLevel && pannelloImmagineSfondo.color.a!=1f)
         {
            
             AltrieMenu2.gameObject.SetActive(false);

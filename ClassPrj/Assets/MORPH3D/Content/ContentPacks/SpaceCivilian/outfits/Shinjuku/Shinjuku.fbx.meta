@@ -1,0 +1,691 @@
+fileFormatVersion: 2
+guid: a13793292d9b64bd99309cd44f9a7745
+timeCreated: 1441852399
+licenseType: Store
+ModelImporter:
+  serializedVersion: 18
+  fileIDToRecycleName:
+    100000: abdomen
+    100002: abdomen
+    100004: abdomen
+    100006: abdomen
+    100008: abdomen2
+    100010: abdomen2
+    100012: abdomen2
+    100014: abdomen2
+    100016: chest
+    100018: chest
+    100020: chest
+    100022: chest
+    100024: Genesis 2 Female
+    100026: hip
+    100028: hip
+    100030: hip
+    100032: hip
+    100034: hip
+    100036: hip
+    100038: lBigToe
+    100040: lBigToe
+    100042: lCarpal1
+    100044: lCarpal1
+    100046: lCarpal2
+    100048: lCarpal2
+    100050: lCollar
+    100052: lCollar
+    100054: lCollar
+    100056: lCollar
+    100058: LeftShinjuku_Shoes
+    100060: LeftShinjuku_Sleeves
+    100062: lFoot
+    100064: lFoot
+    100066: lFoot
+    100068: lForeArm
+    100070: lForeArm
+    100072: lHand
+    100074: lHand
+    100076: lIndex1
+    100078: lIndex1
+    100080: lMid1
+    100082: lMid1
+    100084: lPectoral
+    100086: lPectoral
+    100088: lPectoral
+    100090: lPectoral
+    100092: lPinky1
+    100094: lPinky1
+    100096: lRing1
+    100098: lRing1
+    100100: lShin
+    100102: lShin
+    100104: lShin
+    100106: lShldr
+    100108: lShldr
+    100110: lShldr
+    100112: lShldr
+    100114: lSmallToe1
+    100116: lSmallToe1
+    100118: lSmallToe2
+    100120: lSmallToe2
+    100122: lSmallToe3
+    100124: lSmallToe3
+    100126: lSmallToe4
+    100128: lSmallToe4
+    100130: lThigh
+    100132: lThigh
+    100134: lThigh
+    100136: lThigh
+    100138: lThumb1
+    100140: lThumb1
+    100142: lThumb2
+    100144: lThumb2
+    100146: lToe
+    100148: lToe
+    100150: lToe
+    100152: pelvis
+    100154: pelvis
+    100156: pelvis
+    100158: pelvis
+    100160: rBigToe
+    100162: rBigToe
+    100164: rCarpal1
+    100166: rCarpal1
+    100168: rCarpal2
+    100170: rCarpal2
+    100172: rCollar
+    100174: rCollar
+    100176: rCollar
+    100178: rCollar
+    100180: rFoot
+    100182: rFoot
+    100184: rFoot
+    100186: rForeArm
+    100188: rForeArm
+    100190: rHand
+    100192: rHand
+    100194: RightShinjuku_Shoe
+    100196: RightShinjuku_Sleeve
+    100198: rIndex1
+    100200: rIndex1
+    100202: rMid1
+    100204: rMid1
+    100206: rPectoral
+    100208: rPectoral
+    100210: rPectoral
+    100212: rPectoral
+    100214: rPinky1
+    100216: rPinky1
+    100218: rRing1
+    100220: rRing1
+    100222: rShin
+    100224: rShin
+    100226: rShin
+    100228: rShldr
+    100230: rShldr
+    100232: rShldr
+    100234: rShldr
+    100236: rSmallToe1
+    100238: rSmallToe1
+    100240: rSmallToe2
+    100242: rSmallToe2
+    100244: rSmallToe3
+    100246: rSmallToe3
+    100248: rSmallToe4
+    100250: rSmallToe4
+    100252: rThigh
+    100254: rThigh
+    100256: rThigh
+    100258: rThigh
+    100260: rThumb1
+    100262: rThumb1
+    100264: rThumb2
+    100266: rThumb2
+    100268: rToe
+    100270: rToe
+    100272: rToe
+    100274: //RootNode
+    100276: Shinjuku_Dress
+    100278: Shinjuku_Dress_18846.Shape_LOD0
+    100280: Shinjuku_Dress_18846.Shape_LOD1
+    100282: Shinjuku_Dress_18846.Shape_LOD2
+    100284: Shinjuku_Dress_18846.Shape_LOD3
+    100286: Shinjuku_Leotard
+    100288: Shinjuku_Leotard_9089.Shape_LOD0
+    100290: Shinjuku_Leotard_9089.Shape_LOD1
+    100292: Shinjuku_Leotard_9089.Shape_LOD2
+    100294: Shinjuku_Leotard_9089.Shape_LOD3
+    100296: Shinjuku_Shoes_6472L.Shape_LOD0
+    100298: Shinjuku_Shoes_6472L.Shape_LOD1
+    100300: Shinjuku_Shoes_6472L.Shape_LOD2
+    100302: Shinjuku_Shoes_6472L.Shape_LOD3
+    100304: Shinjuku_Shoes_6472R.Shape_LOD0
+    100306: Shinjuku_Shoes_6472R.Shape_LOD1
+    100308: Shinjuku_Shoes_6472R.Shape_LOD2
+    100310: Shinjuku_Shoes_6472R.Shape_LOD3
+    100312: Shinjuku_Sleeves_10084L.Shape_LOD0
+    100314: Shinjuku_Sleeves_10084L.Shape_LOD1
+    100316: Shinjuku_Sleeves_10084L.Shape_LOD2
+    100318: Shinjuku_Sleeves_10084L.Shape_LOD3
+    100320: Shinjuku_Sleeves_10084R.Shape_LOD0
+    100322: Shinjuku_Sleeves_10084R.Shape_LOD1
+    100324: Shinjuku_Sleeves_10084R.Shape_LOD2
+    100326: Shinjuku_Sleeves_10084R.Shape_LOD3
+    100328: abdomen 1
+    100330: abdomen 2
+    100332: abdomen 3
+    100334: abdomen2 1
+    100336: abdomen2 2
+    100338: abdomen2 3
+    100340: chest 1
+    100342: chest 2
+    100344: chest 3
+    100346: Genesis2Female
+    100348: hip 1
+    100350: hip 2
+    100352: hip 3
+    100354: hip 4
+    100356: hip 5
+    100358: lBigToe 1
+    100360: lCarpal1 1
+    100362: lCarpal2 1
+    100364: lCollar 1
+    100366: lCollar 2
+    100368: lCollar 3
+    100370: lFoot 1
+    100372: lFoot 2
+    100374: lForeArm 1
+    100376: lHand 1
+    100378: lIndex1 1
+    100380: lMid1 1
+    100382: lPectoral 1
+    100384: lPectoral 2
+    100386: lPectoral 3
+    100388: lPinky1 1
+    100390: lRing1 1
+    100392: lShin 1
+    100394: lShin 2
+    100396: lShldr 1
+    100398: lShldr 2
+    100400: lShldr 3
+    100402: lSmallToe1 1
+    100404: lSmallToe2 1
+    100406: lSmallToe3 1
+    100408: lSmallToe4 1
+    100410: lThigh 1
+    100412: lThigh 2
+    100414: lThigh 3
+    100416: lThumb1 1
+    100418: lThumb2 1
+    100420: lToe 1
+    100422: lToe 2
+    100424: pelvis 1
+    100426: pelvis 2
+    100428: pelvis 3
+    100430: rBigToe 1
+    100432: rCarpal1 1
+    100434: rCarpal2 1
+    100436: rCollar 1
+    100438: rCollar 2
+    100440: rCollar 3
+    100442: rFoot 1
+    100444: rFoot 2
+    100446: rForeArm 1
+    100448: rHand 1
+    100450: rIndex1 1
+    100452: rMid1 1
+    100454: rPectoral 1
+    100456: rPectoral 2
+    100458: rPectoral 3
+    100460: rPinky1 1
+    100462: rRing1 1
+    100464: rShin 1
+    100466: rShin 2
+    100468: rShldr 1
+    100470: rShldr 2
+    100472: rShldr 3
+    100474: rSmallToe1 1
+    100476: rSmallToe2 1
+    100478: rSmallToe3 1
+    100480: rSmallToe4 1
+    100482: rThigh 1
+    100484: rThigh 2
+    100486: rThigh 3
+    100488: rThumb1 1
+    100490: rThumb2 1
+    100492: rToe 1
+    100494: rToe 2
+    100496: Shinjuku_Dress_18846
+    100498: Shinjuku_Leotard_9089
+    100500: Shinjuku_Shoes_6472L
+    100502: Shinjuku_Shoes_6472R
+    100504: Shinjuku_Sleeves_10084L
+    100506: Shinjuku_Sleeves_10084R
+    400000: abdomen
+    400002: abdomen
+    400004: abdomen
+    400006: abdomen
+    400008: abdomen2
+    400010: abdomen2
+    400012: abdomen2
+    400014: abdomen2
+    400016: chest
+    400018: chest
+    400020: chest
+    400022: chest
+    400024: Genesis 2 Female
+    400026: hip
+    400028: hip
+    400030: hip
+    400032: hip
+    400034: hip
+    400036: hip
+    400038: lBigToe
+    400040: lBigToe
+    400042: lCarpal1
+    400044: lCarpal1
+    400046: lCarpal2
+    400048: lCarpal2
+    400050: lCollar
+    400052: lCollar
+    400054: lCollar
+    400056: lCollar
+    400058: LeftShinjuku_Shoes
+    400060: LeftShinjuku_Sleeves
+    400062: lFoot
+    400064: lFoot
+    400066: lFoot
+    400068: lForeArm
+    400070: lForeArm
+    400072: lHand
+    400074: lHand
+    400076: lIndex1
+    400078: lIndex1
+    400080: lMid1
+    400082: lMid1
+    400084: lPectoral
+    400086: lPectoral
+    400088: lPectoral
+    400090: lPectoral
+    400092: lPinky1
+    400094: lPinky1
+    400096: lRing1
+    400098: lRing1
+    400100: lShin
+    400102: lShin
+    400104: lShin
+    400106: lShldr
+    400108: lShldr
+    400110: lShldr
+    400112: lShldr
+    400114: lSmallToe1
+    400116: lSmallToe1
+    400118: lSmallToe2
+    400120: lSmallToe2
+    400122: lSmallToe3
+    400124: lSmallToe3
+    400126: lSmallToe4
+    400128: lSmallToe4
+    400130: lThigh
+    400132: lThigh
+    400134: lThigh
+    400136: lThigh
+    400138: lThumb1
+    400140: lThumb1
+    400142: lThumb2
+    400144: lThumb2
+    400146: lToe
+    400148: lToe
+    400150: lToe
+    400152: pelvis
+    400154: pelvis
+    400156: pelvis
+    400158: pelvis
+    400160: rBigToe
+    400162: rBigToe
+    400164: rCarpal1
+    400166: rCarpal1
+    400168: rCarpal2
+    400170: rCarpal2
+    400172: rCollar
+    400174: rCollar
+    400176: rCollar
+    400178: rCollar
+    400180: rFoot
+    400182: rFoot
+    400184: rFoot
+    400186: rForeArm
+    400188: rForeArm
+    400190: rHand
+    400192: rHand
+    400194: RightShinjuku_Shoe
+    400196: RightShinjuku_Sleeve
+    400198: rIndex1
+    400200: rIndex1
+    400202: rMid1
+    400204: rMid1
+    400206: rPectoral
+    400208: rPectoral
+    400210: rPectoral
+    400212: rPectoral
+    400214: rPinky1
+    400216: rPinky1
+    400218: rRing1
+    400220: rRing1
+    400222: rShin
+    400224: rShin
+    400226: rShin
+    400228: rShldr
+    400230: rShldr
+    400232: rShldr
+    400234: rShldr
+    400236: rSmallToe1
+    400238: rSmallToe1
+    400240: rSmallToe2
+    400242: rSmallToe2
+    400244: rSmallToe3
+    400246: rSmallToe3
+    400248: rSmallToe4
+    400250: rSmallToe4
+    400252: rThigh
+    400254: rThigh
+    400256: rThigh
+    400258: rThigh
+    400260: rThumb1
+    400262: rThumb1
+    400264: rThumb2
+    400266: rThumb2
+    400268: rToe
+    400270: rToe
+    400272: rToe
+    400274: //RootNode
+    400276: Shinjuku_Dress
+    400278: Shinjuku_Dress_18846.Shape_LOD0
+    400280: Shinjuku_Dress_18846.Shape_LOD1
+    400282: Shinjuku_Dress_18846.Shape_LOD2
+    400284: Shinjuku_Dress_18846.Shape_LOD3
+    400286: Shinjuku_Leotard
+    400288: Shinjuku_Leotard_9089.Shape_LOD0
+    400290: Shinjuku_Leotard_9089.Shape_LOD1
+    400292: Shinjuku_Leotard_9089.Shape_LOD2
+    400294: Shinjuku_Leotard_9089.Shape_LOD3
+    400296: Shinjuku_Shoes_6472L.Shape_LOD0
+    400298: Shinjuku_Shoes_6472L.Shape_LOD1
+    400300: Shinjuku_Shoes_6472L.Shape_LOD2
+    400302: Shinjuku_Shoes_6472L.Shape_LOD3
+    400304: Shinjuku_Shoes_6472R.Shape_LOD0
+    400306: Shinjuku_Shoes_6472R.Shape_LOD1
+    400308: Shinjuku_Shoes_6472R.Shape_LOD2
+    400310: Shinjuku_Shoes_6472R.Shape_LOD3
+    400312: Shinjuku_Sleeves_10084L.Shape_LOD0
+    400314: Shinjuku_Sleeves_10084L.Shape_LOD1
+    400316: Shinjuku_Sleeves_10084L.Shape_LOD2
+    400318: Shinjuku_Sleeves_10084L.Shape_LOD3
+    400320: Shinjuku_Sleeves_10084R.Shape_LOD0
+    400322: Shinjuku_Sleeves_10084R.Shape_LOD1
+    400324: Shinjuku_Sleeves_10084R.Shape_LOD2
+    400326: Shinjuku_Sleeves_10084R.Shape_LOD3
+    400328: abdomen 1
+    400330: abdomen 2
+    400332: abdomen 3
+    400334: abdomen2 1
+    400336: abdomen2 2
+    400338: abdomen2 3
+    400340: chest 1
+    400342: chest 2
+    400344: chest 3
+    400346: Genesis2Female
+    400348: hip 1
+    400350: hip 2
+    400352: hip 3
+    400354: hip 4
+    400356: hip 5
+    400358: lBigToe 1
+    400360: lCarpal1 1
+    400362: lCarpal2 1
+    400364: lCollar 1
+    400366: lCollar 2
+    400368: lCollar 3
+    400370: lFoot 1
+    400372: lFoot 2
+    400374: lForeArm 1
+    400376: lHand 1
+    400378: lIndex1 1
+    400380: lMid1 1
+    400382: lPectoral 1
+    400384: lPectoral 2
+    400386: lPectoral 3
+    400388: lPinky1 1
+    400390: lRing1 1
+    400392: lShin 1
+    400394: lShin 2
+    400396: lShldr 1
+    400398: lShldr 2
+    400400: lShldr 3
+    400402: lSmallToe1 1
+    400404: lSmallToe2 1
+    400406: lSmallToe3 1
+    400408: lSmallToe4 1
+    400410: lThigh 1
+    400412: lThigh 2
+    400414: lThigh 3
+    400416: lThumb1 1
+    400418: lThumb2 1
+    400420: lToe 1
+    400422: lToe 2
+    400424: pelvis 1
+    400426: pelvis 2
+    400428: pelvis 3
+    400430: rBigToe 1
+    400432: rCarpal1 1
+    400434: rCarpal2 1
+    400436: rCollar 1
+    400438: rCollar 2
+    400440: rCollar 3
+    400442: rFoot 1
+    400444: rFoot 2
+    400446: rForeArm 1
+    400448: rHand 1
+    400450: rIndex1 1
+    400452: rMid1 1
+    400454: rPectoral 1
+    400456: rPectoral 2
+    400458: rPectoral 3
+    400460: rPinky1 1
+    400462: rRing1 1
+    400464: rShin 1
+    400466: rShin 2
+    400468: rShldr 1
+    400470: rShldr 2
+    400472: rShldr 3
+    400474: rSmallToe1 1
+    400476: rSmallToe2 1
+    400478: rSmallToe3 1
+    400480: rSmallToe4 1
+    400482: rThigh 1
+    400484: rThigh 2
+    400486: rThigh 3
+    400488: rThumb1 1
+    400490: rThumb2 1
+    400492: rToe 1
+    400494: rToe 2
+    400496: Shinjuku_Dress_18846
+    400498: Shinjuku_Leotard_9089
+    400500: Shinjuku_Shoes_6472L
+    400502: Shinjuku_Shoes_6472R
+    400504: Shinjuku_Sleeves_10084L
+    400506: Shinjuku_Sleeves_10084R
+    4300000: Shinjuku_Leotard_9089.Shape_LOD0
+    4300002: Shinjuku_Leotard_9089.Shape_LOD1
+    4300004: Shinjuku_Leotard_9089.Shape_LOD2
+    4300006: Shinjuku_Leotard_9089.Shape_LOD3
+    4300008: Shinjuku_Dress_18846.Shape_LOD0
+    4300010: Shinjuku_Dress_18846.Shape_LOD1
+    4300012: Shinjuku_Dress_18846.Shape_LOD2
+    4300014: Shinjuku_Dress_18846.Shape_LOD3
+    4300016: Shinjuku_Shoes_6472L.Shape_LOD0
+    4300018: Shinjuku_Shoes_6472L.Shape_LOD1
+    4300020: Shinjuku_Shoes_6472L.Shape_LOD2
+    4300022: Shinjuku_Shoes_6472L.Shape_LOD3
+    4300024: Shinjuku_Sleeves_10084L.Shape_LOD0
+    4300026: Shinjuku_Sleeves_10084L.Shape_LOD1
+    4300028: Shinjuku_Sleeves_10084L.Shape_LOD2
+    4300030: Shinjuku_Sleeves_10084L.Shape_LOD3
+    4300032: Shinjuku_Shoes_6472R.Shape_LOD0
+    4300034: Shinjuku_Shoes_6472R.Shape_LOD1
+    4300036: Shinjuku_Shoes_6472R.Shape_LOD2
+    4300038: Shinjuku_Shoes_6472R.Shape_LOD3
+    4300040: Shinjuku_Sleeves_10084R.Shape_LOD0
+    4300042: Shinjuku_Sleeves_10084R.Shape_LOD1
+    4300044: Shinjuku_Sleeves_10084R.Shape_LOD2
+    4300046: Shinjuku_Sleeves_10084R.Shape_LOD3
+    9500000: //RootNode
+    11400000: LeftShinjuku_Shoes
+    11400002: LeftShinjuku_Shoes
+    11400004: LeftShinjuku_Sleeves
+    11400006: LeftShinjuku_Sleeves
+    11400008: RightShinjuku_Shoe
+    11400010: RightShinjuku_Shoe
+    11400012: RightShinjuku_Sleeve
+    11400014: RightShinjuku_Sleeve
+    11400016: Shinjuku_Dress
+    11400018: Shinjuku_Dress
+    11400020: Shinjuku_Dress_18846.Shape_LOD0
+    11400022: Shinjuku_Dress_18846.Shape_LOD0
+    11400024: Shinjuku_Dress_18846.Shape_LOD1
+    11400026: Shinjuku_Dress_18846.Shape_LOD1
+    11400028: Shinjuku_Dress_18846.Shape_LOD2
+    11400030: Shinjuku_Dress_18846.Shape_LOD2
+    11400032: Shinjuku_Dress_18846.Shape_LOD3
+    11400034: Shinjuku_Dress_18846.Shape_LOD3
+    11400036: Shinjuku_Leotard
+    11400038: Shinjuku_Leotard
+    11400040: Shinjuku_Leotard_9089.Shape_LOD0
+    11400042: Shinjuku_Leotard_9089.Shape_LOD0
+    11400044: Shinjuku_Leotard_9089.Shape_LOD1
+    11400046: Shinjuku_Leotard_9089.Shape_LOD1
+    11400048: Shinjuku_Leotard_9089.Shape_LOD2
+    11400050: Shinjuku_Leotard_9089.Shape_LOD2
+    11400052: Shinjuku_Leotard_9089.Shape_LOD3
+    11400054: Shinjuku_Leotard_9089.Shape_LOD3
+    11400056: Shinjuku_Shoes_6472L.Shape_LOD0
+    11400058: Shinjuku_Shoes_6472L.Shape_LOD0
+    11400060: Shinjuku_Shoes_6472L.Shape_LOD1
+    11400062: Shinjuku_Shoes_6472L.Shape_LOD1
+    11400064: Shinjuku_Shoes_6472L.Shape_LOD2
+    11400066: Shinjuku_Shoes_6472L.Shape_LOD2
+    11400068: Shinjuku_Shoes_6472L.Shape_LOD3
+    11400070: Shinjuku_Shoes_6472L.Shape_LOD3
+    11400072: Shinjuku_Shoes_6472R.Shape_LOD0
+    11400074: Shinjuku_Shoes_6472R.Shape_LOD0
+    11400076: Shinjuku_Shoes_6472R.Shape_LOD1
+    11400078: Shinjuku_Shoes_6472R.Shape_LOD1
+    11400080: Shinjuku_Shoes_6472R.Shape_LOD2
+    11400082: Shinjuku_Shoes_6472R.Shape_LOD2
+    11400084: Shinjuku_Shoes_6472R.Shape_LOD3
+    11400086: Shinjuku_Shoes_6472R.Shape_LOD3
+    11400088: Shinjuku_Sleeves_10084L.Shape_LOD0
+    11400090: Shinjuku_Sleeves_10084L.Shape_LOD0
+    11400092: Shinjuku_Sleeves_10084L.Shape_LOD1
+    11400094: Shinjuku_Sleeves_10084L.Shape_LOD1
+    11400096: Shinjuku_Sleeves_10084L.Shape_LOD2
+    11400098: Shinjuku_Sleeves_10084L.Shape_LOD2
+    11400100: Shinjuku_Sleeves_10084L.Shape_LOD3
+    11400102: Shinjuku_Sleeves_10084L.Shape_LOD3
+    11400104: Shinjuku_Sleeves_10084R.Shape_LOD0
+    11400106: Shinjuku_Sleeves_10084R.Shape_LOD0
+    11400108: Shinjuku_Sleeves_10084R.Shape_LOD1
+    11400110: Shinjuku_Sleeves_10084R.Shape_LOD1
+    11400112: Shinjuku_Sleeves_10084R.Shape_LOD2
+    11400114: Shinjuku_Sleeves_10084R.Shape_LOD2
+    11400116: Shinjuku_Sleeves_10084R.Shape_LOD3
+    11400118: Shinjuku_Sleeves_10084R.Shape_LOD3
+    13700000: Shinjuku_Dress_18846.Shape_LOD0
+    13700002: Shinjuku_Dress_18846.Shape_LOD1
+    13700004: Shinjuku_Dress_18846.Shape_LOD2
+    13700006: Shinjuku_Dress_18846.Shape_LOD3
+    13700008: Shinjuku_Leotard_9089.Shape_LOD0
+    13700010: Shinjuku_Leotard_9089.Shape_LOD1
+    13700012: Shinjuku_Leotard_9089.Shape_LOD2
+    13700014: Shinjuku_Leotard_9089.Shape_LOD3
+    13700016: Shinjuku_Shoes_6472L.Shape_LOD0
+    13700018: Shinjuku_Shoes_6472L.Shape_LOD1
+    13700020: Shinjuku_Shoes_6472L.Shape_LOD2
+    13700022: Shinjuku_Shoes_6472L.Shape_LOD3
+    13700024: Shinjuku_Shoes_6472R.Shape_LOD0
+    13700026: Shinjuku_Shoes_6472R.Shape_LOD1
+    13700028: Shinjuku_Shoes_6472R.Shape_LOD2
+    13700030: Shinjuku_Shoes_6472R.Shape_LOD3
+    13700032: Shinjuku_Sleeves_10084L.Shape_LOD0
+    13700034: Shinjuku_Sleeves_10084L.Shape_LOD1
+    13700036: Shinjuku_Sleeves_10084L.Shape_LOD2
+    13700038: Shinjuku_Sleeves_10084L.Shape_LOD3
+    13700040: Shinjuku_Sleeves_10084R.Shape_LOD0
+    13700042: Shinjuku_Sleeves_10084R.Shape_LOD1
+    13700044: Shinjuku_Sleeves_10084R.Shape_LOD2
+    13700046: Shinjuku_Sleeves_10084R.Shape_LOD3
+    20500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 3
+    animationRotationError: .5
+    animationPositionError: .5
+    animationScaleError: .5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages:
+    - .25
+    - .125
+    - .0625
+    - .00999999978
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    splitTangentsAcrossUV: 1
+    normalImportMode: 0
+    tangentImportMode: 1
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: .5
+    foreArmTwist: .5
+    upperLegTwist: .5
+    legTwist: .5
+    armStretch: .0500000007
+    legStretch: .0500000007
+    feetSpacing: 0
+    rootMotionBoneName: 
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
