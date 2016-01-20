@@ -1,0 +1,852 @@
+fileFormatVersion: 2
+guid: 5272e02693b2386468dc048d7dc963bc
+timeCreated: 1453238657
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: portale2_0
+    21300002: portale2_1
+    21300004: portale2_2
+    21300006: portale2_3
+    21300008: portale2_4
+    21300010: portale2_5
+    21300012: portale2_6
+    21300014: portale2_7
+    21300016: portale2_8
+    21300018: portale2_9
+    21300020: portale2_10
+    21300022: portale2_11
+    21300024: portale2_12
+    21300026: portale2_13
+    21300028: portale2_14
+    21300030: portale2_15
+    21300032: portale2_16
+    21300034: portale2_17
+    21300036: portale2_18
+    21300038: portale2_19
+    21300040: portale2_20
+    21300042: portale2_21
+    21300044: portale2_22
+    21300046: portale2_23
+    21300048: portale2_24
+    21300050: portale2_25
+    21300052: portale2_26
+    21300054: portale2_27
+    21300056: portale2_28
+    21300058: portale2_29
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 7
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 1
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  allowsAlphaSplitting: 0
+  spriteMode: 0
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 0
+  textureType: 0
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: portale2_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -50, y: 86}
+        - {x: -79, y: 60}
+        - {x: -79, y: -46}
+        - {x: -68, y: -81}
+        - {x: -61, y: -83}
+        - {x: 38, y: -83}
+        - {x: 87, y: -44}
+        - {x: 87, y: 32}
+        - {x: 65, y: 86}
+    - name: portale2_1
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 32, y: 86}
+        - {x: -16, y: 86}
+        - {x: -79, y: 43}
+        - {x: -79, y: -49}
+        - {x: -61, y: -82}
+        - {x: 54, y: -82}
+        - {x: 88, y: -73}
+        - {x: 88, y: 28}
+        - {x: 57, y: 85}
+    - name: portale2_2
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -30, y: 86}
+        - {x: -82, y: 46}
+        - {x: -82, y: -30}
+        - {x: -49, y: -70}
+        - {x: -27, y: -83}
+        - {x: 59, y: -83}
+        - {x: 88, y: -47}
+        - {x: 88, y: 59}
+        - {x: 65, y: 86}
+      - - {x: 78, y: -41}
+        - {x: 81, y: -40}
+        - {x: 81, y: -37}
+        - {x: 78, y: -36}
+        - {x: 76, y: -38}
+    - name: portale2_3
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -13, y: 94}
+        - {x: -21, y: 94}
+        - {x: -79, y: 67}
+        - {x: -102, y: -19}
+        - {x: -102, y: -32}
+        - {x: -65, y: -87}
+        - {x: 17, y: -100}
+        - {x: 35, y: -100}
+        - {x: 100, y: -66}
+        - {x: 100, y: 27}
+        - {x: 62, y: 82}
+    - name: portale2_4
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 118, y: 40}
+        - {x: 82, y: 99}
+        - {x: 21, y: 111}
+        - {x: -36, y: 111}
+        - {x: -93, y: 68}
+        - {x: -123, y: -25}
+        - {x: -123, y: -36}
+        - {x: -81, y: -67}
+        - {x: -66, y: -111}
+        - {x: -1, y: -99}
+        - {x: 23, y: -119}
+        - {x: 39, y: -119}
+        - {x: 70, y: -87}
+        - {x: 116, y: -83}
+        - {x: 112, y: -27}
+        - {x: 118, y: -2}
+    - name: portale2_5
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 128, y: 22}
+        - {x: 128, y: 34}
+        - {x: 78, y: 107}
+        - {x: -22, y: 123}
+        - {x: -28, y: 123}
+        - {x: -48, y: 106}
+        - {x: -100, y: 76}
+        - {x: -102, y: 12}
+        - {x: -125, y: -23}
+        - {x: -125, y: -40}
+        - {x: -76, y: -88}
+        - {x: -76, y: -106}
+        - {x: -65, y: -107}
+        - {x: -3, y: -109}
+        - {x: 31, y: -128}
+        - {x: 40, y: -128}
+        - {x: 63, y: -90}
+        - {x: 118, y: -78}
+        - {x: 109, y: -41}
+    - name: portale2_6
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 128, y: -7}
+        - {x: 128, y: 41}
+        - {x: 98, y: 87}
+        - {x: 81, y: 101}
+        - {x: 76, y: 105}
+        - {x: -1, y: 124}
+        - {x: -34, y: 124}
+        - {x: -102, y: 76}
+        - {x: -107, y: 9}
+        - {x: -123, y: -26}
+        - {x: -123, y: -37}
+        - {x: -122, y: -40}
+        - {x: -84, y: -65}
+        - {x: -86, y: -110}
+        - {x: -50, y: -119}
+        - {x: 6, y: -128}
+        - {x: 42, y: -128}
+        - {x: 52, y: -109}
+        - {x: 121, y: -78}
+        - {x: 116, y: -25}
+    - name: portale2_7
+      rect:
+        serializedVersion: 2
+        x: 1792
+        y: 768
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 70, y: -58}
+        - {x: 89, y: -34}
+        - {x: 95, y: -18}
+        - {x: 95, y: 36}
+        - {x: 91, y: 58}
+        - {x: 70, y: 92}
+        - {x: -38, y: 92}
+        - {x: -87, y: 77}
+        - {x: -89, y: 68}
+        - {x: -89, y: -47}
+        - {x: -43, y: -89}
+        - {x: 64, y: -89}
+        - {x: 70, y: -63}
+        - {x: 69, y: -60}
+        - {x: 65, y: -60}
+      - - {x: -2, y: 93}
+        - {x: -4, y: 90}
+        - {x: -4, y: 89}
+        - {x: -3, y: 86}
+        - {x: 5, y: 86}
+        - {x: 5, y: 92}
+        - {x: 2, y: 93}
+    - name: portale2_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 58, y: 110}
+        - {x: 37, y: 110}
+        - {x: 1, y: 94}
+        - {x: -22, y: 110}
+        - {x: -31, y: 110}
+        - {x: -100, y: 42}
+        - {x: -107, y: -4}
+        - {x: -107, y: -55}
+        - {x: -37, y: -96}
+        - {x: -8, y: -99}
+        - {x: 41, y: -99}
+        - {x: 52, y: -87}
+        - {x: 100, y: -39}
+        - {x: 104, y: -3}
+        - {x: 104, y: 38}
+    - name: portale2_9
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 41, y: 112}
+        - {x: 2, y: 98}
+        - {x: -19, y: 112}
+        - {x: -34, y: 112}
+        - {x: -90, y: 51}
+        - {x: -108, y: 53}
+        - {x: -108, y: -37}
+        - {x: -103, y: -43}
+        - {x: -42, y: -106}
+        - {x: 47, y: -106}
+        - {x: 112, y: -48}
+        - {x: 112, y: 38}
+        - {x: 50, y: 112}
+    - name: portale2_10
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 48, y: 115}
+        - {x: 34, y: 115}
+        - {x: 3, y: 101}
+        - {x: -20, y: 115}
+        - {x: -34, y: 115}
+        - {x: -40, y: 109}
+        - {x: -108, y: 56}
+        - {x: -108, y: 30}
+        - {x: -103, y: -7}
+        - {x: -108, y: -16}
+        - {x: -108, y: -54}
+        - {x: -54, y: -107}
+        - {x: 48, y: -107}
+        - {x: 81, y: -70}
+        - {x: 113, y: -63}
+        - {x: 113, y: 41}
+    - name: portale2_11
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 70, y: 106}
+        - {x: 47, y: 108}
+        - {x: -51, y: 108}
+        - {x: -98, y: 55}
+        - {x: -95, y: 7}
+        - {x: -105, y: -36}
+        - {x: -105, y: -49}
+        - {x: -54, y: -112}
+        - {x: 7, y: -99}
+        - {x: 30, y: -113}
+        - {x: 61, y: -113}
+        - {x: 112, y: -59}
+        - {x: 115, y: -48}
+        - {x: 116, y: -13}
+        - {x: 116, y: 52}
+      - - {x: -108, y: -49}
+        - {x: -105, y: -48}
+        - {x: -105, y: -45}
+        - {x: -108, y: -44}
+        - {x: -110, y: -46}
+    - name: portale2_12
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 59, y: 107}
+        - {x: 55, y: 107}
+        - {x: 11, y: 109}
+        - {x: -40, y: 109}
+        - {x: -47, y: 106}
+        - {x: -99, y: 60}
+        - {x: -104, y: 44}
+        - {x: -108, y: -17}
+        - {x: -108, y: -49}
+        - {x: -107, y: -54}
+        - {x: -58, y: -114}
+        - {x: 53, y: -114}
+        - {x: 75, y: -73}
+        - {x: 116, y: -58}
+        - {x: 116, y: 44}
+    - name: portale2_13
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 97, y: 42}
+        - {x: 48, y: 92}
+        - {x: -47, y: 92}
+        - {x: -56, y: 80}
+        - {x: -81, y: 44}
+        - {x: -81, y: -50}
+        - {x: -33, y: -91}
+        - {x: 41, y: -91}
+        - {x: 47, y: -89}
+        - {x: 103, y: -36}
+        - {x: 103, y: -21}
+        - {x: 102, y: -20}
+    - name: portale2_14
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 34, y: 103}
+        - {x: -40, y: 103}
+        - {x: -91, y: 65}
+        - {x: -91, y: -38}
+        - {x: -74, y: -80}
+        - {x: -62, y: -93}
+        - {x: 47, y: -93}
+        - {x: 105, y: -62}
+        - {x: 105, y: -5}
+        - {x: 101, y: 44}
+    - name: portale2_15
+      rect:
+        serializedVersion: 2
+        x: 1792
+        y: 512
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -52, y: 105}
+        - {x: -87, y: 94}
+        - {x: -92, y: 30}
+        - {x: -98, y: 2}
+        - {x: -98, y: -9}
+        - {x: -83, y: -47}
+        - {x: -72, y: -73}
+        - {x: -35, y: -99}
+        - {x: 51, y: -99}
+        - {x: 104, y: -40}
+        - {x: 104, y: 54}
+        - {x: 74, y: 105}
+    - name: portale2_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 80, y: 71}
+        - {x: 15, y: 104}
+        - {x: -7, y: 104}
+        - {x: -71, y: 79}
+        - {x: -99, y: 2}
+        - {x: -99, y: -16}
+        - {x: -81, y: -74}
+        - {x: -15, y: -99}
+        - {x: 23, y: -99}
+        - {x: 68, y: -82}
+        - {x: 93, y: -41}
+        - {x: 103, y: -17}
+        - {x: 103, y: 19}
+      - - {x: -81, y: -42}
+        - {x: -75, y: -42}
+        - {x: -75, y: -36}
+        - {x: -77, y: -33}
+        - {x: -81, y: -33}
+        - {x: -83, y: -34}
+        - {x: -83, y: -39}
+    - name: portale2_17
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -54, y: 90}
+        - {x: -83, y: 65}
+        - {x: -83, y: -37}
+        - {x: -80, y: -42}
+        - {x: -77, y: -40}
+        - {x: -74, y: -39}
+        - {x: -75, y: -37}
+        - {x: -72, y: -43}
+        - {x: -74, y: -45}
+        - {x: -76, y: -50}
+        - {x: -71, y: -90}
+        - {x: 96, y: -90}
+        - {x: 96, y: 49}
+        - {x: 59, y: 90}
+    - name: portale2_18
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 51, y: 91}
+        - {x: 10, y: 99}
+        - {x: -28, y: 99}
+        - {x: -100, y: 59}
+        - {x: -100, y: 46}
+        - {x: -83, y: 9}
+        - {x: -100, y: -18}
+        - {x: -100, y: -31}
+        - {x: -44, y: -96}
+        - {x: 13, y: -110}
+        - {x: 46, y: -110}
+        - {x: 93, y: -50}
+        - {x: 103, y: 7}
+        - {x: 103, y: 28}
+    - name: portale2_19
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 121, y: 33}
+        - {x: 62, y: 107}
+        - {x: -18, y: 117}
+        - {x: -21, y: 117}
+        - {x: -74, y: 66}
+        - {x: -120, y: 65}
+        - {x: -120, y: -30}
+        - {x: -66, y: -78}
+        - {x: -59, y: -107}
+        - {x: -55, y: -115}
+        - {x: -21, y: -103}
+        - {x: 29, y: -128}
+        - {x: 42, y: -128}
+        - {x: 67, y: -84}
+        - {x: 117, y: -62}
+        - {x: 121, y: -10}
+    - name: portale2_20
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 128, y: 35}
+        - {x: 125, y: 40}
+        - {x: 65, y: 116}
+        - {x: -13, y: 123}
+        - {x: -18, y: 127}
+        - {x: -26, y: 127}
+        - {x: -79, y: 75}
+        - {x: -121, y: 65}
+        - {x: -108, y: 31}
+        - {x: -127, y: -23}
+        - {x: -127, y: -31}
+        - {x: -85, y: -60}
+        - {x: -68, y: -125}
+        - {x: -6, y: -121}
+        - {x: 6, y: -128}
+        - {x: 46, y: -128}
+        - {x: 92, y: -85}
+        - {x: 123, y: -64}
+        - {x: 114, y: -31}
+        - {x: 128, y: 4}
+    - name: portale2_21
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 128, y: 37}
+        - {x: 68, y: 118}
+        - {x: 45, y: 122}
+        - {x: 2, y: 127}
+        - {x: -33, y: 127}
+        - {x: -51, y: 105}
+        - {x: -113, y: 69}
+        - {x: -121, y: 56}
+        - {x: -109, y: 8}
+        - {x: -128, y: -23}
+        - {x: -128, y: -37}
+        - {x: -94, y: -59}
+        - {x: -62, y: -124}
+        - {x: 3, y: -120}
+        - {x: 17, y: -128}
+        - {x: 45, y: -128}
+        - {x: 80, y: -92}
+        - {x: 124, y: -67}
+        - {x: 128, y: -24}
+    - name: portale2_22
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 69, y: 95}
+        - {x: -14, y: 111}
+        - {x: -38, y: 111}
+        - {x: -89, y: 63}
+        - {x: -98, y: -11}
+        - {x: -98, y: -35}
+        - {x: -97, y: -37}
+        - {x: -61, y: -99}
+        - {x: 44, y: -99}
+        - {x: 93, y: -53}
+        - {x: 100, y: 4}
+        - {x: 100, y: 38}
+    - name: portale2_23
+      rect:
+        serializedVersion: 2
+        x: 1792
+        y: 256
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -24, y: 113}
+        - {x: -38, y: 113}
+        - {x: -74, y: 81}
+        - {x: -107, y: 57}
+        - {x: -107, y: 41}
+        - {x: -89, y: 5}
+        - {x: -107, y: -20}
+        - {x: -107, y: -40}
+        - {x: -79, y: -57}
+        - {x: -55, y: -103}
+        - {x: -9, y: -108}
+        - {x: 43, y: -108}
+        - {x: 103, y: -65}
+        - {x: 111, y: 8}
+        - {x: 111, y: 40}
+        - {x: 65, y: 97}
+    - name: portale2_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: -16, y: 111}
+        - {x: -39, y: 111}
+        - {x: -60, y: 74}
+        - {x: -100, y: 71}
+        - {x: -108, y: -18}
+        - {x: -108, y: -36}
+        - {x: -107, y: -39}
+        - {x: -74, y: -74}
+        - {x: -58, y: -107}
+        - {x: -5, y: -102}
+        - {x: 16, y: -108}
+        - {x: 41, y: -108}
+        - {x: 105, y: -65}
+        - {x: 111, y: -6}
+        - {x: 111, y: 48}
+        - {x: 65, y: 101}
+    - name: portale2_25
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 84, y: 86}
+        - {x: -37, y: 86}
+        - {x: -40, y: 85}
+        - {x: -93, y: 32}
+        - {x: -93, y: -8}
+        - {x: -80, y: -46}
+        - {x: -18, y: -91}
+        - {x: 19, y: -91}
+        - {x: 58, y: -86}
+        - {x: 78, y: -47}
+        - {x: 91, y: -40}
+        - {x: 91, y: 61}
+    - name: portale2_26
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 89, y: 55}
+        - {x: 28, y: 95}
+        - {x: -6, y: 95}
+        - {x: -46, y: 84}
+        - {x: -96, y: 20}
+        - {x: -96, y: 10}
+        - {x: -82, y: -55}
+        - {x: -22, y: -98}
+        - {x: 23, y: -98}
+        - {x: 70, y: -85}
+        - {x: 100, y: -26}
+        - {x: 100, y: -5}
+    - name: portale2_27
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 33, y: 95}
+        - {x: -2, y: 95}
+        - {x: -43, y: 86}
+        - {x: -95, y: 17}
+        - {x: -95, y: -2}
+        - {x: -85, y: -56}
+        - {x: -18, y: -97}
+        - {x: -18, y: -99}
+        - {x: 46, y: -99}
+        - {x: 100, y: -58}
+        - {x: 100, y: 36}
+        - {x: 89, y: 55}
+    - name: portale2_28
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 72, y: 88}
+        - {x: -29, y: 88}
+        - {x: -81, y: 35}
+        - {x: -81, y: -58}
+        - {x: -37, y: -85}
+        - {x: 50, y: -85}
+        - {x: 53, y: -82}
+        - {x: 88, y: -54}
+        - {x: 88, y: 39}
+    - name: portale2_29
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline:
+      - - {x: 53, y: 87}
+        - {x: -34, y: 87}
+        - {x: -79, y: 67}
+        - {x: -79, y: -62}
+        - {x: -71, y: -80}
+        - {x: -56, y: -84}
+        - {x: 66, y: -84}
+        - {x: 87, y: -30}
+        - {x: 87, y: 43}
+        - {x: 61, y: 77}
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
