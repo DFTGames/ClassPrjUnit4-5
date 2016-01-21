@@ -44,15 +44,12 @@ public class GestoreCanvasAltreScene : MonoBehaviour
         GameManager.RiceviDanno();
     }
 
-    private void Start()
+    private void Awake()
     {
         me = this;
-
-     
-        
-  
     }
 
+    
     public static void AggiornaDati()
     {
         me.nomeText.text = GameManager.Nome;
