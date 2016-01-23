@@ -33,11 +33,15 @@ public class ClickPortale : MonoBehaviour {
     }
 
    /// <summary>
-   /// se il mouse è sopra il portale controllo se il giocatore è ad una distanza dal portale 
+   /// se il mouse è sopra il portale, controllo se il giocatore è ad una distanza dal portale 
    /// inferiore ad un certo valore che sarebbe il valore necessario a renderlo funzionante.
-   /// nel caso si trovi al di sotto di questo valore quindi il player è abbastanza vicino al portale,
-   /// il portale diventa più intenso, altrimenti se toglo il mouse o non sono alla distanza corretta,
+   /// nel caso si trovi al di sotto di questo valore, quindi il player è abbastanza vicino al portale,
+   /// il portale diventa più intenso, altrimenti se tolgo il mouse o non sono alla distanza corretta,
    /// l'intensità del portale torna normale.
+   /// N.B.non ho usato start color per cambiargli colore perchè non mi piace il risultato preferisco 
+   /// che diventi più intenso se il mouse sta sopra.
+   /// N.B.2: ho provato di nuovo ad usare colorOverLifetime ma non lo posso ne abilitare da script
+   /// usando enabled ne agiro sul colore con color perchè mi dice che è read only.
    /// </summary>
     void OnMouseOver()
     {
@@ -55,11 +59,12 @@ public class ClickPortale : MonoBehaviour {
             else if (distanza.magnitude > 5f && particelle.maxParticles != 1)
                 particelle.maxParticles = 1;
         }
-        
+      
     }
     void OnMouseExit()
     {
         particelle.maxParticles = 1;
+       
     }
 
 }
