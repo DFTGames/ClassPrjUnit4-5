@@ -345,7 +345,7 @@ namespace FMODUnity
                     string path = EditorUtility.OpenFilePanel("Locate Studio Project", oldPath, "fspro");
                     if (!String.IsNullOrEmpty(path))
                     {
-                        settings.SourceProjectPath = path;
+                        settings.SourceProjectPath = MakePathRelativeToProject(path);
                         this.Repaint();
                     }
                 }
@@ -375,6 +375,7 @@ namespace FMODUnity
                     var path = EditorUtility.OpenFolderPanel("Locate Build Folder", oldPath, null);
                     if (!String.IsNullOrEmpty(path))
                     {
+                        path = MakePathRelativeToProject(path);
                         settings.SourceBankPath = path;
                     }
                 }
@@ -402,6 +403,7 @@ namespace FMODUnity
                     var path = EditorUtility.OpenFolderPanel("Locate Build Folder", oldPath, null);
                     if (!String.IsNullOrEmpty(path))
                     {
+                        path = MakePathRelativeToProject(path);
                         settings.SourceBankPath = path;
                     }
                 }
@@ -523,5 +525,11 @@ namespace FMODUnity
             }
         }
 
+        private string MakePathRelativeToProject(string path)
+        {
+            string fullPath = Path.GetFullPath(path);
+            string fullProjectPath = Path.GetFullPath(Environment.CurrentDirectory + Path.DirectorySeparatorChar);
+            return fullPath.Replace(fullProjectPath, "");
+        }
     }
 }

@@ -1,6 +1,6 @@
 /* ========================================================================================== */
 /*                                                                                            */
-/* FMOD Studio - C# Wrapper . Copyright (c), Firelight Technologies Pty, Ltd. 2004-2015.          */
+/* FMOD Studio - C# Wrapper . Copyright (c), Firelight Technologies Pty, Ltd. 2004-2016.          */
 /*                                                                                            */
 /* ========================================================================================== */
 
@@ -22,7 +22,7 @@ namespace FMOD
     */
     public class VERSION
     {
-        public const int    number = 0x00010704;
+        public const int    number = 0x00010705;
 #if UNITY_IPHONE && !UNITY_EDITOR
         public const string dll    = "__Internal";
 #elif (UNITY_PS4) && !UNITY_EDITOR

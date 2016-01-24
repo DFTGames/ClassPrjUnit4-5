@@ -101,48 +101,6 @@ namespace FMODUnity
     {
         public const string LogFileName = "fmod.log";
 
-        public static void EnforceLibraryOrder()
-        {
-            #if UNITY_ANDROID && !UNITY_EDITOR
-            
-            // First, obtain the current activity context
-            AndroidJavaObject activity = null;
-            using (var activityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-            {
-                activity = activityClass.GetStatic<AndroidJavaObject>("currentActivity");
-            }
-
-            using (var fmodJava = new AndroidJavaClass("org.fmod.FMOD"))
-            {
-                if (fmodJava != null)
-                {
-                    fmodJava.CallStatic("init", activity);
-                }
-                else
-                {
-                    UnityEngine.Debug.LogWarning("FMOD Studio: Cannot initialiaze Java wrapper");
-                }
-            }
-
-			AndroidJavaClass jSystem = new AndroidJavaClass("java.lang.System");
-			jSystem.CallStatic("loadLibrary", FMOD.VERSION.dll);
-			jSystem.CallStatic("loadLibrary", FMOD.Studio.STUDIO_VERSION.dll);
-            
-            #endif
-
-            #if !UNITY_IPHONE // iOS is statically linked
-
-            // Call a function in fmod.dll to make sure it's loaded before fmodstudio.dll
-            int temp1, temp2;
-            FMOD.Memory.GetStats(out temp1, out temp2);
-
-            Guid temp3;
-            FMOD.Studio.Util.ParseID("", out temp3);
-            
-            #endif
-
-        }
-
         public static FMOD.VECTOR ToFMODVector(this Vector3 vec)
         {
             FMOD.VECTOR temp;
@@ -185,7 +143,8 @@ namespace FMODUnity
             return attributes;
         }
 
-        public static FMODPlatform GetCurrentPlatform()
+        // Internal Helper Functions
+        internal static FMODPlatform GetCurrentPlatform()
         {
             #if UNITY_EDITOR
             return FMODPlatform.PlayInEditor;
@@ -282,7 +241,7 @@ namespace FMODUnity
         }
 
         const string BankExtension = ".bank";
-        public static string GetBankPath(string bankName)
+        internal static string GetBankPath(string bankName)
         {           
             #if UNITY_EDITOR
             // For play in editor use original asset location because streaming asset folder will contain platform specific banks
@@ -317,7 +276,7 @@ namespace FMODUnity
             }            
         }
 
-        public static string GetPluginPath(string pluginName)
+        internal static string GetPluginPath(string pluginName)
         {
             #if UNITY_IOS
 				return "";
@@ -350,6 +309,47 @@ namespace FMODUnity
 
 	            return pluginFolder + pluginFileName;
 			#endif
+        }
+
+        public static void EnforceLibraryOrder()
+        {
+            #if UNITY_ANDROID && !UNITY_EDITOR
+            
+            // First, obtain the current activity context
+            AndroidJavaObject activity = null;
+            using (var activityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+            {
+                activity = activityClass.GetStatic<AndroidJavaObject>("currentActivity");
+            }
+
+            using (var fmodJava = new AndroidJavaClass("org.fmod.FMOD"))
+            {
+                if (fmodJava != null)
+                {
+                    fmodJava.CallStatic("init", activity);
+                }
+                else
+                {
+                    UnityEngine.Debug.LogWarning("FMOD Studio: Cannot initialiaze Java wrapper");
+                }
+            }
+
+			AndroidJavaClass jSystem = new AndroidJavaClass("java.lang.System");
+			jSystem.CallStatic("loadLibrary", FMOD.VERSION.dll);
+			jSystem.CallStatic("loadLibrary", FMOD.Studio.STUDIO_VERSION.dll);
+            
+            #endif
+
+            #if !UNITY_IPHONE // iOS is statically linked
+
+            // Call a function in fmod.dll to make sure it's loaded before fmodstudio.dll
+            int temp1, temp2;
+            FMOD.Memory.GetStats(out temp1, out temp2);
+
+            Guid temp3;
+            FMOD.Studio.Util.ParseID("", out temp3);
+            
+            #endif
         }
     }
 }
