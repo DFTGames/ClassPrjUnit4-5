@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.07.00">
+    <object class="AudioFile" id="{9a3c4736-c480-4c22-9efe-9dcd46e57caa}">
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>0.50170068027210879</value>
+        </property>
+        <property name="audioFilePath">
+            <value>$(AUDIO_BIN_DIR)/FootWood_00b {c4c981f2-3b53-4bba-9f7f-99ee1f327c33}.wav</value>
+        </property>
+        <relationship name="container">
+            <destination>{21538f43-477f-46bc-9722-2b19430fd275}</destination>
+        </relationship>
+    </object>
+</objects>

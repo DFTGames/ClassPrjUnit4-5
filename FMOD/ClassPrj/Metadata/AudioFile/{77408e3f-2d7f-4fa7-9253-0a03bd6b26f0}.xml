@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.07.00">
+    <object class="AudioFile" id="{77408e3f-2d7f-4fa7-9253-0a03bd6b26f0}">
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>0.5</value>
+        </property>
+        <property name="audioFilePath">
+            <value>$(AUDIO_BIN_DIR)/MetalArmor00a {626fa70c-d236-4bd5-bfac-e93c776af7ee}.wav</value>
+        </property>
+        <relationship name="container">
+            <destination>{476bc57f-c8c0-4008-8a35-2a8d8ca20b37}</destination>
+        </relationship>
+    </object>
+</objects>

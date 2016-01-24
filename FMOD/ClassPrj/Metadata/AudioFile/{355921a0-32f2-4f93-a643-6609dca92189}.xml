@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.07.00">
+    <object class="AudioFile" id="{355921a0-32f2-4f93-a643-6609dca92189}">
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>0.5018820861678005</value>
+        </property>
+        <property name="audioFilePath">
+            <value>$(AUDIO_BIN_DIR)/FootGravel_00d {fee1a7b8-be6d-4721-a346-101398e89426}.wav</value>
+        </property>
+        <relationship name="container">
+            <destination>{6e4a9e32-85c2-4d53-abdc-3346d0b68f0c}</destination>
+        </relationship>
+    </object>
+</objects>

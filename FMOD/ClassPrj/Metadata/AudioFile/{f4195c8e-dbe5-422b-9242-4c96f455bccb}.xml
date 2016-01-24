@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.07.00">
+    <object class="AudioFile" id="{f4195c8e-dbe5-422b-9242-4c96f455bccb}">
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>0.50043083900226759</value>
+        </property>
+        <property name="audioFilePath">
+            <value>$(AUDIO_BIN_DIR)/FootMud_00c {de8bbdc5-5156-46bd-8d21-2955739f2e55}.wav</value>
+        </property>
+        <relationship name="container">
+            <destination>{38ebe269-b4be-4f92-9b1f-8ca8e259f63c}</destination>
+        </relationship>
+    </object>
+</objects>

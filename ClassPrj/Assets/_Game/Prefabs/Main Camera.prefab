@@ -11,7 +11,7 @@ GameObject:
   - 20: {fileID: 2078170}
   - 92: {fileID: 9224868}
   - 124: {fileID: 12401374}
-  - 81: {fileID: 8164034}
+  - 114: {fileID: 11420512}
   - 114: {fileID: 11413474}
   - 114: {fileID: 11417196}
   - 114: {fileID: 11421104}
@@ -28,8 +28,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 134116}
-  m_LocalRotation: {x: -1.49011559e-08, y: -1.49011555e-07, z: 8.94069387e-08, w: 1}
-  m_LocalPosition: {x: 0, y: 1.04999983, z: -2.03000021}
+  m_LocalRotation: {x: -0.000000014901156, y: -0.00000014901156, z: 0.00000008940694,
+    w: 1}
+  m_LocalPosition: {x: 0, y: 1.0499998, z: -2.0300002}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -43,14 +44,14 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: .192156866, g: .301960796, b: .474509805, a: .0196078438}
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
     y: 0
     width: 1
     height: 1
-  near clip plane: .300000012
+  near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -66,15 +67,8 @@ Camera:
   m_HDR: 1
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
-  m_StereoSeparation: .0219999999
+  m_StereoSeparation: 0.022
   m_StereoMirrorMode: 0
---- !u!81 &8164034
-AudioListener:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 134116}
-  m_Enabled: 1
 --- !u!92 &9224868
 Behaviour:
   m_ObjectHideFlags: 1
@@ -94,7 +88,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   altezza: 2
-  ZOffSet: 3.29999995
+  ZOffSet: 3.3
   DampTime: 0
 --- !u!114 &11417196
 MonoBehaviour:
@@ -112,34 +106,46 @@ MonoBehaviour:
   remapCurve:
     serializedVersion: 2
     m_Curve:
-    - time: -.0416666679
-      value: -.231249973
-      inSlope: 1.14996922
-      outSlope: 1.14996922
+    - time: -0.041666668
+      value: -0.23124997
+      inSlope: 1.1499692
+      outSlope: 1.1499692
       tangentMode: 10
-    - time: .362301588
-      value: .233301088
-      inSlope: 1.13703704
-      outSlope: 1.13703704
+    - time: 0.3623016
+      value: 0.23330109
+      inSlope: 1.137037
+      outSlope: 1.137037
       tangentMode: 10
-    - time: .856104493
-      value: .788387418
-      inSlope: .686639845
-      outSlope: .686639845
+    - time: 0.8561045
+      value: 0.7883874
+      inSlope: 0.68663985
+      outSlope: 0.68663985
       tangentMode: 10
-    - time: 1.41369236
-      value: .927324235
-      inSlope: .249174759
-      outSlope: .249174759
+    - time: 1.4136924
+      value: 0.92732424
+      inSlope: 0.24917476
+      outSlope: 0.24917476
       tangentMode: 10
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   exposureAdjustment: 1.5
-  middleGrey: .400000006
+  middleGrey: 0.4
   white: 2
   adaptionSpeed: 1.5
   tonemapper: {fileID: 4800000, guid: 003377fc2620a44939dadde6fe3f8190, type: 3}
   validRenderTextureFormat: 1
+--- !u!114 &11420512
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 134116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11421104
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -154,10 +160,10 @@ MonoBehaviour:
   tweakMode: 0
   screenBlendMode: 1
   hdr: 0
-  sepBlurSpread: 4.55999994
+  sepBlurSpread: 4.56
   quality: 1
-  bloomIntensity: .5
-  bloomThreshold: .370000005
+  bloomIntensity: 0.5
+  bloomThreshold: 0.37
   bloomThresholdColor: {r: 1, g: 1, b: 1, a: 1}
   bloomBlurIterations: 2
   hollywoodFlareBlurIterations: 2
@@ -165,12 +171,12 @@ MonoBehaviour:
   lensflareMode: 1
   hollyStretchWidth: 2.5
   lensflareIntensity: 0
-  lensflareThreshold: .300000012
-  lensFlareSaturation: .75
-  flareColorA: {r: .400000006, g: .400000006, b: .800000012, a: .75}
-  flareColorB: {r: .400000006, g: .800000012, b: .800000012, a: .75}
-  flareColorC: {r: .800000012, g: .400000006, b: .800000012, a: .75}
-  flareColorD: {r: .800000012, g: .400000006, b: 0, a: .75}
+  lensflareThreshold: 0.3
+  lensFlareSaturation: 0.75
+  flareColorA: {r: 0.4, g: 0.4, b: 0.8, a: 0.75}
+  flareColorB: {r: 0.4, g: 0.8, b: 0.8, a: 0.75}
+  flareColorC: {r: 0.8, g: 0.4, b: 0.8, a: 0.75}
+  flareColorD: {r: 0.8, g: 0.4, b: 0, a: 0.75}
   lensFlareVignetteMask: {fileID: 2800000, guid: 95ef4804fe0be4c999ddaa383536cde8,
     type: 3}
   lensFlareShader: {fileID: 4800000, guid: 459fe69d2f6d74ddb92f04dbf45a866b, type: 3}
