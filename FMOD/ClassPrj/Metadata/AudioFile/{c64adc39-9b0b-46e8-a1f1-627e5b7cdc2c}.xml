@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.07.00">
+    <object class="AudioFile" id="{c64adc39-9b0b-46e8-a1f1-627e5b7cdc2c}">
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>15.509909297052154</value>
+        </property>
+        <property name="audioFilePath">
+            <value>$(AUDIO_BIN_DIR)/Tropical_00Loop02 {d8616f1c-ea8b-46cf-b5e1-c2c21d60336a}.wav</value>
+        </property>
+        <relationship name="container">
+            <destination>{2264ae3d-76f0-4d87-b857-304552f7c639}</destination>
+        </relationship>
+    </object>
+</objects>
