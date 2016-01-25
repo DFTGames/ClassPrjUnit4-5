@@ -8,10 +8,10 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: Genesis2Male
   m_Shader: {fileID: 4800000, guid: cc77cd34d845f4a479ddec96dd10a3f9, type: 3}
-  m_ShaderKeywords: _ALPHATEST_ON _DETAIL_MULX2 _EMISSION _LIGHTMAPPING_DYNAMIC_LIGHTMAPS
-    _LIGHTMAPPING_REALTIME _NORMALMAP _SPECGLOSSMAP _UVSEC_UV1
-  m_LightmapFlags: 1
-  m_CustomRenderQueue: 2450
+  m_ShaderKeywords: _ALPHATEST_ON _LIGHTMAPPING_DYNAMIC_LIGHTMAPS _LIGHTMAPPING_REALTIME
+    _UVSEC_UV1
+  m_LightmapFlags: 5
+  m_CustomRenderQueue: -1
   stringTagMap:
     RenderType: TransparentCutout
   m_SavedProperties:
@@ -21,28 +21,28 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 2800000, guid: 476da09fa0faf574f9c21aa0d6342633, type: 3}
+          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _AlphaTex
         second:
-          m_Texture: {fileID: 2800000, guid: 02053155ec26e4b5ea22811cf9fe3bff, type: 3}
+          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _BumpMap
         second:
-          m_Texture: {fileID: 2800000, guid: 125c020ed1cd3a74fa91b4c725209a4c, type: 3}
+          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _DetailNormalMap
         second:
-          m_Texture: {fileID: 2800000, guid: 152c1ec204dce42ca915cc9b7656db8f, type: 3}
+          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -56,7 +56,7 @@ Material:
         first:
           name: _OcclusionMap
         second:
-          m_Texture: {fileID: 2800000, guid: cefde4ffe759b244fa165269476bb6f3, type: 3}
+          m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -77,40 +77,12 @@ Material:
         first:
           name: _DetailAlbedoMap
         second:
-          m_Texture: {fileID: 2800000, guid: 5794e01efe77f944dbf2985b92afa924, type: 3}
-          m_Scale: {x: 40, y: 40}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _Occlusion
-        second:
-          m_Texture: {fileID: 2800000, guid: 9368bb5093ca19d42a72c58afb5a23ef, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _MetallicGlossMap
-        second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
         first:
           name: _SpecGlossMap
-        second:
-          m_Texture: {fileID: 2800000, guid: 707f68576eba543dc8bb0f1d252dfe84, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _EmissionTempRamp
-        second:
-          m_Texture: {fileID: 0}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-      data:
-        first:
-          name: _EmissionTemperatureRamp
         second:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
@@ -130,10 +102,6 @@ Material:
         second: 0.5
       data:
         first:
-          name: _AlphaTestRef
-        second: 0.5
-      data:
-        first:
           name: _Parallax
         second: 0.02
       data:
@@ -143,19 +111,19 @@ Material:
       data:
         first:
           name: _Glossiness
-        second: 0.403
-      data:
-        first:
-          name: _BumpScale
         second: 0.5
       data:
         first:
+          name: _BumpScale
+        second: 1
+      data:
+        first:
           name: _OcclusionStrength
-        second: 0.75
+        second: 1
       data:
         first:
           name: _DetailNormalMapScale
-        second: 1.5
+        second: 1
       data:
         first:
           name: _UVSec
@@ -163,18 +131,6 @@ Material:
       data:
         first:
           name: _Mode
-        second: 1
-      data:
-        first:
-          name: _Metallic
-        second: 0
-      data:
-        first:
-          name: _Lightmapping
-        second: 1
-      data:
-        first:
-          name: _EmissionScaleUI
         second: 0
       data:
         first:
@@ -183,36 +139,16 @@ Material:
       data:
         first:
           name: _SmoothnessTweak1
-        second: 0.941
-      data:
-        first:
-          name: _SmoothnessTweak2
-        second: 0
-      data:
-        first:
-          name: _CullMode
-        second: 2
-      data:
-        first:
-          name: _PlaneReflectionBumpScale
-        second: 0.4
-      data:
-        first:
-          name: _PlaneReflectionBumpClamp
-        second: 0.05
-      data:
-        first:
-          name: _ProbesBoost
         second: 1
       data:
         first:
-          name: _EmissionTemperature
+          name: _SmoothnessTweak2
         second: 0
     m_Colors:
       data:
         first:
           name: _EmissionColor
-        second: {r: 0.97794116, g: 0.9923226, b: 0.9923226, a: 0}
+        second: {r: 0, g: 0, b: 0, a: 1}
       data:
         first:
           name: _Color
@@ -223,21 +159,9 @@ Material:
         second: {r: 0.2, g: 0.2, b: 0.2, a: 1}
       data:
         first:
-          name: _EmissionColorUI
-        second: {r: 0, g: 0, b: 0, a: 1}
-      data:
-        first:
-          name: _EmissionColorWithMapUI
-        second: {r: 1, g: 1, b: 1, a: 1}
-      data:
-        first:
-          name: _SpecularColor
-        second: {r: 0.44117647, g: 0.44117647, b: 0.44117647, a: 1}
-      data:
-        first:
           name: _SmoothnessTweaks
-        second: {r: 0.941, g: 0, b: 0, a: 0}
+        second: {r: 1, g: 0, b: 0, a: 0}
       data:
         first:
           name: _SpecularMapColorTweak
-        second: {r: 1, g: 0.8745098, b: 0.8745098, a: 1}
+        second: {r: 1, g: 1, b: 1, a: 1}
