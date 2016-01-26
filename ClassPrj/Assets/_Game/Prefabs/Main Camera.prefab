@@ -15,6 +15,7 @@ GameObject:
   - 114: {fileID: 11413474}
   - 114: {fileID: 11417196}
   - 114: {fileID: 11421104}
+  - 114: {fileID: 11490268}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -28,9 +29,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 134116}
-  m_LocalRotation: {x: -0.000000014901156, y: -0.00000014901156, z: 0.00000008940694,
-    w: 1}
-  m_LocalPosition: {x: 0, y: 1.0499998, z: -2.0300002}
+  m_LocalRotation: {x: 0.13986441, y: -0.000000018624075, z: 0.0000001318492, w: 0.99017066}
+  m_LocalPosition: {x: 0, y: 4.88, z: -12.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -87,8 +87,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 301c287ca3ac49c41b3f9b49322f3f28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  altezza: 2
-  ZOffSet: 3.3
+  altezza: 10
+  ZOffSet: 8
   DampTime: 0
 --- !u!114 &11417196
 MonoBehaviour:
@@ -107,24 +107,29 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - time: -0.041666668
-      value: -0.23124997
-      inSlope: 1.1499692
-      outSlope: 1.1499692
+      value: -0.46296483
+      inSlope: 1.849495
+      outSlope: 1.849495
       tangentMode: 10
-    - time: 0.3623016
-      value: 0.23330109
-      inSlope: 1.137037
-      outSlope: 1.137037
+    - time: 0.33572203
+      value: 0.2350137
+      inSlope: 1.5789564
+      outSlope: 1.5789564
       tangentMode: 10
-    - time: 0.8561045
-      value: 0.7883874
-      inSlope: 0.68663985
-      outSlope: 0.68663985
+    - time: 0.61587656
+      value: 0.6015729
+      inSlope: 1.1293226
+      outSlope: 1.1293226
       tangentMode: 10
-    - time: 1.4136924
-      value: 0.92732424
-      inSlope: 0.24917476
-      outSlope: 0.24917476
+    - time: 0.8795104
+      value: 0.852085
+      inSlope: 0.6835288
+      outSlope: 0.6835288
+      tangentMode: 10
+    - time: 1.3783286
+      value: 1.0600075
+      inSlope: 0.41683018
+      outSlope: 0.41683018
       tangentMode: 10
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -160,10 +165,10 @@ MonoBehaviour:
   tweakMode: 0
   screenBlendMode: 1
   hdr: 0
-  sepBlurSpread: 4.56
+  sepBlurSpread: 8.28
   quality: 1
   bloomIntensity: 0.5
-  bloomThreshold: 0.37
+  bloomThreshold: 0.4
   bloomThresholdColor: {r: 1, g: 1, b: 1, a: 1}
   bloomBlurIterations: 2
   hollywoodFlareBlurIterations: 2
@@ -184,6 +189,25 @@ MonoBehaviour:
   blurAndFlaresShader: {fileID: 4800000, guid: be6e39cf196f146d5be72fbefb18ed75, type: 3}
   brightPassFilterShader: {fileID: 4800000, guid: 0aeaa4cb29f5d4e9c8455f04c8575c8c,
     type: 3}
+--- !u!114 &11490268
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 134116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76b5ec6153a1d55438228df10fe66844, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distanceFog: 1
+  excludeFarPixels: 1
+  useRadialDistance: 0
+  heightFog: 1
+  height: 100
+  heightDensity: 0.001
+  startDistance: 30
+  fogShader: {fileID: 4800000, guid: 70d8568987ac0499f952b54c7c13e265, type: 3}
 --- !u!124 &12401374
 Behaviour:
   m_ObjectHideFlags: 1

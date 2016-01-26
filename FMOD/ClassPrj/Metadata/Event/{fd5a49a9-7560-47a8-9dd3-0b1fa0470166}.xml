@@ -346,7 +346,11 @@
             <destination>{a5774c30-df0d-436a-ae85-fc13ac2306cf}</destination>
         </relationship>
     </object>
-    <object class="MixerBusPanner" id="{2fe496d4-56b9-4168-ac4f-6ae98d12e073}"/>
+    <object class="MixerBusPanner" id="{2fe496d4-56b9-4168-ac4f-6ae98d12e073}">
+        <property name="surroundPanDirection">
+            <value>-26.565052</value>
+        </property>
+    </object>
     <object class="MixerBusFader" id="{dd2ef0f9-17f7-42a1-9009-d748b0b06d38}"/>
     <object class="FadeCurve" id="{58c85ef7-b7a1-45eb-a8f6-a96b93acdacd}">
         <relationship name="startPoint">
@@ -476,8 +480,7 @@
         <relationship name="effects">
             <destination>{f6530b8c-9320-4c63-8cd2-bb904ff7c535}</destination>
             <destination>{6734c273-ae09-4076-b21c-484eacb16e9e}</destination>
-            <destination>{bf7ef71f-b8c0-4940-acdc-c511b0b7c83a}</destination>
-            <destination>{e2b54e1f-caed-45de-bdfb-43f4c565fd38}</destination>
+            <destination>{913eca6f-4853-441f-a2fe-85eff98fdaa3}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{b7fb255e-acd4-42df-9c55-5c9b5391d85b}"/>
@@ -517,6 +520,12 @@
     <object class="SpatialiserEffect" id="{6d8541a6-f82d-4de6-aa49-98a54d3fa588}">
         <property name="distanceRolloffType">
             <value>4</value>
+        </property>
+        <property name="minimumDistance">
+            <value>0</value>
+        </property>
+        <property name="maximumDistance">
+            <value>10</value>
         </property>
     </object>
     <object class="MixerSend" id="{a5774c30-df0d-436a-ae85-fc13ac2306cf}">
@@ -779,33 +788,19 @@
     </object>
     <object class="MixerBusFader" id="{f6530b8c-9320-4c63-8cd2-bb904ff7c535}"/>
     <object class="ThreeEQEffect" id="{6734c273-ae09-4076-b21c-484eacb16e9e}">
-        <property name="highGain">
-            <value>-3.5</value>
-        </property>
         <property name="lowCrossover">
-            <value>700</value>
+            <value>720</value>
         </property>
         <property name="highCrossover">
-            <value>1750</value>
+            <value>1950</value>
         </property>
     </object>
-    <object class="LimiterEffect" id="{bf7ef71f-b8c0-4940-acdc-c511b0b7c83a}">
+    <object class="LimiterEffect" id="{913eca6f-4853-441f-a2fe-85eff98fdaa3}">
         <property name="boost">
-            <value>3.99999976</value>
+            <value>3.49999976</value>
         </property>
         <property name="release">
-            <value>1</value>
-        </property>
-    </object>
-    <object class="ParamEqEffect" id="{e2b54e1f-caed-45de-bdfb-43f4c565fd38}">
-        <property name="centreFrequency">
-            <value>1150</value>
-        </property>
-        <property name="gain">
-            <value>-2.5</value>
-        </property>
-        <property name="bandwidth">
-            <value>2.79999971</value>
+            <value>7.20000029</value>
         </property>
     </object>
 </objects>
