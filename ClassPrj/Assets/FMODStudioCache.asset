@@ -14,16 +14,9 @@ MonoBehaviour:
   EditorBanks:
   - {fileID: 11475848}
   - {fileID: 11438612}
-  EditorEvents:
-  - {fileID: 11479040}
-  - {fileID: 11433416}
-  - {fileID: 11401878}
-  - {fileID: 11487034}
-  - {fileID: 11445176}
-  - {fileID: 11499086}
-  - {fileID: 11475308}
+  EditorEvents: []
   MasterBankRef: {fileID: 11438612}
-  stringsBankWriteTime: 635894345908470291
+  stringsBankWriteTime: 635894353243124752
 --- !u!114 &11401878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37,8 +30,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/FootSteps/FootStepsGround
   guid: 8f0760b883033b45b4e68ed5b76e715a
-  Banks:
-  - {fileID: 11438612}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -197,8 +189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/FootSteps/FootStepsWater
   guid: 6da7955217ca934a97b220caf43f1732
-  Banks:
-  - {fileID: 11438612}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -217,11 +208,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: ./..\FMOD\ClassPrj\Build\Desktop\Bank_SFX.bank
-  lastModified: 635894345921715729
-  LoadResult: 0
+  lastModified: 635894353243654842
+  LoadResult: 13
   FileSizes:
   - Name: Desktop
-    Value: 1243744
+    Value: 42988
   Exists: 1
 --- !u!114 &11442540
 MonoBehaviour:
@@ -250,8 +241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/FootSteps/FootStepsGravel
   guid: b3d912b7f0d0fe4e93fb1c306d3a19a7
-  Banks:
-  - {fileID: 11438612}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -417,8 +407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/FootSteps/FootStepsConcrete
   guid: ffd731429a363f4c9afc02e5e766619a
-  Banks:
-  - {fileID: 11438612}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -499,8 +488,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/FootSteps/FootStepsMud
   guid: 69bdcb6456bcb44aa56ce3a8e35a3228
-  Banks:
-  - {fileID: 11438612}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -541,8 +529,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Ambiente/AmbienteIsola
   guid: a9495afd6075a8479dd30b1fa0470166
-  Banks:
-  - {fileID: 11438612}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 0
@@ -603,8 +590,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/FootSteps/FootStepsWood
   guid: f667a21210be904aae34cbe16926fb9e
-  Banks:
-  - {fileID: 11438612}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
