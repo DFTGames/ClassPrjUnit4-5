@@ -13,6 +13,7 @@ public class GestoreCanvasAltreScene : MonoBehaviour
     public GameObject immagineCaricamento;
     public Text nomeScenaText;
     public static string nomeProssimaScena=string.Empty;
+    public Image cursoreImage;
 
     private static GestoreCanvasAltreScene me;
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
@@ -79,5 +80,8 @@ public class GestoreCanvasAltreScene : MonoBehaviour
         }
         else if (immagineCaricamento.activeInHierarchy)
             immagineCaricamento.SetActive(false);
+
+        //verificare con pino se va bene scrivere così o nell'altro modo usando lo script Cursore:
+      //  cursoreImage.transform.position = Input.mousePosition;
     }
 }

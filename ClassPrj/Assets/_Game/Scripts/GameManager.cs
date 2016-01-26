@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public static Dictionary<string, List<string>> dizionarioDiNemici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiAmici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiIndifferenti = new Dictionary<string, List<string>>();
+   
+    
   
 
     private static GameManager me;
@@ -222,6 +224,8 @@ public class GameManager : MonoBehaviour
                 }
                 if (attuale.transform.FindChild("quadDiSelezione"))
                     attuale.transform.FindChild("quadDiSelezione").gameObject.SetActive(true);
+
+              
             }
         }
 
