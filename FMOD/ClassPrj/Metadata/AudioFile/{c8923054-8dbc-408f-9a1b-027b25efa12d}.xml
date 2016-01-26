@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.07.00">
+    <object class="AudioFile" id="{c8923054-8dbc-408f-9a1b-027b25efa12d}">
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>2.5169841269841271</value>
+        </property>
+        <property name="audioFilePath">
+            <value>$(AUDIO_BIN_DIR)/FootWater_00d {a52dddef-4cac-4741-8223-7962a849bd45}.wav</value>
+        </property>
+        <relationship name="container">
+            <destination>{729a9b2c-5081-4a8d-8e88-9a5021b6fdd5}</destination>
+        </relationship>
+    </object>
+</objects>

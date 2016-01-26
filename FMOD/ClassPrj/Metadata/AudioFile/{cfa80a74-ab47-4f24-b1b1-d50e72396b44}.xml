@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.07.00">
+    <object class="AudioFile" id="{cfa80a74-ab47-4f24-b1b1-d50e72396b44}">
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>0.50106575963718825</value>
+        </property>
+        <property name="audioFilePath">
+            <value>$(AUDIO_BIN_DIR)/FootConcrete_00b {8c878afd-dd2f-4321-a6b6-6026d55ed759}.wav</value>
+        </property>
+        <relationship name="container">
+            <destination>{6e39dc6d-ec48-4cb5-8edd-46bc9851320d}</destination>
+        </relationship>
+    </object>
+</objects>

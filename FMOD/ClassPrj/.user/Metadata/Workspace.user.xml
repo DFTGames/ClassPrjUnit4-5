@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.07.00">
+    <object class="Workspace" id="{64aa091c-fcf6-4806-adb3-704a37332e8a}"/>
+    <object class="AudioBinManager" id="{487f8e49-eeff-48b6-a113-660f82981c44}"/>
+</objects>

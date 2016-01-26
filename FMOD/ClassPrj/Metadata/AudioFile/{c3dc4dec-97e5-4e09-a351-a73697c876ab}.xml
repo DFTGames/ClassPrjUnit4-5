@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.07.00">
+    <object class="AudioFile" id="{c3dc4dec-97e5-4e09-a351-a73697c876ab}">
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>0.636485260770975</value>
+        </property>
+        <property name="audioFilePath">
+            <value>$(AUDIO_BIN_DIR)/SimilarLeather_00b {83b8e8b8-534e-4263-8b85-f6e527c474b8}.wav</value>
+        </property>
+        <relationship name="container">
+            <destination>{ec9c87e6-da6d-47f2-b741-aec7dadadcd6}</destination>
+        </relationship>
+    </object>
+</objects>
