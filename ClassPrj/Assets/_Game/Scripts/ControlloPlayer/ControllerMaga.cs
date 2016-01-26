@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(Animator))]
 public class ControllerMaga : MonoBehaviour
@@ -12,7 +13,11 @@ public class ControllerMaga : MonoBehaviour
     public float distanzaDaTerra = 0.3f;
     [Range(4f, 10f)]
     public float forzaSalto = 4f;
+    public float distanzaMassimaClick = 200f;
+    public float distanzaAnnullaClick = 10f;
     public bool corsaPerDefault = false;
+    public bool SwitchController;
+
     #endregion Variabili PUBLIC
 
     #region Variabili PRIVATE
@@ -25,6 +30,7 @@ public class ControllerMaga : MonoBehaviour
     private Animator animatore;
     private Vector3 capsulaCentro;
     private Vector3 movimento;
+    private Transform transform_m;
     private bool aTerra;
     private bool voglioSaltare = false;
     private bool abbassato;
@@ -33,11 +39,28 @@ public class ControllerMaga : MonoBehaviour
     private bool attacco2 = false;
     private float cicloOffset = 0.2f;
     private float jumpLeg;
+    private RaycastHit hit;
+    private Vector3 posMouse;
+    private NavMeshAgent Controller;
+    private bool Destinazione = false;
     #endregion Variabili PRIVATE
 
     private void Start()
     {
-        rigidBody = GetComponent<Rigidbody>();
+        transform_m = GetComponent<Transform>();
+        Controller = GetComponent<NavMeshAgent>();
+
+        Controller.height = 2f;
+        Controller.stoppingDistance = 1f;
+        Controller.enabled = false;
+
+        if(rigidBody == null && !SwitchController)
+        {
+            rigidBody = gameObject.AddComponent<Rigidbody>();
+            rigidBody = GetComponent<Rigidbody>();
+            rigidBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        }
+
         animatore = GetComponent<Animator>();
         capsula = GetComponent<CapsuleCollider>();
         altezzaCapsula = capsula.height;
@@ -47,61 +70,110 @@ public class ControllerMaga : MonoBehaviour
     private void Update()
     {
         if (Application.loadedLevel == 0) return;
-        h = Input.GetAxis("Horizontal");
-        v = Input.GetAxis("Vertical");
 
-        movimento = new Vector3(h, 0.0f, v);
-        rotazione = Mathf.Atan2(h, v);
-        velocitaSpostamento = 0.5f;
-
-        if (!Input.GetKey(KeyCode.LeftShift) && corsaPerDefault ||
-            !corsaPerDefault && Input.GetKey(KeyCode.LeftShift))
+        if (SwitchController)
         {
-            velocitaSpostamento = 1f;
-        }
+            if (Controller.enabled == false || rigidBody != null)
+            {
+                Destroy(rigidBody);
+                capsula.enabled = false;
+                Controller.enabled = true;
+            }
+            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Physics.Raycast(ray, out hit, distanzaMassimaClick))
+                {
+                    posMouse = hit.point;
+                    posMouse.y = transform_m.position.y;
+                    if (Vector3.Distance(transform_m.position, posMouse) > distanzaAnnullaClick)
+                    {
+                        Destinazione = true;
+                    }
+                }
+            }
 
-        /* ACCOVACCIAMENTO
-        if (!voglioSaltare && aTerra && Input.GetKey(KeyCode.C))
-         {
-             abbassato = true;
-             capsula.center = capsulaCentro * meta;
-             capsula.height = capsula.height * meta;
-         }
-         else
-         {
-             if (!rimaniBasso)
+            if (Destinazione && Vector3.Distance(transform_m.position, posMouse) > distanzaAnnullaClick)
+            {
+                Controller.SetDestination(posMouse);
+                animatore.SetFloat("Forward", 1f);
+            }
+            else
+            {
+                Destinazione = false;
+            }
+
+        }
+        else if (!SwitchController)
+        {
+            if (rigidBody == null && !SwitchController)
+            {
+                rigidBody = gameObject.AddComponent<Rigidbody>();
+                rigidBody = GetComponent<Rigidbody>();
+                rigidBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+            }
+            capsula.enabled = true;
+            Controller.enabled = false;
+
+            h = Input.GetAxis("Horizontal");
+            v = Input.GetAxis("Vertical");
+
+            velocitaSpostamento = 0.5f;
+            movimento = new Vector3(h, 0.0f, v);
+            rotazione = Mathf.Atan2(h, v);
+
+            if (!Input.GetKey(KeyCode.LeftShift) && corsaPerDefault ||
+                !corsaPerDefault && Input.GetKey(KeyCode.LeftShift))
+            {
+                velocitaSpostamento = 1f;
+            }
+            if (!EventSystem.current.IsPointerOverGameObject())
+            {
+
+                if (Input.GetMouseButtonDown(0) && !voglioSaltare && aTerra && !attacco1)
+                {
+                    attacco1 = true;
+                }
+                else if (animatore.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f && !animatore.IsInTransition(0) && attacco1)
+                {
+                    attacco1 = false;
+                }
+                if (Input.GetMouseButtonDown(1) && !voglioSaltare && aTerra && !attacco2)
+                {
+                    attacco2 = true;
+                }
+                else if (animatore.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f && !animatore.IsInTransition(0) && attacco2)
+                {
+
+                    attacco2 = false;
+                }
+            }
+            if (Input.GetButtonDown("Jump") && aTerra && !voglioSaltare &&
+       !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco1") && !attacco1 &&
+       !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco2") && !attacco2)
+            {
+                voglioSaltare = true;
+            }
+            /* ACCOVACCIAMENTO
+            if (!voglioSaltare && aTerra && Input.GetKey(KeyCode.C))
              {
-                 abbassato = false;
-                 capsula.height = altezzaCapsula;
-                 capsula.center = capsulaCentro;
-                 rimaniBasso = false;
+                 abbassato = true;
+                 capsula.center = capsulaCentro * meta;
+                 capsula.height = capsula.height * meta;
              }
-         }
-         */
+             else
+             {
+                 if (!rimaniBasso)
+                 {
+                     abbassato = false;
+                     capsula.height = altezzaCapsula;
+                     capsula.center = capsulaCentro;
+                     rimaniBasso = false;
+                 }
+             }
+             */
+        }
 
-        if (Input.GetMouseButtonDown(0) && !voglioSaltare && aTerra && !attacco1)
-        {
-            attacco1 = true;
-        }
-        else if (animatore.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f && !animatore.IsInTransition(0) && attacco1)
-        {
-            attacco1 = false;
-        }
-        if (Input.GetMouseButtonDown(1) && !voglioSaltare && aTerra && !attacco2)
-        {
-            attacco2 = true;
-        }
-        else if (animatore.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f && !animatore.IsInTransition(0) && attacco2)
-        {
-          
-            attacco2 = false;
-        }
-        if (Input.GetButtonDown("Jump") && aTerra && !voglioSaltare &&
-         !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco1") && !attacco1 &&
-         !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco2") && !attacco2)
-        {
-            voglioSaltare = true;
-        }
     }
 
     private void FixedUpdate()
@@ -109,11 +181,18 @@ public class ControllerMaga : MonoBehaviour
         aTerra = false;
         RaycastHit hit;
 
-        Debug.DrawLine(transform.position + (Vector3.up * 0.1f), transform.position + (Vector3.down * 0.1f), Color.blue);
-        if (Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out hit, distanzaDaTerra))
+        Debug.DrawLine(transform_m.position + (Vector3.up * 0.1f), transform_m.position + (Vector3.down * 0.1f), Color.blue);
+        if (Physics.Raycast(transform_m.position + (Vector3.up * 0.1f), Vector3.down, out hit, distanzaDaTerra))
         {
             aTerra = true;
-            animatore.applyRootMotion = true;
+            if (SwitchController)
+            {
+                animatore.applyRootMotion = false;
+            }
+            else
+            {
+                animatore.applyRootMotion = true;
+            }
         }
         else
         {
@@ -130,7 +209,7 @@ public class ControllerMaga : MonoBehaviour
         }
         // */
         /*CONTROLLO ABBASSATO
-        Ray ray = new Ray(transform.position + (Vector3.up * capsulaCentro.y), Vector3.up);
+        Ray ray = new Ray(transform_m.position + (Vector3.up * capsulaCentro.y), Vector3.up);
 
         float lunghezzaRay = capsulaCentro.y;
 
@@ -147,7 +226,7 @@ public class ControllerMaga : MonoBehaviour
         animatore.SetBool("attacco2", attacco2);
         animatore.SetFloat("JumpLeg", jumpLeg);
         //animatore.SetBool("Crouch", abbassato);
-        if (!aTerra)
+        if (!aTerra && !SwitchController)
             animatore.SetFloat("Jump", rigidBody.velocity.y);
     }
 }

@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.01.07.00">
     <object class="Event" id="{fd5a49a9-7560-47a8-9dd3-0b1fa0470166}">
         <relationship name="selectables">
-            <destination>{15ee51a7-c6d7-4bf1-b7d0-d973a2872bf0}</destination>
+            <destination>{2bf198a1-7c41-4fb6-8427-09bc6629de2a}</destination>
         </relationship>
         <relationship name="uiLastParameterSelection">
             <destination>{4b88d14a-2bb6-47e3-814f-c90c544b65f2}</destination>
@@ -16,11 +16,17 @@
     <object class="GroupTrack" id="{dd990689-c8ce-4cb6-9a15-f88c37b932d8}"/>
     <object class="GroupTrack" id="{2bf198a1-7c41-4fb6-8427-09bc6629de2a}"/>
     <object class="Timeline" id="{4b88d14a-2bb6-47e3-814f-c90c544b65f2}">
+        <property name="cursorPosition">
+            <value>46.543134889419548</value>
+        </property>
         <property name="uiLastRulerScaleRatio">
-            <value>0.099505918053495901</value>
+            <value>0.056553019306706621</value>
         </property>
     </object>
     <object class="GameParameter" id="{8bfc730f-9e8e-4656-aaf8-7f9cc2bab826}">
+        <property name="cursorPosition">
+            <value>0.91500008106231689</value>
+        </property>
         <property name="uiLastRulerScaleRatio">
             <value>0.001567398119122257</value>
         </property>
@@ -71,6 +77,5 @@
     <object class="DelayEffect" id="{d534178f-630b-4c28-9027-18690dade366}"/>
     <object class="MixerBusFader" id="{f6530b8c-9320-4c63-8cd2-bb904ff7c535}"/>
     <object class="ThreeEQEffect" id="{6734c273-ae09-4076-b21c-484eacb16e9e}"/>
-    <object class="LimiterEffect" id="{bf7ef71f-b8c0-4940-acdc-c511b0b7c83a}"/>
-    <object class="ParamEqEffect" id="{e2b54e1f-caed-45de-bdfb-43f4c565fd38}"/>
+    <object class="LimiterEffect" id="{913eca6f-4853-441f-a2fe-85eff98fdaa3}"/>
 </objects>
