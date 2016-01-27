@@ -13,7 +13,7 @@ GameObject:
   - 65: {fileID: 6538624}
   - 114: {fileID: 11495006}
   - 54: {fileID: 5478124}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PortaleTipo2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82,7 +82,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 158982}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 337.06, y: 27.95, z: 117.85}
+  m_LocalPosition: {x: 324.03, y: 27.95, z: 117.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 411376}

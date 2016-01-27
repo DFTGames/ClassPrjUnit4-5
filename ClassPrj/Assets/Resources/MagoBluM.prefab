@@ -58,7 +58,7 @@ GameObject:
   - 136: {fileID: 13609114}
   - 114: {fileID: 11414796}
   - 114: {fileID: 11496664}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: MagoBluM
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2160,6 +2160,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[2]
       value: 
       objectReference: {fileID: 2100000, guid: 51644d814e9b8044d9ee7a55b52370de, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 104682}

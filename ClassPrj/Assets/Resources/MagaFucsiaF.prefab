@@ -344,7 +344,7 @@ GameObject:
   - 136: {fileID: 13617482}
   - 114: {fileID: 11423838}
   - 114: {fileID: 11452888}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: MagaFucsiaF
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2156,6 +2156,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[2]
       value: 
       objectReference: {fileID: 2100000, guid: be27e9ca0e0bf674c8d4d01b74a5fc08, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 131162}
