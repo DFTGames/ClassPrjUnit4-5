@@ -52,15 +52,6 @@ public class Statici
     }
 }
 
-/*
-namespace DFTGames.Tools.EditorTools
-{
-    public static class Statici2
-    {
-        
-         public static List<string> percorsiDisponibili = new List<string>();
-    }
-}
-*/
+
 
 
