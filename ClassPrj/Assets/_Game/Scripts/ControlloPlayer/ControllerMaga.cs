@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(Animator))]
 public class ControllerMaga : MonoBehaviour
@@ -13,8 +12,9 @@ public class ControllerMaga : MonoBehaviour
     public float distanzaDaTerra = 0.3f;
     [Range(4f, 10f)]
     public float forzaSalto = 4f;
-    public float distanzaMassimaClick = 200f;
-    public float distanzaAnnullaClick = 10f;
+    public float distanzaMassimaClick = 20f;
+    public float distanzaAnnullaClick = 1f;
+
     public bool corsaPerDefault = false;
     public bool SwitchController;
 
@@ -48,7 +48,12 @@ public class ControllerMaga : MonoBehaviour
     private void Start()
     {
         transform_m = GetComponent<Transform>();
-        Controller = GetComponent<NavMeshAgent>();
+
+        if(Controller == null)
+        {
+            Controller = gameObject.AddComponent<NavMeshAgent>();
+            Controller = GetComponent<NavMeshAgent>();
+        }
 
         Controller.height = 2f;
         Controller.stoppingDistance = 1f;
