@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class Cursore : MonoBehaviour
 {
@@ -12,7 +11,9 @@ public class Cursore : MonoBehaviour
 
     private int cursorSizeX = 32;
     private int cursorSizeY = 32;
-    private RaycastHit hit;
+
+    // private RaycastHit hit;
+    private bool ignoraTrigger = false;
 
     private void Start()
     {
@@ -22,29 +23,56 @@ public class Cursore : MonoBehaviour
 
     private void Update()
     {
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, float.MaxValue, -1, QueryTriggerInteraction.Ignore) && !EventSystem.current.IsPointerOverGameObject())
+        immagineCursore = immagineNormale;
+        RaycastHit[] hit = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), float.MaxValue, -1, ignoraTrigger ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide);
+        //if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, float.MaxValue, -1, QueryTriggerInteraction.Ignore))
+        if (hit != null)
         {
-            switch (hit.transform.gameObject.layer)
+            for (int i = 0; i < hit.Length; i++)
             {
-                case (10):
-                    immagineCursore = immagineToccare;
-                    break;
-                case (12):
-                    immagineCursore = immagineRaccogliere;
-                    break;
-                case (11):
-                    if (GameManager.dizionarioDiNemici["Player"].Contains(hit.transform.tag))
-                        immagineCursore = immagineCombattere;
-                    else
-                        immagineCursore = immagineParlare;
-                    break;
-                default:
-                    immagineCursore = immagineNormale;
-                    break;
+                switch (hit[i].transform.gameObject.layer)
+                {
+                    case (10):
+                        immagineCursore = immagineToccare;
+                 
+                        break;
+
+                    case (12):
+                        immagineCursore = immagineRaccogliere;
+
+                        break;
+
+                    case (11):
+                        if (hit[i].collider.GetComponent<CapsuleCollider>())
+                        {
+                            if (GameManager.dizionarioDiNemici["Player"].Contains(hit[i].transform.tag))
+
+                                immagineCursore = immagineCombattere;
+                            else
+
+                                immagineCursore = immagineParlare;
+                        }
+                       
+                        break;
+
+                    case (9):
+                        ignoraTrigger = true;
+                        immagineCursore = immagineNormale;
+                        break;
+
+                    default:
+                        ignoraTrigger = false;
+                        immagineCursore = immagineNormale;
+                        
+                        break;
+                }
             }
         }
         else
+        {
+            ignoraTrigger = false;
             immagineCursore = immagineNormale;
+        }
     }
 
     private void OnGUI()

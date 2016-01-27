@@ -14,9 +14,16 @@ MonoBehaviour:
   EditorBanks:
   - {fileID: 11475848}
   - {fileID: 11438612}
-  EditorEvents: []
+  EditorEvents:
+  - {fileID: 11432878}
+  - {fileID: 11410596}
+  - {fileID: 11405256}
+  - {fileID: 11480308}
+  - {fileID: 11499632}
+  - {fileID: 11447134}
+  - {fileID: 11469390}
   MasterBankRef: {fileID: 11438612}
-  stringsBankWriteTime: 635894353243124752
+  stringsBankWriteTime: 635894416417028886
 --- !u!114 &11401878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31,6 +38,48 @@ MonoBehaviour:
   Path: event:/FootSteps/FootStepsGround
   guid: 8f0760b883033b45b4e68ed5b76e715a
   Banks: []
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+--- !u!114 &11405256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsGround
+  guid: 8f0760b883033b45b4e68ed5b76e715a
+  Banks:
+  - {fileID: 11438612}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+--- !u!114 &11410596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsWater
+  guid: 6da7955217ca934a97b220caf43f1732
+  Banks:
+  - {fileID: 11438612}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -176,6 +225,27 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11432878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsMud
+  guid: 69bdcb6456bcb44aa56ce3a8e35a3228
+  Banks:
+  - {fileID: 11438612}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11433416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,11 +278,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: ./..\FMOD\ClassPrj\Build\Desktop\Bank_SFX.bank
-  lastModified: 635894353243654842
-  LoadResult: 13
+  lastModified: 635894416417028886
+  LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 42988
+    Value: 1243744
   Exists: 1
 --- !u!114 &11442540
 MonoBehaviour:
@@ -242,6 +312,27 @@ MonoBehaviour:
   Path: event:/FootSteps/FootStepsGravel
   guid: b3d912b7f0d0fe4e93fb1c306d3a19a7
   Banks: []
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+--- !u!114 &11447134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsWood
+  guid: f667a21210be904aae34cbe16926fb9e
+  Banks:
+  - {fileID: 11438612}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -376,6 +467,27 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11469390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsConcrete
+  guid: ffd731429a363f4c9afc02e5e766619a
+  Banks:
+  - {fileID: 11438612}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11473746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,6 +548,20 @@ MonoBehaviour:
   - {fileID: 11442540}
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11475736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Oceano
+  Min: 0
+  Max: 1
 --- !u!114 &11475848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -448,7 +574,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: ./..\FMOD\ClassPrj\Build\Desktop\Bank_BGM.bank
-  lastModified: 635894345921725724
+  lastModified: 635894416416888791
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -514,6 +640,28 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+--- !u!114 &11480308
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Ambiente/AmbienteIsola
+  guid: a9495afd6075a8479dd30b1fa0470166
+  Banks:
+  - {fileID: 11438612}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 11475736}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11487034
@@ -591,6 +739,27 @@ MonoBehaviour:
   Path: event:/FootSteps/FootStepsWood
   guid: f667a21210be904aae34cbe16926fb9e
   Banks: []
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+--- !u!114 &11499632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsGravel
+  guid: b3d912b7f0d0fe4e93fb1c306d3a19a7
+  Banks:
+  - {fileID: 11438612}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
