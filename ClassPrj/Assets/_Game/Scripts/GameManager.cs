@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public static Dictionary<string, List<string>> dizionarioDiNemici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiAmici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiIndifferenti = new Dictionary<string, List<string>>();
+   
+    
   
 
     private static GameManager me;
@@ -209,8 +211,9 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit) && !EventSystem.current.IsPointerOverGameObject())
-            {
+               if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit) && !EventSystem.current.IsPointerOverGameObject())
+              
+                {
                 attuale = hit.collider;
                 tagDellAltro = hit.collider.tag;
 
@@ -222,6 +225,8 @@ public class GameManager : MonoBehaviour
                 }
                 if (attuale.transform.FindChild("quadDiSelezione"))
                     attuale.transform.FindChild("quadDiSelezione").gameObject.SetActive(true);
+
+              
             }
         }
 

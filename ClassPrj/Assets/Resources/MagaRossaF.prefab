@@ -134,7 +134,7 @@ GameObject:
   - 136: {fileID: 13615722}
   - 114: {fileID: 11414218}
   - 114: {fileID: 11467738}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: MagaRossaF
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2156,6 +2156,10 @@ Prefab:
       propertyPath: m_Materials.Array.data[2]
       value: 
       objectReference: {fileID: 2100000, guid: c1ff6339b5467814388616b89d71ebd8, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 114042}
