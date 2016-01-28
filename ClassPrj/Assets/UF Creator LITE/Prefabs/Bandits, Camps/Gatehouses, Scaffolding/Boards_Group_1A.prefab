@@ -11,12 +11,13 @@ GameObject:
   - 33: {fileID: 3355142}
   - 23: {fileID: 2368864}
   - 64: {fileID: 6416144}
+  - 65: {fileID: 6590718}
   m_Layer: 0
   m_Name: Boards_Group_1A
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967294
   m_IsActive: 1
 --- !u!4 &416484
 Transform:
@@ -24,8 +25,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 120170}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.37654305, y: 1.30892372, z: .368953496}
+  m_LocalRotation: {x: -0.042271078, y: -0.70584226, z: -0.042271078, w: 0.70584214}
+  m_LocalPosition: {x: -71.654, y: 2.286, z: -22.81}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -48,8 +49,10 @@ MeshRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -69,10 +72,22 @@ MeshCollider:
   m_GameObject: {fileID: 120170}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Convex: 0
   m_Mesh: {fileID: 4300010, guid: 917f43b0f02708541a0e67b0ea4b0622, type: 3}
+--- !u!65 &6590718
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 120170}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.2674935, y: 0.2000022, z: 4.8704624}
+  m_Center: {x: -0.026352048, y: 0.00000012293458, z: -0.00000035762787}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
