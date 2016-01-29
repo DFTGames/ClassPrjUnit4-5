@@ -716,7 +716,7 @@ Transform:
   - {fileID: 199151360}
   - {fileID: 113382276}
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 18
 --- !u!1001 &46415938
 Prefab:
   m_ObjectHideFlags: 0
@@ -26217,7 +26217,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22468200, guid: 566cb5b5afc524f4aacdb0e832b67ddc, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 566cb5b5afc524f4aacdb0e832b67ddc, type: 2}
