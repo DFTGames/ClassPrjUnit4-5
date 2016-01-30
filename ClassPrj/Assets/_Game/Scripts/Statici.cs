@@ -19,6 +19,8 @@ public class Statici
     public const string STR_PercorsoConfig3 = "PercorsoConfigurazione";
     public const string STR_DatabaseDiGioco3 = "/dataBasePersonaggioV2.asset";
 
+    public static bool sonoPassatoDallaScenaIniziale = false;//+
+
     static string origine = Application.streamingAssetsPath + "/dbgioco.db";
     static string destinazione = Application.persistentDataPath + "/dbgioco.db";
     static SqliteConnection conn;

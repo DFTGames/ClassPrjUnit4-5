@@ -150,6 +150,8 @@ public class ManagerIniziale : MonoBehaviour
 
     public void CaricaScena()
     {
+        Statici.sonoPassatoDallaScenaIniziale = true; //+
+
         for (int i = 0; i < databaseInizialeProprieta.matriceProprieta.Count; i++)
         {
             Destroy(GameObject.Find(databaseInizialeProprieta.matriceProprieta[i].nomeM + "(Clone)"));
@@ -163,15 +165,17 @@ public class ManagerIniziale : MonoBehaviour
         Per evitare di far andar ein errore il gioco, se la scena non esiste più il personaggio viene caricato 
         nell'isola altrimenti nell'ultima scena visitata.
         */
-       
-        if (!Application.CanStreamedLevelBeLoaded(datiPersonaggio.Dati.nomeScena)) {
+
+        if (!Application.CanStreamedLevelBeLoaded(datiPersonaggio.Dati.nomeScena))
+        {
             datiPersonaggio.Dati.nomeScena = "Isola";
             datiPersonaggio.Dati.posizioneCheckPoint = "start";
             datiPersonaggio.Salva();
             SceneManager.LoadScene("Isola");
-       }else
-        SceneManager.LoadScene(datiPersonaggio.Dati.nomeScena);
-    
+        }
+        else
+            SceneManager.LoadScene(datiPersonaggio.Dati.nomeScena);
+
     }
 
     public void AvviaGioco()
@@ -182,6 +186,8 @@ public class ManagerIniziale : MonoBehaviour
             Errore.text = "Inserire un nome";
             return;
         }
+
+        Statici.sonoPassatoDallaScenaIniziale = true; //+
 
         DirectoryInfo dI = new DirectoryInfo(Application.persistentDataPath);
         DirectoryInfo[] dirs = dI.GetDirectories();
@@ -248,7 +254,7 @@ public class ManagerIniziale : MonoBehaviour
         SerializzaPercorsi();
         personaggiInCarica = true;
         SceneManager.LoadScene(datiPersonaggio.Dati.nomeScena);
-    
+
     }
 
     private void SerializzaPercorsi()   //Controlla e se necessario riserializza i percorsi
@@ -265,7 +271,7 @@ public class ManagerIniziale : MonoBehaviour
 
         if (datiDiplomazia.Dati.indexPercorsi.Equals(databseInizialeAmicizie.indexPercorsi)) return;  //CONTROLLARE SE METODO E' CORRETTO
 
-        for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
+        for (int i = 0; i < Me.databseInizialeAmicizie.tagEssere.Length; i++)
 
         {
             datiDiplomazia.Dati.indexPercorsi[i] = databseInizialeAmicizie.indexPercorsi[i];
@@ -319,7 +325,7 @@ public class ManagerIniziale : MonoBehaviour
         if ((!nuovaPartita && !caricaPartita) || (caricaPartita && !personaggiInCarica))
         {
             Image tmpImage = pannelloImmagineSfondo;
-            if (tmpImage.color.a < 1f)                
+            if (tmpImage.color.a < 1f)
                 tmpImage.color += new Color(0f, 0f, 0f, 0.2f) * Time.deltaTime * 3f;
 
             Target = posizioneInizialeCamera;
@@ -363,17 +369,17 @@ public class ManagerIniziale : MonoBehaviour
         }
 
         //mentre sto caricando una nuova scena faccio spuntare un immagine di sfondo e il nome della scena facendo scomparire eventuali pannelli attivi:
-        if (Application.isLoadingLevel && pannelloImmagineSfondo.color.a!=1f)
+        if (Application.isLoadingLevel && pannelloImmagineSfondo.color.a != 1f)
         {
-           
+
             AltrieMenu2.gameObject.SetActive(false);
             AltrieMenu1.gameObject.SetActive(false);
-            AnimatoreMenu.gameObject.SetActive(false);           
+            AnimatoreMenu.gameObject.SetActive(false);
             nomeScenaText.gameObject.SetActive(true);
             nomeScenaText.text = "Loading... " + datiPersonaggio.Dati.nomeScena;
             pannelloImmagineSfondo.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
         }
-       
+
     }
 
     private void CambiaPosizioneTelecamera()
@@ -397,7 +403,8 @@ public class ManagerIniziale : MonoBehaviour
         {
             Tmp = new Dropdown.OptionData();
             Tmp.text = Drs[i].Name;
-            ElencoCartelle.options.Add(Tmp);
+            if (Drs[i].Name != "PersonaggioDiProva")
+                ElencoCartelle.options.Add(Tmp);
         }
         if (Drs.Length > 0)
         {
@@ -466,7 +473,7 @@ public class ManagerIniziale : MonoBehaviour
         {
             Directory.Delete(Path.Combine
             (Application.persistentDataPath, Statici.nomePersonaggio), true);
-            
+
             RecuperaElencoCartelle();
         }
     }

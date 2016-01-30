@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -13,9 +14,10 @@ public class GameManager : MonoBehaviour
     public static Dictionary<string, List<string>> dizionarioDiNemici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiAmici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiIndifferenti = new Dictionary<string, List<string>>();
-   
-    
-  
+    public GameData databseInizialeAmicizie;
+    public caratteristichePersonaggioV2 databaseInizialeProprieta;
+
+
 
     private static GameManager me;
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
@@ -119,28 +121,140 @@ public class GameManager : MonoBehaviour
     {
         me = this;
 
-        //carico diplomazia
-        datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
+        if (Statici.sonoPassatoDallaScenaIniziale)//+
+        {
+            //carico diplomazia
+            datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
 
-        //carico dati personaggio
-        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
+            //carico dati personaggio
+            datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
 
-        VitaMassima = datiPersonaggio.Dati.VitaMassima;
-        VitaAttuale = datiPersonaggio.Dati.Vita;
-        Attacco = datiPersonaggio.Dati.Attacco;
-        Difesa = datiPersonaggio.Dati.difesa;
-        Nome = datiPersonaggio.Dati.nomePersonaggio;
-        Classe = datiPersonaggio.Dati.classe;
-        GestoreCanvasAltreScene.AggiornaDati();
+            VitaMassima = datiPersonaggio.Dati.VitaMassima;
+            VitaAttuale = datiPersonaggio.Dati.Vita;
+            Attacco = datiPersonaggio.Dati.Attacco;
+            Difesa = datiPersonaggio.Dati.difesa;
+            Nome = datiPersonaggio.Dati.nomePersonaggio;
+            Classe = datiPersonaggio.Dati.classe;
+            GestoreCanvasAltreScene.AggiornaDati();
 
-        if (GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)") != null)
-            GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").transform.position = GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
+            if (GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)") != null)
+                GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").transform.position = GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
+            else
+                Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity);
+
+            RecuperaDizionariDiplomazia();
+        }
         else
-            Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity);
+        {
+            //Questo else serve nel caso in cui facciamo play da una scena che non sia quella iniziale
+            //verrà così caricato un personaggio per fare le prove.
+            //il personaggio verrà caricato sempre nella scena in cui si è fatto play.
+            //N.B. se si vuole provare il salvataggio dell'ultima scena bisogna però fare la trafila a partire dalla prima scena
+            //perchè questo else caricherà il personaggio solo nella scena in cui viene fatto play.(per maggiori info chiedere a Ninfea)
+            Metodo_Charlie();
+            Statici.nomePersonaggio = "PersonaggioDiProva";
 
-        RecuperaDizionariDiplomazia();
+            datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
+
+            if (datiPersonaggio.Dati.nomePersonaggio == null)
+            {
+                datiPersonaggio.Dati.Vita = 10;
+                datiPersonaggio.Dati.Attacco = 20;
+                datiPersonaggio.Dati.difesa = 5;
+                datiPersonaggio.Dati.Xp = 19;
+                datiPersonaggio.Dati.Livello = 1;
+
+
+                datiPersonaggio.Dati.nomeModello = "MagoBluM";
+
+                datiPersonaggio.Dati.nomePersonaggio = "PersonaggioDiProva";
+                datiPersonaggio.Dati.classe = "Mago";
+
+                datiPersonaggio.Dati.VitaMassima = 10;
+                datiPersonaggio.Dati.ManaMassimo = 20;
+                datiPersonaggio.Dati.XPMassimo = 100;
+                datiPersonaggio.Dati.posizioneCheckPoint = "start";
+                datiPersonaggio.Dati.nomeScena = Application.loadedLevelName;
+                datiPersonaggio.Salva();
+            }
+
+            datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
+            if (datiDiplomazia.Dati.tipoEssere[0] == null)
+            {
+                for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
+                {
+                    datiDiplomazia.Dati.tipoEssere[i] = databseInizialeAmicizie.tagEssere[i];
+                }
+                for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
+                {
+                    datiDiplomazia.Dati.matriceAmicizie[i] = databseInizialeAmicizie.matriceAmicizie[i];
+
+                    for (int j = 0; j < databseInizialeAmicizie.tagEssere.Length; j++)
+                    {
+                        datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] = databseInizialeAmicizie.matriceAmicizie[i].elementoAmicizia[j];
+                    }
+                }
+
+                datiDiplomazia.Salva();
+            }
+            SerializzaPercorsi();
+            Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity);
+            RecuperaDizionariDiplomazia();
+            VitaMassima = datiPersonaggio.Dati.VitaMassima;
+            VitaAttuale = datiPersonaggio.Dati.Vita;
+            Attacco = datiPersonaggio.Dati.Attacco;
+            Difesa = datiPersonaggio.Dati.difesa;
+            Nome = datiPersonaggio.Dati.nomePersonaggio;
+            Classe = datiPersonaggio.Dati.classe;
+            GestoreCanvasAltreScene.AggiornaDati();
+            Statici.CopiaIlDB();
+            Statici.sonoPassatoDallaScenaIniziale = true;
+        }
+
+    }
+    private void SerializzaPercorsi()   //Controlla e se necessario riserializza i percorsi
+    {
+        //Controlla i percorsi se sono gia serializzati e se ci sono variazioni li reserializza
+        //se non sono serializzati li serializza
+        //se non ci sono variazioni non fa niente
+
+        if (databseInizialeAmicizie == null) return;
+
+        if (datiDiplomazia == null)
+
+            datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
+
+        if (datiDiplomazia.Dati.indexPercorsi.Equals(databseInizialeAmicizie.indexPercorsi)) return;  //CONTROLLARE SE METODO E' CORRETTO
+
+        for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
+
+        {
+            datiDiplomazia.Dati.indexPercorsi[i] = databseInizialeAmicizie.indexPercorsi[i];
+        }
+
+        datiDiplomazia.Salva();
     }
 
+
+    private void Metodo_Charlie()   //metodo per assegnare gli asset dentro l'inspector... By Luca del dftStudent
+    {
+        if (databseInizialeAmicizie == null)
+        {
+            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig))
+            {
+                string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig);
+                databseInizialeAmicizie = AssetDatabase.LoadAssetAtPath<GameData>(percorso + Statici.STR_DatabaseDiGioco);
+            }
+        }
+        if (databaseInizialeProprieta == null)
+        {
+            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig3))
+            {
+                string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig3);
+                databaseInizialeProprieta = AssetDatabase.LoadAssetAtPath<caratteristichePersonaggioV2>(percorso + Statici.STR_DatabaseDiGioco3);
+            }
+        }
+    }
     private void RecuperaDizionariDiplomazia()
     {
         dizionarioDiNemici.Clear();
@@ -201,7 +315,7 @@ public class GameManager : MonoBehaviour
 
             nomeScenaDaCaricare = string.Empty;
         }
-        
+
         if (datiPersonaggio.Dati.Vita != VitaAttuale)
         {
             me.datiPersonaggio.Dati.Vita = VitaAttuale;
@@ -211,9 +325,9 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-               if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit) && !EventSystem.current.IsPointerOverGameObject())
-              
-                {
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit) && !EventSystem.current.IsPointerOverGameObject())
+
+            {
                 attuale = hit.collider;
                 tagDellAltro = hit.collider.tag;
 
@@ -226,11 +340,11 @@ public class GameManager : MonoBehaviour
                 if (attuale.transform.FindChild("quadDiSelezione"))
                     attuale.transform.FindChild("quadDiSelezione").gameObject.SetActive(true);
 
-              
+
             }
         }
 
-       
+
     }
 
     public static void DichiaroGuerra()
@@ -288,13 +402,13 @@ public class GameManager : MonoBehaviour
     public static void RiceviDanno()
     {
         VitaAttuale -= 1f;
-      
+
     }
 
     public static void PozioneVita()
     {
         VitaAttuale += 1f;
-     
+
     }
 
     public static void MemorizzaCheckPoint(string nomeCheckPoint)
