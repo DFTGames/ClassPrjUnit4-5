@@ -17,4 +17,6 @@ public interface IStato
 
     void EsecuzioneTerminata();
 
+   
+
 }

@@ -27,7 +27,7 @@ public class FSM : MonoBehaviour
     private IStato statoPrecedente;
     private IStato pattugliamento;
     private IStato inseguimento;
-    // private IStato attacco;
+    private IStato Attacco;
 
     public Transform ObiettivoNemico
     {
@@ -77,8 +77,8 @@ public int IndexPercorso
          pattugliamento = new Pattugliamento();
         inseguimento = new Inseguimento();
         //Levare commento sotto quando qualcuno implementa lo stato di attacco:
-        //  attacco = new Attacco();
-         //attacco.Inizializza(this);
+          Attacco = new Attacco();
+         Attacco.Inizializza(this);
           pattugliamento.Inizializza(this);
         inseguimento.Inizializza(this);
         statoCorrente = pattugliamento;
