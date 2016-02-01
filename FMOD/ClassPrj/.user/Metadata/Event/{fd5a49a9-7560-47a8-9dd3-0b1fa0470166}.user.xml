@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.01.07.00">
     <object class="Event" id="{fd5a49a9-7560-47a8-9dd3-0b1fa0470166}">
         <relationship name="selectables">
-            <destination>{2bf198a1-7c41-4fb6-8427-09bc6629de2a}</destination>
+            <destination>{c0e642eb-d32c-462f-a61a-70558c6a39d3}</destination>
         </relationship>
         <relationship name="uiLastParameterSelection">
             <destination>{4b88d14a-2bb6-47e3-814f-c90c544b65f2}</destination>
@@ -17,7 +17,7 @@
     <object class="GroupTrack" id="{2bf198a1-7c41-4fb6-8427-09bc6629de2a}"/>
     <object class="Timeline" id="{4b88d14a-2bb6-47e3-814f-c90c544b65f2}">
         <property name="cursorPosition">
-            <value>46.543134889419548</value>
+            <value>44.394120155764696</value>
         </property>
         <property name="uiLastRulerScaleRatio">
             <value>0.056553019306706621</value>
@@ -25,10 +25,10 @@
     </object>
     <object class="GameParameter" id="{8bfc730f-9e8e-4656-aaf8-7f9cc2bab826}">
         <property name="cursorPosition">
-            <value>0.91500008106231689</value>
+            <value>0</value>
         </property>
         <property name="uiLastRulerScaleRatio">
-            <value>0.001567398119122257</value>
+            <value>0.001001001001001001</value>
         </property>
     </object>
     <object class="EventMixerMaster" id="{aa0727bf-d335-488a-acd7-f3ad34a7c843}">
@@ -66,6 +66,7 @@
     <object class="MixerBusEffectChain" id="{9793cf38-58d7-49f7-9c30-d9bbf0f8e86a}"/>
     <object class="MixerBusPanner" id="{b7fb255e-acd4-42df-9c55-5c9b5391d85b}"/>
     <object class="MixerBusFader" id="{7cbdef1c-951e-46eb-b24d-1f7f73456810}"/>
+    <object class="LimiterEffect" id="{3f25c2b3-fdb3-4c58-a18f-db87b8fe7011}"/>
     <object class="SpatialiserEffect" id="{6d8541a6-f82d-4de6-aa49-98a54d3fa588}"/>
     <object class="MixerSend" id="{a5774c30-df0d-436a-ae85-fc13ac2306cf}"/>
     <object class="MixerBusFader" id="{028491d2-85ad-4e2a-90a2-4f9fe3b600aa}"/>

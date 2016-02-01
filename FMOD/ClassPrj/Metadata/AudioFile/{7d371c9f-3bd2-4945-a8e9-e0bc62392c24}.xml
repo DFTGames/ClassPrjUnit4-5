@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.07.00">
+    <object class="AudioFile" id="{7d371c9f-3bd2-4945-a8e9-e0bc62392c24}">
+        <property name="frequencyInKHz">
+            <value>48</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>8.9995208333333334</value>
+        </property>
+        <property name="audioFilePath">
+            <value>$(AUDIO_BIN_DIR)/LoopDay_1 {d684b9ea-4c04-4804-aa2a-2fff714b1221}.wav</value>
+        </property>
+        <relationship name="container">
+            <destination>{2264ae3d-76f0-4d87-b857-304552f7c639}</destination>
+        </relationship>
+    </object>
+</objects>
