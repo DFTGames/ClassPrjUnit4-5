@@ -14,7 +14,7 @@
             <value>$(AUDIO_BIN_DIR)/Whoosh_00 {3bbc303e-3fe8-41cb-8610-db7539acd352}.wav</value>
         </property>
         <relationship name="container">
-            <destination>{eae65b6e-42b3-4de4-a7f9-f94dfc69c8a4}</destination>
+            <destination>{dc83019e-83f2-4048-91cc-38df49ab924d}</destination>
         </relationship>
     </object>
 </objects>

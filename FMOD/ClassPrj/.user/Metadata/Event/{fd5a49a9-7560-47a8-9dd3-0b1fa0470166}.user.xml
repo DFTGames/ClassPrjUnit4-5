@@ -17,10 +17,10 @@
     <object class="GroupTrack" id="{2bf198a1-7c41-4fb6-8427-09bc6629de2a}"/>
     <object class="Timeline" id="{4b88d14a-2bb6-47e3-814f-c90c544b65f2}">
         <property name="cursorPosition">
-            <value>44.394120155764696</value>
+            <value>0</value>
         </property>
         <property name="uiLastRulerScaleRatio">
-            <value>0.056553019306706621</value>
+            <value>0.05181479336479336</value>
         </property>
     </object>
     <object class="GameParameter" id="{8bfc730f-9e8e-4656-aaf8-7f9cc2bab826}">
