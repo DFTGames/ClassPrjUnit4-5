@@ -21,8 +21,10 @@ public class Pattugliamento : IStato
 
     public void Esecuzione()
     {
+        
         if (Percorso != null && Percorso.transform.childCount>0)
         {
+            Agente.stoppingDistance = 0.8f;
             if (Agente.remainingDistance <= Agente.stoppingDistance)
             {    
                 indiceDestinazioni = indiceDestinazioni < Percorso.transform.childCount ? ++indiceDestinazioni : 0;

@@ -10,7 +10,8 @@ public class Attacco : IStato {
     private NavMeshAgent Agente;
     private Animator Animatore;
     private Transform mTrasform;
-    private RaycastHit hit;
+   
+    private float distanzaTRaGiocatoreGoblin;
 
 
     public void Inizializza(FSM oggetto)
@@ -29,22 +30,31 @@ public class Attacco : IStato {
 
     public void Esecuzione()
     {
-        if (MioCervello.ObiettivoNemico != null)
+        if (MioCervello.ObiettivoNemico != null && MioCervello.inZonaAttacco)
         {
-            Vector3 direzione = mTrasform.TransformDirection(Vector3.forward);
-           if (Physics.Raycast(mTrasform.position, direzione, 1f))
-            {
-              Agente.Stop();
-             Animatore.SetBool("Pugno", true);
-             
-            }
 
-           
+
+            //Agente.speed = 0f;
+            Animatore.SetFloat("Velocita", 0f);
+             Animatore.SetBool("Pugno", true);
+          //  Agente.destination = MioCervello.ObiettivoNemico.position;
+
+            distanzaTRaGiocatoreGoblin = distanzaTRaGiocatoreGoblin = Vector3.Distance(Agente.transform.position, MioCervello.ObiettivoNemico.position);
+            Debug.Log("distanzaAttacco" + distanzaTRaGiocatoreGoblin);
+            if (distanzaTRaGiocatoreGoblin <= 2f)
+            {
+                MioCervello.inZonaAttacco = true;
+            }
+            else MioCervello.inZonaAttacco = false;
+
         }
     }
 
     public void EsecuzioneTerminata()
-    { }
+    {
+        Animatore.SetBool("Pugno", false);
+        Agente.speed = 0.5f;
+    }
 
     
 
