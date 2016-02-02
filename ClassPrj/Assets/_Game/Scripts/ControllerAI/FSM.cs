@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// cervello
@@ -27,7 +28,7 @@ public class FSM : MonoBehaviour
     private IStato statoPrecedente;
     private IStato pattugliamento;
     private IStato inseguimento;
-    // private IStato attacco;
+    private IStato Attacco;
 
     public Transform ObiettivoNemico
     {
@@ -76,15 +77,23 @@ public int IndexPercorso
         colliderSferaVista.radius = quantoCiVedoSenzaOcchiali;
          pattugliamento = new Pattugliamento();
         inseguimento = new Inseguimento();
-        //Levare commento sotto quando qualcuno implementa lo stato di attacco:
-        //  attacco = new Attacco();
-         //attacco.Inizializza(this);
-          pattugliamento.Inizializza(this);
+          Attacco = new Attacco();
+         Attacco.Inizializza(this);
+        if (Statici.sonoPassatoDallaScenaIniziale)
+            pattugliamento.Inizializza(this);
+        else StartCoroutine(AspettoEInizializzo());
+
         inseguimento.Inizializza(this);
         statoCorrente = pattugliamento;
         
     }
+    IEnumerator AspettoEInizializzo()
+    {
+        yield return new WaitForSeconds(1f);
+        pattugliamento.Inizializza(this);
 
+
+    }
     private void Update()
     {
         if (statoCorrente != statoPrecedente)
@@ -99,13 +108,16 @@ public int IndexPercorso
         {
             if (!inZonaAttacco)
                 statoCorrente = inseguimento;
-           /*  else
-                 statoCorrente = attacco;*/ //levare il commento quando qualcuno implementa lo stato di attacco
+          else
+                 statoCorrente = Attacco; 
         }
             else
+        { 
                 statoCorrente = pattugliamento;
-
+            inZonaAttacco = false;
+             }
         statoCorrente.Esecuzione();
+        Debug.Log("inzona attacco" + inZonaAttacco);
     }
 
     private void FixedUpdate()
