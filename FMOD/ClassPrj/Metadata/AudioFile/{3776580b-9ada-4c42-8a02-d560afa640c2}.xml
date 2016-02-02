@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.07.00">
+    <object class="AudioFile" id="{3776580b-9ada-4c42-8a02-d560afa640c2}">
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>0.5005442176870748</value>
+        </property>
+        <property name="audioFilePath">
+            <value>$(AUDIO_BIN_DIR)/Sfx_Female_00c {ecd46f84-0134-4c9a-bb64-b4b4434620a5}.wav</value>
+        </property>
+        <relationship name="container">
+            <destination>{953e71c6-6474-4337-8106-3cdcdf0a0d43}</destination>
+        </relationship>
+    </object>
+</objects>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.07.00">
+    <object class="AudioFile" id="{6783c62f-75ab-43fc-b868-82f88ede752e}">
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>9.0003401360544224</value>
+        </property>
+        <property name="audioFilePath">
+            <value>$(AUDIO_BIN_DIR)/LoopFireFlames_00a {be88080c-854a-4b63-84cc-23b42e5934f6}.wav</value>
+        </property>
+        <relationship name="container">
+            <destination>{5d6132a1-442a-489c-aeca-e2fc1b43218c}</destination>
+        </relationship>
+    </object>
+</objects>

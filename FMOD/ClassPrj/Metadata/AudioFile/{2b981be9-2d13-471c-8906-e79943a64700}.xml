@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.07.00">
+    <object class="AudioFile" id="{2b981be9-2d13-471c-8906-e79943a64700}">
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>3.2215646258503403</value>
+        </property>
+        <property name="audioFilePath">
+            <value>$(AUDIO_BIN_DIR)/Sfx_Female_CriticalDamagewav {49f3a3b2-c666-4be9-9bf3-3bbeeb7e07fc}.wav</value>
+        </property>
+        <relationship name="container">
+            <destination>{953e71c6-6474-4337-8106-3cdcdf0a0d43}</destination>
+        </relationship>
+    </object>
+</objects>

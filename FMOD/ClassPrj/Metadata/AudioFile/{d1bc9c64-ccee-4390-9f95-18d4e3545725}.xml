@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.01.07.00">
+    <object class="AudioFile" id="{d1bc9c64-ccee-4390-9f95-18d4e3545725}">
+        <property name="frequencyInKHz">
+            <value>44.0999985</value>
+        </property>
+        <property name="channelCount">
+            <value>2</value>
+        </property>
+        <property name="length">
+            <value>1.2014739229024944</value>
+        </property>
+        <property name="audioFilePath">
+            <value>$(AUDIO_BIN_DIR)/Sfx_GoblinDead_00c {ad975cb1-c9aa-4643-bec3-7d620a7ef2f4}.wav</value>
+        </property>
+        <relationship name="container">
+            <destination>{b96a038d-4b85-4a24-bfe5-b54fdb430ec9}</destination>
+        </relationship>
+    </object>
+</objects>
