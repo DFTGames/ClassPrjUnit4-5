@@ -50,6 +50,7 @@ public class ManagerIniziale : MonoBehaviour
     private bool nuovaPartita = false;
     private bool caricaPartita = false;
     private bool personaggiInCarica = false;
+    private bool personaggioProvaEsiste = false;
 
     //telecamera:
     public Transform posizioneCameraCarica;
@@ -271,7 +272,7 @@ public class ManagerIniziale : MonoBehaviour
 
         if (datiDiplomazia.Dati.indexPercorsi.Equals(databseInizialeAmicizie.indexPercorsi)) return;  //CONTROLLARE SE METODO E' CORRETTO
 
-        for (int i = 0; i < Me.databseInizialeAmicizie.tagEssere.Length; i++)
+        for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
 
         {
             datiDiplomazia.Dati.indexPercorsi[i] = databseInizialeAmicizie.indexPercorsi[i];
@@ -405,8 +406,15 @@ public class ManagerIniziale : MonoBehaviour
             Tmp.text = Drs[i].Name;
             if (Drs[i].Name != "PersonaggioDiProva")
                 ElencoCartelle.options.Add(Tmp);
+            else
+                personaggioProvaEsiste = true;
         }
-        if (Drs.Length > 0)
+        int numeroCartelleMinimo = 0;
+        if (!personaggioProvaEsiste)
+            numeroCartelleMinimo = 0;
+        else
+            numeroCartelleMinimo = 1;
+        if (Drs.Length > numeroCartelleMinimo)
         {
             personaggiInCarica = true;
             BottoneCaricaOff.interactable = true;
@@ -432,6 +440,7 @@ public class ManagerIniziale : MonoBehaviour
             }
             ElencoCartelle.captionText.text = string.Empty;  //NON VISUALIZZA LA STRINGA QUANDO LA LISTA E' VUOTA
         }
+        
     }
 
     public void RecuperaDatiGiocatore()
