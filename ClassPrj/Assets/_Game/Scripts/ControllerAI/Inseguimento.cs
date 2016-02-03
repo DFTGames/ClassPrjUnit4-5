@@ -9,6 +9,7 @@ public class Inseguimento : IStato
     private FSM Cervello;
     private NavMeshAgent agente;
     private Animator animatore;
+    private float distanzaTRaGiocatoreGoblin;
 
     public void Inizializza(FSM oggetto)
     {
@@ -29,12 +30,24 @@ public class Inseguimento : IStato
        
        
           
-        if (Cervello.ObiettivoNemico != null)
+        if (Cervello.ObiettivoNemico != null && !Cervello.inZonaAttacco)
         {
             agente.destination = Cervello.ObiettivoNemico.position; //Se serve aggiugnere .Position
+            agente.stoppingDistance = 2f;
             agente.speed = 3.5f;
             animatore.SetFloat("Velocita", 1f);
+            distanzaTRaGiocatoreGoblin = Vector3.Distance(agente.transform.position, Cervello.ObiettivoNemico.position);
+            Debug.Log("distanzaAttacco" + distanzaTRaGiocatoreGoblin);
+            if (distanzaTRaGiocatoreGoblin <= 2f)
+            {
+                Cervello.inZonaAttacco = true;
+            }
+            else  Cervello.inZonaAttacco = false;
+           
+
+            
         }
+        
     }
 
     public void EsecuzioneTerminata()
