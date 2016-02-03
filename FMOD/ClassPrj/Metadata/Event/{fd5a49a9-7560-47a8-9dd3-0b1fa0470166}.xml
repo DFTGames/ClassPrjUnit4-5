@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.01.07.00">
     <object class="Event" id="{fd5a49a9-7560-47a8-9dd3-0b1fa0470166}">
         <property name="name">
-            <value>AmbienteIsola</value>
+            <value>EnvironmentIsola</value>
         </property>
         <property name="outputFormat">
             <value>2</value>
@@ -212,7 +212,7 @@
     </object>
     <object class="EventMixerGroup" id="{ba1a30dc-a4cd-4db3-8654-17d38ddf62f2}">
         <property name="name">
-            <value>BGSfx</value>
+            <value>Environment</value>
         </property>
         <relationship name="effectChain">
             <destination>{1577a41f-7a52-4c80-8c36-6c650f0ebcd3}</destination>
@@ -342,6 +342,7 @@
     <object class="MixerBusEffectChain" id="{fe41ccd7-413e-40c4-b779-a121e32fa92c}">
         <relationship name="effects">
             <destination>{7cbdef1c-951e-46eb-b24d-1f7f73456810}</destination>
+            <destination>{3f25c2b3-fdb3-4c58-a18f-db87b8fe7011}</destination>
             <destination>{6d8541a6-f82d-4de6-aa49-98a54d3fa588}</destination>
             <destination>{a5774c30-df0d-436a-ae85-fc13ac2306cf}</destination>
         </relationship>
@@ -507,6 +508,9 @@
         <property name="value">
             <value>0</value>
         </property>
+        <property name="curveShape">
+            <value>1</value>
+        </property>
     </object>
     <object class="AutomationPoint" id="{32740081-734e-4fe7-a32a-6c2f16de5fe2}">
         <property name="position">
@@ -517,6 +521,11 @@
         </property>
     </object>
     <object class="MixerBusFader" id="{7cbdef1c-951e-46eb-b24d-1f7f73456810}"/>
+    <object class="LimiterEffect" id="{3f25c2b3-fdb3-4c58-a18f-db87b8fe7011}">
+        <property name="boost">
+            <value>7.99999952</value>
+        </property>
+    </object>
     <object class="SpatialiserEffect" id="{6d8541a6-f82d-4de6-aa49-98a54d3fa588}">
         <property name="distanceRolloffType">
             <value>4</value>
@@ -526,6 +535,15 @@
         </property>
         <property name="maximumDistance">
             <value>10</value>
+        </property>
+        <property name="extentMode">
+            <value>1</value>
+        </property>
+        <property name="soundSize">
+            <value>12</value>
+        </property>
+        <property name="minimumExtent">
+            <value>180</value>
         </property>
     </object>
     <object class="MixerSend" id="{a5774c30-df0d-436a-ae85-fc13ac2306cf}">
