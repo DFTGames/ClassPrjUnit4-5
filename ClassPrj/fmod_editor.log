@@ -299,3 +299,4 @@ de = 00000000060F1B60
 [LOG] SoundI::release                          : release subsounds. (00000000367D3788)
 [LOG] SoundI::release                          :     (null) (00000000060FB708)
 [LOG] SoundI::release                          : release codec. (00000000367D3788)
+[LOG] System::create                           : Header version = 1.07.05. Current version = 1.07.05.

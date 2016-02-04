@@ -38,7 +38,8 @@ public class GestorePercorso : MonoBehaviour
     {
         get
         {
-            if (idx < transform.childCount)
+            if (transform.childCount < 1) return null;
+            if (idx >=0 && idx < transform.childCount)
                 return transform.GetChild(idx);
             else return transform.GetChild(0);
         }

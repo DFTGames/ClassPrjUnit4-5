@@ -28,8 +28,10 @@ public class Pattugliamento : IStato
             if (Agente.remainingDistance <= Agente.stoppingDistance)
             {    
                 indiceDestinazioni = indiceDestinazioni < Percorso.transform.childCount ? ++indiceDestinazioni : 0;
-                ProssimaDirezione = Percorso[indiceDestinazioni];
-                Agente.SetDestination(ProssimaDirezione.position);
+                Transform tmpPercorso = Percorso[indiceDestinazioni]; //Se nessun Nodo e' stato impostato come percorso
+                if (tmpPercorso == null) return;
+                ProssimaDirezione = tmpPercorso;
+                Agente.SetDestination(ProssimaDirezione.position);                
             }
             Animatore.SetFloat("Velocita", 0.5f);
         }

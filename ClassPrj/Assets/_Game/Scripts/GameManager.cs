@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public static Transform signoloEssereT = null;
     public static List<string> nemici = null;
     public static int contatoreDaCambiare = 0;
+    //fare dizionari indici...stringa e numerico dizionario
     public static Dictionary<string, List<string>> dizionarioDiNemici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiAmici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiIndifferenti = new Dictionary<string, List<string>>();
