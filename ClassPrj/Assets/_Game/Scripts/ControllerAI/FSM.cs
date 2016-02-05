@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 /// <summary>
 /// cervello
@@ -7,7 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(NavMeshAgent)),
     RequireComponent(typeof(Animator))]
 public class FSM : MonoBehaviour
-{   
+{
     public float quantoCiVedoSenzaOcchiali = 10f;
     public float alphaGrad = 140f;
     public bool visualizzaHandleVista = true;
@@ -52,21 +51,20 @@ public class FSM : MonoBehaviour
         }
     }
 
+    public int IndexPercorso
+    {
+        get
+        {
+            return indexPercorso;
+        }
 
-   
-public int IndexPercorso
-{
-   get
-   {
-       return indexPercorso;
-   }
-
-   set
-   {    if (value < 0) indexPercorso = -1;   
+        set
+        {
+            if (value < 0) indexPercorso = -1;
             else
                 indexPercorso = value;
-   }
-}
+        }
+    }
 
     private void Start()
     {
@@ -75,25 +73,15 @@ public int IndexPercorso
         inZonaAttacco = false;
         colliderSferaVista = GetComponentInChildren<SphereCollider>();
         colliderSferaVista.radius = quantoCiVedoSenzaOcchiali;
-         pattugliamento = new Pattugliamento();
+        pattugliamento = new Pattugliamento();
         inseguimento = new Inseguimento();
-          Attacco = new Attacco();
-         Attacco.Inizializza(this);
-        if (Statici.sonoPassatoDallaScenaIniziale)
-            pattugliamento.Inizializza(this);
-        else StartCoroutine(AspettoEInizializzo());
-
+        Attacco = new Attacco();
+        Attacco.Inizializza(this);
+        pattugliamento.Inizializza(this);
         inseguimento.Inizializza(this);
         statoCorrente = pattugliamento;
-        
     }
-    IEnumerator AspettoEInizializzo()
-    {
-        yield return new WaitForSeconds(1f);
-        pattugliamento.Inizializza(this);
 
-
-    }
     private void Update()
     {
         if (statoCorrente != statoPrecedente)
@@ -108,14 +96,14 @@ public int IndexPercorso
         {
             if (!inZonaAttacco)
                 statoCorrente = inseguimento;
-          else
-                 statoCorrente = Attacco; 
-        }
             else
-        { 
-                statoCorrente = pattugliamento;
+                statoCorrente = Attacco;
+        }
+        else
+        {
+            statoCorrente = pattugliamento;
             inZonaAttacco = false;
-             }
+        }
         statoCorrente.Esecuzione();
         Debug.Log("inzona attacco" + inZonaAttacco);
     }
