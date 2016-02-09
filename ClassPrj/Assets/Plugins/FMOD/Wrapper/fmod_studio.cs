@@ -8,9 +8,7 @@ using System;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace FMOD
-{
-namespace Studio
+namespace FMOD.Studio
 {
     public class STUDIO_VERSION
     {
@@ -43,7 +41,7 @@ namespace Studio
     [StructLayout(LayoutKind.Sequential)]
     public struct PROGRAMMER_SOUND_PROPERTIES
     {
-        public string name;
+        public StringWrapper name;
         public IntPtr sound;
         public int subsoundIndex;
     }
@@ -51,7 +49,7 @@ namespace Studio
     [StructLayout(LayoutKind.Sequential)]
     public struct TIMELINE_MARKER_PROPERTIES
     {
-        public IntPtr name;
+        public StringWrapper name;
         public int position;
     }
 
@@ -2325,6 +2323,4 @@ namespace Studio
     }
 
     #endregion
-} // System
-
 } // FMOD

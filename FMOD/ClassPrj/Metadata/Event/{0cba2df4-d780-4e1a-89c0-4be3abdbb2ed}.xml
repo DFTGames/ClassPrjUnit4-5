@@ -54,7 +54,7 @@
             <destination>{a5e63f67-5854-4f58-8e1e-8189ae0c7b4c}</destination>
         </relationship>
         <relationship name="output">
-            <destination>{4cb3a49c-1d2f-40f6-8820-e09789e40075}</destination>
+            <destination>{568c6b21-e7d8-4f75-91b7-c3d7ba1c7906}</destination>
         </relationship>
     </object>
     <object class="EventAutomatableProperties" id="{4f73ae0f-fbdd-4663-a814-061fdf701686}"/>
@@ -82,6 +82,9 @@
         </relationship>
     </object>
     <object class="EventMixerMaster" id="{19e40919-cc4d-4c53-a5da-ce647d7993e8}">
+        <property name="volume">
+            <value>-1.5</value>
+        </property>
         <relationship name="effectChain">
             <destination>{24bf115a-3606-4f1a-88bb-7d8f3d5fac17}</destination>
         </relationship>
@@ -112,6 +115,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{094ca096-3fc3-4338-826c-d8cafed371e0}">
+        <property name="volume">
+            <value>-12</value>
+        </property>
         <property name="name">
             <value>Punch</value>
         </property>
@@ -139,6 +145,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{8a4d8421-f484-42d7-89dd-974b9e46c952}">
+        <property name="volume">
+            <value>-6</value>
+        </property>
         <property name="name">
             <value>Whoosh</value>
         </property>
@@ -157,7 +166,6 @@
             <destination>{74f06445-68cb-46da-ad99-8bad63ac6f2d}</destination>
             <destination>{95e8d02e-6de5-483b-a319-708804811f42}</destination>
             <destination>{d2ab8b03-67ac-42e6-9b63-4e97e984b827}</destination>
-            <destination>{6a1253d5-157c-4102-a2ae-80bd1d0acffd}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{dc671701-4cb1-4870-8ba6-7f87b518c487}"/>
@@ -220,14 +228,6 @@
         <property name="distanceRolloffType">
             <value>4</value>
         </property>
-    </object>
-    <object class="MixerSend" id="{6a1253d5-157c-4102-a2ae-80bd1d0acffd}">
-        <property name="inputFormat">
-            <value>2</value>
-        </property>
-        <relationship name="mixerReturn">
-            <destination>{259f8488-dd38-4034-a559-ab4418f1f698}</destination>
-        </relationship>
     </object>
     <object class="MixerBusFader" id="{216ed16d-9afb-4d4e-aaae-0aa9ab8af493}"/>
     <object class="MixerBusFader" id="{06b77e89-8b95-4399-a443-476494b1bd6a}"/>

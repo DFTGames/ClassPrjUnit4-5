@@ -57,12 +57,15 @@
             <destination>{86589946-c0fd-4616-9ea6-3ab5acf3a9c7}</destination>
         </relationship>
         <relationship name="output">
-            <destination>{4cb3a49c-1d2f-40f6-8820-e09789e40075}</destination>
+            <destination>{45ffe23f-4b4f-4eb4-a6ea-7d670de7f7f4}</destination>
         </relationship>
     </object>
     <object class="EventAutomatableProperties" id="{8d438dd9-61e2-4fa7-b17b-2a757b41f131}"/>
     <object class="MarkerTrack" id="{c8f45218-5ea5-40c3-b7d9-ce41a454eeb0}"/>
     <object class="GroupTrack" id="{e043c287-f85b-4418-8002-feb161e7c36f}">
+        <property name="streaming">
+            <value>true</value>
+        </property>
         <relationship name="modules">
             <destination>{f59d2151-b93d-490c-bf86-c0859ece893a}</destination>
         </relationship>
@@ -71,6 +74,9 @@
         </relationship>
     </object>
     <object class="GroupTrack" id="{8effc510-d143-49ef-b878-36db6107128b}">
+        <property name="streaming">
+            <value>true</value>
+        </property>
         <relationship name="automationTracks">
             <destination>{77f23e3e-4a74-400d-9448-56206a3f8d51}</destination>
         </relationship>
@@ -214,7 +220,6 @@
         <relationship name="effects">
             <destination>{abef6c78-7880-4680-8c8d-c6ce15ec5c0b}</destination>
             <destination>{001437bc-369b-49f0-81a1-40848c5d41e7}</destination>
-            <destination>{2541c2bc-c50f-471a-a7aa-563b920c22e2}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{f376bcfd-2b5b-4b5a-9c5b-20dfc7586885}"/>
@@ -281,14 +286,6 @@
         <property name="minimumExtent">
             <value>180</value>
         </property>
-    </object>
-    <object class="MixerSend" id="{2541c2bc-c50f-471a-a7aa-563b920c22e2}">
-        <property name="inputFormat">
-            <value>2</value>
-        </property>
-        <relationship name="mixerReturn">
-            <destination>{259f8488-dd38-4034-a559-ab4418f1f698}</destination>
-        </relationship>
     </object>
     <object class="MixerBusFader" id="{b26be54e-24da-4330-bb0f-cc6df3131de5}"/>
     <object class="MixerBusFader" id="{7087da68-9f8d-4ad9-8036-a87ac016ab77}"/>

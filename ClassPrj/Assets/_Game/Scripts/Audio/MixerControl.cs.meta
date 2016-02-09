@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 57507a07a89abc24eaccfb8607ca7e4c
+timeCreated: 1454856012
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - s_VolumiSfx: {instanceID: 0}
+  - mainMixer: {fileID: 24100000, guid: a1731e90ee9345945947e86ebdb45f1e, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

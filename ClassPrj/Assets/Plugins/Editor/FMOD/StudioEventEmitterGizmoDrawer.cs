@@ -13,7 +13,7 @@ namespace FMODUnity
         #if UNITY_4_6
         [DrawGizmo(GizmoType.Selected | GizmoType.Active | GizmoType.NotSelected)]
         #else
-        [DrawGizmo(GizmoType.Selected | GizmoType.Active | GizmoType.NotInSelectionHierarchy)]
+        [DrawGizmo(GizmoType.Selected | GizmoType.Active | GizmoType.NotInSelectionHierarchy | GizmoType.Pickable)]
         #endif
         static void DrawGizmo(StudioEventEmitter studioEmitter, GizmoType gizmoType)
         {
