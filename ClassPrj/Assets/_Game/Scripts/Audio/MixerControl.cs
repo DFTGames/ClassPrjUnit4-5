@@ -22,6 +22,7 @@ public class MixerControl : MonoBehaviour {
     void Start()
     {
         s_VolumiSfx.value = PlayerPrefs.GetFloat("v_Sfx", 0.5f);
+        s_VolumiEnvironment.value = PlayerPrefs.GetFloat("s_Environment", 0.5f);
     }
     void Update()
     {
