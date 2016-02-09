@@ -5,7 +5,7 @@
             <value>FootStepsGround</value>
         </property>
         <property name="outputFormat">
-            <value>2</value>
+            <value>1</value>
         </property>
         <relationship name="mixer">
             <destination>{63da4b90-620b-4155-b701-a1894b8750fb}</destination>
@@ -151,9 +151,6 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{247a16fe-4a38-48e7-98a9-d1cf3c8d69a4}">
-        <property name="volume">
-            <value>-17.5</value>
-        </property>
         <property name="name">
             <value>Leather</value>
         </property>
@@ -183,7 +180,7 @@
     </object>
     <object class="EventMixerGroup" id="{fc876087-aaba-4749-837e-3ba9aa9910a5}">
         <property name="volume">
-            <value>-31</value>
+            <value>-28.5</value>
         </property>
         <property name="name">
             <value>Metal</value>
@@ -200,9 +197,8 @@
     </object>
     <object class="MixerBusEffectChain" id="{79befb92-95f0-4fe6-9959-de6119196167}">
         <relationship name="effects">
-            <destination>{f9b8deba-cf5b-4b40-b267-41ce4499a694}</destination>
             <destination>{d3e49407-2ec1-4f68-a7ff-869864bea1d8}</destination>
-            <destination>{9ce915e2-90ec-44ac-8807-58466cb3a906}</destination>
+            <destination>{eedb5613-30df-4704-a3f8-b262adf6675d}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{a7043157-2b6d-4105-9267-f26c8cfa0398}"/>
@@ -287,23 +283,22 @@
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{c445a4fb-6d4c-4673-9b44-2d2b971190e6}"/>
-    <object class="LimiterEffect" id="{f9b8deba-cf5b-4b40-b267-41ce4499a694}">
+    <object class="MixerBusFader" id="{d3e49407-2ec1-4f68-a7ff-869864bea1d8}"/>
+    <object class="LimiterEffect" id="{eedb5613-30df-4704-a3f8-b262adf6675d}">
         <property name="boost">
-            <value>8.99999905</value>
+            <value>7.39999962</value>
         </property>
     </object>
-    <object class="MixerBusFader" id="{d3e49407-2ec1-4f68-a7ff-869864bea1d8}"/>
-    <object class="SpatialiserEffect" id="{9ce915e2-90ec-44ac-8807-58466cb3a906}"/>
     <object class="MixerBusFader" id="{8dcf97d6-4c85-41e4-a7e7-547953c993bc}"/>
     <object class="ThreeEQEffect" id="{3c122d99-0cd1-409d-b007-f7dda002356e}">
         <property name="lowGain">
-            <value>-20</value>
+            <value>-26.5</value>
         </property>
         <property name="midGain">
-            <value>-23.5</value>
+            <value>-29</value>
         </property>
         <property name="highGain">
-            <value>-17.5</value>
+            <value>-23.5</value>
         </property>
         <property name="lowCrossover">
             <value>260</value>

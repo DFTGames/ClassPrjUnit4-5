@@ -15,20 +15,20 @@ MonoBehaviour:
   - {fileID: 11447122}
   - {fileID: 11471476}
   EditorEvents:
-  - {fileID: 11466356}
-  - {fileID: 11472292}
-  - {fileID: 11441068}
-  - {fileID: 11434838}
-  - {fileID: 11426452}
-  - {fileID: 11428780}
-  - {fileID: 11443020}
-  - {fileID: 11464054}
-  - {fileID: 11401274}
-  - {fileID: 11472688}
-  - {fileID: 11409150}
-  - {fileID: 11409662}
+  - {fileID: 11447488}
+  - {fileID: 11490396}
+  - {fileID: 11463586}
+  - {fileID: 11416764}
+  - {fileID: 11420706}
+  - {fileID: 11484288}
+  - {fileID: 11437102}
+  - {fileID: 11445926}
+  - {fileID: 11483452}
+  - {fileID: 11414520}
+  - {fileID: 11446502}
+  - {fileID: 11423426}
   MasterBankRef: {fileID: 11471476}
-  stringsBankWriteTime: 635906432616745306
+  stringsBankWriteTime: 635906463041969277
 --- !u!114 &11400488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,6 +170,42 @@ MonoBehaviour:
   Name: Attack
   Min: 0
   Max: 3
+--- !u!114 &11403582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Death
+  Min: 0
+  Max: 100
+--- !u!114 &11403610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Grunts/DamageMaga
+  guid: 5aba1ec34c301c46be8edd3845c8ca11
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 11435704}
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11403804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,6 +246,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Death
+  Min: 0
+  Max: 100
+--- !u!114 &11404222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CriticalDamage
   Min: 0
   Max: 100
 --- !u!114 &11405122
@@ -360,6 +410,27 @@ MonoBehaviour:
   Name: Oceano
   Min: 0
   Max: 1
+--- !u!114 &11407996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsGravel
+  guid: b3d912b7f0d0fe4e93fb1c306d3a19a7
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11408114
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,6 +466,27 @@ MonoBehaviour:
   Name: Oceano
   Min: 0
   Max: 1
+--- !u!114 &11408378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsWater
+  guid: 6da7955217ca934a97b220caf43f1732
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11408382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -500,6 +592,20 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11410102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Oceano
+  Min: 0
+  Max: 1
 --- !u!114 &11410246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -639,6 +745,20 @@ MonoBehaviour:
   Name: Death
   Min: 0
   Max: 100
+--- !u!114 &11412476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Oceano
+  Min: 0
+  Max: 1
 --- !u!114 &11413238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -708,6 +828,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/FootSteps/FootStepsConcrete
   guid: ffd731429a363f4c9afc02e5e766619a
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+--- !u!114 &11414520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Combat/Punch
+  guid: f42dba0c80d71a4e89c04be3abdbb2ed
   Banks:
   - {fileID: 11471476}
   IsStream: 0
@@ -840,6 +981,27 @@ MonoBehaviour:
   Name: Oceano
   Min: 0
   Max: 1
+--- !u!114 &11416764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsWater
+  guid: 6da7955217ca934a97b220caf43f1732
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11417106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1036,6 +1198,41 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11420706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsGround
+  guid: 8f0760b883033b45b4e68ed5b76e715a
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+--- !u!114 &11420798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Attack
+  Min: 0
+  Max: 3
 --- !u!114 &11421170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1158,6 +1355,41 @@ MonoBehaviour:
   Path: event:/FootSteps/FootStepsConcrete
   guid: ffd731429a363f4c9afc02e5e766619a
   Banks: []
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+--- !u!114 &11422794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Death
+  Min: 0
+  Max: 100
+--- !u!114 &11423426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsConcrete
+  guid: ffd731429a363f4c9afc02e5e766619a
+  Banks:
+  - {fileID: 11471476}
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -1351,6 +1583,20 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11426606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Attack
+  Min: 0
+  Max: 3
 --- !u!114 &11426756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1363,6 +1609,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Name: Oceano
+  Min: 0
+  Max: 1
+--- !u!114 &11427620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsConcrete
+  guid: ffd731429a363f4c9afc02e5e766619a
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+--- !u!114 &11427662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CampFire
   Min: 0
   Max: 1
 --- !u!114 &11428356
@@ -1393,6 +1674,20 @@ MonoBehaviour:
   Name: Death
   Min: 0
   Max: 100
+--- !u!114 &11428610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Attack
+  Min: 0
+  Max: 3
 --- !u!114 &11428780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1491,6 +1786,27 @@ MonoBehaviour:
   Name: Oceano
   Min: 0
   Max: 1
+--- !u!114 &11432212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Combat/Punch
+  guid: f42dba0c80d71a4e89c04be3abdbb2ed
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11432788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1567,6 +1883,20 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11434276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Oceano
+  Min: 0
+  Max: 1
 --- !u!114 &11434646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1602,7 +1932,63 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11435704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CriticalDamage
+  Min: 0
+  Max: 100
+--- !u!114 &11435730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CriticalDamage
+  Min: 0
+  Max: 100
+--- !u!114 &11436208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Oceano
+  Min: 0
+  Max: 1
 --- !u!114 &11436210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CampFire
+  Min: 0
+  Max: 1
+--- !u!114 &11436344
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -1637,6 +2023,28 @@ MonoBehaviour:
   - {fileID: 11486378}
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11437102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/EnvironmentIsola
+  guid: a9495afd6075a8479dd30b1fa0470166
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 11497888}
+  MinDistance: 0
+  MaxDistance: 10
 --- !u!114 &11438612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1705,6 +2113,20 @@ MonoBehaviour:
   Name: Oceano
   Min: 0
   Max: 1
+--- !u!114 &11440436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Death
+  Min: 0
+  Max: 100
 --- !u!114 &11440478
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1955,6 +2377,28 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11444646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Combat/Speels
+  guid: c337c2b089bd0e4ca21d8ed811d221d6
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 11482852}
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11445176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2010,6 +2454,41 @@ MonoBehaviour:
   Name: Attack
   Min: 0
   Max: 3
+--- !u!114 &11445676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Death
+  Min: 0
+  Max: 100
+--- !u!114 &11445926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsGravel
+  guid: b3d912b7f0d0fe4e93fb1c306d3a19a7
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11446098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2031,6 +2510,49 @@ MonoBehaviour:
   - {fileID: 11462606}
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11446492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/EnvironmentVillaggio
+  guid: 41988340580b114bb8e76db89cfd1c18
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 11436344}
+  MinDistance: 1
+  MaxDistance: 20
+--- !u!114 &11446502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsWood
+  guid: f667a21210be904aae34cbe16926fb9e
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11447122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2043,7 +2565,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: ./..\FMOD\ClassPrj\Build\Desktop\Bank_BGM.bank
-  lastModified: 635906432617461570
+  lastModified: 635906463042710417
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -2068,6 +2590,28 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 1
   Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+--- !u!114 &11447488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/EnvironmentVillaggio
+  guid: 41988340580b114bb8e76db89cfd1c18
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 11476640}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11447572
@@ -2337,6 +2881,34 @@ MonoBehaviour:
   Name: Oceano
   Min: 0
   Max: 1
+--- !u!114 &11453322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Death
+  Min: 0
+  Max: 100
+--- !u!114 &11453354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CampFire
+  Min: 0
+  Max: 1
 --- !u!114 &11453386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2441,6 +3013,27 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11455082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsWood
+  guid: f667a21210be904aae34cbe16926fb9e
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11455460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2455,6 +3048,28 @@ MonoBehaviour:
   Name: Oceano
   Min: 0
   Max: 1
+--- !u!114 &11455960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Grunts/GruntsGoblin
+  guid: 92cb3be2d29baf42ac5f2068a0e90c4f
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 11445676}
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11456096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2515,6 +3130,20 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11457240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Attack
+  Min: 0
+  Max: 3
 --- !u!114 &11457542
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2634,6 +3263,20 @@ MonoBehaviour:
   - {fileID: 11473756}
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11460388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Oceano
+  Min: 0
+  Max: 1
 --- !u!114 &11461608
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2716,6 +3359,27 @@ MonoBehaviour:
   Name: Death
   Min: 0
   Max: 100
+--- !u!114 &11463586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsMud
+  guid: 69bdcb6456bcb44aa56ce3a8e35a3228
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11463952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3259,6 +3923,28 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11471366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Environment/EnvironmentIsola
+  guid: a9495afd6075a8479dd30b1fa0470166
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 1
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 11410102}
+  MinDistance: 0
+  MaxDistance: 10
 --- !u!114 &11471390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3285,11 +3971,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: ./..\FMOD\ClassPrj\Build\Desktop\Bank_SFX.bank
-  lastModified: 635906432617441515
+  lastModified: 635906463042695398
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 3376480
+    Value: 3376224
   Exists: 1
 --- !u!114 &11471484
 MonoBehaviour:
@@ -3348,6 +4034,20 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11473358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Attack
+  Min: 0
+  Max: 3
 --- !u!114 &11473746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3580,6 +4280,48 @@ MonoBehaviour:
   Name: CampFire
   Min: 0
   Max: 1
+--- !u!114 &11476640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CampFire
+  Min: 0
+  Max: 1
+--- !u!114 &11476756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CampFire
+  Min: 0
+  Max: 1
+--- !u!114 &11476878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CampFire
+  Min: 0
+  Max: 1
 --- !u!114 &11477312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3656,6 +4398,20 @@ MonoBehaviour:
   Name: Oceano
   Min: 0
   Max: 1
+--- !u!114 &11478220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CriticalDamage
+  Min: 0
+  Max: 100
 --- !u!114 &11478424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3837,6 +4593,20 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11481510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CriticalDamage
+  Min: 0
+  Max: 100
 --- !u!114 &11482810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3851,6 +4621,42 @@ MonoBehaviour:
   Name: CriticalDamage
   Min: 0
   Max: 100
+--- !u!114 &11482852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Attack
+  Min: 0
+  Max: 3
+--- !u!114 &11483452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Combat/Speels
+  guid: c337c2b089bd0e4ca21d8ed811d221d6
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 11420798}
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11483636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3873,6 +4679,27 @@ MonoBehaviour:
   - {fileID: 11490564}
   MinDistance: 0
   MaxDistance: 10
+--- !u!114 &11483656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsGround
+  guid: 8f0760b883033b45b4e68ed5b76e715a
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
 --- !u!114 &11484018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3901,6 +4728,49 @@ MonoBehaviour:
   Name: Oceano
   Min: 0
   Max: 1
+--- !u!114 &11484288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Grunts/GruntsGoblin
+  guid: 92cb3be2d29baf42ac5f2068a0e90c4f
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 11491434}
+  MinDistance: 1
+  MaxDistance: 20
+--- !u!114 &11484672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/FootSteps/FootStepsMud
+  guid: 69bdcb6456bcb44aa56ce3a8e35a3228
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11485026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4193,6 +5063,42 @@ MonoBehaviour:
   Name: CampFire
   Min: 0
   Max: 1
+--- !u!114 &11490032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CriticalDamage
+  Min: 0
+  Max: 100
+--- !u!114 &11490396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Grunts/DamageMaga
+  guid: 5aba1ec34c301c46be8edd3845c8ca11
+  Banks:
+  - {fileID: 11471476}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 11481510}
+  MinDistance: 1
+  MaxDistance: 20
 --- !u!114 &11490446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4241,6 +5147,20 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11491434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Death
+  Min: 0
+  Max: 100
 --- !u!114 &11492224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4424,6 +5344,20 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11497888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Oceano
+  Min: 0
+  Max: 1
 --- !u!114 &11497982
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -123,6 +123,9 @@
         </relationship>
     </object>
     <object class="EventMixerGroup" id="{76292677-025a-4e66-8c55-96c73edc3afa}">
+        <property name="volume">
+            <value>-4.5</value>
+        </property>
         <property name="name">
             <value>Foot</value>
         </property>
@@ -152,7 +155,7 @@
     </object>
     <object class="EventMixerGroup" id="{f2aaea8b-85d1-481a-9c09-88227d9aad92}">
         <property name="volume">
-            <value>-19.5</value>
+            <value>-4</value>
         </property>
         <property name="name">
             <value>Leather</value>
@@ -183,7 +186,7 @@
     </object>
     <object class="EventMixerGroup" id="{b3f349da-5211-4385-b2e8-32dff77cce9f}">
         <property name="volume">
-            <value>-31</value>
+            <value>-24.5</value>
         </property>
         <property name="name">
             <value>Metal</value>
@@ -202,7 +205,7 @@
         <relationship name="effects">
             <destination>{265de994-a302-4a04-a149-55d57c552452}</destination>
             <destination>{a8cbf2f7-46d1-416b-b198-3797d8d79b97}</destination>
-            <destination>{7bb889c8-c025-425f-92bc-dd8308c17936}</destination>
+            <destination>{9a05dfce-c066-4615-9b31-83db69b5dcd1}</destination>
         </relationship>
     </object>
     <object class="MixerBusPanner" id="{5d0307aa-5f24-454f-a09e-0d3c1bbee5af}">
@@ -295,21 +298,21 @@
     <object class="MixerBusPanner" id="{56075fc4-47b0-4f87-87ba-dc5263f5c813}"/>
     <object class="MixerBusFader" id="{265de994-a302-4a04-a149-55d57c552452}"/>
     <object class="SpatialiserEffect" id="{a8cbf2f7-46d1-416b-b198-3797d8d79b97}"/>
-    <object class="LimiterEffect" id="{7bb889c8-c025-425f-92bc-dd8308c17936}">
+    <object class="LimiterEffect" id="{9a05dfce-c066-4615-9b31-83db69b5dcd1}">
         <property name="boost">
-            <value>10.999999</value>
+            <value>7.49999952</value>
         </property>
     </object>
     <object class="MixerBusFader" id="{a400d95b-a8b8-455d-9a88-3b33c7699e98}"/>
     <object class="ThreeEQEffect" id="{01d855bd-ed20-4b26-9804-46a6a7f3be27}">
         <property name="lowGain">
-            <value>-40</value>
+            <value>-19</value>
         </property>
         <property name="midGain">
-            <value>-45</value>
+            <value>-39</value>
         </property>
         <property name="highGain">
-            <value>-30</value>
+            <value>-6</value>
         </property>
     </object>
     <object class="MixerBusFader" id="{3143ed6a-f6ea-4d20-bffa-a4d3448bdc3c}"/>
