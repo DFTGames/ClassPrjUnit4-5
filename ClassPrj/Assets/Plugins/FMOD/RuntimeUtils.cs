@@ -286,7 +286,7 @@ namespace FMODUnity
 	            #elif UNITY_STANDALONE_OSX || UNITY_EDITOR_OSX
 					string pluginFileName = pluginName + ".bundle";
 	            #elif UNITY_PS4
-	                string pluginFileName = pluginName + ".prx"
+	                string pluginFileName = pluginName + ".prx";
 	            #elif UNITY_ANDROID || UNITY_STANDALONE_LINUX
 	                string pluginFileName = "lib" + pluginName + ".so";
 	            #endif
@@ -314,25 +314,6 @@ namespace FMODUnity
         public static void EnforceLibraryOrder()
         {
             #if UNITY_ANDROID && !UNITY_EDITOR
-            
-            // First, obtain the current activity context
-            AndroidJavaObject activity = null;
-            using (var activityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-            {
-                activity = activityClass.GetStatic<AndroidJavaObject>("currentActivity");
-            }
-
-            using (var fmodJava = new AndroidJavaClass("org.fmod.FMOD"))
-            {
-                if (fmodJava != null)
-                {
-                    fmodJava.CallStatic("init", activity);
-                }
-                else
-                {
-                    UnityEngine.Debug.LogWarning("FMOD Studio: Cannot initialiaze Java wrapper");
-                }
-            }
 
 			AndroidJavaClass jSystem = new AndroidJavaClass("java.lang.System");
 			jSystem.CallStatic("loadLibrary", FMOD.VERSION.dll);
@@ -340,15 +321,15 @@ namespace FMODUnity
             
             #endif
 
-            #if !UNITY_IPHONE // iOS is statically linked
+			#if !UNITY_IPHONE || UNITY_EDITOR // iOS is statically linked
 
             // Call a function in fmod.dll to make sure it's loaded before fmodstudio.dll
             int temp1, temp2;
             FMOD.Memory.GetStats(out temp1, out temp2);
 
             Guid temp3;
-            FMOD.Studio.Util.ParseID("", out temp3);
-            
+            FMOD.Studio.Util.ParseID("", out temp3);           
+
             #endif
         }
     }

@@ -9,14 +9,11 @@ namespace FMODUnity
     [CustomPropertyDrawer(typeof(EventRefAttribute))]
     class EventRefDrawer : PropertyDrawer
     {
-        bool displayProperties = false;
-
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             Texture browseIcon = EditorGUIUtility.Load("FMOD/SearchIconBlack.png") as Texture;
             Texture openIcon = EditorGUIUtility.Load("FMOD/StudioIcon.png") as Texture;
-
-
+            
             EditorGUI.BeginProperty(position, label, property);
             SerializedProperty pathProperty = property;
 
@@ -48,7 +45,7 @@ namespace FMODUnity
 
             position = EditorGUI.PrefixLabel(position, GUIUtility.GetControlID(FocusType.Passive), label);
 
-            GUIStyle buttonStyle = GUI.skin.button;
+            GUIStyle buttonStyle = new GUIStyle(GUI.skin.button);
             buttonStyle.padding.top = 1;
             buttonStyle.padding.bottom = 1;
             
@@ -83,8 +80,8 @@ namespace FMODUnity
             if (!String.IsNullOrEmpty(pathProperty.stringValue) && EventManager.EventFromPath(pathProperty.stringValue) != null)
             {
                 Rect foldoutRect = new Rect(position.x + 10, position.y + baseHeight, position.width, baseHeight);
-                displayProperties = EditorGUI.Foldout(foldoutRect, displayProperties, "Event Properties");
-                if (displayProperties)
+                property.isExpanded = EditorGUI.Foldout(foldoutRect, property.isExpanded, "Event Properties");
+                if (property.isExpanded)
                 {
                     var style = new GUIStyle(GUI.skin.label);
                     style.richText = true;
@@ -133,7 +130,7 @@ namespace FMODUnity
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float baseHeight = GUI.skin.textField.CalcSize(new GUIContent()).y;            
-            return baseHeight * (displayProperties ? 7 : 2); // 6 lines of info
+            return baseHeight * (property.isExpanded ? 7 : 2); // 6 lines of info
         }
     }
 }

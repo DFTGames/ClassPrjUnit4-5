@@ -22,16 +22,27 @@ namespace FMODUnity
         private bool hasTriggered;
         private Rigidbody cachedRigidBody;
         private bool isOneshot;
-        private bool firstUpdate = true;
+        private bool isQuitting;
 
-        void OnEnable() 
-        {                   
+        void Start() 
+        {
+            RuntimeUtils.EnforceLibraryOrder();
             cachedRigidBody = GetComponent<Rigidbody>();
+            enabled = false;
+            HandleGameEvent(EmitterGameEvent.LevelStart);
+        }
+
+        void OnApplicationQuit()
+        {
+            isQuitting = true;
         }
 
         void OnDestroy()
         {
-            HandleGameEvent(EmitterGameEvent.LevelEnd);
+            if (!isQuitting)
+            {
+                HandleGameEvent(EmitterGameEvent.LevelEnd);
+            }
         }
 
         void OnTriggerEnter(Collider other)
@@ -138,13 +149,6 @@ namespace FMODUnity
 
         void Update()
         {
-            if (firstUpdate)
-            {
-                enabled = false;
-                HandleGameEvent(EmitterGameEvent.LevelStart);
-                firstUpdate = false;
-            }
-
             if (instance != null)
             {
                 instance.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject, cachedRigidBody));

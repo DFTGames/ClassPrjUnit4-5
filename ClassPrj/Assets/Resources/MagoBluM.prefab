@@ -58,6 +58,8 @@ GameObject:
   - 136: {fileID: 13609114}
   - 114: {fileID: 11414796}
   - 114: {fileID: 11496664}
+  - 114: {fileID: 11418160}
+  - 114: {fileID: 11487460}
   m_Layer: 11
   m_Name: MagoBluM
   m_TagString: Player
@@ -1997,7 +1999,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distanzaDaTerra: 0.3
   forzaSalto: 6
+  distanzaMassimaClick: 20
+  distanzaAnnullaClick: 1
   corsaPerDefault: 0
+  SwitchController: 0
+--- !u!114 &11418160
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0956ebc3def958446bda261ef596ac35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11487460
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0710ebbf11cfd984ea356d2f9fc70cb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11496664
 MonoBehaviour:
   m_ObjectHideFlags: 1

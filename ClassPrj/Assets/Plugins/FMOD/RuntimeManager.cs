@@ -11,6 +11,7 @@ namespace FMODUnity
 
         static SystemNotInitializedException initException = null;
         static RuntimeManager instance;
+        static bool isQuitting = false;
         [SerializeField]
         FMODPlatform fmodPlatform;
         static RuntimeManager Instance
@@ -21,17 +22,26 @@ namespace FMODUnity
                 {
                     throw initException;
                 }
+                if (isQuitting)
+                {
+                    throw new Exception("FMOD Studio attempted access by script to RuntimeManager while application is quitting");
+                }
 
                 if (instance == null)
                 {
                     var existing = FindObjectOfType(typeof(RuntimeManager)) as RuntimeManager;
                     if (existing != null)
                     {
-                        instance = existing;
-                        instance.studioSystem = new FMOD.Studio.System((IntPtr)instance.cachedPointers[0]);
-                        instance.lowlevelSystem = new FMOD.System((IntPtr)instance.cachedPointers[1]);
-                        instance.mixerHead = new FMOD.DSP((IntPtr)instance.cachedPointers[2]);
-                        return instance;
+                        // Older versions of the integration may have leaked the runtime manager game object into the scene,
+                        // which was then serialized. It won't have valid pointers so don't use it.
+                        if (existing.cachedPointers[0] != 0)
+                        {
+                            instance = existing;
+                            instance.studioSystem = new FMOD.Studio.System((IntPtr)instance.cachedPointers[0]);
+                            instance.lowlevelSystem = new FMOD.System((IntPtr)instance.cachedPointers[1]);
+                            instance.mixerHead = new FMOD.DSP((IntPtr)instance.cachedPointers[2]);
+                            return instance;
+                        }
                     }                    
 
                     var gameObject = new GameObject("FMOD.UnityItegration.RuntimeManager");
@@ -41,6 +51,29 @@ namespace FMODUnity
 
                     try
                     {
+                        #if UNITY_ANDROID && !UNITY_EDITOR
+            
+                        // First, obtain the current activity context
+                        AndroidJavaObject activity = null;
+                        using (var activityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+                        {
+                            activity = activityClass.GetStatic<AndroidJavaObject>("currentActivity");
+                        }
+
+                        using (var fmodJava = new AndroidJavaClass("org.fmod.FMOD"))
+                        {
+                            if (fmodJava != null)
+                            {
+                                fmodJava.CallStatic("init", activity);
+                            }
+                            else
+                            {
+                                UnityEngine.Debug.LogWarning("FMOD Studio: Cannot initialiaze Java wrapper");
+                            }
+                        }
+                        
+                        #endif
+
                         RuntimeUtils.EnforceLibraryOrder();
                         instance.Initialiase(false);
                     }
@@ -62,13 +95,13 @@ namespace FMODUnity
 
         public static FMOD.Studio.System StudioSystem
         {
-            get { return instance.studioSystem; }
+            get { return Instance.studioSystem; }
         }
 
 
         public static FMOD.System LowlevelSystem
         {
-            get { return instance.lowlevelSystem; }
+            get { return Instance.lowlevelSystem; }
         }
 
         FMOD.Studio.System studioSystem;
@@ -177,7 +210,7 @@ namespace FMODUnity
             if (updateResult == FMOD.RESULT.ERR_NET_SOCKET_ERROR)
             {
                 studioSystem.release();
-                UnityEngine.Debug.LogWarning("FMOD Studio: Cannot network port for Live Update, restarting with Live Update disabled. Check for other applications that are running FMOD Studio");
+                UnityEngine.Debug.LogWarning("FMOD Studio: Cannot open network port for Live Update, restarting with Live Update disabled. Check for other applications that are running FMOD Studio");
                 Initialiase(true);
             }
             else
@@ -312,8 +345,8 @@ namespace FMODUnity
 
             GUI.Label(new Rect(10, 20, 290, 100), lastDebugText);
             GUI.DragWindow();
-        }
-
+        }        
+        
         void OnDisable()
         {
             // If we're being torn down for a script reload - cache the native pointers in something unity can serialize
@@ -326,15 +359,15 @@ namespace FMODUnity
         {
             if (studioSystem != null)
             {
-
                 UnityEngine.Debug.Log("FMOD Studio: Destroying runtime system instance");
                 studioSystem.release();
                 studioSystem = null;
             }
             initException = null;
             instance = null;
+            isQuitting = true;
         }
-
+        
         void OnApplicationPause(bool pauseStatus)
         {
             if (studioSystem != null && studioSystem.isValid())
