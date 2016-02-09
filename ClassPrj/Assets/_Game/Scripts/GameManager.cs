@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     public static Transform signoloEssereT = null;
     public static List<string> nemici = null;
     public static int contatoreDaCambiare = 0;
+
+    public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();
+
     //fare dizionari indici...stringa e numerico dizionario
     public static Dictionary<string, List<string>> dizionarioDiNemici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiAmici = new Dictionary<string, List<string>>();
@@ -213,6 +216,7 @@ public class GameManager : MonoBehaviour
         }
 
     }
+
     private void SerializzaPercorsi()   //Controlla e se necessario riserializza i percorsi
     {
         //Controlla i percorsi se sono gia serializzati e se ci sono variazioni li reserializza
@@ -234,6 +238,14 @@ public class GameManager : MonoBehaviour
         }
 
         datiDiplomazia.Salva();
+
+        // AGGIUNTO PER IL DIZIONARIO SUI PERCORSO
+        dizionarioPercorsi.Clear();
+
+        for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
+            dizionarioPercorsi.Add(datiDiplomazia.Dati.tipoEssere[i], datiDiplomazia.Dati.indexPercorsi[i]);
+
+
     }
 
 
