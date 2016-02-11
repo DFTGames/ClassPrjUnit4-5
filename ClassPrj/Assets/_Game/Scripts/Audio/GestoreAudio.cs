@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public enum TipiPassi 
 {
@@ -77,7 +78,6 @@ public static string EventoPassi()
                 m_Audio = GestoreAudio.AddComponent<MixerControl>();
                 m_Audio.s_VolumiSfx = GameObject.Find("s_VolumiSfx").GetComponent<Slider>();
                 m_Audio.s_VolumiEnvironment = GameObject.Find("s_VolAmbiente").GetComponent<Slider>();
-
             }
             return g_Audio;
         }
