@@ -279,6 +279,14 @@ public class ManagerIniziale : MonoBehaviour
         }
 
         datiDiplomazia.Salva();
+
+        // AGGIUNTO PER IL DIZIONARIO SUI PERCORSO
+        GameManager.dizionarioPercorsi.Clear();
+
+        for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
+            GameManager.dizionarioPercorsi.Add(datiDiplomazia.Dati.tipoEssere[i], datiDiplomazia.Dati.indexPercorsi[i]);
+
+
     }
 
     public void Anulla1()

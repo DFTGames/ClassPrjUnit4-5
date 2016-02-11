@@ -44,19 +44,14 @@ public class Pattugliamento : IStato
 
     public void Inizializza(FSM oggetto)
     {
-        datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
+
         MioCervello = oggetto;
 
-        // ..MI TROVA L'INDICE DEL PERCORSO DEL CERVELLO(PERSONAGGIO) A CUI E' ATTACCATO
-        for (int i = 0; i < datiDiplomazia.Dati.indexPercorsi.Length; i++)
-        {
-            if (MioCervello.gameObject.tag == datiDiplomazia.Dati.tipoEssere[i])
-            {                
-                MioCervello.IndexPercorso = datiDiplomazia.Dati.indexPercorsi[i];
-            }
-        }
+        if (GameManager.dizionarioPercorsi == null) return;
 
-       
+        if (GameManager.dizionarioPercorsi.ContainsKey(MioCervello.gameObject.tag))
+            MioCervello.IndexPercorso = GameManager.dizionarioPercorsi[MioCervello.gameObject.tag];
+
         //-Vedere se meglio con impostazione nostra di indiceDestionazioni oppure fare in modo che a ogni chiamata al Gestore PErcorso si incrementa da solo
         if (MioCervello == null) return;
         if (MioCervello.IndexPercorso < 0) return;
@@ -67,8 +62,8 @@ public class Pattugliamento : IStato
         if (tm == null) return;
         PadreGestore tmpObj = tm.GetComponent<PadreGestore>();
         if (tmpObj == null) return;  //Paranoia luc-Code
-       
-        Percorso =tmpObj[MioCervello.IndexPercorso];
+
+        Percorso = tmpObj[MioCervello.IndexPercorso];
         indiceDestinazioni = -1;
     }
 
