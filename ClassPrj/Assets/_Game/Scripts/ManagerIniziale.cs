@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -14,6 +13,7 @@ internal enum Sesso
 
 public class ManagerIniziale : MonoBehaviour
 {
+    private static ManagerIniziale me;
     public Animator AnimatoreMenu;
     public Animator AltrieMenu1;
     public Animator AltrieMenu2;
@@ -88,33 +88,15 @@ public class ManagerIniziale : MonoBehaviour
         }
     }
 
-    private void Metodo_Charlie()   //metodo per assegnare gli asset dentro l'inspector... By Luca del dftStudent
-    {
-        if (databseInizialeAmicizie == null)
-        {
-            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig))
-            {
-                string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig);
-                databseInizialeAmicizie = AssetDatabase.LoadAssetAtPath<GameData>(percorso + Statici.STR_DatabaseDiGioco);
-            }
-        }
-        if (databaseInizialeProprieta == null)
-        {
-            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig3))
-            {
-                string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig3);
-                databaseInizialeProprieta = AssetDatabase.LoadAssetAtPath<caratteristichePersonaggioV2>(percorso + Statici.STR_DatabaseDiGioco3);
-            }
-        }
-    }
-
     // Use this for initialization
     private void Start()
     {
+        me = this;
         nomeScenaText.gameObject.SetActive(false);
-#if UNITY_EDITOR
-        Metodo_Charlie();
-#endif
+        //#if UNITY_EDITOR
+
+        Statici.Metodo_Charlie(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
+        //#endif
 
         Me = this;
         cameraT = Camera.main.transform;
@@ -151,7 +133,7 @@ public class ManagerIniziale : MonoBehaviour
 
     public void CaricaScena()
     {
-        Statici.sonoPassatoDallaScenaIniziale = true; //+
+        Statici.sonoPassatoDallaScenaIniziale = true;
 
         for (int i = 0; i < databaseInizialeProprieta.matriceProprieta.Count; i++)
         {
@@ -159,11 +141,11 @@ public class ManagerIniziale : MonoBehaviour
             Destroy(GameObject.Find(databaseInizialeProprieta.matriceProprieta[i].nomeF + "(Clone)"));
         }
 
-        SerializzaPercorsi();
+        Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref GameManager.dizionarioPercorsi);
         /*
-        l'if else qui sotto, serve per verificare se la scena in cui vogliamo far spuntare il personaggio 
+        l'if else qui sotto, serve per verificare se la scena in cui vogliamo far spuntare il personaggio
         esiste ancora o no nel build settings. Perchè può capitare di cancellar euna scena o rinominalrla.
-        Per evitare di far andar ein errore il gioco, se la scena non esiste più il personaggio viene caricato 
+        Per evitare di far andar ein errore il gioco, se la scena non esiste più il personaggio viene caricato
         nell'isola altrimenti nell'ultima scena visitata.
         */
 
@@ -176,7 +158,6 @@ public class ManagerIniziale : MonoBehaviour
         }
         else
             SceneManager.LoadScene(datiPersonaggio.Dati.nomeScena);
-
     }
 
     public void AvviaGioco()
@@ -252,41 +233,9 @@ public class ManagerIniziale : MonoBehaviour
 
             datiDiplomazia.Salva();
         }
-        SerializzaPercorsi();
+        Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref GameManager.dizionarioPercorsi);
         personaggiInCarica = true;
         SceneManager.LoadScene(datiPersonaggio.Dati.nomeScena);
-
-    }
-
-    private void SerializzaPercorsi()   //Controlla e se necessario riserializza i percorsi
-    {
-        //Controlla i percorsi se sono gia serializzati e se ci sono variazioni li reserializza
-        //se non sono serializzati li serializza
-        //se non ci sono variazioni non fa niente
-
-        if (databseInizialeAmicizie == null) return;
-
-        if (datiDiplomazia == null)
-
-            datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
-
-        if (datiDiplomazia.Dati.indexPercorsi.Equals(databseInizialeAmicizie.indexPercorsi)) return;  //CONTROLLARE SE METODO E' CORRETTO
-
-        for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
-
-        {
-            datiDiplomazia.Dati.indexPercorsi[i] = databseInizialeAmicizie.indexPercorsi[i];
-        }
-
-        datiDiplomazia.Salva();
-
-        // AGGIUNTO PER IL DIZIONARIO SUI PERCORSO
-        GameManager.dizionarioPercorsi.Clear();
-
-        for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
-            GameManager.dizionarioPercorsi.Add(datiDiplomazia.Dati.tipoEssere[i], datiDiplomazia.Dati.indexPercorsi[i]);
-
-
     }
 
     public void Anulla1()
@@ -380,7 +329,6 @@ public class ManagerIniziale : MonoBehaviour
         //mentre sto caricando una nuova scena faccio spuntare un immagine di sfondo e il nome della scena facendo scomparire eventuali pannelli attivi:
         if (Application.isLoadingLevel && pannelloImmagineSfondo.color.a != 1f)
         {
-
             AltrieMenu2.gameObject.SetActive(false);
             AltrieMenu1.gameObject.SetActive(false);
             AnimatoreMenu.gameObject.SetActive(false);
@@ -388,7 +336,6 @@ public class ManagerIniziale : MonoBehaviour
             nomeScenaText.text = "Loading... " + datiPersonaggio.Dati.nomeScena;
             pannelloImmagineSfondo.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
         }
-
     }
 
     private void CambiaPosizioneTelecamera()
@@ -448,7 +395,6 @@ public class ManagerIniziale : MonoBehaviour
             }
             ElencoCartelle.captionText.text = string.Empty;  //NON VISUALIZZA LA STRINGA QUANDO LA LISTA E' VUOTA
         }
-        
     }
 
     public void RecuperaDatiGiocatore()
