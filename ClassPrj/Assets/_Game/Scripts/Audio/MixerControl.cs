@@ -22,7 +22,7 @@ public class MixerControl : MonoBehaviour {
     void Start()
     {
         s_VolumiSfx.value = PlayerPrefs.GetFloat("v_Sfx", 0.5f);
-        s_VolumiEnvironment.value = PlayerPrefs.GetFloat("s_Environment", 0.5f);
+        s_VolumiEnvironment.value = PlayerPrefs.GetFloat("v_Environment", 0.5f);
     }
     void Update()
     {
@@ -57,7 +57,7 @@ public class MixerControl : MonoBehaviour {
             volumiEnvironment = m_me.s_VolumiEnvironment.value;
             m_me.EnviromentBus = FMODUnity.RuntimeManager.GetBus("bus:/Environment");
             m_me.EnviromentBus.setFaderLevel(value);
-            PlayerPrefs.SetFloat("v_Enviroment", volumiSfx);
+            PlayerPrefs.SetFloat("v_Environment", volumiSfx);
             PlayerPrefs.Save();
         }
     }
