@@ -28,7 +28,6 @@ public class ControllerMaga : MonoBehaviour
     private Rigidbody rigidBody;
     private EventoAudio ev_Audio;
     private AudioZona audioZona;
-
     private CapsuleCollider capsula;
     private Animator animatore;
     private Vector3 capsulaCentro;

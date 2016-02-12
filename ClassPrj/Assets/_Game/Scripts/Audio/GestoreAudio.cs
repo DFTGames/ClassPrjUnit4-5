@@ -85,6 +85,16 @@ public static string EventoPassi()
 
     void OnDestroy ()
     {
-        g_Audio = null;
+       g_Audio = null;
     }
+
+    void OnLevelWasLoaded(int level)
+    {
+        if(level >=0)
+        {
+            m_Audio.s_VolumiSfx = GameObject.Find("s_VolumiSfx").GetComponent<Slider>();
+            m_Audio.s_VolumiEnvironment = GameObject.Find("s_VolAmbiente").GetComponent<Slider>();
+        }
+    }
+
 }
