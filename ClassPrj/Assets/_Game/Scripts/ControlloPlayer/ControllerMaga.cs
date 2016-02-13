@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(CapsuleCollider))]
-[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(CapsuleCollider)),RequireComponent(typeof(Animator)), RequireComponent(typeof(Rigidbody)), RequireComponent(typeof(NavMeshAgent)), RequireComponent(typeof(EventoAudio))]
 public class ControllerMaga : MonoBehaviour
 {
 
@@ -26,6 +26,8 @@ public class ControllerMaga : MonoBehaviour
     private float altezzaCapsula;
     private const float meta = 0.5f;
     private Rigidbody rigidBody;
+    private EventoAudio ev_Audio;
+    private AudioZona audioZona;
     private CapsuleCollider capsula;
     private Animator animatore;
     private Vector3 capsulaCentro;
@@ -41,7 +43,7 @@ public class ControllerMaga : MonoBehaviour
     private float jumpLeg;
     private RaycastHit hit;
     private Vector3 posMouse;
-    private NavMeshAgent Controller;
+    private NavMeshAgent navMeshAgent;
     private bool Destinazione = false;
     #endregion Variabili PRIVATE
 
@@ -49,40 +51,50 @@ public class ControllerMaga : MonoBehaviour
     {
         transform_m = GetComponent<Transform>();
 
-        if(Controller == null)
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        if (navMeshAgent == null)
         {
-            Controller = gameObject.AddComponent<NavMeshAgent>();
-            Controller = GetComponent<NavMeshAgent>();
+            navMeshAgent = gameObject.AddComponent<NavMeshAgent>();
+            navMeshAgent.height = 2f;
+            navMeshAgent.stoppingDistance = 1f;
         }
+        navMeshAgent.enabled = false;
 
-        Controller.height = 2f;
-        Controller.stoppingDistance = 1f;
-        Controller.enabled = false;
-
-        if(rigidBody == null && !SwitchController)
+        rigidBody = GetComponent<Rigidbody>();
+        if (rigidBody == null)
         {
             rigidBody = gameObject.AddComponent<Rigidbody>();
-            rigidBody = GetComponent<Rigidbody>();
             rigidBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+            rigidBody.isKinematic = true;
         }
-
+        ev_Audio = GetComponent<EventoAudio>();
+        if(ev_Audio == null)
+        {
+            ev_Audio = gameObject.AddComponent<EventoAudio>();
+        }
+        audioZona = GetComponent<AudioZona>();
+        if (audioZona == null)
+        {
+            audioZona = gameObject.AddComponent<AudioZona>();
+        }
         animatore = GetComponent<Animator>();
         capsula = GetComponent<CapsuleCollider>();
         altezzaCapsula = capsula.height;
         capsulaCentro = new Vector3(0.0f, capsula.center.y, 0.0f);
+        SwitchController = true;
     }
 
     private void Update()
     {
-        if (Application.loadedLevel == 0) return;
+        if (SceneManager.GetActiveScene().buildIndex == 0) return;
 
         if (SwitchController)
         {
-            if (Controller.enabled == false || rigidBody != null)
+            if (navMeshAgent.enabled == false)
             {
-                Destroy(rigidBody);
+                rigidBody.isKinematic = true;
                 capsula.enabled = false;
-                Controller.enabled = true;
+                navMeshAgent.enabled = true;
             }
             if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
             {
@@ -91,34 +103,36 @@ public class ControllerMaga : MonoBehaviour
                 {
                     posMouse = hit.point;
                     posMouse.y = transform_m.position.y;
-                    if (Vector3.Distance(transform_m.position, posMouse) > distanzaAnnullaClick)
+                    if (Vector3.Distance(transform_m.position, posMouse) > distanzaAnnullaClick )
                     {
                         Destinazione = true;
                     }
                 }
             }
 
-            if (Destinazione && Vector3.Distance(transform_m.position, posMouse) > distanzaAnnullaClick)
+            if (Destinazione && Vector3.Distance(transform_m.position, posMouse) > navMeshAgent.stoppingDistance)
             {
-                Controller.SetDestination(posMouse);
-                animatore.SetFloat("Forward", 1f);
+                navMeshAgent.SetDestination(posMouse);
             }
-            else
+            else if(navMeshAgent.velocity.sqrMagnitude <= distanzaAnnullaClick || navMeshAgent.remainingDistance == 0f)
             {
+                animatore.SetFloat("Forward", 0f);
                 Destinazione = false;
+            }
+            if(navMeshAgent.velocity.sqrMagnitude > 1f)
+            {
+                animatore.SetFloat("Forward", 1f);
             }
 
         }
         else if (!SwitchController)
         {
-            if (rigidBody == null && !SwitchController)
+            if(rigidBody.isKinematic == true)
             {
-                rigidBody = gameObject.AddComponent<Rigidbody>();
-                rigidBody = GetComponent<Rigidbody>();
-                rigidBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+                rigidBody.isKinematic = false;
+                capsula.enabled = true;
+                navMeshAgent.enabled = false;
             }
-            capsula.enabled = true;
-            Controller.enabled = false;
 
             h = Input.GetAxis("Horizontal");
             v = Input.GetAxis("Vertical");
@@ -154,8 +168,8 @@ public class ControllerMaga : MonoBehaviour
                 }
             }
             if (Input.GetButtonDown("Jump") && aTerra && !voglioSaltare &&
-       !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco1") && !attacco1 &&
-       !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco2") && !attacco2)
+                !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco1") && !attacco1 &&
+                !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco2") && !attacco2)
             {
                 voglioSaltare = true;
             }
