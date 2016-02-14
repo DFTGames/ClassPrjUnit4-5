@@ -9076,7 +9076,7 @@ GameObject:
   - 154: {fileID: 566900917}
   m_Layer: 0
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Terreno
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967294
@@ -9973,7 +9973,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 463016, guid: 8e666b4e790fe224287693e8b7ad6491, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -1.16
+      value: -2.21
       objectReference: {fileID: 0}
     - target: {fileID: 463016, guid: 8e666b4e790fe224287693e8b7ad6491, type: 2}
       propertyPath: m_LocalPosition.x
@@ -15879,11 +15879,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 462942, guid: 7dddd2e631b23c2439b18df4f59fbf1e, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 0.179
       objectReference: {fileID: 0}
     - target: {fileID: 462942, guid: 7dddd2e631b23c2439b18df4f59fbf1e, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -77.24
+      value: -77.59
       objectReference: {fileID: 0}
     - target: {fileID: 462942, guid: 7dddd2e631b23c2439b18df4f59fbf1e, type: 2}
       propertyPath: m_LocalRotation.x
@@ -27619,7 +27619,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22468200, guid: 566cb5b5afc524f4aacdb0e832b67ddc, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 120266, guid: 566cb5b5afc524f4aacdb0e832b67ddc, type: 2}
       propertyPath: m_IsActive

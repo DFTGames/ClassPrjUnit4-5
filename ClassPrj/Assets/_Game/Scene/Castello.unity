@@ -474,7 +474,7 @@ NavMeshSettings:
     minRegionArea: 2
     cellSize: 0.16666667
     manualCellSize: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 121983a25f348c74eb08811da20a2026, type: 2}
 --- !u!1 &553771
 GameObject:
   m_ObjectHideFlags: 0
@@ -11212,7 +11212,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 462942, guid: 7dddd2e631b23c2439b18df4f59fbf1e, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1.2
+      value: 0.169
       objectReference: {fileID: 0}
     - target: {fileID: 462942, guid: 7dddd2e631b23c2439b18df4f59fbf1e, type: 2}
       propertyPath: m_LocalPosition.z
@@ -32211,6 +32211,10 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 411376, guid: 61b1ba6df3b86a24180b80a910cbd8bb, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 61b1ba6df3b86a24180b80a910cbd8bb, type: 2}
   m_IsPrefabParent: 0
@@ -38025,7 +38029,7 @@ GameObject:
   - 154: {fileID: 2131619729}
   m_Layer: 0
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Terreno
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967294
