@@ -8,7 +8,7 @@ TagManager:
   - goblin
   - Fire
   - GruppoPercorsi
-  - New Tag
+  - Terreno
   layers:
   - Default
   - TransparentFX
@@ -23,7 +23,7 @@ TagManager:
   - Toccare
   - EssereVivente
   - Pickup
-  - 
+  - Alberi
   - 
   - 
   - 

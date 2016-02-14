@@ -153,13 +153,16 @@ namespace DFTGames.Tools.EditorTools
                     Undo.RecordObject(vista, "Dimensione Handle Distanza Armi");
                     vista.dimensioneHandleDistArmi = tmpHanD2;
                 }
-                EditorGUILayout.EndVertical();
-                EditorGUILayout.Separator();
+                
             }
+            EditorGUILayout.EndVertical();
+            EditorGUILayout.Separator();
             if (GUI.changed || isDirty)
             {
                 EditorUtility.SetDirty(vista);
             }
+            EditorGUILayout.EndVertical();
+
         }
         public void OnSceneGUI()
         {
