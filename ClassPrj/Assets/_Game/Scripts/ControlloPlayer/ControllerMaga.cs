@@ -131,7 +131,7 @@ public class ControllerMaga : MonoBehaviour
             v = Input.GetAxis("Vertical");
 
             movimento = new Vector3(h, 0.0f, v);
-            rotazione = Mathf.Atan2(h, v);
+            rotazione = Mathf.Atan2(h, v)*Mathf.Rad2Deg;
             velocitaSpostamento = !Input.GetKey(KeyCode.LeftShift) && corsaPerDefault ||
                                   !corsaPerDefault && Input.GetKey(KeyCode.LeftShift) ? 1f : 0.5f;
           
