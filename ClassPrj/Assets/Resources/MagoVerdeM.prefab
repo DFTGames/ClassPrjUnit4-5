@@ -2008,7 +2008,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distanzaDaTerra: 0.3
   forzaSalto: 6
+  distanzaMassimaClick: 20
   corsaPerDefault: 0
+  IsPointAndClick: 0
 --- !u!136 &13636108
 CapsuleCollider:
   m_ObjectHideFlags: 1

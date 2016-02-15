@@ -9,14 +9,13 @@ public class ControllerMaga : MonoBehaviour
 
     #region Variabili PUBLIC
     [Range(0.3f, 1f)]
-    public float distanzaDaTerra = 0.3f;
+    public float distanzaDaTerra = 0.44f;
     [Range(4f, 10f)]
     public float forzaSalto = 4f;
     public float distanzaMassimaClick = 20f;
-    public float distanzaAnnullaClick = 1f;
 
     public bool corsaPerDefault = false;
-    public bool SwitchController;
+    public bool IsPointAndClick;
 
     #endregion Variabili PUBLIC
 
@@ -37,10 +36,10 @@ public class ControllerMaga : MonoBehaviour
     private bool voglioSaltare = false;
     private bool abbassato;
     private bool rimaniBasso;
-    private bool attacco1 = false;
-    private bool attacco2 = false;
     private float cicloOffset = 0.2f;
     private float jumpLeg;
+    private LayerMask layer = 1 << 13;
+    private LayerMask layerAlberi = 1 << 13;
     private RaycastHit hit;
     private Vector3 posMouse;
     private NavMeshAgent navMeshAgent;
@@ -58,37 +57,37 @@ public class ControllerMaga : MonoBehaviour
             navMeshAgent.height = 2f;
             navMeshAgent.stoppingDistance = 1f;
         }
-        navMeshAgent.enabled = false;
+        navMeshAgent.enabled = true;
 
         rigidBody = GetComponent<Rigidbody>();
         if (rigidBody == null)
         {
             rigidBody = gameObject.AddComponent<Rigidbody>();
             rigidBody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
-            rigidBody.isKinematic = true;
         }
+        rigidBody.isKinematic = true;
+
         ev_Audio = GetComponent<EventoAudio>();
         if(ev_Audio == null)
-        {
             ev_Audio = gameObject.AddComponent<EventoAudio>();
-        }
+
         audioZona = GetComponent<AudioZona>();
         if (audioZona == null)
-        {
             audioZona = gameObject.AddComponent<AudioZona>();
-        }
+
         animatore = GetComponent<Animator>();
         capsula = GetComponent<CapsuleCollider>();
         altezzaCapsula = capsula.height;
         capsulaCentro = new Vector3(0.0f, capsula.center.y, 0.0f);
-        SwitchController = true;
+        IsPointAndClick = true;
+        layerAlberi = ~layerAlberi;
     }
 
     private void Update()
     {
         if (SceneManager.GetActiveScene().buildIndex == 0) return;
 
-        if (SwitchController)
+        if (IsPointAndClick)
         {
             if (navMeshAgent.enabled == false)
             {
@@ -96,36 +95,30 @@ public class ControllerMaga : MonoBehaviour
                 capsula.enabled = false;
                 navMeshAgent.enabled = true;
             }
-            if (Input.GetMouseButton(0) && !EventSystem.current.IsPointerOverGameObject())
+            if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && !EventSystem.current.IsPointerOverGameObject() 
+                && !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco1") 
+                && !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco2"))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out hit, distanzaMassimaClick))
+                if (Physics.Raycast(ray, out hit, distanzaMassimaClick,layerAlberi, QueryTriggerInteraction.Ignore))            
+                posMouse = hit.point;      
+         
+                switch(hit.transform.gameObject.layer) //Bozza da correggere ... Ho usato Tag Goblin per provare .
                 {
-                    posMouse = hit.point;
-                    posMouse.y = transform_m.position.y;
-                    if (Vector3.Distance(transform_m.position, posMouse) > distanzaAnnullaClick )
-                    {
-                        Destinazione = true;
-                    }
+                    case 0:
+                        if (Vector3.Distance(transform_m.position, posMouse) > navMeshAgent.stoppingDistance)
+                            navMeshAgent.SetDestination(posMouse);
+                        break;
+                    case 11:
+                        if(hit.collider.CompareTag("goblin"))
+                        Attacco();
+                        break;
                 }
             }
-
-            if (Destinazione && Vector3.Distance(transform_m.position, posMouse) > navMeshAgent.stoppingDistance)
-            {
-                navMeshAgent.SetDestination(posMouse);
-            }
-            else if(navMeshAgent.velocity.sqrMagnitude <= distanzaAnnullaClick || navMeshAgent.remainingDistance == 0f)
-            {
-                animatore.SetFloat("Forward", 0f);
-                Destinazione = false;
-            }
-            if(navMeshAgent.velocity.sqrMagnitude > 1f)
-            {
-                animatore.SetFloat("Forward", 1f);
-            }
+            animatore.SetFloat("Forward", navMeshAgent.velocity.normalized.magnitude);
 
         }
-        else if (!SwitchController)
+        else // Not Point & Click
         {
             if(rigidBody.isKinematic == true)
             {
@@ -137,42 +130,17 @@ public class ControllerMaga : MonoBehaviour
             h = Input.GetAxis("Horizontal");
             v = Input.GetAxis("Vertical");
 
-            velocitaSpostamento = 0.5f;
             movimento = new Vector3(h, 0.0f, v);
             rotazione = Mathf.Atan2(h, v);
-
-            if (!Input.GetKey(KeyCode.LeftShift) && corsaPerDefault ||
-                !corsaPerDefault && Input.GetKey(KeyCode.LeftShift))
-            {
-                velocitaSpostamento = 1f;
-            }
-            if (!EventSystem.current.IsPointerOverGameObject())
-            {
-
-                if (Input.GetMouseButtonDown(0) && !voglioSaltare && aTerra && !attacco1)
-                {
-                    attacco1 = true;
-                }
-                else if (animatore.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f && !animatore.IsInTransition(0) && attacco1)
-                {
-                    attacco1 = false;
-                }
-                if (Input.GetMouseButtonDown(1) && !voglioSaltare && aTerra && !attacco2)
-                {
-                    attacco2 = true;
-                }
-                else if (animatore.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.5f && !animatore.IsInTransition(0) && attacco2)
-                {
-
-                    attacco2 = false;
-                }
-            }
-            if (Input.GetButtonDown("Jump") && aTerra && !voglioSaltare &&
-                !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco1") && !attacco1 &&
-                !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco2") && !attacco2)
-            {
+            velocitaSpostamento = !Input.GetKey(KeyCode.LeftShift) && corsaPerDefault ||
+                                  !corsaPerDefault && Input.GetKey(KeyCode.LeftShift) ? 1f : 0.5f;
+          
+            if (Input.GetButtonDown("Jump") && aTerra && !voglioSaltare &&!animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco1") &&
+                !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco2"))
                 voglioSaltare = true;
-            }
+
+            if(Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+                Attacco();
             /* ACCOVACCIAMENTO
             if (!voglioSaltare && aTerra && Input.GetKey(KeyCode.C))
              {
@@ -204,14 +172,7 @@ public class ControllerMaga : MonoBehaviour
         if (Physics.Raycast(transform_m.position + (Vector3.up * 0.1f), Vector3.down, out hit, distanzaDaTerra))
         {
             aTerra = true;
-            if (SwitchController)
-            {
-                animatore.applyRootMotion = false;
-            }
-            else
-            {
-                animatore.applyRootMotion = true;
-            }
+            animatore.applyRootMotion = !IsPointAndClick;
         }
         else
         {
@@ -220,7 +181,7 @@ public class ControllerMaga : MonoBehaviour
             voglioSaltare = false;
         }
         ///*SALTO
-        if (voglioSaltare && aTerra && !abbassato)
+        if (voglioSaltare && aTerra)
         {
             rigidBody.velocity = new Vector3(rigidBody.velocity.x, forzaSalto, rigidBody.velocity.z);
             float cicloCamminata = Mathf.Repeat(animatore.GetCurrentAnimatorStateInfo(0).normalizedTime + cicloOffset, 1);
@@ -241,11 +202,22 @@ public class ControllerMaga : MonoBehaviour
         animatore.SetBool("OnGround", aTerra);
         animatore.SetFloat("Forward", movimento.z * velocitaSpostamento);
         animatore.SetFloat("Turn", rotazione);
-        animatore.SetBool("attacco1", attacco1);
-        animatore.SetBool("attacco2", attacco2);
         animatore.SetFloat("JumpLeg", jumpLeg);
         //animatore.SetBool("Crouch", abbassato);
-        if (!aTerra && !SwitchController)
+        if (!aTerra && !IsPointAndClick)
             animatore.SetFloat("Jump", rigidBody.velocity.y);
     }
+
+    void Attacco ()
+    {
+        if (!EventSystem.current.IsPointerOverGameObject() && !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco1") && !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco2"))
+        {
+            if (Input.GetMouseButtonDown(0) && !voglioSaltare && aTerra )
+                animatore.SetTrigger("attacco1");
+
+            if (Input.GetMouseButtonDown(1) && !voglioSaltare && aTerra )
+                animatore.SetTrigger("attacco2");
+        }
+    }
+   
 }
