@@ -23,6 +23,9 @@ public class FSM : MonoBehaviour
     private int indexPercorso = -1;
     private SphereCollider colliderSferaVista;
     private Transform obiettivoNemico;
+    private Transform miaTransform;
+    private NavMeshAgent agente;
+    private Animator animatore;
     private IStato statoCorrente;
     private IStato statoPrecedente;
     private IStato pattugliamento;
@@ -41,6 +44,33 @@ public class FSM : MonoBehaviour
             obiettivoNemico = value;
             obiettivoInVista = value == null ? false : true;
         }
+    }
+    
+    public Transform MiaTransform
+    {
+        get
+        {
+            return miaTransform;
+        }
+      
+    }
+    
+     public Animator Animatore
+    {
+        get
+        {
+            return animatore;
+        }
+      
+    }
+    
+     public NavMeshAgent Agente
+    {
+        get
+        {
+            return agente;
+        }
+      
     }
 
     public SphereCollider ColliderSferaVista
@@ -68,6 +98,9 @@ public class FSM : MonoBehaviour
 
     private void Start()
     {
+        miaTransform=GetComponent<Transform>();
+        agente=GetComponent<NavMeshAgent>();
+        animatore=GetComponent<Animator>();
         obiettivoNemico = null;
         obiettivoInVista = false;
         inZonaAttacco = false;
