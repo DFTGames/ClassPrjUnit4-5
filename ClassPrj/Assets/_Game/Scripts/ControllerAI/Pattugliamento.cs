@@ -72,7 +72,7 @@ public class Pattugliamento : IStato
 
     public void PreparoEsecuzione()
     {
-       
+       MioCervello.Agente.speed=1.75f;
        // Da completare!!
         
     }
