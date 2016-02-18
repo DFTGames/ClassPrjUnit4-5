@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
     private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
     private bool fatto = false;
+    public static PadreGestore padreGestore;
 
     private string tagDellAltro = null;
 
@@ -46,6 +47,8 @@ public class GameManager : MonoBehaviour
     private float difesa = 0f;
     private string classe = string.Empty;
     private string nome = string.Empty;
+
+    
 
     public static float VitaAttuale
     {
@@ -128,6 +131,11 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         me = this;
+        GameObject tmpPdr = GameObject.Find("PadrePercorso");
+        if (tmpPdr != null)
+            padreGestore = tmpPdr.GetComponent<PadreGestore>();
+        else
+            Debug.LogError("Ma ci fai o ci sei ????..sei un cazzone....manca il padrePercorso");
 
         if (Statici.sonoPassatoDallaScenaIniziale)//+
         {

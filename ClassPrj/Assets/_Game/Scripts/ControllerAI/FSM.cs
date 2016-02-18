@@ -52,7 +52,11 @@ public class FSM : MonoBehaviour
         {
             return miaTransform;
         }
-      
+         set
+        {
+            miaTransform = value;
+
+        }
     }
     
      public Animator Animatore
