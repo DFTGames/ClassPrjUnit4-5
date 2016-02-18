@@ -100,20 +100,22 @@ public class ControllerMaga : MonoBehaviour
                 && !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco2"))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out hit, distanzaMassimaClick,layerAlberi, QueryTriggerInteraction.Ignore))            
-                posMouse = hit.point;      
-         
-                switch(hit.transform.gameObject.layer) //Bozza da correggere ... Ho usato Tag Goblin per provare .
+                if (Physics.Raycast(ray, out hit, distanzaMassimaClick,layerAlberi, QueryTriggerInteraction.Ignore))
                 {
-                    case 0:
-                        if (Vector3.Distance(transform_m.position, posMouse) > navMeshAgent.stoppingDistance)
-                            navMeshAgent.SetDestination(posMouse);
-                        break;
-                    case 11:
-                        if(hit.collider.CompareTag("goblin"))
-                        Attacco();
-                        break;
-                }
+                    posMouse = hit.point;
+
+                    switch (hit.transform.gameObject.layer) //Bozza da correggere ... Ho usato Tag Goblin per provare .
+                    {
+                        case 0:
+                            if (Vector3.Distance(transform_m.position, posMouse) > navMeshAgent.stoppingDistance)
+                                navMeshAgent.SetDestination(posMouse);
+                            break;
+                        case 11:
+                            if (hit.collider.CompareTag("goblin"))
+                                Attacco();
+                            break;
+                    }
+                }      
             }
             animatore.SetFloat("Forward", navMeshAgent.velocity.normalized.magnitude);
 
