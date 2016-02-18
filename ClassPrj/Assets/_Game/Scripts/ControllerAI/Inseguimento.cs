@@ -7,47 +7,31 @@ public class Inseguimento : IStato
     public string Nome { get; set; }
 
     private FSM Cervello;
-    private NavMeshAgent agente;
-    private Animator animatore;
     private float distanzaTRaGiocatoreGoblin;
 
     public void Inizializza(FSM oggetto)
     {
-        
-        Cervello = oggetto;  
-        agente = Cervello.GetComponent<NavMeshAgent>();
-        animatore = Cervello.gameObject.GetComponent<Animator>();
+        Cervello = oggetto;
     }
 
     public void PreparoEsecuzione()
     {
-
+        Cervello.Agente.speed = 3.5f;
     }
 
     public void Esecuzione()
     {
-
-       
-       
-          
-        if (Cervello.ObiettivoNemico != null && !Cervello.inZonaAttacco)
+        if (!Cervello.inZonaAttacco)
         {
-            agente.destination = Cervello.ObiettivoNemico.position; //Se serve aggiugnere .Position
-            agente.stoppingDistance = 2f;
-            agente.speed = 3.5f;
-            animatore.SetFloat("Velocita", 1f);
-            distanzaTRaGiocatoreGoblin = Vector3.Distance(agente.transform.position, Cervello.ObiettivoNemico.position);
-            Debug.Log("distanzaAttacco" + distanzaTRaGiocatoreGoblin);
-            if (distanzaTRaGiocatoreGoblin <= 2f)
+            Cervello.Agente.destination = Cervello.ObiettivoNemico.position; 
+            Cervello.Animatore.SetFloat("Velocita", Cervello.Agente.velocity.normalized.magnitude);
+            distanzaTRaGiocatoreGoblin = Vector3.Distance(Cervello.Agente.transform.position, Cervello.ObiettivoNemico.position);
+            if (distanzaTRaGiocatoreGoblin <= Cervello.distanzaAttaccoGoblinSpada)
             {
                 Cervello.inZonaAttacco = true;
             }
-            else  Cervello.inZonaAttacco = false;
-           
-
-            
+            else Cervello.inZonaAttacco = false;
         }
-        
     }
 
     public void EsecuzioneTerminata()
@@ -55,4 +39,3 @@ public class Inseguimento : IStato
 
     }
 }
-
