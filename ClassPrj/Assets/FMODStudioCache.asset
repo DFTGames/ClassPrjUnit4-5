@@ -28,7 +28,7 @@ MonoBehaviour:
   - {fileID: 11471102}
   - {fileID: 11494662}
   MasterBankRef: {fileID: 11471476}
-  stringsBankWriteTime: 635908073478248695
+  stringsBankWriteTime: 635914057783223171
 --- !u!114 &11400278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -954,7 +954,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11455490}
+  - {fileID: 11496424}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11410340
@@ -1166,6 +1166,20 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11413380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Death
+  Min: 0
+  Max: 100
 --- !u!114 &11414216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1672,7 +1686,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11491618}
+  - {fileID: 11436012}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11420284
@@ -2884,7 +2898,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11422610}
+  - {fileID: 11490020}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11433274
@@ -3094,6 +3108,20 @@ MonoBehaviour:
   Name: CriticalDamage
   Min: 0
   Max: 100
+--- !u!114 &11436012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CampFire
+  Min: 0
+  Max: 1
 --- !u!114 &11436208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3935,7 +3963,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: ./..\FMOD\ClassPrj\Build\Desktop\Bank_BGM.bank
-  lastModified: 635908073478864645
+  lastModified: 635914057782702670
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -4006,6 +4034,20 @@ MonoBehaviour:
   - {fileID: 11471090}
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11447608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Oceano
+  Min: 0
+  Max: 1
 --- !u!114 &11447998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4025,7 +4067,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11434546}
+  - {fileID: 11413380}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11448080
@@ -5873,7 +5915,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11404492}
+  - {fileID: 11447608}
   MinDistance: 0
   MaxDistance: 10
 --- !u!114 &11468280
@@ -6336,7 +6378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: ./..\FMOD\ClassPrj\Build\Desktop\Bank_SFX.bank
-  lastModified: 635908073478839609
+  lastModified: 635914057783213178
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -7835,6 +7877,20 @@ MonoBehaviour:
   Name: CampFire
   Min: 0
   Max: 1
+--- !u!114 &11490020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Attack
+  Min: 0
+  Max: 3
 --- !u!114 &11490032
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8311,6 +8367,20 @@ MonoBehaviour:
   - {fileID: 11468938}
   MinDistance: 0
   MaxDistance: 10
+--- !u!114 &11496424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CriticalDamage
+  Min: 0
+  Max: 100
 --- !u!114 &11496436
 MonoBehaviour:
   m_ObjectHideFlags: 0
