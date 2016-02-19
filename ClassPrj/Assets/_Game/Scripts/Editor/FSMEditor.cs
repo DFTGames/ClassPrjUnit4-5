@@ -43,6 +43,7 @@ namespace DFTGames.Tools.EditorTools
         private static Color backColor = Color.cyan;
         private static Color labelColor = Color.yellow;
 
+
         public override void OnInspectorGUI()
         {
             EditorGUI.indentLevel = 0;
@@ -64,6 +65,23 @@ namespace DFTGames.Tools.EditorTools
                 Undo.RecordObject(vista, "Vis. Handle Vista");
                 vista.visualizzaHandleVista = tmpBool;
             }
+
+       
+                bool tmpBoolTipoAttacco = EditorGUILayout.Toggle(new GUIContent("Attacco da Vicino", "Attiva l'attacco da vicino o da lontano. N.B. Vietato cambiarlo a runtime"), vista.attaccoDaVicino);
+                if (tmpBoolTipoAttacco != vista.attaccoDaVicino)
+                {
+
+                    isDirty = true;
+                    Undo.RecordObject(vista, "Attacco da Vicino");
+                    vista.attaccoDaVicino = tmpBoolTipoAttacco;
+                    if (tmpBoolTipoAttacco)
+                        vista.distanzaAttacco = vista.distanzaAttaccoGoblinPugno;
+                    else
+                        vista.distanzaAttacco = vista.distanzaAttaccoGoblinArco;
+                    
+                }
+            
+
             if (vista.visualizzaHandleVista)
             {
                 tmpDist = EditorGUILayout.Slider(new GUIContent("Distanza Visibilita", "Quanto ci vedo senza occhiali"),
@@ -138,12 +156,12 @@ namespace DFTGames.Tools.EditorTools
                     vista.distanzaAttaccoGoblinArco = tmpDistArco;
                 }
 
-                tmpDistSpada = EditorGUILayout.Slider(new GUIContent("Spada Dist. Attacco", "Distanza Di Attacco del Spada Goblin"), vista.distanzaAttaccoGoblinSpada, 0.1f, 30f);
-                if (tmpDistSpada != vista.distanzaAttaccoGoblinSpada)
+                tmpDistSpada = EditorGUILayout.Slider(new GUIContent("Spada Dist. Attacco", "Distanza Di Attacco del Spada Goblin"), vista.distanzaAttaccoGoblinPugno, 0.1f, 30f);
+                if (tmpDistSpada != vista.distanzaAttaccoGoblinPugno)
                 {
                     isDirty = true;
                     Undo.RecordObject(vista, "Spada Dist Attacco");
-                    vista.distanzaAttaccoGoblinSpada = tmpDistSpada;
+                    vista.distanzaAttaccoGoblinPugno = tmpDistSpada;
                 }
                 float tmpHanD2 = EditorGUILayout.Slider(new GUIContent("Dimensione Handle DistArmi", "Imposta la dimensione degli handle Distanza armi in questo pannello"),
                   vista.dimensioneHandleDistArmi, 1f, 15f);
@@ -221,20 +239,20 @@ namespace DFTGames.Tools.EditorTools
                 Handles.color = new Color(0.8f,0.3f,0.5f,0.2f); 
                 Handles.DrawSolidDisc(fsm_.transform.position, Vector3.up, fsm_.distanzaAttaccoGoblinArco);
 
-                fsm_.distanzaAttaccoGoblinSpada = Mathf.Clamp(Handles.ScaleValueHandle(fsm_.distanzaAttaccoGoblinSpada,
-                   fsm_.transform.position + (fsm_.transform.forward * fsm_.distanzaAttaccoGoblinSpada),
+                fsm_.distanzaAttaccoGoblinPugno = Mathf.Clamp(Handles.ScaleValueHandle(fsm_.distanzaAttaccoGoblinPugno,
+                   fsm_.transform.position + (fsm_.transform.forward * fsm_.distanzaAttaccoGoblinPugno),
                      fsm_.transform.rotation, fsm_.dimensioneHandleDistArmi, Handles.ConeCap,
-               HandleUtility.GetHandleSize(fsm_.transform.position + (fsm_.transform.forward * fsm_.distanzaAttaccoGoblinSpada))),
+               HandleUtility.GetHandleSize(fsm_.transform.position + (fsm_.transform.forward * fsm_.distanzaAttaccoGoblinPugno))),
                0.1f, 30f);
 
-                if (tmpDistArco != fsm_.distanzaAttaccoGoblinSpada)
+                if (tmpDistArco != fsm_.distanzaAttaccoGoblinPugno)
                 {
                     isDirty = true;
                     Undo.RecordObject(fsm_, " Spada Dist Attacco");
                 }
 
                 Handles.color = new Color(1,0.92f,0.016f,0.2f);
-                Handles.DrawSolidDisc(fsm_.transform.position, Vector3.up, fsm_.distanzaAttaccoGoblinSpada);
+                Handles.DrawSolidDisc(fsm_.transform.position, Vector3.up, fsm_.distanzaAttaccoGoblinPugno);
                
             }
 

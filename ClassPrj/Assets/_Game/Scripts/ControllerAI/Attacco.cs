@@ -7,39 +7,57 @@ public class Attacco : IStato {
     public string Nome {get; set;}
     
     private FSM MioCervello;
-    private Transform mTrasform;
-    private float distanzaTRaGiocatoreGoblin;
+
 
 
     public void Inizializza(FSM oggetto)
     {
-        mTrasform = MioCervello.gameObject.GetComponent<Transform>();
-        
+        MioCervello = oggetto;
+      
     }
     
     public void PreparoEsecuzione()
     {
-        
+        if (MioCervello.attaccoDaVicino)
+        {
+           
+            MioCervello.Animatore.SetBool("Pugno", true);
+         
+            //lo stopdistance è impostato a 0.8 nel pattugliamento
+            // invece nell'inseguimento e nell'attacco lo abbiamo messo uguale alla distanza di attacco. 
+            //lo abbiamo messo in entrambi(inseguimento e attacco e non solo nell'inseguimento) perchè se
+            //per caso passa da pattugliamento ad attacco senza passare dall'inseguimento
+            //deve sapere che la stopping distance è cambiata comunque se no legge ancora 0.8(del pattugliamento e non è corretto).
+
+        }
+        else
+        {
+       
+            MioCervello.Animatore.SetBool("PrendiArco", true);
+            MioCervello.Animatore.SetBool("TiraFreccie", true);
+           
+
+        }
+        MioCervello.Agente.stoppingDistance = MioCervello.distanzaAttacco;
+
     }
 
     public void Esecuzione()
     {
-        if (MioCervello.ObiettivoNemico != null && MioCervello.inZonaAttacco)
-        {          
-           MioCervello.Animatore.SetFloat("Velocita", 0f);
-             MioCervello.Animatore.SetBool("Pugno", true);         
-            distanzaTRaGiocatoreGoblin = distanzaTRaGiocatoreGoblin = Vector3.Distance(MioCervello.Agente.transform.position, MioCervello.ObiettivoNemico.position);           
-            if (distanzaTRaGiocatoreGoblin <= MioCervello.distanzaAttaccoGoblinSpada)
-            {
-                MioCervello.inZonaAttacco = true;
-            }
-            else MioCervello.inZonaAttacco = false;
-        }
+        MioCervello.Agente.SetDestination(MioCervello.ObiettivoNemico.position);
+   
     }
 
     public void EsecuzioneTerminata()
     {
-        MioCervello.Animatore.SetBool("Pugno", false);        
+        if (MioCervello.attaccoDaVicino)        
+            MioCervello.Animatore.SetBool("Pugno", false); 
+         
+        else
+        {
+            MioCervello.Animatore.SetBool("PrendiArco", false);
+            MioCervello.Animatore.SetBool("TiraFreccie", false);
+        }      
     }  
 
 }

@@ -22,7 +22,7 @@ public class Pattugliamento : IStato
         
         if (Percorso != null && Percorso.transform.childCount>0)
         {
-            MioCervello.Agente.stoppingDistance = 0.8f;
+            
             if (MioCervello.Agente.remainingDistance <= MioCervello.Agente.stoppingDistance)
             {    
                 indiceDestinazioni = indiceDestinazioni < Percorso.transform.childCount ? ++indiceDestinazioni : 0;
@@ -73,7 +73,8 @@ public class Pattugliamento : IStato
     public void PreparoEsecuzione()
     {
        MioCervello.Agente.speed=1.75f;
-       // Da completare!!
+        // Da completare!!
+        MioCervello.Agente.stoppingDistance = 0.8f;
         
     }
 }
