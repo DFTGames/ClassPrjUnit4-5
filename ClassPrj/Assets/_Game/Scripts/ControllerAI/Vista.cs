@@ -34,7 +34,7 @@ public class Vista : MonoBehaviour
     private float prodottoScalare;
     private float prodottoMagnitudini;
 
-    private SphereCollider colliderSfera;
+
     private FSM mioCervello;
     private List<string> Nemici = null;
 
@@ -45,12 +45,13 @@ public class Vista : MonoBehaviour
     private float distanzaMinore = 0f;
     private List<Transform> tmpDaELiminare;
     private bool amicizieCambiate = false;
+    private float distanzaTraPlayerGoblin;
+    
 
     private void Start()
     {
         listaNemiciDentroNonVisti = new List<Transform>();
-        mioCervello = GetComponent<FSM>();
-        colliderSfera = mioCervello.ColliderSferaVista;
+        mioCervello = GetComponent<FSM>();      
         mioCervello.ObiettivoNemico = null;
         alphaGradMezzi = (mioCervello.alphaGrad) * 0.5f;
         tmpDaELiminare = new List<Transform>();
@@ -95,7 +96,7 @@ public class Vista : MonoBehaviour
 
                 if (angoloTraForwardEObiettivo < alphaGradMezzi)
                 {
-                    if (Physics.Raycast(transform.position + transform.up * 0.5f, vettoreDaTransformAObiettivo, out hit, colliderSfera.radius))
+                    if (Physics.Raycast(transform.position + transform.up * 0.5f, vettoreDaTransformAObiettivo, out hit, mioCervello.ColliderSferaVista.radius))
                     {
                         if (hit.collider.transform == listaNemiciDentroNonVisti[i])
                         {
@@ -125,7 +126,7 @@ public class Vista : MonoBehaviour
                 }
                 else
                 {
-                    if (Physics.Raycast(transform.position + transform.up * 0.5f, vettoreDaTransformAObiettivo, out hit, colliderSfera.radius))
+                    if (Physics.Raycast(transform.position + transform.up * 0.5f, vettoreDaTransformAObiettivo, out hit, mioCervello.ColliderSferaVista.radius))
                     {
                         if (!hit.collider.transform == listaNemiciVisti[i])
                         {
@@ -169,11 +170,19 @@ public class Vista : MonoBehaviour
                 obiettivoTemporaneoDaInseguire = null;
             }
             mioCervello.ObiettivoNemico = obiettivoTemporaneoDaInseguire;
-        }
 
-        if (mioCervello.ObiettivoNemico != null)
+
+        }
+        else
+        
         {
             Debug.DrawLine(transform.position + Vector3.up, mioCervello.ObiettivoNemico.position + Vector3.up, Color.red, Time.deltaTime);
+            distanzaTraPlayerGoblin = Vector3.Distance(mioCervello.Agente.transform.position, mioCervello.ObiettivoNemico.position);
+            if (distanzaTraPlayerGoblin <= mioCervello.distanzaAttacco)            
+                mioCervello.inZonaAttacco = true;            
+            else
+                mioCervello.inZonaAttacco = false;
+
             if (!listaNemiciVisti.Contains(mioCervello.ObiettivoNemico))
                 mioCervello.ObiettivoNemico = null;
         }

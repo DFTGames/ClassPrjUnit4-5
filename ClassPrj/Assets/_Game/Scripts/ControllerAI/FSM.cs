@@ -16,9 +16,13 @@ public class FSM : MonoBehaviour
     public bool inZonaAttacco { get; set; }
     public bool visualizzaHandleAttacco = true;
     public float distanzaAttaccoGoblinArco = 7f;
-    public float distanzaAttaccoGoblinSpada = 2f;
+    public float distanzaAttaccoGoblinPugno = 2f;
     public float dimensioneHandleVista = 5f;
     public float dimensioneHandleDistArmi = 5f;
+    public float distanzaAttacco;
+
+  
+    public bool attaccoDaVicino = false;
 
     private int indexPercorso = -1;
     private SphereCollider colliderSferaVista;
@@ -42,7 +46,7 @@ public class FSM : MonoBehaviour
         set
         {
             obiettivoNemico = value;
-            obiettivoInVista = value == null ? false : true;
+            obiettivoInVista = (value == null )? false : true;
         }
     }
     
@@ -117,6 +121,7 @@ public class FSM : MonoBehaviour
         pattugliamento.Inizializza(this);
         inseguimento.Inizializza(this);
         statoCorrente = pattugliamento;
+     
     }
 
     private void Update()
@@ -135,14 +140,16 @@ public class FSM : MonoBehaviour
                 statoCorrente = inseguimento;
             else
                 statoCorrente = Attacco;
+          
         }
         else
         {
+            
             statoCorrente = pattugliamento;
             inZonaAttacco = false;
         }
         statoCorrente.Esecuzione();
-        Debug.Log("inzona attacco" + inZonaAttacco);
+        Debug.Log(attaccoDaVicino);
     }
 
     private void FixedUpdate()
