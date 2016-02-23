@@ -2184,7 +2184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quantoCiVedoSenzaOcchiali: 15
   alphaGrad: 61
-  visualizzaHandleVista: 1
+  visualizzaHandleVista: 0
   ampiezza: 3.13
   velocitaOscillazioneVista: 2.07
   visualizzaHandleAttacco: 0
@@ -2192,8 +2192,6 @@ MonoBehaviour:
   distanzaAttaccoGoblinPugno: 2
   dimensioneHandleVista: 4
   dimensioneHandleDistArmi: 15
-  distanzaAttacco: 2
-  attaccoDaVicino: 1
 --- !u!135 &13581670
 SphereCollider:
   m_ObjectHideFlags: 1
