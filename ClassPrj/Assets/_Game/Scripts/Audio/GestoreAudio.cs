@@ -94,6 +94,7 @@ public static string EventoPassi()
         {
             m_Audio.s_VolumiSfx = GameObject.Find("s_VolumiSfx").GetComponent<Slider>();
             m_Audio.s_VolumiEnvironment = GameObject.Find("s_VolAmbiente").GetComponent<Slider>();
+            m_Audio.Carica();
         }
     }
 
