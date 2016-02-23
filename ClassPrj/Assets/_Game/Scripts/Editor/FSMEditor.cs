@@ -67,20 +67,6 @@ namespace DFTGames.Tools.EditorTools
             }
 
        
-                bool tmpBoolTipoAttacco = EditorGUILayout.Toggle(new GUIContent("Attacco da Vicino", "Attiva l'attacco da vicino o da lontano. N.B. Vietato cambiarlo a runtime"), vista.attaccoDaVicino);
-                if (tmpBoolTipoAttacco != vista.attaccoDaVicino)
-                {
-
-                    isDirty = true;
-                    Undo.RecordObject(vista, "Attacco da Vicino");
-                    vista.attaccoDaVicino = tmpBoolTipoAttacco;
-                    if (tmpBoolTipoAttacco)
-                        vista.distanzaAttacco = vista.distanzaAttaccoGoblinPugno;
-                    else
-                        vista.distanzaAttacco = vista.distanzaAttaccoGoblinArco;
-                    
-                }
-            
 
             if (vista.visualizzaHandleVista)
             {

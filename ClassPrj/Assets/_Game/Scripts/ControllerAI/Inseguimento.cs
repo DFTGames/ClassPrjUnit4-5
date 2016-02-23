@@ -1,13 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
 
 public class Inseguimento : IStato
 {
     public string Nome { get; set; }
 
     private FSM Cervello;
-
 
     public void Inizializza(FSM oggetto)
     {
@@ -16,23 +13,21 @@ public class Inseguimento : IStato
 
     public void PreparoEsecuzione()
     {
-        Cervello.Agente.speed = 3.5f;     
-        Cervello.Agente.stoppingDistance = Cervello.distanzaAttacco;
-       
-
-
+        Cervello.Agente.speed = 3.5f;
+      
+        if (Cervello.ObiettivoInVista)
+            Cervello.Agente.stoppingDistance = Cervello.DistanzaAttacco;
+        else
+            Cervello.Agente.stoppingDistance = Cervello.ObiettivoNemico.GetComponent<CapsuleCollider>().radius + Cervello.Agente.radius + 0.15f;
     }
 
     public void Esecuzione()
     {
-
         Cervello.Agente.SetDestination(Cervello.ObiettivoNemico.position);
         Cervello.Animatore.SetFloat("Velocita", Cervello.Agente.velocity.normalized.magnitude);
-       
     }
 
     public void EsecuzioneTerminata()
     {
-
     }
 }

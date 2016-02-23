@@ -34,28 +34,26 @@ public class Vista : MonoBehaviour
     private float prodottoScalare;
     private float prodottoMagnitudini;
 
-
     private FSM mioCervello;
     private List<string> Nemici = null;
 
     public List<Transform> listaNemiciDentroNonVisti;
-
     public List<Transform> listaNemiciVisti;
 
     private float distanzaMinore = 0f;
     private List<Transform> tmpDaELiminare;
     private bool amicizieCambiate = false;
-    private float distanzaTraPlayerGoblin;
-    
+    private float conta = 0f;
+    private TipoArma tmpTipoArmaPrecedente;
+    private bool armaCambiata = false;
 
     private void Start()
     {
         listaNemiciDentroNonVisti = new List<Transform>();
-        mioCervello = GetComponent<FSM>();      
+        mioCervello = GetComponent<FSM>();
         mioCervello.ObiettivoNemico = null;
         alphaGradMezzi = (mioCervello.alphaGrad) * 0.5f;
         tmpDaELiminare = new List<Transform>();
-       
     }
 
     private void OnTriggerEnter(Collider coll)
@@ -75,13 +73,11 @@ public class Vista : MonoBehaviour
 
     private void OnTriggerStay(Collider coll)
     {
-       // if (!GameManager.dizionarioDiNemici.ContainsKey(gameObject.tag)) return;
+        // if (!GameManager.dizionarioDiNemici.ContainsKey(gameObject.tag)) return;
         if (GameManager.dizionarioDiNemici[gameObject.tag].Contains(coll.tag) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
             listaNemiciDentroNonVisti.Add(coll.transform);
-
         else if (listaNemiciVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[gameObject.tag].Contains(coll.tag))
             listaNemiciVisti.Remove(coll.transform);
-
         else if (listaNemiciDentroNonVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[gameObject.tag].Contains(coll.tag))
             listaNemiciDentroNonVisti.Remove(coll.transform);
     }
@@ -170,21 +166,50 @@ public class Vista : MonoBehaviour
                 obiettivoTemporaneoDaInseguire = null;
             }
             mioCervello.ObiettivoNemico = obiettivoTemporaneoDaInseguire;
-
-
         }
-        else
-        
+        else // if (mioCervello.ObiettivoNemico != null)
+
         {
             Debug.DrawLine(transform.position + Vector3.up, mioCervello.ObiettivoNemico.position + Vector3.up, Color.red, Time.deltaTime);
-            distanzaTraPlayerGoblin = Vector3.Distance(mioCervello.Agente.transform.position, mioCervello.ObiettivoNemico.position);
-            if (distanzaTraPlayerGoblin <= mioCervello.distanzaAttacco)            
-                mioCervello.inZonaAttacco = true;            
-            else
-                mioCervello.inZonaAttacco = false;
+            mioCervello.DistanzaTraPlayerGoblin = Vector3.Distance(mioCervello.Agente.transform.position, mioCervello.ObiettivoNemico.position);
+            if (mioCervello.DistanzaTraPlayerGoblin <= mioCervello.distanzaAttaccoGoblinPugno)
+            {
+                if (tmpTipoArmaPrecedente != TipoArma.Pugno)
+                    armaCambiata = true;
 
-            if (!listaNemiciVisti.Contains(mioCervello.ObiettivoNemico))
+                mioCervello.TipoArma = TipoArma.Pugno;
+                tmpTipoArmaPrecedente = mioCervello.TipoArma;
+            }
+            else if (mioCervello.DistanzaTraPlayerGoblin <= mioCervello.distanzaAttaccoGoblinArco)
+            {
+                if (tmpTipoArmaPrecedente != TipoArma.Arco)
+                    armaCambiata = true;
+
+                mioCervello.TipoArma = TipoArma.Arco;
+                tmpTipoArmaPrecedente = mioCervello.TipoArma;
+            }
+
+            if (!armaCambiata && mioCervello.DistanzaTraPlayerGoblin <= mioCervello.DistanzaAttacco)
+            {
+                mioCervello.inZonaAttacco = true;
+                if (mioCervello.DistanzaTraPlayerGoblin <= mioCervello.DistanzaAttacco)//cazziata in arrivo
+                    conta = 0f;
+            }
+            else if (armaCambiata || mioCervello.DistanzaTraPlayerGoblin >= mioCervello.DistanzaAttacco)
+            {
+                mioCervello.inZonaAttacco = false;
+                if (mioCervello.DistanzaTraPlayerGoblin >= mioCervello.DistanzaAttacco)//cazziata in arrivo
+                    conta += Time.deltaTime;
+                armaCambiata = false;
+            }
+
+            if ((!listaNemiciVisti.Contains(mioCervello.ObiettivoNemico) && !mioCervello.inZonaAttacco && Mathf.Approximately(conta, 2f)) || (!listaNemiciVisti.Contains(mioCervello.ObiettivoNemico) && !listaNemiciDentroNonVisti.Contains(mioCervello.ObiettivoNemico)))
                 mioCervello.ObiettivoNemico = null;
+            else
+               if (listaNemiciVisti.Contains(mioCervello.ObiettivoNemico))
+                mioCervello.ObiettivoInVista = true;
+            else
+                mioCervello.ObiettivoInVista = false;
         }
     }
 

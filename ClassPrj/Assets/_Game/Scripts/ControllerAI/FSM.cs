@@ -1,5 +1,11 @@
 ﻿using UnityEngine;
 
+public enum TipoArma
+{
+    Pugno,
+    Arco
+}
+
 /// <summary>
 /// cervello
 /// </summary>
@@ -12,18 +18,17 @@ public class FSM : MonoBehaviour
     public bool visualizzaHandleVista = true;
     public float ampiezza = 3f;
     public float velocitaOscillazioneVista = 2f;
-    public bool obiettivoInVista { get; set; }
     public bool inZonaAttacco { get; set; }
     public bool visualizzaHandleAttacco = true;
     public float distanzaAttaccoGoblinArco = 7f;
     public float distanzaAttaccoGoblinPugno = 2f;
     public float dimensioneHandleVista = 5f;
     public float dimensioneHandleDistArmi = 5f;
-    public float distanzaAttacco;
 
-  
-    public bool attaccoDaVicino = false;
-
+    private float distanzaAttacco;
+    private float distanzaTraPlayerGoblin;
+    private bool obiettivoInVista;
+    private TipoArma tipoArma;
     private int indexPercorso = -1;
     private SphereCollider colliderSferaVista;
     private Transform obiettivoNemico;
@@ -46,39 +51,35 @@ public class FSM : MonoBehaviour
         set
         {
             obiettivoNemico = value;
-            obiettivoInVista = (value == null )? false : true;
         }
     }
-    
+
     public Transform MiaTransform
     {
         get
         {
             return miaTransform;
         }
-         set
+        set
         {
             miaTransform = value;
-
         }
     }
-    
-     public Animator Animatore
+
+    public Animator Animatore
     {
         get
         {
             return animatore;
         }
-      
     }
-    
-     public NavMeshAgent Agente
+
+    public NavMeshAgent Agente
     {
         get
         {
             return agente;
         }
-      
     }
 
     public SphereCollider ColliderSferaVista
@@ -104,11 +105,64 @@ public class FSM : MonoBehaviour
         }
     }
 
+    public TipoArma TipoArma
+    {
+        get
+        {
+            return tipoArma;
+        }
+
+        set
+        {
+            tipoArma = value;
+            DistanzaAttacco = (value == TipoArma.Pugno) ? distanzaAttaccoGoblinPugno : distanzaAttaccoGoblinArco;
+        }
+    }
+
+    public bool ObiettivoInVista
+    {
+        get
+        {
+            return obiettivoInVista;
+        }
+
+        set
+        {
+            obiettivoInVista = value;
+        }
+    }
+
+    public float DistanzaAttacco
+    {
+        get
+        {
+            return distanzaAttacco;
+        }
+
+        set
+        {
+            distanzaAttacco = value;
+        }
+    }
+
+    public float DistanzaTraPlayerGoblin
+    {
+        get
+        {
+            return distanzaTraPlayerGoblin;
+        }
+
+        set
+        {
+            distanzaTraPlayerGoblin = value;
+        }
+    }
+
     private void Start()
     {
-        miaTransform=GetComponent<Transform>();
-        agente=GetComponent<NavMeshAgent>();
-        animatore=GetComponent<Animator>();
+        miaTransform = GetComponent<Transform>();
+        agente = GetComponent<NavMeshAgent>();
+        animatore = GetComponent<Animator>();
         obiettivoNemico = null;
         obiettivoInVista = false;
         inZonaAttacco = false;
@@ -121,7 +175,6 @@ public class FSM : MonoBehaviour
         pattugliamento.Inizializza(this);
         inseguimento.Inizializza(this);
         statoCorrente = pattugliamento;
-     
     }
 
     private void Update()
@@ -134,22 +187,30 @@ public class FSM : MonoBehaviour
             statoPrecedente = statoCorrente;
         }
 
-        if (obiettivoInVista)
+        //l'obiettivo nemico è diverso da null se entra nel cono di visuale.
+        //diventa null quando esce dalla visuale e non è in zona attacco e sono passati 2sec oppure se esce proprio dalla sfera di vista o se diventa amico.
+        //se l'obiettivo nemico è nullo il goblin torna a pattugliare.
+        //se invece non è nullo se il player è in zona attacco e obiettivo è in vista cioè è dentro il cono di vista,
+        //allora attacca, altrimenti significa o che non è in zona attacco perchè è più lontano o che non è nel cono di vista cioè tipo che si trova alle sue spalle
+        //allora in questo caso lo insegue finchè non ce l'ha di fronte di nuovo e alla distanza di attacco corretta.
+
+        if (ObiettivoNemico != null)
         {
-            if (!inZonaAttacco)
-                statoCorrente = inseguimento;
-            else
+            if (inZonaAttacco && ObiettivoInVista)
                 statoCorrente = Attacco;
-          
+            else
+                statoCorrente = inseguimento;
         }
         else
-        {
-            
             statoCorrente = pattugliamento;
-            inZonaAttacco = false;
-        }
+
         statoCorrente.Esecuzione();
-        Debug.Log(attaccoDaVicino);
+
+        //if else sottostante da cancellare:
+        if (statoCorrente == Attacco)
+            Debug.Log(statoCorrente + TipoArma.ToString());
+        else
+            Debug.Log(statoCorrente);
     }
 
     private void FixedUpdate()
