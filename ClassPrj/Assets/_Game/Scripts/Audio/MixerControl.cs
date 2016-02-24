@@ -5,13 +5,14 @@ using UnityEngine.Audio;
 
 public class MixerControl : MonoBehaviour {
 
-    private static MixerControl m_me;
-    private static float volumiSfx;
-    private static float volumiEnvironment;
-
     public Slider s_VolumiSfx;
     public Slider s_VolumiEnvironment;
 
+    private static MixerControl m_me;
+    private Serializzabile<ClasseAudio> datiAudio;
+    private static float volumiSfx;
+    private static float volumiEnvironment;
+    private float volumePrecedente;
     private FMOD.Studio.Bus SFXBus;
     private FMOD.Studio.Bus EnviromentBus;
 
@@ -21,13 +22,17 @@ public class MixerControl : MonoBehaviour {
     }
     void Start()
     {
-        s_VolumiSfx.value = PlayerPrefs.GetFloat("v_Sfx", 0.5f);
-        s_VolumiEnvironment.value = PlayerPrefs.GetFloat("v_Environment", 0.5f);
+        Inizializza();
+        Carica();
     }
     void Update()
     {
-        VolumiSfx = VolumiSfx;
-        VolumiEnvironment = VolumiEnvironment;
+        if(s_VolumiSfx.value != VolumiSfx || 
+           s_VolumiEnvironment.value != VolumiEnvironment)
+        {
+            VolumiSfx = VolumiSfx;
+            VolumiEnvironment = VolumiEnvironment;
+        }
     }
 
     public static float VolumiSfx
@@ -41,8 +46,8 @@ public class MixerControl : MonoBehaviour {
             volumiSfx = m_me.s_VolumiSfx.value;
             m_me.SFXBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
             m_me.SFXBus.setFaderLevel(value);
-            PlayerPrefs.SetFloat("v_Sfx", volumiSfx);
-            PlayerPrefs.Save();
+            m_me.datiAudio.Dati.volSFX = volumiSfx;
+            m_me.datiAudio.Salva();
         }
     }
 
@@ -57,8 +62,35 @@ public class MixerControl : MonoBehaviour {
             volumiEnvironment = m_me.s_VolumiEnvironment.value;
             m_me.EnviromentBus = FMODUnity.RuntimeManager.GetBus("bus:/Environment");
             m_me.EnviromentBus.setFaderLevel(value);
-            PlayerPrefs.SetFloat("v_Environment", volumiSfx);
-            PlayerPrefs.Save();
+            m_me.datiAudio.Dati.volEnvironment = volumiEnvironment;
+            m_me.datiAudio.Salva();
+        }
+    }
+
+    void Inizializza()
+    {
+        datiAudio = new Serializzabile<ClasseAudio>(Statici.NomeFileAudio);
+        if (!datiAudio.Dati.inizializzato)
+        {
+            datiAudio.Dati.volEnvironment = 0.5f;
+            datiAudio.Dati.volSFX = 0.5f;
+            datiAudio.Dati.inizializzato = true;
+            datiAudio.Salva();
+            Debug.Log("Inizializzato" + datiAudio.Dati.volSFX + datiAudio.Dati.volEnvironment + datiAudio.Dati.inizializzato);
+        }
+    }
+    public void Carica()
+    {
+        if (datiAudio.Dati != null)
+        {
+            volumiEnvironment = datiAudio.Dati.volEnvironment;
+            volumiSfx = datiAudio.Dati.volSFX;
+            s_VolumiEnvironment.value = VolumiEnvironment;
+            s_VolumiSfx.value = VolumiSfx;
+            VolumiEnvironment = VolumiEnvironment;
+            VolumiSfx = VolumiSfx;
+            datiAudio.Salva();
+            Debug.Log("Caricato!" + datiAudio.Dati.volSFX + datiAudio.Dati.volEnvironment + datiAudio.Dati.inizializzato);
         }
     }
 }

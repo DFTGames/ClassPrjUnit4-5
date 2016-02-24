@@ -9,6 +9,7 @@ public class Statici
 {
     public const string NomeFilePersonaggio = "Personaggio.dat";
     public const string nomeFileDiplomazia = "diplomazia.dat";
+    public const string NomeFileAudio = "Audio.dat";
     public static string nomePersonaggio = string.Empty;
 
     public const string STR_PercorsoConfig = "PercorsoConfigurazione";
