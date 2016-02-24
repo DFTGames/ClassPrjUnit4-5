@@ -90,6 +90,8 @@ public static string EventoPassi()
     {
         if(level >=0)
         {
+            if(m_Audio.Gc_AltreScene == null)
+                m_Audio.Gc_AltreScene = GameObject.Find("GestoreCanvas").GetComponent<GestoreCanvasAltreScene>();
             m_Audio.Carica();
         }
     }

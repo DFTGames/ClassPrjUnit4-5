@@ -23,9 +23,9 @@ public class MixerControl : MonoBehaviour {
     }
     void Start()
     {
-        gc_AltreScene = GameObject.Find("GestoreCanvas").GetComponent<GestoreCanvasAltreScene>();
+        Gc_AltreScene = GameObject.Find("GestoreCanvas").GetComponent<GestoreCanvasAltreScene>();
         Inizializza();
-        if (gc_AltreScene.pannelloTest.activeInHierarchy)
+        if (Gc_AltreScene.pannelloTest.activeInHierarchy)
         {
             if (s_VolumiEnvironment == null || s_VolumiSfx == null)
             {
@@ -37,7 +37,7 @@ public class MixerControl : MonoBehaviour {
     }
     void Update()
     {
-        if(gc_AltreScene.pannelloTest.activeInHierarchy)
+        if(Gc_AltreScene.pannelloTest.activeInHierarchy)
         {
             if (s_VolumiEnvironment == null || s_VolumiSfx == null)
             {
@@ -83,6 +83,19 @@ public class MixerControl : MonoBehaviour {
             m_me.EnviromentBus.setFaderLevel(value);
             m_me.datiAudio.Dati.volEnvironment = volumiEnvironment;
             m_me.datiAudio.Salva();
+        }
+    }
+
+    public GestoreCanvasAltreScene Gc_AltreScene
+    {
+        get
+        {
+            return gc_AltreScene;
+        }
+
+        set
+        {
+            gc_AltreScene = value;
         }
     }
 
