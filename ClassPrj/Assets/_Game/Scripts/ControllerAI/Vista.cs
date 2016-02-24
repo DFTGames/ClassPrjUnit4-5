@@ -168,7 +168,6 @@ public class Vista : MonoBehaviour
             mioCervello.ObiettivoNemico = obiettivoTemporaneoDaInseguire;
         }
         else // if (mioCervello.ObiettivoNemico != null)
-
         {
             Debug.DrawLine(transform.position + Vector3.up, mioCervello.ObiettivoNemico.position + Vector3.up, Color.red, Time.deltaTime);
             mioCervello.DistanzaTraPlayerGoblin = Vector3.Distance(mioCervello.Agente.transform.position, mioCervello.ObiettivoNemico.position);
@@ -180,7 +179,7 @@ public class Vista : MonoBehaviour
                 mioCervello.TipoArma = TipoArma.Pugno;
                 tmpTipoArmaPrecedente = mioCervello.TipoArma;
             }
-            else if (mioCervello.DistanzaTraPlayerGoblin <= mioCervello.distanzaAttaccoGoblinArco)
+            else
             {
                 if (tmpTipoArmaPrecedente != TipoArma.Arco)
                     armaCambiata = true;
@@ -189,21 +188,24 @@ public class Vista : MonoBehaviour
                 tmpTipoArmaPrecedente = mioCervello.TipoArma;
             }
 
-            if (!armaCambiata && mioCervello.DistanzaTraPlayerGoblin <= mioCervello.DistanzaAttacco)
+            bool inAttacco = mioCervello.DistanzaTraPlayerGoblin <= mioCervello.DistanzaAttacco ? true : false;
+
+            if (!armaCambiata && inAttacco)
             {
-                mioCervello.inZonaAttacco = true;
-                if (mioCervello.DistanzaTraPlayerGoblin <= mioCervello.DistanzaAttacco)//cazziata in arrivo
-                    conta = 0f;
+                mioCervello.inZonaAttacco = true;               
+                conta = 0f;
             }
-            else if (armaCambiata || mioCervello.DistanzaTraPlayerGoblin >= mioCervello.DistanzaAttacco)
+            else if (armaCambiata || !inAttacco)
             {
-                mioCervello.inZonaAttacco = false;
-                if (mioCervello.DistanzaTraPlayerGoblin >= mioCervello.DistanzaAttacco)//cazziata in arrivo
-                    conta += Time.deltaTime;
+                mioCervello.inZonaAttacco = false;               
+                conta += Time.deltaTime;
                 armaCambiata = false;
             }
 
-            if ((!listaNemiciVisti.Contains(mioCervello.ObiettivoNemico) && !mioCervello.inZonaAttacco && Mathf.Approximately(conta, 2f)) || (!listaNemiciVisti.Contains(mioCervello.ObiettivoNemico) && !listaNemiciDentroNonVisti.Contains(mioCervello.ObiettivoNemico)))
+            if ((!listaNemiciVisti.Contains(mioCervello.ObiettivoNemico) && 
+                !mioCervello.inZonaAttacco && Mathf.Approximately(conta, 2f)) || 
+                (!listaNemiciVisti.Contains(mioCervello.ObiettivoNemico) &&
+                !listaNemiciDentroNonVisti.Contains(mioCervello.ObiettivoNemico)))
                 mioCervello.ObiettivoNemico = null;
             else
                if (listaNemiciVisti.Contains(mioCervello.ObiettivoNemico))
