@@ -76,8 +76,6 @@ public static string EventoPassi()
                 g_Audio = GestoreAudio.AddComponent<GestoreAudio>();
                 GameObject.DontDestroyOnLoad(GestoreAudio);
                 m_Audio = GestoreAudio.AddComponent<MixerControl>();
-                m_Audio.s_VolumiSfx = GameObject.Find("s_VolumiSfx").GetComponent<Slider>();
-                m_Audio.s_VolumiEnvironment = GameObject.Find("s_VolAmbiente").GetComponent<Slider>();
             }
             return g_Audio;
         }
@@ -92,8 +90,6 @@ public static string EventoPassi()
     {
         if(level >=0)
         {
-            m_Audio.s_VolumiSfx = GameObject.Find("s_VolumiSfx").GetComponent<Slider>();
-            m_Audio.s_VolumiEnvironment = GameObject.Find("s_VolAmbiente").GetComponent<Slider>();
             m_Audio.Carica();
         }
     }

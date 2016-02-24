@@ -10,6 +10,7 @@ public class MixerControl : MonoBehaviour {
 
     private static MixerControl m_me;
     private Serializzabile<ClasseAudio> datiAudio;
+    private GestoreCanvasAltreScene gc_AltreScene;
     private static float volumiSfx;
     private static float volumiEnvironment;
     private float volumePrecedente;
@@ -22,16 +23,34 @@ public class MixerControl : MonoBehaviour {
     }
     void Start()
     {
+        gc_AltreScene = GameObject.Find("GestoreCanvas").GetComponent<GestoreCanvasAltreScene>();
         Inizializza();
-        Carica();
+        if (gc_AltreScene.pannelloTest.activeInHierarchy)
+        {
+            if (s_VolumiEnvironment == null || s_VolumiSfx == null)
+            {
+                s_VolumiSfx = GameObject.Find("s_VolumiSfx").GetComponent<Slider>();
+                s_VolumiEnvironment = GameObject.Find("s_VolAmbiente").GetComponent<Slider>();
+                Carica();
+            }
+        }
     }
     void Update()
     {
-        if(s_VolumiSfx.value != VolumiSfx || 
-           s_VolumiEnvironment.value != VolumiEnvironment)
+        if(gc_AltreScene.pannelloTest.activeInHierarchy)
         {
-            VolumiSfx = VolumiSfx;
-            VolumiEnvironment = VolumiEnvironment;
+            if (s_VolumiEnvironment == null || s_VolumiSfx == null)
+            {
+                s_VolumiSfx = GameObject.Find("s_VolumiSfx").GetComponent<Slider>();
+                s_VolumiEnvironment = GameObject.Find("s_VolAmbiente").GetComponent<Slider>();
+                Carica();
+            }
+            if (s_VolumiSfx.value != VolumiSfx ||
+                s_VolumiEnvironment.value != VolumiEnvironment)
+            {
+                VolumiSfx = volumiSfx;
+                VolumiEnvironment = volumiEnvironment;
+            }
         }
     }
 
@@ -67,7 +86,7 @@ public class MixerControl : MonoBehaviour {
         }
     }
 
-    void Inizializza()
+    public void Inizializza()
     {
         datiAudio = new Serializzabile<ClasseAudio>(Statici.NomeFileAudio);
         if (!datiAudio.Dati.inizializzato)
@@ -76,7 +95,6 @@ public class MixerControl : MonoBehaviour {
             datiAudio.Dati.volSFX = 0.5f;
             datiAudio.Dati.inizializzato = true;
             datiAudio.Salva();
-            Debug.Log("Inizializzato" + datiAudio.Dati.volSFX + datiAudio.Dati.volEnvironment + datiAudio.Dati.inizializzato);
         }
     }
     public void Carica()
@@ -85,12 +103,12 @@ public class MixerControl : MonoBehaviour {
         {
             volumiEnvironment = datiAudio.Dati.volEnvironment;
             volumiSfx = datiAudio.Dati.volSFX;
-            s_VolumiEnvironment.value = VolumiEnvironment;
-            s_VolumiSfx.value = VolumiSfx;
-            VolumiEnvironment = VolumiEnvironment;
-            VolumiSfx = VolumiSfx;
+            if (s_VolumiEnvironment != null && s_VolumiSfx != null)
+            {
+                s_VolumiEnvironment.value = VolumiEnvironment;
+                s_VolumiSfx.value = VolumiSfx;
+            }
             datiAudio.Salva();
-            Debug.Log("Caricato!" + datiAudio.Dati.volSFX + datiAudio.Dati.volEnvironment + datiAudio.Dati.inizializzato);
         }
     }
 }
