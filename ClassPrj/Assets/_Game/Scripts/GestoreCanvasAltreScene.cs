@@ -14,6 +14,7 @@ public class GestoreCanvasAltreScene : MonoBehaviour
     public Text nomeScenaText;
     public static string nomeProssimaScena=string.Empty;
     public Image cursoreImage;
+    public GameObject pannelloTest;
 
     private static GestoreCanvasAltreScene me;
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
@@ -50,7 +51,7 @@ public class GestoreCanvasAltreScene : MonoBehaviour
         me = this;
     }
 
-    
+  
     public static void AggiornaDati()
     {
         me.nomeText.text = GameManager.Nome;
@@ -82,6 +83,14 @@ public class GestoreCanvasAltreScene : MonoBehaviour
             immagineCaricamento.SetActive(false);
 
         //verificare con pino se va bene scrivere così o nell'altro modo usando lo script Cursore:
-      //  cursoreImage.transform.position = Input.mousePosition;
+        //  cursoreImage.transform.position = Input.mousePosition;
+
+        if (Input.GetKeyDown(KeyCode.F12))
+        {
+            if (pannelloTest.activeInHierarchy)
+                pannelloTest.SetActive(false);
+            else
+                pannelloTest.SetActive(true);
+        }
     }
 }

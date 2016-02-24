@@ -187,13 +187,6 @@ public class FSM : MonoBehaviour
             statoPrecedente = statoCorrente;
         }
 
-        //l'obiettivo nemico è diverso da null se entra nel cono di visuale.
-        //diventa null quando esce dalla visuale e non è in zona attacco e sono passati 2sec oppure se esce proprio dalla sfera di vista o se diventa amico.
-        //se l'obiettivo nemico è nullo il goblin torna a pattugliare.
-        //se invece non è nullo se il player è in zona attacco e obiettivo è in vista cioè è dentro il cono di vista,
-        //allora attacca, altrimenti significa o che non è in zona attacco perchè è più lontano o che non è nel cono di vista cioè tipo che si trova alle sue spalle
-        //allora in questo caso lo insegue finchè non ce l'ha di fronte di nuovo e alla distanza di attacco corretta.
-
         if (ObiettivoNemico != null)
         {
             if (inZonaAttacco && ObiettivoInVista)
@@ -206,11 +199,6 @@ public class FSM : MonoBehaviour
 
         statoCorrente.Esecuzione();
 
-        //if else sottostante da cancellare:
-        if (statoCorrente == Attacco)
-            Debug.Log(statoCorrente + TipoArma.ToString());
-        else
-            Debug.Log(statoCorrente);
     }
 
     private void FixedUpdate()

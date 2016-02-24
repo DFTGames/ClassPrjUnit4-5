@@ -18,7 +18,7 @@ public class Inseguimento : IStato
         if (Cervello.ObiettivoInVista)
             Cervello.Agente.stoppingDistance = Cervello.DistanzaAttacco;
         else
-            Cervello.Agente.stoppingDistance = Cervello.ObiettivoNemico.GetComponent<CapsuleCollider>().radius + Cervello.Agente.radius + 0.15f;
+            Cervello.Agente.stoppingDistance = 2*Cervello.Agente.radius + 0.15f;
     }
 
     public void Esecuzione()
