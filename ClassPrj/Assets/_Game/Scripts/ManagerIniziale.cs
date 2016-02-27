@@ -12,112 +12,95 @@ internal enum Sesso
 }
 
 public class ManagerIniziale : MonoBehaviour
-{
-    private static ManagerIniziale me;
-    public Animator AnimatoreMenu;
-    public Animator AltrieMenu1;
-    public Animator AltrieMenu2;
-    public Button BottoneCaricaOff;
-    public Button EliminaPartita;
-    public Text CasellaTipo;
-    public Text ValoreVita;
-    public Text ValoreAttacco;
-    public Text ValoreDifesa;
-    public Text TestoNome;
-    public Text Errore;
-    public Text ErroreCaricamento;
-    public Text VitaAttuale;
-    public Text AttaccoAtuale;
-    public Text DifesaAttuale;
+{ 
+    public Animator animatoreMainMenu;
+    public Animator animatoreMenuCreazione;
+    public Animator animatoreMenuCarica;
+    public Button bottoneCaricaDaMainManu;
+    public Button bottoneEliminaPartita;
+    public Text casellaTipo;
+    public Text valoreVita;
+    public Text valoreAttacco;
+    public Text valoreDifesa;
+    public Text testoNome;
+    public Text erroreCreazioneText;
+    public Text erroreCaricamento;
+    public Text vitaCaricamento;
+    public Text attaccoCaricamento;
+    public Text difesaCaricamento;
     public GameData databseInizialeAmicizie;
     public caratteristichePersonaggioV2 databaseInizialeProprieta;
-    public Dropdown ElencoCartelle;
-    public Dropdown ElencoSessi;
-
+    public Dropdown elencoCartelleDropDown;
+    public Dropdown elencoSessiDropDown;
     public Transform posizioneInizialeCamera;
     public Image pannelloImmagineSfondo;
     public Text nomeScenaText;
+    public Transform posizioneCameraCarica;
+    [Range(0f, 20f)]
+    public float altezzaCamera = 1f;
+    [Range(-20f, 20f)]
+    public float ZOffSet;
+    public float DampTime;
 
-    private int indiceButton = 0;
+    private int indiceClasseSuccessivaPrecedente = 0;
     private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
-    private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
-    private static ManagerIniziale Me;
+    private Serializzabile<AmicizieSerializzabili> datiDiplomazia;  
     private string scena = string.Empty;
     private GameObject tmpGODaEliminareSeSelezioniAltroGO = null;
     private GameObject tmpGOPrecedente = null;
     private Dictionary<string, Transform> dizionarioPosizioniPrecedenti = new Dictionary<string, Transform>();
-
     private bool nuovaPartita = false;
     private bool caricaPartita = false;
     private bool personaggiInCarica = false;
-    private bool personaggioProvaEsiste = false;
-
-    //telecamera:
-    public Transform posizioneCameraCarica;
-
-    [Range(0f, 20f)]
-    public float altezza = 1f;
-
-    [Range(-20f, 20f)]
-    public float ZOffSet;
-
-    public float DampTime;
-
-    private Transform Target = null;
+    private bool personaggioProvaEsiste = false; 
+    private Transform targetT = null;
     private Vector3 velocita = Vector3.zero;
-    private Vector3 Obiettivo;
+    private Vector3 posizioneCamera;
     private Transform cameraT;
+    private Dictionary<string, GameObject> dizionarioCollegamentoNomiConModelli = new Dictionary<string, GameObject>();   
 
-    public int IndiceButton
+    public int IndiceClasseSuccessivaPrecedente
     {
         get
         {
-            return indiceButton;
+            return indiceClasseSuccessivaPrecedente;
         }
-
         set
         {
             int valoreMinimo = 0;
-
             int valoreMassimo = databaseInizialeProprieta.classePersonaggio.Count - 1;
-            indiceButton = Mathf.Clamp(value, valoreMinimo, valoreMassimo);
+            indiceClasseSuccessivaPrecedente = Mathf.Clamp(value, valoreMinimo, valoreMassimo);
             if (value > valoreMassimo)
-                indiceButton = valoreMinimo;
+                indiceClasseSuccessivaPrecedente = valoreMinimo;
             if (value < valoreMinimo)
-                indiceButton = valoreMassimo;
+                indiceClasseSuccessivaPrecedente = valoreMassimo;
         }
     }
 
     // Use this for initialization
     private void Start()
-    {
-        me = this;
-        nomeScenaText.gameObject.SetActive(false);
-        //#if UNITY_EDITOR
-
-        Statici.Metodo_Charlie(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
-        //#endif
-
-        Me = this;
+    {     
+        nomeScenaText.gameObject.SetActive(false);      
+        Statici.Metodo_Charlie(ref databseInizialeAmicizie, ref databaseInizialeProprieta);        
         cameraT = Camera.main.transform;
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-
         //istanzio tutti i personaggi
         for (int i = 0; i < databaseInizialeProprieta.matriceProprieta.Count; i++)
         {
-            Instantiate(Resources.Load(databaseInizialeProprieta.matriceProprieta[i].nomeM), GameObject.Find("postazione" + i).transform.FindChild("posizioneM").position, new Quaternion(0f, 180f, 0f, 0f));
-            Instantiate(Resources.Load(databaseInizialeProprieta.matriceProprieta[i].nomeF), GameObject.Find("postazione" + i).transform.FindChild("posizioneF").position, Quaternion.identity);
-            dizionarioPosizioniPrecedenti.Add(databaseInizialeProprieta.matriceProprieta[i].nomeM + "(Clone)", GameObject.Find("postazione" + i).transform.FindChild("posizioneM"));
-            dizionarioPosizioniPrecedenti.Add(databaseInizialeProprieta.matriceProprieta[i].nomeF + "(Clone)", GameObject.Find("postazione" + i).transform.FindChild("posizioneF"));
+            string tmpNomeModelloM = databaseInizialeProprieta.matriceProprieta[i].nomeM;
+            string tmpNomeModelloF = databaseInizialeProprieta.matriceProprieta[i].nomeF;
+            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloM,Instantiate(Resources.Load(tmpNomeModelloM), GameObject.Find("postazione" + i).transform.FindChild("posizioneM").position, new Quaternion(0f, 180f, 0f, 0f)) as GameObject);            
+            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloF,Instantiate(Resources.Load(tmpNomeModelloF), GameObject.Find("postazione" + i).transform.FindChild("posizioneF").position, Quaternion.identity) as GameObject);          
+            dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloM].name, GameObject.Find("postazione" + i).transform.FindChild("posizioneM"));
+            dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloF].name, GameObject.Find("postazione" + i).transform.FindChild("posizioneF"));          
         }
-
         Statici.CopiaIlDB();
     }
 
     public void NuovaPartita()
     {
-        AltrieMenu1.SetBool("Torna", true);
-        AnimatoreMenu.SetBool("Via", true);
+        animatoreMenuCreazione.SetBool("Torna", true);
+        animatoreMainMenu.SetBool("Via", true);
         nuovaPartita = true;
         RecuperaSesso();
     }
@@ -125,22 +108,15 @@ public class ManagerIniziale : MonoBehaviour
     public void CaricaPartita()
     {
         caricaPartita = true;
-        AltrieMenu2.SetBool("Torna", true);
-        AnimatoreMenu.SetBool("Via", true);
+        animatoreMenuCarica.SetBool("Torna", true);
+        animatoreMainMenu.SetBool("Via", true);
         RecuperaElencoCartelle();
         RecuperaDatiGiocatore();
     }
 
-    public void CaricaScena()
+    public void CaricaScenaDaCaricamento()
     {
-        Statici.sonoPassatoDallaScenaIniziale = true;
-
-        for (int i = 0; i < databaseInizialeProprieta.matriceProprieta.Count; i++)
-        {
-            Destroy(GameObject.Find(databaseInizialeProprieta.matriceProprieta[i].nomeM + "(Clone)"));
-            Destroy(GameObject.Find(databaseInizialeProprieta.matriceProprieta[i].nomeF + "(Clone)"));
-        }
-
+        Statici.sonoPassatoDallaScenaIniziale = true;    
         Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref GameManager.dizionarioPercorsi);
         /*
         l'if else qui sotto, serve per verificare se la scena in cui vogliamo far spuntare il personaggio
@@ -148,7 +124,6 @@ public class ManagerIniziale : MonoBehaviour
         Per evitare di far andar ein errore il gioco, se la scena non esiste più il personaggio viene caricato
         nell'isola altrimenti nell'ultima scena visitata.
         */
-
         if (!Application.CanStreamedLevelBeLoaded(datiPersonaggio.Dati.nomeScena))
         {
             datiPersonaggio.Dati.nomeScena = "Isola";
@@ -160,60 +135,47 @@ public class ManagerIniziale : MonoBehaviour
             SceneManager.LoadScene(datiPersonaggio.Dati.nomeScena);
     }
 
-    public void AvviaGioco()
+    public void CaricaPartitaDaCreazione()
     {
-        Errore.text = String.Empty;
-        if (TestoNome.text.Trim() == string.Empty)
+        erroreCreazioneText.text = String.Empty;
+        if (testoNome.text.Trim() == string.Empty)
         {
-            Errore.text = "Inserire un nome";
+            erroreCreazioneText.text = "Inserire un nome";
             return;
         }
-
-        Statici.sonoPassatoDallaScenaIniziale = true; //+
-
+        Statici.sonoPassatoDallaScenaIniziale = true;
         DirectoryInfo dI = new DirectoryInfo(Application.persistentDataPath);
         DirectoryInfo[] dirs = dI.GetDirectories();
         for (int i = 0; i < dirs.Length; i++)
         {
-            if (dirs[i].Name.ToLower() == TestoNome.text.ToLower())
+            if (dirs[i].Name.ToLower() == testoNome.text.ToLower())
             {
-                Errore.text = "Esiste Gia Un Personaggio con questo nome";
+                erroreCreazioneText.text = "Esiste Gia Un Personaggio con questo nome";
                 return;
             }
-        }
-
-        for (int i = 0; i < databaseInizialeProprieta.matriceProprieta.Count; i++)
-        {
-            Destroy(GameObject.Find(databaseInizialeProprieta.matriceProprieta[i].nomeM + "(Clone)"));
-            Destroy(GameObject.Find(databaseInizialeProprieta.matriceProprieta[i].nomeF + "(Clone)"));
-        }
-        Statici.nomePersonaggio = TestoNome.text;
-
+        }       
+        Statici.nomePersonaggio = testoNome.text;
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-
         if (datiPersonaggio.Dati.nomePersonaggio == null)
         {
-            datiPersonaggio.Dati.Vita = databaseInizialeProprieta.matriceProprieta[IndiceButton].Vita;
-            datiPersonaggio.Dati.Attacco = databaseInizialeProprieta.matriceProprieta[IndiceButton].Attacco;
-            datiPersonaggio.Dati.difesa = databaseInizialeProprieta.matriceProprieta[IndiceButton].difesa;
-            datiPersonaggio.Dati.Xp = databaseInizialeProprieta.matriceProprieta[IndiceButton].Xp;
-            datiPersonaggio.Dati.Livello = databaseInizialeProprieta.matriceProprieta[IndiceButton].Livello;
-
-            if (ElencoSessi.value == 0)
-                datiPersonaggio.Dati.nomeModello = databaseInizialeProprieta.matriceProprieta[IndiceButton].nomeM;
+            datiPersonaggio.Dati.Vita = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita;
+            datiPersonaggio.Dati.Attacco = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Attacco;
+            datiPersonaggio.Dati.difesa = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].difesa;
+            datiPersonaggio.Dati.Xp = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Xp;
+            datiPersonaggio.Dati.Livello = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Livello;
+            if (elencoSessiDropDown.value == 0)
+                datiPersonaggio.Dati.nomeModello = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM;
             else
-                datiPersonaggio.Dati.nomeModello = databaseInizialeProprieta.matriceProprieta[IndiceButton].nomeF;
-            datiPersonaggio.Dati.nomePersonaggio = TestoNome.text;
-            datiPersonaggio.Dati.classe = CasellaTipo.text;
-
-            datiPersonaggio.Dati.VitaMassima = databaseInizialeProprieta.matriceProprieta[IndiceButton].Vita;
-            datiPersonaggio.Dati.ManaMassimo = databaseInizialeProprieta.matriceProprieta[IndiceButton].Mana;
-            datiPersonaggio.Dati.XPMassimo = databaseInizialeProprieta.matriceProprieta[IndiceButton].Xp;
+                datiPersonaggio.Dati.nomeModello = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF;
+            datiPersonaggio.Dati.nomePersonaggio = testoNome.text;
+            datiPersonaggio.Dati.classe = casellaTipo.text;
+            datiPersonaggio.Dati.VitaMassima = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita;
+            datiPersonaggio.Dati.ManaMassimo = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Mana;
+            datiPersonaggio.Dati.XPMassimo = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Xp;
             datiPersonaggio.Dati.posizioneCheckPoint = "start";
             datiPersonaggio.Dati.nomeScena = "Isola";
             datiPersonaggio.Salva();
         }
-
         datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
         if (datiDiplomazia.Dati.tipoEssere[0] == null)
         {
@@ -230,7 +192,6 @@ public class ManagerIniziale : MonoBehaviour
                     datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] = databseInizialeAmicizie.matriceAmicizie[i].elementoAmicizia[j];
                 }
             }
-
             datiDiplomazia.Salva();
         }
         Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref GameManager.dizionarioPercorsi);
@@ -238,100 +199,91 @@ public class ManagerIniziale : MonoBehaviour
         SceneManager.LoadScene(datiPersonaggio.Dati.nomeScena);
     }
 
-    public void Anulla1()
+    public void AnnullaDaCreazione()
     {
-        AltrieMenu1.SetBool("Torna", false);
-        AnimatoreMenu.SetBool("Via", false);
+        animatoreMenuCreazione.SetBool("Torna", false);
+        animatoreMainMenu.SetBool("Via", false);
         nuovaPartita = false;
     }
 
-    public void Anulla2()
+    public void AnnullaDaCaricamento()
     {
         if (tmpGOPrecedente != null)
         {
             tmpGOPrecedente.transform.position = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].position;
             tmpGOPrecedente.transform.rotation = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].rotation;
         }
-
-        AltrieMenu2.SetBool("Torna", false);
-        AnimatoreMenu.SetBool("Via", false);
+        animatoreMenuCarica.SetBool("Torna", false);
+        animatoreMainMenu.SetBool("Via", false);
         caricaPartita = false;
     }
 
     public void Precedente()
     {
-        IndiceButton--;
-
+        IndiceClasseSuccessivaPrecedente--;
         RecuperaSesso();
     }
 
     public void Sucessivo()
     {
-        IndiceButton++;
-
+        IndiceClasseSuccessivaPrecedente++;
         RecuperaSesso();
     }
 
     // Update is called once per frame
     private void Update()
     {
-        CasellaTipo.text = databaseInizialeProprieta.classePersonaggio[IndiceButton].ToString();
-        ValoreVita.text = databaseInizialeProprieta.matriceProprieta[IndiceButton].Vita.ToString();
-        ValoreAttacco.text = databaseInizialeProprieta.matriceProprieta[IndiceButton].Attacco.ToString();
-        ValoreDifesa.text = databaseInizialeProprieta.matriceProprieta[IndiceButton].difesa.ToString();
-
+        casellaTipo.text = databaseInizialeProprieta.classePersonaggio[IndiceClasseSuccessivaPrecedente].ToString();
+        valoreVita.text = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita.ToString();
+        valoreAttacco.text = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Attacco.ToString();
+        valoreDifesa.text = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].difesa.ToString();
+        //se non ho selezionato ne carica ne nuova partita oppure se sono in carica ma non ho personaggi già creati,
+        //inquadro la posizione iniziale.
         if ((!nuovaPartita && !caricaPartita) || (caricaPartita && !personaggiInCarica))
         {
             Image tmpImage = pannelloImmagineSfondo;
             if (tmpImage.color.a < 1f)
                 tmpImage.color += new Color(0f, 0f, 0f, 0.2f) * Time.deltaTime * 3f;
-
-            Target = posizioneInizialeCamera;
-            Obiettivo = new Vector3(Target.position.x, Target.position.y + altezza, Target.position.z + ZOffSet);
-
+            targetT = posizioneInizialeCamera;
+            posizioneCamera = new Vector3(targetT.position.x, targetT.position.y + altezzaCamera, targetT.position.z + ZOffSet);
             CambiaPosizioneTelecamera();
-        }
-        else if (caricaPartita && !nuovaPartita)//+
+        }//inquadro il modello selezionato in carica partita:
+        else if (caricaPartita && !nuovaPartita)
         {
             Image tmpImage = pannelloImmagineSfondo;
             if (tmpImage.color.a > 0f)
-                tmpImage.color -= new Color(0f, 0f, 0f, 0.1f) * Time.deltaTime * 1.5f;
-            if (GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)") != null)
+                tmpImage.color -= new Color(0f, 0f, 0f, 0.1f) * Time.deltaTime * 1.5f;         
+            if(dizionarioCollegamentoNomiConModelli.ContainsKey(datiPersonaggio.Dati.nomeModello))
             {
-                Target = GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").GetComponent<Transform>();
-                Obiettivo = new Vector3(Target.position.x, Target.position.y + altezza, Target.position.z + ZOffSet);
-
+                targetT = dizionarioCollegamentoNomiConModelli[datiPersonaggio.Dati.nomeModello].transform;
+                posizioneCamera = new Vector3(targetT.position.x, targetT.position.y + altezzaCamera, targetT.position.z + ZOffSet);
                 CambiaPosizioneTelecamera();
             }
-        }
-        else if (ElencoSessi.value == 0 && nuovaPartita && !caricaPartita)
+        }//se scelgo il maschio in nuova partita lo inquadro:
+        else if (elencoSessiDropDown.value == 0 && nuovaPartita && !caricaPartita)
+        {
+            Image tmpImage = pannelloImmagineSfondo;
+            if (tmpImage.color.a > 0f)
+                tmpImage.color -= new Color(0f, 0f, 0f, 0.1f) * Time.deltaTime * 1.5f;          
+            targetT = dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM].transform;
+            posizioneCamera = new Vector3(targetT.position.x, targetT.position.y + altezzaCamera, targetT.position.z - ZOffSet);
+            CambiaPosizioneTelecamera();
+        }//se scelgo la femmina in nuova partita, la inquadro:
+        else if (elencoSessiDropDown.value == 1 && nuovaPartita && !caricaPartita)
         {
             Image tmpImage = pannelloImmagineSfondo;
             if (tmpImage.color.a > 0f)
                 tmpImage.color -= new Color(0f, 0f, 0f, 0.1f) * Time.deltaTime * 1.5f;
-
-            Target = GameObject.Find(databaseInizialeProprieta.matriceProprieta[IndiceButton].nomeM + "(Clone)").GetComponent<Transform>();
-            Obiettivo = new Vector3(Target.position.x, Target.position.y + altezza, Target.position.z - ZOffSet);
-
+            targetT = dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF].transform;
+            posizioneCamera = new Vector3(targetT.position.x, targetT.position.y + altezzaCamera, targetT.position.z + ZOffSet);
             CambiaPosizioneTelecamera();
         }
-        else if (ElencoSessi.value == 1 && nuovaPartita && !caricaPartita)
-        {
-            Image tmpImage = pannelloImmagineSfondo;
-            if (tmpImage.color.a > 0f)
-                tmpImage.color -= new Color(0f, 0f, 0f, 0.1f) * Time.deltaTime * 1.5f;
-            Target = GameObject.Find(databaseInizialeProprieta.matriceProprieta[IndiceButton].nomeF + "(Clone)").GetComponent<Transform>();
-            Obiettivo = new Vector3(Target.position.x, Target.position.y + altezza, Target.position.z + ZOffSet);
-
-            CambiaPosizioneTelecamera();
-        }
-
         //mentre sto caricando una nuova scena faccio spuntare un immagine di sfondo e il nome della scena facendo scomparire eventuali pannelli attivi:
         if (Application.isLoadingLevel && pannelloImmagineSfondo.color.a != 1f)
         {
-            AltrieMenu2.gameObject.SetActive(false);
-            AltrieMenu1.gameObject.SetActive(false);
-            AnimatoreMenu.gameObject.SetActive(false);
+            animatoreMenuCarica.gameObject.SetActive(false);
+            animatoreMenuCreazione.gameObject.SetActive(false);
+            animatoreMainMenu.gameObject.SetActive(false);
             nomeScenaText.gameObject.SetActive(true);
             nomeScenaText.text = "Loading... " + datiPersonaggio.Dati.nomeScena;
             pannelloImmagineSfondo.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
@@ -340,19 +292,16 @@ public class ManagerIniziale : MonoBehaviour
 
     private void CambiaPosizioneTelecamera()
     {
-        cameraT.position = Vector3.SmoothDamp(cameraT.position, Obiettivo, ref velocita, DampTime);
-
-        if (ZOffSet != 0f)
-        {
-            cameraT.LookAt(Target.position);
-        }
+        cameraT.position = Vector3.SmoothDamp(cameraT.position, posizioneCamera, ref velocita, DampTime);
+        if (ZOffSet != 0f)        
+            cameraT.LookAt(targetT.position);        
     }
 
     public void RecuperaElencoCartelle()
     {
-        ErroreCaricamento.text = string.Empty;
+        erroreCaricamento.text = string.Empty;
         Dropdown.OptionData Tmp = null;
-        ElencoCartelle.options.Clear();
+        elencoCartelleDropDown.options.Clear();
         DirectoryInfo Di = new DirectoryInfo(Application.persistentDataPath);
         DirectoryInfo[] Drs = Di.GetDirectories();
         for (int i = 0; i < Drs.Length; i++)
@@ -360,7 +309,7 @@ public class ManagerIniziale : MonoBehaviour
             Tmp = new Dropdown.OptionData();
             Tmp.text = Drs[i].Name;
             if (Drs[i].Name != "PersonaggioDiProva")
-                ElencoCartelle.options.Add(Tmp);
+                elencoCartelleDropDown.options.Add(Tmp);
             else
                 personaggioProvaEsiste = true;
         }
@@ -372,63 +321,57 @@ public class ManagerIniziale : MonoBehaviour
         if (Drs.Length > numeroCartelleMinimo)
         {
             personaggiInCarica = true;
-            BottoneCaricaOff.interactable = true;
-            EliminaPartita.interactable = true;
-            ElencoCartelle.value = -1;    //visualizzo sempre il primo elemento della lista
-
-            Statici.nomePersonaggio = ElencoCartelle.options[ElencoCartelle.value].text;
+            bottoneCaricaDaMainManu.interactable = true;
+            bottoneEliminaPartita.interactable = true;
+            elencoCartelleDropDown.value = -1;    //visualizzo sempre il primo elemento della lista
+            Statici.nomePersonaggio = elencoCartelleDropDown.options[elencoCartelleDropDown.value].text;
         }
         else
         {
             personaggiInCarica = false;
             Statici.nomePersonaggio = string.Empty;
-            BottoneCaricaOff.interactable = false;
-            EliminaPartita.interactable = false;
-            ErroreCaricamento.text = "Non ci sono partite salvate";
-            VitaAttuale.text = "none";
-            AttaccoAtuale.text = "none";
-            DifesaAttuale.text = "none";
+            bottoneCaricaDaMainManu.interactable = false;
+            bottoneEliminaPartita.interactable = false;
+            erroreCaricamento.text = "Non ci sono partite salvate";
+            vitaCaricamento.text = "none";
+            attaccoCaricamento.text = "none";
+            difesaCaricamento.text = "none";
             if (tmpGOPrecedente != null)
             {
                 tmpGOPrecedente.transform.position = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].position;
                 tmpGOPrecedente.transform.rotation = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].rotation;
             }
-            ElencoCartelle.captionText.text = string.Empty;  //NON VISUALIZZA LA STRINGA QUANDO LA LISTA E' VUOTA
+            elencoCartelleDropDown.captionText.text = string.Empty;  //NON VISUALIZZA LA STRINGA QUANDO LA LISTA E' VUOTA
         }
     }
 
     public void RecuperaDatiGiocatore()
     {
-        if (ElencoCartelle.options.Count <= 0) return;
+        if (elencoCartelleDropDown.options.Count <= 0) return;
         if (nuovaPartita) return;
-        Statici.nomePersonaggio = ElencoCartelle.options[ElencoCartelle.value].text;
+        Statici.nomePersonaggio = elencoCartelleDropDown.options[elencoCartelleDropDown.value].text;
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-
-        VitaAttuale.text = datiPersonaggio.Dati.Vita.ToString();
-        AttaccoAtuale.text = datiPersonaggio.Dati.Attacco.ToString();
-        DifesaAttuale.text = datiPersonaggio.Dati.difesa.ToString();
-
+        vitaCaricamento.text = datiPersonaggio.Dati.Vita.ToString();
+        attaccoCaricamento.text = datiPersonaggio.Dati.Attacco.ToString();
+        difesaCaricamento.text = datiPersonaggio.Dati.difesa.ToString();
         if (tmpGOPrecedente != null)
         {
             tmpGOPrecedente.transform.position = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].position;
             tmpGOPrecedente.transform.rotation = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].rotation;
         }
-
-        if (datiPersonaggio == null) return;
-
-        if (GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)") == null)
+        if (datiPersonaggio == null) return;       
+        if(!dizionarioCollegamentoNomiConModelli.ContainsKey(datiPersonaggio.Dati.nomeModello))    
         {
-            ErroreCaricamento.text = "Errore..Questo personaggio non e' più valido";
-            BottoneCaricaOff.interactable = false;
+            erroreCaricamento.text = "Errore..Questo personaggio non e' più valido";
+            bottoneCaricaDaMainManu.interactable = false;
             return;
         }
         else
         {
-            ErroreCaricamento.text = "";
-            BottoneCaricaOff.interactable = true;
-        }
-
-        GameObject tmOj = GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)");      
+            erroreCaricamento.text = "";
+            bottoneCaricaDaMainManu.interactable = true;
+        }      
+        GameObject tmOj = dizionarioCollegamentoNomiConModelli[datiPersonaggio.Dati.nomeModello];
         tmOj.transform.position = posizioneCameraCarica.position;
         tmOj.transform.rotation = posizioneCameraCarica.rotation;        
         tmpGOPrecedente = tmOj;
@@ -441,21 +384,19 @@ public class ManagerIniziale : MonoBehaviour
         {
             Directory.Delete(Path.Combine
             (Application.persistentDataPath, Statici.nomePersonaggio), true);
-
             RecuperaElencoCartelle();
         }
     }
 
     public void RecuperaSesso()
     {
-        ElencoSessi.options.Clear();
+        elencoSessiDropDown.options.Clear();
         for (int i = 0; i < Enum.GetValues(typeof(Sesso)).Length; i++)
         {
             Dropdown.OptionData tmp = new Dropdown.OptionData();
             tmp.text = Enum.GetName(typeof(Sesso), i);
-            ElencoSessi.options.Add(tmp);
+            elencoSessiDropDown.options.Add(tmp);
         }
-
-        ElencoCartelle.value = 0;
+        elencoCartelleDropDown.value = 0;
     }
 }

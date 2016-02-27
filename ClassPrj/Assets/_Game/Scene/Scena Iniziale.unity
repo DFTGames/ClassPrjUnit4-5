@@ -481,30 +481,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d920090b0777b094088260d868eb2c12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AnimatoreMenu: {fileID: 474120813}
-  AltrieMenu1: {fileID: 1039144101}
-  AltrieMenu2: {fileID: 1759262904}
-  BottoneCaricaOff: {fileID: 118241487}
-  EliminaPartita: {fileID: 716922965}
-  CasellaTipo: {fileID: 200291853}
-  ValoreVita: {fileID: 1443053725}
-  ValoreAttacco: {fileID: 1129036780}
-  ValoreDifesa: {fileID: 1621348772}
-  TestoNome: {fileID: 1978404885}
-  Errore: {fileID: 1086616455}
-  ErroreCaricamento: {fileID: 1759243120}
-  VitaAttuale: {fileID: 1081027606}
-  AttaccoAtuale: {fileID: 1768783779}
-  DifesaAttuale: {fileID: 874491714}
+  animatoreMainMenu: {fileID: 474120813}
+  animatoreMenuCreazione: {fileID: 1039144101}
+  animatoreMenuCarica: {fileID: 1759262904}
+  bottoneCaricaDaMainManu: {fileID: 255987131}
+  bottoneEliminaPartita: {fileID: 716922965}
+  casellaTipo: {fileID: 200291853}
+  valoreVita: {fileID: 1443053725}
+  valoreAttacco: {fileID: 1129036780}
+  valoreDifesa: {fileID: 1621348772}
+  testoNome: {fileID: 1978404885}
+  erroreCreazioneText: {fileID: 1086616455}
+  erroreCaricamento: {fileID: 1759243120}
+  vitaCaricamento: {fileID: 1081027606}
+  attaccoCaricamento: {fileID: 1768783779}
+  difesaCaricamento: {fileID: 874491714}
   databseInizialeAmicizie: {fileID: 0}
   databaseInizialeProprieta: {fileID: 0}
-  ElencoCartelle: {fileID: 1559976459}
-  ElencoSessi: {fileID: 561501324}
+  elencoCartelleDropDown: {fileID: 1559976459}
+  elencoSessiDropDown: {fileID: 561501324}
   posizioneInizialeCamera: {fileID: 352820453}
   pannelloImmagineSfondo: {fileID: 1598338942}
   nomeScenaText: {fileID: 725031264}
   posizioneCameraCarica: {fileID: 169889387}
-  altezza: 3
+  altezzaCamera: 3
   ZOffSet: 3
   DampTime: 2
 --- !u!1 &118241485
@@ -585,7 +585,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 92009376}
-        m_MethodName: CaricaScena
+        m_MethodName: CaricaScenaDaCaricamento
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -969,7 +969,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 92009376}
-        m_MethodName: Anulla1
+        m_MethodName: AnnullaDaCreazione
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1615,6 +1615,7 @@ Canvas:
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -2743,7 +2744,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 92009376}
-        m_MethodName: AvviaGioco
+        m_MethodName: CaricaPartitaDaCreazione
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7443,7 +7444,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 92009376}
-        m_MethodName: Anulla2
+        m_MethodName: AnnullaDaCaricamento
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
