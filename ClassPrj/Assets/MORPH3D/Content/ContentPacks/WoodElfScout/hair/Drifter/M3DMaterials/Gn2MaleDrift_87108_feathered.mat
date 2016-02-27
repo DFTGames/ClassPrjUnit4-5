@@ -194,7 +194,7 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.6764706, g: 0.6764706, b: 0.6764706, a: 1}
+        second: {r: 0.518, g: 0.39611772, b: 0.07617652, a: 1}
       data:
         first:
           name: _SpecColor
@@ -206,11 +206,11 @@ Material:
       data:
         first:
           name: _KKPrimarySpecularColor
-        second: {r: 0.5588235, g: 0.5588235, b: 0.5588235, a: 1}
+        second: {r: 1.0220588, g: 1.0671496, b: 1.0671496, a: 1}
       data:
         first:
           name: _KKSecondarySpecularColor
-        second: {r: 0.5588235, g: 0.5588235, b: 0.5588235, a: 1}
+        second: {r: 1.0220588, g: 1.0220588, b: 1.0220588, a: 1}
       data:
         first:
           name: _KKSpecularMixDirectFactors

@@ -33,5 +33,15 @@ MonoBehaviour:
     Xp: 0
     Attacco: 50
     difesa: 12
+  - nomeM: Mago_M3D2
+    nomeF: Maga_M3D2
+    classe: magointrinseco
+    Vita: 10
+    Livello: 0
+    Mana: 10
+    Xp: 0
+    Attacco: 10
+    difesa: 20
   classePersonaggio:
   - maghidellanotte
+  - magointrinseco
