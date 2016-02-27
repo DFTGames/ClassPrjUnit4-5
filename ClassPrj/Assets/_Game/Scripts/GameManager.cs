@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     public static Dictionary<string, List<string>> dizionarioDiIndifferenti = new Dictionary<string, List<string>>();
     public GameData databseInizialeAmicizie;
     public caratteristichePersonaggioV2 databaseInizialeProprieta;
+    public static Transform PersonaggioPrincipaleT;
 
     private static GameManager me;
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
@@ -154,10 +155,17 @@ public class GameManager : MonoBehaviour
             GestoreCanvasAltreScene.AggiornaDati();
 
             if (GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)") != null)
-                GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").transform.position = GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
+            {
+                PersonaggioPrincipaleT = GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").transform;
+                PersonaggioPrincipaleT.position = GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
+   
+            }
             else
-                Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity);
-
+            {
+                
+                GameObject tmpObjP = Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
+                PersonaggioPrincipaleT = tmpObjP.transform;
+            }
             RecuperaDizionariDiplomazia();
         }
         else
@@ -213,7 +221,8 @@ public class GameManager : MonoBehaviour
                 datiDiplomazia.Salva();
             }
             Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref dizionarioPercorsi);
-            Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity);
+            GameObject tmpObjP = Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
+            PersonaggioPrincipaleT = tmpObjP.transform;
             RecuperaDizionariDiplomazia();
             VitaMassima = datiPersonaggio.Dati.VitaMassima;
             VitaAttuale = datiPersonaggio.Dati.Vita;
