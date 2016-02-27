@@ -7,9 +7,9 @@ public class Spettro : MonoBehaviour {
 
     public Transform puntoA;
     public Transform puntoB;
-    public Camera camera;
+    public Camera m_camera;
     public LineRenderer lineR;
-    public AudioSource audio;
+    public AudioSource s_audio;
     public GameObject Prefab;
     public int Point;
     public int Objects = 10;
@@ -44,7 +44,7 @@ public class Spettro : MonoBehaviour {
     }
 
     void Update () {
-        audio.GetSpectrumData(SpectromData, 0, FFTWindow.BlackmanHarris);
+        s_audio.GetSpectrumData(SpectromData, 0, FFTWindow.BlackmanHarris);
 
         switch (indice)
         {
@@ -64,15 +64,15 @@ public class Spettro : MonoBehaviour {
         if (lineR.enabled == false)
             lineR.enabled = true;
 
-        puntoA.position = camera.ViewportToWorldPoint(new Vector3(0f, 0f, camera.nearClipPlane));
-        puntoB.position = camera.ViewportToWorldPoint(new Vector3(1f, 0f, camera.nearClipPlane));
+        puntoA.position = m_camera.ViewportToWorldPoint(new Vector3(0f, 0f, m_camera.nearClipPlane));
+        puntoB.position = m_camera.ViewportToWorldPoint(new Vector3(1f, 0f, m_camera.nearClipPlane));
         lineR.SetVertexCount(Point);
         lineR.SetPosition(0, puntoA.position);
         for (int i = 1; i < Point - 1; i++)
         {
 
             float Data = SpectromData[i];
-            pos_ = camera.ViewportToWorldPoint(new Vector3(1f * i / 100, Data * 20, camera.nearClipPlane));
+            pos_ = m_camera.ViewportToWorldPoint(new Vector3(1f * i / 100, Data * 20, m_camera.nearClipPlane));
             lineR.SetPosition(i, pos_);
         }
         lineR.SetPosition(Point - 1, puntoB.position);
