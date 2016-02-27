@@ -418,14 +418,19 @@ public class ManagerIniziale : MonoBehaviour
 
         if (GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)") == null)
         {
-            ErroreCaricamento.text = "Errore..Questo personaggio non e' valido";
+            ErroreCaricamento.text = "Errore..Questo personaggio non e' più valido";
+            BottoneCaricaOff.interactable = false;
             return;
         }
+        else
+        {
+            ErroreCaricamento.text = "";
+            BottoneCaricaOff.interactable = true;
+        }
 
-        GameObject tmOj = GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)");
-
+        GameObject tmOj = GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)");      
         tmOj.transform.position = posizioneCameraCarica.position;
-        tmOj.transform.rotation = posizioneCameraCarica.rotation;
+        tmOj.transform.rotation = posizioneCameraCarica.rotation;        
         tmpGOPrecedente = tmOj;
     }
 

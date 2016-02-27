@@ -85,7 +85,17 @@ public class ControllerMaga : MonoBehaviour
 
     private void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 0) return;
+        //non levare questo if che serve per non far stare sollevata la maga
+        //quando è nella scena iniziale o quando passa da una scena ad un'altra by Ninfea
+        //P.S. Cambiare il deprecato. Non trovo il corrispondente in SceneManager.
+        if (SceneManager.GetActiveScene().buildIndex == 0 || Application.isLoadingLevel)
+        {           
+            rigidBody.isKinematic = false;
+            capsula.enabled = true;
+            navMeshAgent.enabled = false;
+            return;
+        }
+       
 
         if (IsPointAndClick)
         {

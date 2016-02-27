@@ -24,24 +24,14 @@ MonoBehaviour:
   - Attacco
   - Difesa
   matriceProprieta:
-  - nomeM: MagoBluM
-    nomeF: MagaRossaF
-    classe: classe1
-    Vita: 52
-    Livello: 5
-    Mana: 10
-    Xp: 4
-    Attacco: 10
-    difesa: 20
-  - nomeM: MagoVerdeM
-    nomeF: MagaFucsiaF
-    classe: classe2
-    Vita: 33
-    Livello: 10
-    Mana: 10
-    Xp: 8
-    Attacco: 10
-    difesa: 20
+  - nomeM: Mago_M3D
+    nomeF: Maga_M3D
+    classe: maghidellanotte
+    Vita: 45
+    Livello: 18
+    Mana: 1
+    Xp: 0
+    Attacco: 50
+    difesa: 12
   classePersonaggio:
-  - classe1
-  - classe2
+  - maghidellanotte
