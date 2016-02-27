@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class MixerControl : MonoBehaviour {
 
@@ -23,21 +24,29 @@ public class MixerControl : MonoBehaviour {
     }
     void Start()
     {
-        Gc_AltreScene = GameObject.Find("GestoreCanvas").GetComponent<GestoreCanvasAltreScene>();
-        Inizializza();
-        if (Gc_AltreScene.pannelloTest.activeInHierarchy)
-        {
-            if (s_VolumiEnvironment == null || s_VolumiSfx == null)
-            {
-                s_VolumiSfx = GameObject.Find("s_VolumiSfx").GetComponent<Slider>();
-                s_VolumiEnvironment = GameObject.Find("s_VolAmbiente").GetComponent<Slider>();
-                Carica();
-            }
-        }
+        Inizializza();     
     }
     void Update()
     {
-        if(Gc_AltreScene.pannelloTest.activeInHierarchy)
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            if (Gc_AltreScene.pannelloTest.activeInHierarchy)
+            {
+                if (s_VolumiEnvironment == null || s_VolumiSfx == null)
+                {
+                    s_VolumiSfx = GameObject.Find("s_VolumiSfx").GetComponent<Slider>();
+                    s_VolumiEnvironment = GameObject.Find("s_VolAmbiente").GetComponent<Slider>();
+                    Carica();
+                }
+                if (s_VolumiSfx.value != VolumiSfx ||
+                    s_VolumiEnvironment.value != VolumiEnvironment)
+                {
+                    VolumiSfx = volumiSfx;
+                    VolumiEnvironment = volumiEnvironment;
+                }
+            }
+        }
+        else
         {
             if (s_VolumiEnvironment == null || s_VolumiSfx == null)
             {
