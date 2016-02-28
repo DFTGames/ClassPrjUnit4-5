@@ -3,53 +3,33 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public enum NomeClasse
-{
-    GameManager,
-    ManagerIniziale
-}
 
 public class GameManager : MonoBehaviour
-{
-    public static string tagEssere = null;
-    public static string tagDiColuiCheVuoleCambiareAmicizia = "Player";
-    public static Transform signoloEssereT = null;
-    public static List<string> nemici = null;
-    public static int contatoreDaCambiare = 0;
-
-    public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();
-
-    //fare dizionari indici...stringa e numerico dizionario
+{   
+    public static string tagDiColuiCheVuoleCambiareAmicizia = "Player";   
+    public static List<string> nemici = null;   
+    public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();   
     public static Dictionary<string, List<string>> dizionarioDiNemici = new Dictionary<string, List<string>>();
-
     public static Dictionary<string, List<string>> dizionarioDiAmici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiIndifferenti = new Dictionary<string, List<string>>();
     public GameData databseInizialeAmicizie;
     public caratteristichePersonaggioV2 databaseInizialeProprieta;
     public static Transform PersonaggioPrincipaleT;
+    public static PadreGestore padreGestore;
 
     private static GameManager me;
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
-    private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
-    private bool fatto = false;
-    public static PadreGestore padreGestore;
-
-    private string tagDellAltro = null;
-
+    private Serializzabile<ValoriPersonaggioS> datiPersonaggio;    
+    private string tagEssereSelezionato = null;
     private RaycastHit hit;
     private Collider precedente = null;
-    private Collider attuale = null;
-
-    private string nomeScenaDaCaricare = string.Empty;
-    private int numeroScena = 0;
+    private Collider attuale = null;       
     private float vitaAttuale;
     private float vitaMassima = 0f;
     private float attacco = 0f;
     private float difesa = 0f;
     private string classe = string.Empty;
-    private string nome = string.Empty;
-
-    
+    private string nome = string.Empty;    
 
     public static float VitaAttuale
     {
@@ -137,15 +117,12 @@ public class GameManager : MonoBehaviour
             padreGestore = tmpPdr.GetComponent<PadreGestore>();
         else
             Debug.LogError("Ma ci fai o ci sei ????..sei un cazzone....manca il padrePercorso");
-
-        if (Statici.sonoPassatoDallaScenaIniziale)//+
-        {
-            //carico diplomazia
-            datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
-
-            //carico dati personaggio
-            datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-
+        //carico diplomazia
+        datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
+        //carico dati personaggio
+        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
+        if (Statici.sonoPassatoDallaScenaIniziale)
+        {       
             VitaMassima = datiPersonaggio.Dati.VitaMassima;
             VitaAttuale = datiPersonaggio.Dati.Vita;
             Attacco = datiPersonaggio.Dati.Attacco;
@@ -153,33 +130,19 @@ public class GameManager : MonoBehaviour
             Nome = datiPersonaggio.Dati.nomePersonaggio;
             Classe = datiPersonaggio.Dati.classe;
             GestoreCanvasAltreScene.AggiornaDati();
-
-            if (GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)") != null)
-            {
-                PersonaggioPrincipaleT = GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").transform;
-                PersonaggioPrincipaleT.position = GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
-   
-            }
-            else
-            {
-                
-                GameObject tmpObjP = Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
-                PersonaggioPrincipaleT = tmpObjP.transform;
-            }
+            GameObject tmpObjP = Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
+            PersonaggioPrincipaleT = tmpObjP.transform;        
             RecuperaDizionariDiplomazia();
         }
         else
         {
             //Questo else serve nel caso in cui facciamo play da una scena che non sia quella iniziale
-            //verrà così caricato un personaggio per fare le prove.
+            //verrà così caricato un personaggio per fare le prove(il magoBlu).
             //il personaggio verrà caricato sempre nella scena in cui si è fatto play.
             //N.B. se si vuole provare il salvataggio dell'ultima scena bisogna però fare la trafila a partire dalla prima scena
             //perchè questo else caricherà il personaggio solo nella scena in cui viene fatto play.(per maggiori info chiedere a Ninfea)
             Statici.Metodo_Charlie(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
-            Statici.nomePersonaggio = "PersonaggioDiProva";
-
-            datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-
+            Statici.nomePersonaggio = "PersonaggioDiProva";  
             if (datiPersonaggio.Dati.nomePersonaggio == null)
             {
                 datiPersonaggio.Dati.Vita = 10;
@@ -187,21 +150,16 @@ public class GameManager : MonoBehaviour
                 datiPersonaggio.Dati.difesa = 5;
                 datiPersonaggio.Dati.Xp = 19;
                 datiPersonaggio.Dati.Livello = 1;
-
                 datiPersonaggio.Dati.nomeModello = "MagoBluM";
-
                 datiPersonaggio.Dati.nomePersonaggio = "PersonaggioDiProva";
                 datiPersonaggio.Dati.classe = "Mago";
-
                 datiPersonaggio.Dati.VitaMassima = 10;
                 datiPersonaggio.Dati.ManaMassimo = 20;
                 datiPersonaggio.Dati.XPMassimo = 100;
                 datiPersonaggio.Dati.posizioneCheckPoint = "start";
                 datiPersonaggio.Dati.nomeScena = Application.loadedLevelName;
                 datiPersonaggio.Salva();
-            }
-
-            datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
+            }            
             if (datiDiplomazia.Dati.tipoEssere[0] == null)
             {
                 for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
@@ -217,7 +175,6 @@ public class GameManager : MonoBehaviour
                         datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] = databseInizialeAmicizie.matriceAmicizie[i].elementoAmicizia[j];
                     }
                 }
-
                 datiDiplomazia.Salva();
             }
             Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref dizionarioPercorsi);
@@ -289,28 +246,19 @@ public class GameManager : MonoBehaviour
 
     // Update is called once per frame
     private void Update()
-    {
-        if (Application.loadedLevelName == nomeScenaDaCaricare && !nomeScenaDaCaricare.Equals(string.Empty) && GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)") != null)//+
-        {
-            GameObject.Find(datiPersonaggio.Dati.nomeModello + "(Clone)").transform.position = GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
-
-            nomeScenaDaCaricare = string.Empty;
-        }
-
+    { 
         if (datiPersonaggio.Dati.Vita != VitaAttuale)
         {
             me.datiPersonaggio.Dati.Vita = VitaAttuale;
             me.datiPersonaggio.Salva();
             GestoreCanvasAltreScene.AggiornaVita();
         }
-
         if (Input.GetMouseButtonDown(0))
         {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit) && !EventSystem.current.IsPointerOverGameObject())
-
             {
                 attuale = hit.collider;
-                tagDellAltro = hit.collider.tag;
+                tagEssereSelezionato = hit.collider.tag;
 
                 if (precedente != attuale)
                 {
@@ -332,7 +280,7 @@ public class GameManager : MonoBehaviour
             {
                 for (int j = 0; j < me.datiDiplomazia.Dati.tipoEssere.Length; j++)
                 {
-                    if (me.datiDiplomazia.Dati.tipoEssere[j].Equals(me.tagDellAltro))
+                    if (me.datiDiplomazia.Dati.tipoEssere[j].Equals(me.tagEssereSelezionato))
                     {
                         if (me.datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] != Amicizie.Nemico)
                         {
@@ -358,7 +306,7 @@ public class GameManager : MonoBehaviour
             {
                 for (int j = 0; j < me.datiDiplomazia.Dati.tipoEssere.Length; j++)
                 {
-                    if (me.datiDiplomazia.Dati.tipoEssere[j].Equals(me.tagDellAltro))
+                    if (me.datiDiplomazia.Dati.tipoEssere[j].Equals(me.tagEssereSelezionato))
                     {
                         if (me.datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] != Amicizie.Alleato)
                         {
@@ -396,11 +344,7 @@ public class GameManager : MonoBehaviour
     {
         me.datiPersonaggio.Dati.posizioneCheckPoint = nomeCheck;
         me.datiPersonaggio.Dati.nomeScena = nomeScena;
-
         me.datiPersonaggio.Salva();
-
-        SceneManager.LoadScene(nomeScena);
-
-        me.nomeScenaDaCaricare = nomeScena;
+        SceneManager.LoadScene(nomeScena);       
     }
 }

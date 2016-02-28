@@ -26,12 +26,22 @@ MonoBehaviour:
   matriceProprieta:
   - nomeM: Mago_M3D
     nomeF: Maga_M3D
-    classe: maghidellanotte
+    classe: magodell'acqua
     Vita: 45
     Livello: 18
     Mana: 1
     Xp: 0
     Attacco: 50
     difesa: 12
+  - nomeM: Mago_M3D2
+    nomeF: Maga_M3D2
+    classe: magodellaterra
+    Vita: 10
+    Livello: 0
+    Mana: 10
+    Xp: 0
+    Attacco: 10
+    difesa: 20
   classePersonaggio:
-  - maghidellanotte
+  - magodell'acqua
+  - magodellaterra

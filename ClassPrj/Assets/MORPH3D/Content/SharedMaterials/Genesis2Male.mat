@@ -9,9 +9,9 @@ Material:
   m_Name: Genesis2Male
   m_Shader: {fileID: 4800000, guid: cc77cd34d845f4a479ddec96dd10a3f9, type: 3}
   m_ShaderKeywords: _ALPHATEST_ON _LIGHTMAPPING_DYNAMIC_LIGHTMAPS _LIGHTMAPPING_REALTIME
-    _UVSEC_UV1
+    _NORMALMAP _SPECGLOSSMAP _UVSEC_UV1
   m_LightmapFlags: 5
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2450
   stringTagMap:
     RenderType: TransparentCutout
   m_SavedProperties:
@@ -21,7 +21,7 @@ Material:
         first:
           name: _MainTex
         second:
-          m_Texture: {fileID: 0}
+          m_Texture: {fileID: 2800000, guid: 476da09fa0faf574f9c21aa0d6342633, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -35,7 +35,7 @@ Material:
         first:
           name: _BumpMap
         second:
-          m_Texture: {fileID: 0}
+          m_Texture: {fileID: 2800000, guid: 125c020ed1cd3a74fa91b4c725209a4c, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -56,7 +56,7 @@ Material:
         first:
           name: _OcclusionMap
         second:
-          m_Texture: {fileID: 0}
+          m_Texture: {fileID: 2800000, guid: cefde4ffe759b244fa165269476bb6f3, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
       data:
@@ -84,7 +84,7 @@ Material:
         first:
           name: _SpecGlossMap
         second:
-          m_Texture: {fileID: 0}
+          m_Texture: {fileID: 2800000, guid: 707f68576eba543dc8bb0f1d252dfe84, type: 3}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -119,7 +119,7 @@ Material:
       data:
         first:
           name: _OcclusionStrength
-        second: 1
+        second: 0.75
       data:
         first:
           name: _DetailNormalMapScale
@@ -131,7 +131,7 @@ Material:
       data:
         first:
           name: _Mode
-        second: 0
+        second: 1
       data:
         first:
           name: _SmoothnessInAlbedo
@@ -164,4 +164,4 @@ Material:
       data:
         first:
           name: _SpecularMapColorTweak
-        second: {r: 1, g: 1, b: 1, a: 1}
+        second: {r: 0.9632353, g: 0.84991354, b: 0.84991354, a: 1}

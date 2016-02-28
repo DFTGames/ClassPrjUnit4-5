@@ -2000,9 +2000,8 @@ MonoBehaviour:
   distanzaDaTerra: 0.3
   forzaSalto: 6
   distanzaMassimaClick: 20
-  distanzaAnnullaClick: 1
   corsaPerDefault: 0
-  SwitchController: 0
+  IsPointAndClick: 0
 --- !u!114 &11418160
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2031,7 +2030,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 104682}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df21390ae0914984fb3c0ecd5d3b8ad4, type: 3}
   m_Name: 
