@@ -7,6 +7,8 @@ namespace DFTGames.Tools.EditorTools
 {
     public class GameDataEditor : EditorWindow
     {
+
+        public const int NON_ESISTE = -1;
         public GameData gameData;
      //   public const string STR_PercorsoConfig = "PercorsoConfigurazione";
      //   public const string STR_DatabaseDiGioco = "/dataBaseDiGioco.asset";
@@ -75,12 +77,12 @@ namespace DFTGames.Tools.EditorTools
                 GUILayout.EndHorizontal();
                 EditorGUILayout.Separator();
                 GestisciDiplomazia();
-                //Inizializzazione e set valori default=-1 index percorso
+                //Inizializzazione e set valori default=NON_ESISTE index percorso
                 if (gameData.indexPercorsi == null)
                 {
                     gameData.indexPercorsi = new int[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
                     for (int i = 0; i < gameData.tagEssere.Length; i++)
-                        gameData.indexPercorsi[i] = -1;
+                        gameData.indexPercorsi[i] = NON_ESISTE;
                 }
             }
             else
@@ -88,30 +90,37 @@ namespace DFTGames.Tools.EditorTools
                 GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
                 if (GUILayout.Button("Crea il DataBase"))
                 {
-                    string tmpStr = "Assets";
-                    if (percorso == null || percorso == string.Empty)
-                    {
-                        string tmpPercosro = EditorUtility.OpenFolderPanel("Percorso per Database", tmpStr, "");
-                        if (tmpPercosro != string.Empty)
-                        {
-                            percorso = "Assets" + tmpPercosro.Substring(Application.dataPath.Length);
-                            EditorPrefs.SetString(Statici.STR_PercorsoConfig, percorso);
-                        }
-                    }
-                    if (percorso != string.Empty)
-                    {
-                        gameData = ScriptableObject.CreateInstance<GameData>();
-                        AssetDatabase.CreateAsset(gameData, percorso + Statici.STR_DatabaseDiGioco);
-                        AssetDatabase.Refresh();
-                        ProjectWindowUtil.ShowCreatedAsset(gameData);
-                    }
-                    resettaParametri();
+                   gameData= CreaDatabase();
                 }
                 EditorGUILayout.HelpBox("DataBase Mancante", MessageType.Error);
                 GUILayout.EndHorizontal();
             }
         }
 
+        public static  GameData CreaDatabase()
+        {
+            string tmpStr = "Assets";
+            GameData gameData = null;
+
+            if (percorso == null || percorso == string.Empty)
+            {
+                string tmpPercosro = EditorUtility.OpenFolderPanel("Percorso per Database", tmpStr, "");
+                if (tmpPercosro != string.Empty)
+                {
+                    percorso = "Assets" + tmpPercosro.Substring(Application.dataPath.Length);
+                    EditorPrefs.SetString(Statici.STR_PercorsoConfig, percorso);
+                }
+            }
+            if (percorso != string.Empty)
+            {
+                gameData = ScriptableObject.CreateInstance<GameData>();
+                AssetDatabase.CreateAsset(gameData, percorso + Statici.STR_DatabaseDiGioco);
+                AssetDatabase.Refresh();
+                ProjectWindowUtil.ShowCreatedAsset(gameData);
+            }
+            resettaParametri(gameData);
+            return gameData;
+        }
 
         private void GestisciDiplomazia()
         {
@@ -130,7 +139,7 @@ namespace DFTGames.Tools.EditorTools
             GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
             if (GUILayout.Button("Resetta", GUILayout.Width(100f)))
             {
-                resettaParametri();
+                resettaParametri(gameData);
                 EditorUtility.SetDirty(gameData);
                 AssetDatabase.SaveAssets();
             }
@@ -161,7 +170,7 @@ namespace DFTGames.Tools.EditorTools
                     for (int i = vecchio; i < UnityEditorInternal.InternalEditorUtility.tags.Length - 5; i++)
                     {
                         gameData.tagEssere[i] = UnityEditorInternal.InternalEditorUtility.tags[i + 5];
-                        gameData.indexPercorsi[i] = -1; //provvisorio finche si usano i tag
+                        gameData.indexPercorsi[i] = NON_ESISTE; //provvisorio finche si usano i tag
                         for (int j = 0; j < UnityEditorInternal.InternalEditorUtility.tags.Length - 5; j++)
                         {
                             gameData.matriceAmicizie[i].elementoAmicizia[j] = Amicizie.Neutro;
@@ -230,7 +239,7 @@ namespace DFTGames.Tools.EditorTools
         }
 
 
-        private void resettaParametri()
+        private static void resettaParametri(GameData gameData)
         {
             for (int r = 0; r < UnityEditorInternal.InternalEditorUtility.tags.Length - 5; r++)
             {
