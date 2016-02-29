@@ -37,7 +37,6 @@ public class GameManager : MonoBehaviour
         {
             return me.vitaAttuale;
         }
-
         set
         {
             me.vitaAttuale = Mathf.Clamp(value, 0, me.vitaMassima);
@@ -156,8 +155,8 @@ public class GameManager : MonoBehaviour
                 datiPersonaggio.Dati.VitaMassima = 10;
                 datiPersonaggio.Dati.ManaMassimo = 20;
                 datiPersonaggio.Dati.XPMassimo = 100;
-                datiPersonaggio.Dati.posizioneCheckPoint = "start";
-                datiPersonaggio.Dati.nomeScena = Application.loadedLevelName;
+                datiPersonaggio.Dati.posizioneCheckPoint = "start";             
+                datiPersonaggio.Dati.nomeScena = SceneManager.GetActiveScene().name;
                 datiPersonaggio.Salva();
             }            
             if (datiDiplomazia.Dati.tipoEssere[0] == null)
@@ -345,6 +344,6 @@ public class GameManager : MonoBehaviour
         me.datiPersonaggio.Dati.posizioneCheckPoint = nomeCheck;
         me.datiPersonaggio.Dati.nomeScena = nomeScena;
         me.datiPersonaggio.Salva();
-        SceneManager.LoadScene(nomeScena);       
+        me.StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica(nomeScena));
     }
 }
