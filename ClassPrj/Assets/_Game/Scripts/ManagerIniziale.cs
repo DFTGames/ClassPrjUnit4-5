@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -17,6 +18,7 @@ public class ManagerIniziale : MonoBehaviour
     public Animator animatoreMenuCreazione;
     public Animator animatoreMenuCarica;
     public Button bottoneCaricaDaMainManu;
+    public Button bottoneCaricaDaCaricamento;
     public Button bottoneEliminaPartita;
     public Text casellaTipo;
     public Text valoreVita;
@@ -128,11 +130,11 @@ public class ManagerIniziale : MonoBehaviour
         {
             datiPersonaggio.Dati.nomeScena = "Isola";
             datiPersonaggio.Dati.posizioneCheckPoint = "start";
-            datiPersonaggio.Salva();
-            SceneManager.LoadScene("Isola");
+            datiPersonaggio.Salva();          
+            StartCoroutine(ScenaInCaricamento("Isola"));
         }
-        else
-            SceneManager.LoadScene(datiPersonaggio.Dati.nomeScena);
+        else           
+            StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
     }
 
     public void CaricaPartitaDaCreazione()
@@ -196,7 +198,7 @@ public class ManagerIniziale : MonoBehaviour
         }
         Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref GameManager.dizionarioPercorsi);
         personaggiInCarica = true;
-        SceneManager.LoadScene(datiPersonaggio.Dati.nomeScena);
+        StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));       
     }
 
     public void AnnullaDaCreazione()
@@ -277,9 +279,13 @@ public class ManagerIniziale : MonoBehaviour
             targetT = dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF].transform;
             posizioneCamera = new Vector3(targetT.position.x, targetT.position.y + altezzaCamera, targetT.position.z + ZOffSet);
             CambiaPosizioneTelecamera();
-        }
-        //mentre sto caricando una nuova scena faccio spuntare un immagine di sfondo e il nome della scena facendo scomparire eventuali pannelli attivi:
-        if (Application.isLoadingLevel && pannelloImmagineSfondo.color.a != 1f)
+        }     
+    }
+
+    IEnumerator ScenaInCaricamento(string nomeScena)
+    {
+        AsyncOperation asynCaricamentoScena = SceneManager.LoadSceneAsync(nomeScena);
+        if (!asynCaricamentoScena.isDone && pannelloImmagineSfondo.color.a != 1f)
         {
             animatoreMenuCarica.gameObject.SetActive(false);
             animatoreMenuCreazione.gameObject.SetActive(false);
@@ -287,7 +293,8 @@ public class ManagerIniziale : MonoBehaviour
             nomeScenaText.gameObject.SetActive(true);
             nomeScenaText.text = "Loading... " + datiPersonaggio.Dati.nomeScena;
             pannelloImmagineSfondo.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-        }
+        }     
+        yield return null;
     }
 
     private void CambiaPosizioneTelecamera()
@@ -363,13 +370,13 @@ public class ManagerIniziale : MonoBehaviour
         if(!dizionarioCollegamentoNomiConModelli.ContainsKey(datiPersonaggio.Dati.nomeModello))    
         {
             erroreCaricamento.text = "Errore..Questo personaggio non e' più valido";
-            bottoneCaricaDaMainManu.interactable = false;
+            bottoneCaricaDaCaricamento.interactable = false;
             return;
         }
         else
         {
             erroreCaricamento.text = "";
-            bottoneCaricaDaMainManu.interactable = true;
+            bottoneCaricaDaCaricamento.interactable = true;
         }      
         GameObject tmOj = dizionarioCollegamentoNomiConModelli[datiPersonaggio.Dati.nomeModello];
         tmOj.transform.position = posizioneCameraCarica.position;

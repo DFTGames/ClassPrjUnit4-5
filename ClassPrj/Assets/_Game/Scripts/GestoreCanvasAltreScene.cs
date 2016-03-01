@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -20,11 +22,7 @@ public class GestoreCanvasAltreScene : MonoBehaviour
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
     private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
     private bool fatto = false;
-  
-
     private string tagDellAltro = null;
-
-
 
     public void Gerra()
     {
@@ -50,7 +48,6 @@ public class GestoreCanvasAltreScene : MonoBehaviour
     {
         me = this;
     }
-
   
     public static void AggiornaDati()
     {
@@ -72,19 +69,7 @@ public class GestoreCanvasAltreScene : MonoBehaviour
     }
 
     public void Update()
-    {
-        //il metodo isLoadingLevel è deprecato ma non trovo un corrispondente che non lo è, che devo scrivere al posto suo?)
-        if (Application.isLoadingLevel && !immagineCaricamento.activeInHierarchy)
-        {
-            immagineCaricamento.SetActive(true);
-            nomeScenaText.text = "Loading... "+nomeProssimaScena;
-        }
-        else if (immagineCaricamento.activeInHierarchy)
-            immagineCaricamento.SetActive(false);
-
-        //verificare con pino se va bene scrivere così o nell'altro modo usando lo script Cursore:
-        //  cursoreImage.transform.position = Input.mousePosition;
-
+    {      
         if (Input.GetKeyDown(KeyCode.F12))
         {
             if (pannelloTest.activeInHierarchy)
@@ -92,5 +77,18 @@ public class GestoreCanvasAltreScene : MonoBehaviour
             else
                 pannelloTest.SetActive(true);
         }
+    }
+
+    internal static IEnumerator ScenaInCarica(string nomeScena)
+    {
+        AsyncOperation asynCaricamentoScena = SceneManager.LoadSceneAsync(nomeScena);
+        if (!asynCaricamentoScena.isDone && !me.immagineCaricamento.activeInHierarchy)
+        {
+            me.immagineCaricamento.SetActive(true);
+            me.nomeScenaText.text = "Loading... " + nomeProssimaScena;
+        }
+        else if (me.immagineCaricamento.activeInHierarchy)
+            me.immagineCaricamento.SetActive(false);
+        yield return null;
     }
 }
