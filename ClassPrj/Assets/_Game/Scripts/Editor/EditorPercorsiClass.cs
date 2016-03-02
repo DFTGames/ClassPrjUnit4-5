@@ -35,7 +35,8 @@ namespace DFTGames.Tools.EditorTools
 
         private static bool preferenzePercorsiCaricate = false;
         private static string pathPercorsi;
-        private bool resetIndexObject = false;
+
+        private bool daSalvare;
 
         [PreferenceItem("Percorsi")]
         private static void preferenzeDiGameGUI()
@@ -69,7 +70,6 @@ namespace DFTGames.Tools.EditorTools
 
         private void OnEnable()
         {
-            resetIndexObject = false;
             if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig2))
             {
                 pathPercorsi = EditorPrefs.GetString(Statici.STR_PercorsoConfig2);
@@ -85,41 +85,29 @@ namespace DFTGames.Tools.EditorTools
 
         void OnDisable()            //controlla la lista percorsi con i percorsi e se non c'e assegnazione mette indexpercorso del oggetto a default(NON_ESISTE) 
         {
-
-            //occorre caricare le scene..modificarle e fare il setDirtY DELLE SCENE
-            //*
-
-            //PinO: mi hai detto di usare SceneManagement...ma ho dovuto usare EditorScenemanagement per farlo
-            // Mi ha aiutato san google..senno non ci sarei riuscito..
-            //NON FUNZIONA!
-
+            
             for (var i = 0; i < EditorBuildSettings.scenes.Length; i++)  //MI FA IL CAMBIAMENTO IN TUTTE LE SCENE DEL GIOCO
             {
-                
                 var scene = EditorBuildSettings.scenes[i];
-
                 if (scene.enabled)
                 {
+                    daSalvare = false;
                     var sceneName = Path.GetFileNameWithoutExtension(scene.path);
-
                     string tmpScene = "Assets/_Game/Scene/" + sceneName + ".unity";
-
-                    UnityEngine.SceneManagement.Scene tmpscenee = EditorSceneManager.OpenScene(tmpScene);
-
+                    UnityEngine.SceneManagement.Scene tmpscenee = EditorSceneManager.OpenScene(tmpScene,OpenSceneMode.Single);
                     ControlloIndexPercorsi();
-
-                    EditorApplication.SaveScene();
-
-                    EditorSceneManager.CloseScene(tmpscenee, true);
-
+                    if (daSalvare)
+                    {
+                        EditorSceneManager.MarkSceneDirty(tmpscenee);
+                        EditorSceneManager.SaveScene(tmpscenee);
+                    }
+                    EditorSceneManager.CloseScene(tmpscenee, true);               
                 }
             }
-
         }
 
         private void ControlloIndexPercorsi()
         {
-            if (!resetIndexObject) return;
 
             GameObject tmpObj = GameObject.Find("PadrePercorso");
 
@@ -127,13 +115,15 @@ namespace DFTGames.Tools.EditorTools
                 for (int i = 0; i < tmpObj.transform.childCount; i++)
                 {
                     Transform tmpPercorso = tmpObj.transform.GetChild(i);
-                    int tmpPercorsoIndex = tmpPercorso.GetComponent<GestorePercorso>().IndexPercorso;
+                    GestorePercorso gp = tmpPercorso.GetComponent<GestorePercorso>();
 
-                    if (tmpPercorsoIndex != NON_ESISTE && !percorsi.indexPercorsi.Contains(tmpPercorsoIndex))
+                    if (gp.IndexPercorso != NON_ESISTE && !percorsi.indexPercorsi.Contains(gp.IndexPercorso))
                     {
-                        tmpPercorsoIndex = NON_ESISTE;
-
+                        tmpPercorso.name = "PERCORSO ERRATO";
+                        gp.IndexPercorso = NON_ESISTE;
+                        daSalvare = true;
                     }
+
                 }
         }
 
@@ -239,7 +229,6 @@ namespace DFTGames.Tools.EditorTools
                     AssetDatabase.SaveAssets();
                     percorsi.indexPercorsi.Clear();
                     percorsi.nomePercorsi.Clear();
-                    resetIndexObject = true;
                 }
             EditorGUILayout.Separator();
             GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
@@ -286,7 +275,6 @@ namespace DFTGames.Tools.EditorTools
                         EditorUtility.SetDirty(percorsi);
                         EditorUtility.SetDirty(gameData1);
                         AssetDatabase.SaveAssets();
-                        resetIndexObject = true;
                     }
 
                     GUILayout.EndHorizontal();

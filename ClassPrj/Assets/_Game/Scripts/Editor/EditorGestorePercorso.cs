@@ -131,7 +131,7 @@ namespace DFTGames.Tools.EditorTools
             {
                 EditorGUILayout.HelpBox(" Lista dei Percorsi Finita....Inserirli in Windows ToolGame", MessageType.Error);
                 EditorGUILayout.Separator();
-                me.IndexPercorso = -1; me.gameObject.name = "Percorso";  //da togliere se riesco a mettere la proprieta nel gestorePercorso
+                me.IndexPercorso = -1; // me.gameObject.name = "Percorso";  
                 return;
             }
             EditorGUILayout.Separator();
