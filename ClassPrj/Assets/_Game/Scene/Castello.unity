@@ -10004,6 +10004,48 @@ Transform:
   - {fileID: 1519262185}
   m_Father: {fileID: 523203114}
   m_RootOrder: 2
+--- !u!1 &539517909
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 539517910}
+  - 114: {fileID: 539517911}
+  m_Layer: 0
+  m_Name: Via delle Ninfee
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &539517910
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 539517909}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1670425842}
+  m_RootOrder: 0
+--- !u!114 &539517911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 539517909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3844bae5d336f4a4d8cf572409aa36a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetSpostaOggetto: 0.5
+  colore: {r: 0.30309033, g: 0.7647059, b: 0.24178201, a: 1}
+  IndexPercorso: 1
 --- !u!1 &544078020
 GameObject:
   m_ObjectHideFlags: 0
@@ -13474,6 +13516,48 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 741318278}
   m_Mesh: {fileID: 4300000, guid: d7c684de14a096148948ff91fef13f02, type: 3}
+--- !u!1 &741451626
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 741451627}
+  - 114: {fileID: 741451628}
+  m_Layer: 0
+  m_Name: PERCORSO ERRATO
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &741451627
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 741451626}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1670425842}
+  m_RootOrder: 2
+--- !u!114 &741451628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 741451626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3844bae5d336f4a4d8cf572409aa36a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetSpostaOggetto: 0.5
+  colore: {r: 0.49300498, g: 0.3925173, b: 0.8088235, a: 1}
+  IndexPercorso: -1
 --- !u!1 &747290347
 GameObject:
   m_ObjectHideFlags: 0
@@ -22311,7 +22395,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22468200, guid: 566cb5b5afc524f4aacdb0e832b67ddc, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 566cb5b5afc524f4aacdb0e832b67ddc, type: 2}
@@ -30390,6 +30474,72 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1669731689}
   m_Mesh: {fileID: 4300000, guid: d7c684de14a096148948ff91fef13f02, type: 3}
+--- !u!1 &1670425838
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 1670425842}
+  - 114: {fileID: 1670425841}
+  - 114: {fileID: 1670425840}
+  - 114: {fileID: 1670425839}
+  m_Layer: 0
+  m_Name: PadrePercorso
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1670425839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1670425838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3890328f78e532d4f8829b994e5d754e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1670425840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1670425838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3890328f78e532d4f8829b994e5d754e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1670425841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1670425838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3890328f78e532d4f8829b994e5d754e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1670425842
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1670425838}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 539517910}
+  - {fileID: 2006263611}
+  - {fileID: 741451627}
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
 --- !u!1 &1671204240
 GameObject:
   m_ObjectHideFlags: 0
@@ -35976,6 +36126,48 @@ Transform:
   - {fileID: 661845653}
   m_Father: {fileID: 502250418}
   m_RootOrder: 20
+--- !u!1 &2006263610
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 2006263611}
+  - 114: {fileID: 2006263612}
+  m_Layer: 0
+  m_Name: Via della Palude
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2006263611
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2006263610}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1670425842}
+  m_RootOrder: 1
+--- !u!114 &2006263612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2006263610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3844bae5d336f4a4d8cf572409aa36a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetSpostaOggetto: 0.5
+  colore: {r: 0.6631406, g: 0.77205884, b: 0.16463022, a: 1}
+  IndexPercorso: 4
 --- !u!1 &2007696436
 GameObject:
   m_ObjectHideFlags: 0

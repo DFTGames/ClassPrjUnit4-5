@@ -259,6 +259,18 @@ Material:
         second: {r: 1, g: 1, b: 0, a: 0}
       data:
         first:
+          name: _SpecularColor
+        second: {r: 0.91791046, g: 0.91791046, b: 0.91791046, a: 1}
+      data:
+        first:
+          name: _Displacement
+        second: {r: 6.6371665, g: 20.353983, b: -1, a: -0.681416}
+      data:
+        first:
+          name: _ShoreTiling
+        second: {r: 1, g: 1, b: 0.1, a: 0.1}
+      data:
+        first:
           name: _RefrColor
         second: {r: 0.5233905, g: 0.9477612, b: 0.9121496, a: 1}
       data:
@@ -319,10 +331,6 @@ Material:
         second: {r: 0.5794164, g: 0.6849238, b: 0.76119405, a: 0.43137255}
       data:
         first:
-          name: _SpecularColor
-        second: {r: 0.91791046, g: 0.91791046, b: 0.91791046, a: 1}
-      data:
-        first:
           name: _WorldLightDir
         second: {r: -0.030375138, g: -0.20139083, b: -0.97903997, a: 0}
       data:
@@ -353,14 +361,6 @@ Material:
         first:
           name: _GDirectionCD
         second: {r: 0.7033888, g: -0.6799999, b: 0.7175735, a: -0.2}
-      data:
-        first:
-          name: _Displacement
-        second: {r: 6.6371665, g: 20.353983, b: -1, a: -0.681416}
-      data:
-        first:
-          name: _ShoreTiling
-        second: {r: 1, g: 1, b: 0.1, a: 0.1}
       data:
         first:
           name: _WaveOffset
