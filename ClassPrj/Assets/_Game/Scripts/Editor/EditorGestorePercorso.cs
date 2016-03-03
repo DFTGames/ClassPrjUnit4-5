@@ -10,7 +10,11 @@ namespace DFTGames.Tools.EditorTools
 {
     [CustomEditor(typeof(GestorePercorso))]
     public class EditorGestorePercorso : Editor
+
     {
+
+        public const int NON_ESISTE = -1;  //messo dal Prof...cosi' si capisce meglio
+
         RaycastHit hit;
         GestorePercorso me;
         public string[] percorsiNomi;
@@ -22,7 +26,7 @@ namespace DFTGames.Tools.EditorTools
         private List<string> tmpPercorsiLiberi;
 
         private PercorsiClass percorsi;
-        private Transform thiss = null;
+        private Transform transformOggettoSelezionato = null;
 
         void OnEnable()
         {
@@ -84,19 +88,19 @@ namespace DFTGames.Tools.EditorTools
             stileEtichetta2.fontSize = 11;
             EditorGUILayout.LabelField("IndexPercorso  " + me.IndexPercorso.ToString(), stileEtichetta2, GUILayout.Width(130));
 
-            if (Selection.activeTransform != thiss)
+            if (Selection.activeTransform != transformOggettoSelezionato)
             {
-                thiss = Selection.activeTransform;
+                transformOggettoSelezionato = Selection.activeTransform;
                 percorsiDisponibili = percorsi.nomePercorsi;
                 indexDisponibili = percorsi.indexPercorsi;
-                tmpIndexLiberi = new List<int>(indexDisponibili);
-                tmpPercorsiLiberi = new List<string>(percorsiDisponibili);
+                tmpIndexLiberi = new List<int>(indexDisponibili);  //creata lista indexDisponibili
+                tmpPercorsiLiberi = new List<string>(percorsiDisponibili); //ceata lista Nomi percorsi Disponibili
 
                 if (percorsiDisponibili.Count < 1)
                 {
                     EditorGUILayout.HelpBox(" Lista dei Percorsi Vuota....Inserirli in Windows ToolGame", MessageType.Error);
                     EditorGUILayout.Separator();
-                    return;
+                    return;                  
                 }
 
                 GameObject tmpObj = GameObject.Find("PadrePercorso");
@@ -112,12 +116,12 @@ namespace DFTGames.Tools.EditorTools
                 {
                     for (int i = 0; i < tmpObj.transform.childCount; i++)
                     {
-                        int numDaTogliere = tmpObj.transform.GetChild(i).GetComponent<GestorePercorso>().IndexPercorso;
+                        int indexDaTogliere = tmpObj.transform.GetChild(i).GetComponent<GestorePercorso>().IndexPercorso;
 
-                        if ((numDaTogliere > -1 && numDaTogliere != me.IndexPercorso) && tmpIndexLiberi.Contains(numDaTogliere))
+                        if ((indexDaTogliere > NON_ESISTE && indexDaTogliere != me.IndexPercorso) && tmpIndexLiberi.Contains(indexDaTogliere))
                         {
-                            int tmp = tmpIndexLiberi.IndexOf(numDaTogliere);
-                            tmpIndexLiberi.Remove(numDaTogliere); //Debug.Log("Sto togliendio index " + numDaTogliere);
+                            int tmp = tmpIndexLiberi.IndexOf(indexDaTogliere);
+                            tmpIndexLiberi.Remove(indexDaTogliere); //Debug.Log("Sto togliendio index " + indexDaTogliere);
                             tmpPercorsiLiberi.RemoveAt(tmp); //Debug.Log("Sto togliendio percorso " + tmp);
 
                         }
@@ -131,7 +135,8 @@ namespace DFTGames.Tools.EditorTools
             {
                 EditorGUILayout.HelpBox(" Lista dei Percorsi Finita....Inserirli in Windows ToolGame", MessageType.Error);
                 EditorGUILayout.Separator();
-                me.IndexPercorso = -1; // me.gameObject.name = "Percorso";  
+                me.IndexPercorso = NON_ESISTE; // me.gameObject.name = "Percorso";  
+                me.name = "PERCORSO ERRATO";
                 return;
             }
             EditorGUILayout.Separator();
@@ -146,7 +151,7 @@ namespace DFTGames.Tools.EditorTools
             int index2 = index;
             index = EditorGUILayout.Popup("Percorsi Disponibili", index, tmpPercorsiLiberi.ToArray()); //assegna index selezionato nella lista dei Liberi
 
-            if (index > -1 && (index != index2 || tmpPercorsiLiberi[index] != me.gameObject.name))
+            if (index > NON_ESISTE && (index != index2 || tmpPercorsiLiberi[index] != me.gameObject.name))
             {
                 me.IndexPercorso = tmpIndexLiberi[index];
                 me.gameObject.name = tmpPercorsiLiberi[index];
@@ -155,11 +160,10 @@ namespace DFTGames.Tools.EditorTools
             EditorGUILayout.EndVertical();
             if (GUI.changed)
             {
-                EditorUtility.SetDirty(target);
-                //********* messo anche qua..non so se e' corretto (per farmi salvare quando cambio i nomi dei percorsi
+                EditorUtility.SetDirty(target);         
                 UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
-                //AGGIUNTO MarkSceneDirty (si ringrazia Armando della dftStudent che ha fornito la classe) PER OVVIARE AL BUG DI UNITY DOVE UN PERCORSO CREATO VIA SCRIPT NON ME LO VEDE DA SALVARE QUANDO SI CAMBIA SCENA
-                //*********
+                UnityEditor.SceneManagement.EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+    
             }
 
         }
