@@ -10014,7 +10014,7 @@ GameObject:
   - 4: {fileID: 539517910}
   - 114: {fileID: 539517911}
   m_Layer: 0
-  m_Name: Via delle Ninfee
+  m_Name: Corso Piero della Francesca
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13526,7 +13526,7 @@ GameObject:
   - 4: {fileID: 741451627}
   - 114: {fileID: 741451628}
   m_Layer: 0
-  m_Name: PERCORSO ERRATO
+  m_Name: Stretto dei Lippi
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13557,7 +13557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offsetSpostaOggetto: 0.5
   colore: {r: 0.49300498, g: 0.3925173, b: 0.8088235, a: 1}
-  IndexPercorso: -1
+  IndexPercorso: 3
 --- !u!1 &747290347
 GameObject:
   m_ObjectHideFlags: 0
@@ -17333,6 +17333,48 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 969744522}
   m_Mesh: {fileID: 4300000, guid: d7c684de14a096148948ff91fef13f02, type: 3}
+--- !u!1 &971365710
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 971365711}
+  - 114: {fileID: 971365712}
+  m_Layer: 0
+  m_Name: Luca Top Oscar Street
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &971365711
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 971365710}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1670425842}
+  m_RootOrder: 3
+--- !u!114 &971365712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 971365710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3844bae5d336f4a4d8cf572409aa36a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetSpostaOggetto: 0.5
+  colore: {r: 0.43394583, g: 0.7941176, b: 0.18685119, a: 1}
+  IndexPercorso: 6
 --- !u!1 &971451069
 GameObject:
   m_ObjectHideFlags: 0
@@ -30483,8 +30525,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 1670425842}
   - 114: {fileID: 1670425841}
-  - 114: {fileID: 1670425840}
-  - 114: {fileID: 1670425839}
   m_Layer: 0
   m_Name: PadrePercorso
   m_TagString: Untagged
@@ -30492,28 +30532,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1670425839
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1670425838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3890328f78e532d4f8829b994e5d754e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1670425840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1670425838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3890328f78e532d4f8829b994e5d754e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1670425841
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30538,6 +30556,8 @@ Transform:
   - {fileID: 539517910}
   - {fileID: 2006263611}
   - {fileID: 741451627}
+  - {fileID: 971365711}
+  - {fileID: 2066915363}
   m_Father: {fileID: 0}
   m_RootOrder: 13
 --- !u!1 &1671204240
@@ -36136,7 +36156,7 @@ GameObject:
   - 4: {fileID: 2006263611}
   - 114: {fileID: 2006263612}
   m_Layer: 0
-  m_Name: Via della Palude
+  m_Name: PERCORSO ERRATO
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36167,7 +36187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offsetSpostaOggetto: 0.5
   colore: {r: 0.6631406, g: 0.77205884, b: 0.16463022, a: 1}
-  IndexPercorso: 4
+  IndexPercorso: -1
 --- !u!1 &2007696436
 GameObject:
   m_ObjectHideFlags: 0
@@ -37075,6 +37095,48 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2057087128}
   m_Mesh: {fileID: 4300000, guid: d7c684de14a096148948ff91fef13f02, type: 3}
+--- !u!1 &2066915362
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 2066915363}
+  - 114: {fileID: 2066915364}
+  m_Layer: 0
+  m_Name: Charlie Avenue
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2066915363
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2066915362}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1670425842}
+  m_RootOrder: 4
+--- !u!114 &2066915364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2066915362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3844bae5d336f4a4d8cf572409aa36a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  offsetSpostaOggetto: 0.5
+  colore: {r: 0.39705884, g: 0.08466697, b: 0.08466697, a: 1}
+  IndexPercorso: 7
 --- !u!1 &2067678438
 GameObject:
   m_ObjectHideFlags: 0
