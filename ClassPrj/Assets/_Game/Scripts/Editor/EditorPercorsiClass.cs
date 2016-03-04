@@ -36,7 +36,8 @@ namespace DFTGames.Tools.EditorTools
         private static bool preferenzePercorsiCaricate = false;
         private static string pathPercorsi;
 
-        private bool daSalvare;
+        private bool scenaDaSalvare;
+        private bool cambiatoAlmenoUnaScena;
 
         [PreferenceItem("Percorsi")]
         private static void preferenzeDiGameGUI()
@@ -81,31 +82,49 @@ namespace DFTGames.Tools.EditorTools
                 string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig);
                 gameData1 = AssetDatabase.LoadAssetAtPath<GameData>(percorso + Statici.STR_DatabaseDiGioco);
             }
+            cambiatoAlmenoUnaScena = false; 
         }
 
         void OnDisable()            //controlla la lista percorsi con i percorsi e se non c'e assegnazione mette indexpercorso del oggetto a default(NON_ESISTE) 
         {
+            var scenaCorrente = EditorSceneManager.GetActiveScene();
+            if (scenaCorrente.isDirty)  //chiedo se la scena corrente e' a dirty
+            {
+                bool scelta = EditorUtility.DisplayDialog("Save", "Salvi La Scena? ", " Ok ", "Cancel");
+                if (scelta)
+                    EditorSceneManager.SaveScene(scenaCorrente);
+            }
             
+            if (!cambiatoAlmenoUnaScena) return;
+
+            var sceneName2 = Path.GetFileNameWithoutExtension(scenaCorrente.path);
+
             for (var i = 0; i < EditorBuildSettings.scenes.Length; i++)  //MI FA IL CAMBIAMENTO IN TUTTE LE SCENE DEL GIOCO
             {
                 var scene = EditorBuildSettings.scenes[i];
+                
                 if (scene.enabled)
                 {
-                    daSalvare = false;
+                    scenaDaSalvare = false;
                     var sceneName = Path.GetFileNameWithoutExtension(scene.path);
-                    string tmpScene = "Assets/_Game/Scene/" + sceneName + ".unity";
+
+                    string tmpScene = "Assets/_Game/Scene/"+ sceneName + ".unity";
                     UnityEngine.SceneManagement.Scene tmpscenee = EditorSceneManager.OpenScene(tmpScene,OpenSceneMode.Single);
                     ControlloIndexPercorsi();
-                    if (daSalvare)
+                    if (scenaDaSalvare)
                     {
-                        EditorSceneManager.MarkSceneDirty(tmpscenee);
+                        EditorSceneManager.MarkSceneDirty(tmpscenee);  //imposto Scena a dirty...
                         EditorSceneManager.SaveScene(tmpscenee);
                     }
                     EditorSceneManager.CloseScene(tmpscenee, true);               
                 }
             }
-        }
 
+            string tmpScenaCorrente = "Assets/_Game/Scene/" + sceneName2 + ".unity";  //mi ricarica la scena iniziale
+            EditorSceneManager.OpenScene(tmpScenaCorrente, OpenSceneMode.Single);
+          
+        }
+    
         private void ControlloIndexPercorsi()
         {
 
@@ -116,12 +135,11 @@ namespace DFTGames.Tools.EditorTools
                 {
                     Transform tmpPercorso = tmpObj.transform.GetChild(i);
                     GestorePercorso gp = tmpPercorso.GetComponent<GestorePercorso>();
-
-                    if (gp.IndexPercorso != NON_ESISTE && !percorsi.indexPercorsi.Contains(gp.IndexPercorso))
+                    if (gp.IndexPercorso == NON_ESISTE || (gp.IndexPercorso != NON_ESISTE && !percorsi.indexPercorsi.Contains(gp.IndexPercorso)))
                     {
                         tmpPercorso.name = "PERCORSO ERRATO";
                         gp.IndexPercorso = NON_ESISTE;
-                        daSalvare = true;
+                        scenaDaSalvare = true;
                     }
 
                 }
@@ -219,7 +237,7 @@ namespace DFTGames.Tools.EditorTools
             GUILayout.Label("Inserisci/Modifica Nome Percorsi", stileEtichetta);
             GUILayout.EndHorizontal();
             GUILayout.BeginVertical(EditorStyles.objectFieldThumb);
-    ;
+
             if (percorsi.nomePercorsi.Count > 0)
 
                 if (GUILayout.Button("Resetta", GUILayout.Width(100f)))
@@ -268,7 +286,7 @@ namespace DFTGames.Tools.EditorTools
                         AssetDatabase.SaveAssets();
                     }
                     if (GUILayout.Button(" - ", GUILayout.Width(30)))  //mi permette di cancellare le righe
-                    {
+                    {    
                         ResettaIndexGameData1(percorsi.indexPercorsi[i]);
                         percorsi.indexPercorsi.RemoveAt(i);
                         percorsi.nomePercorsi.RemoveAt(i);
@@ -352,8 +370,12 @@ namespace DFTGames.Tools.EditorTools
             for (int i = 0; i < gameData1.indexPercorsi.Length; i++)
             {
                 if ((key == NON_ESISTE) || (gameData1.indexPercorsi[i] == key))
+                {
                     gameData1.indexPercorsi[i] = NON_ESISTE;
+                    cambiatoAlmenoUnaScena = true;
+                }
             }
+            ControlloIndexPercorsi();
         }
 
         private void ordinaClasseListaDouble(ref List<int> indexPercorsi, ref List<string> nomePercorsi) //mi effettua lo sort del index e stringa(questo costruito io)
