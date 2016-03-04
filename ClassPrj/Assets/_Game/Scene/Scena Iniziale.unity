@@ -171,6 +171,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!1 &277311280
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 277311281}
+  m_Layer: 0
+  m_Name: PosizioneCameraCarica
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &277311281
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 277311280}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -362.12762, y: -361.195, z: -10.3174515}
+  m_LocalScale: {x: 1.8802212, y: 1.8802212, z: 0.82844245}
+  m_Children: []
+  m_Father: {fileID: 292347823}
+  m_RootOrder: 2
+--- !u!224 &292347823 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 22403224, guid: e35ff89f6a7a20a4a8441391d260d301,
+    type: 2}
+  m_PrefabInternal: {fileID: 1062426239}
 --- !u!1001 &632615243
 Prefab:
   m_ObjectHideFlags: 0
@@ -445,7 +477,7 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2d32c86256497e3498fa4825dd368028, type: 2}
   m_IsPrefabParent: 0
---- !u!1001 &1213758612
+--- !u!1001 &1062426239
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -524,6 +556,10 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11405482, guid: e35ff89f6a7a20a4a8441391d260d301, type: 2}
+      propertyPath: posizioneCameraCarica
+      value: 
+      objectReference: {fileID: 277311281}
     - target: {fileID: 22472890, guid: e35ff89f6a7a20a4a8441391d260d301, type: 2}
       propertyPath: m_AnchorMax.y
       value: 1

@@ -492,21 +492,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &133444
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 448770}
-  m_Layer: 0
-  m_Name: posizioneInizialeCamera
-  m_TagString: Untagged
-  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &133622
 GameObject:
   m_ObjectHideFlags: 1
@@ -1100,14 +1085,14 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &174164
+--- !u!1 &172138
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 411820}
+  - 4: {fileID: 424830}
   m_Layer: 0
   m_Name: PosizioneCameraCarica
   m_TagString: Untagged
@@ -1524,15 +1509,15 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &411820
+--- !u!4 &424830
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 174164}
+  m_GameObject: {fileID: 172138}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -245.53716, y: -340.6278, z: -10.3174515}
-  m_LocalScale: {x: 2.6747918, y: 2.6747918, z: 0.82844245}
+  m_LocalPosition: {x: -362.12762, y: -361.195, z: -10.3174515}
+  m_LocalScale: {x: 1.8802212, y: 1.8802212, z: 0.82844245}
   m_Children: []
   m_Father: {fileID: 22403224}
   m_RootOrder: 2
@@ -1548,18 +1533,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 22403224}
   m_RootOrder: 1
---- !u!4 &448770
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 133444}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -425.25644, y: -313.67258, z: -86.489395}
-  m_LocalScale: {x: 2.6747918, y: 2.6747918, z: 0.82844245}
-  m_Children: []
-  m_Father: {fileID: 22403224}
-  m_RootOrder: 3
 --- !u!95 &9505688
 Animator:
   serializedVersion: 3
@@ -1783,12 +1756,11 @@ MonoBehaviour:
   databaseInizialeProprieta: {fileID: 0}
   elencoCartelleDropDown: {fileID: 11460482}
   elencoSessiDropDown: {fileID: 11483584}
-  posizioneInizialeCamera: {fileID: 448770}
   pannelloImmagineSfondo: {fileID: 11498736}
   nomeScenaText: {fileID: 11451004}
-  posizioneCameraCarica: {fileID: 411820}
-  altezzaCamera: 3
-  ZOffSet: 3
+  posizioneCameraCarica: {fileID: 424830}
+  altezzaCamera: 1
+  ZOffSet: 4
   DampTime: 2
 --- !u!114 &11405682
 MonoBehaviour:
@@ -4173,15 +4145,13 @@ MonoBehaviour:
     m_Options:
     - m_Text: maschio
       m_Image: {fileID: 0}
-    - m_Text: Option B
-      m_Image: {fileID: 0}
-    - m_Text: Option C
+    - m_Text: femmina
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11405482}
-        m_MethodName: RecuperaSesso
+        m_MethodName: MuoviCameraSuPgNuovo
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5380,8 +5350,7 @@ RectTransform:
   m_Children:
   - {fileID: 22432882}
   - {fileID: 430498}
-  - {fileID: 411820}
-  - {fileID: 448770}
+  - {fileID: 424830}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
@@ -6824,7 +6793,7 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 1148, y: -2.0978}
+  m_AnchoredPosition: {x: 579, y: -2.0978}
   m_SizeDelta: {x: 443, y: 724}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!224 &22490434
