@@ -1085,21 +1085,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &172138
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 424830}
-  m_Layer: 0
-  m_Name: PosizioneCameraCarica
-  m_TagString: Untagged
-  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &175958
 GameObject:
   m_ObjectHideFlags: 1
@@ -1509,18 +1494,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &424830
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 172138}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -362.12762, y: -361.195, z: -10.3174515}
-  m_LocalScale: {x: 1.8802212, y: 1.8802212, z: 0.82844245}
-  m_Children: []
-  m_Father: {fileID: 22403224}
-  m_RootOrder: 2
 --- !u!4 &430498
 Transform:
   m_ObjectHideFlags: 1
@@ -1758,10 +1731,9 @@ MonoBehaviour:
   elencoSessiDropDown: {fileID: 11483584}
   pannelloImmagineSfondo: {fileID: 11498736}
   nomeScenaText: {fileID: 11451004}
-  posizioneCameraCarica: {fileID: 424830}
+  posizioneCameraCarica: {fileID: 0}
   altezzaCamera: 1
   ZOffSet: 4
-  DampTime: 2
 --- !u!114 &11405682
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5350,7 +5322,6 @@ RectTransform:
   m_Children:
   - {fileID: 22432882}
   - {fileID: 430498}
-  - {fileID: 424830}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
