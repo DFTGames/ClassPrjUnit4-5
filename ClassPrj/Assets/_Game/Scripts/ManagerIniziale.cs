@@ -56,6 +56,9 @@ public class ManagerIniziale : MonoBehaviour
     private Vector3[] percorso;
     private Vector3 obiettivoDaInquadrare;
     private bool indiceCambiato = false; //mi serve per capire se sono passato da una classe ad un'altra
+    private float zeta;
+    private float ics;
+    private float alpha;
 
     public int IndiceClasseSuccessivaPrecedente
     {
@@ -67,7 +70,7 @@ public class ManagerIniziale : MonoBehaviour
         {
             int valoreMinimo = 0;
             int valoreMassimo = databaseInizialeProprieta.classePersonaggio.Count - 1;
-            indiceClasseSuccessivaPrecedente = Mathf.Clamp(value, valoreMinimo, valoreMassimo);
+            indiceClasseSuccessivaPrecedente = Mathf.Clamp(value, valoreMinimo, valoreMassimo);            
             if (value > valoreMassimo)
                 indiceClasseSuccessivaPrecedente = valoreMinimo;
             if (value < valoreMinimo)
@@ -75,16 +78,13 @@ public class ManagerIniziale : MonoBehaviour
         }
     }
 
-    // Use this for initialization
     private void Start()
     {
-        fromValue = 0f;
-        CambiaAlphaPannelloSfondo(1f);
+        CambiaAlphaPannelloSfondo();
         nomeScenaText.gameObject.SetActive(false);
         Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
         cameraT = Camera.main.transform;      
-        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-        //istanzio tutti i personaggi
+        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);        
         for (int i = 0; i < databaseInizialeProprieta.matriceProprieta.Count; i++)
         {
             string tmpNomeModelloM = databaseInizialeProprieta.matriceProprieta[i].nomeM;
@@ -95,18 +95,7 @@ public class ManagerIniziale : MonoBehaviour
             dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloF].name, GameObject.Find("postazione" + i).transform.FindChild("posizioneF"));
         }
         Statici.CopiaIlDB();
-    }
-
-    private void CambiaAlphaPannelloSfondo(float alpha)
-    {
-        iTween.ValueTo(pannelloImmagineSfondo.gameObject, iTween.Hash("from", fromValue, "to", alpha, "time", 3.0f, "easetype",
-             iTween.EaseType.easeOutCirc, "onupdatetarget", gameObject, "onupdate", "OnTweenUpdate", "onupdateparams", fromValue));
-    }
-
-    public void OnTweenUpdate(float newValue)
-    {
-        pannelloImmagineSfondo.color = new Color(1f, 1f, 1f, newValue);
-    }
+    }  
 
     public void NuovaPartita()
     {
@@ -114,19 +103,9 @@ public class ManagerIniziale : MonoBehaviour
         animatoreMainMenu.SetBool("Via", true);
         nuovaPartita = true;
         VisualizzaValoriPersonaggio();
-        fromValue = 1f;
-        CambiaAlphaPannelloSfondo(0f);
-        //se premo nuova partita inquadro il personaggio deciso dall'indice attuale(classe) e dal sesso:
-        if (elencoSessiDropDown.value == 0)
-        {
-            obiettivoDaInquadrare = dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM].transform.position; ;
-            cameraT.position = new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, obiettivoDaInquadrare.z - ZOffSet);
-        }
-        else
-        {
-            obiettivoDaInquadrare = dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF].transform.position;
-            cameraT.position = new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, obiettivoDaInquadrare.z + ZOffSet);
-        }
+        CambiaAlphaPannelloSfondo();           
+        ObiettivoDaInquadrareXZ();      
+        cameraT.position = new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta);
         iTween.LookTo(cameraT.gameObject, iTween.Hash("looktarget", obiettivoDaInquadrare, "time", 0f, "axis", "y", "easetype", iTween.EaseType.linear));
     }
 
@@ -137,9 +116,7 @@ public class ManagerIniziale : MonoBehaviour
         animatoreMainMenu.SetBool("Via", true);
         RecuperaElencoCartelle();
         RecuperaDatiGiocatore();
-        fromValue = 1f;
-        CambiaAlphaPannelloSfondo(0f);
-        //se premo carica partita inquadro la posizione di caricamento del personaggio:
+        CambiaAlphaPannelloSfondo();
         cameraT.position = new Vector3(posizioneCameraCarica.transform.position.x, posizioneCameraCarica.transform.position.y + altezzaCamera, posizioneCameraCarica.transform.position.z + ZOffSet);
         iTween.LookTo(cameraT.gameObject, iTween.Hash("looktarget", posizioneCameraCarica.transform, "time", 0f, "axis", "y", "easetype", iTween.EaseType.linear));
     }
@@ -220,7 +197,7 @@ public class ManagerIniziale : MonoBehaviour
         animatoreMenuCreazione.SetBool("Torna", false);
         animatoreMainMenu.SetBool("Via", false);
         nuovaPartita = false;
-        ResettaValoriPerAnnullamento();
+        CambiaAlphaPannelloSfondo();
     }
 
     public void AnnullaDaCaricamento()
@@ -233,76 +210,72 @@ public class ManagerIniziale : MonoBehaviour
         animatoreMenuCarica.SetBool("Torna", false);
         animatoreMainMenu.SetBool("Via", false);
         caricaPartita = false;
-        ResettaValoriPerAnnullamento();
+        CambiaAlphaPannelloSfondo();
     }
 
-    private void ResettaValoriPerAnnullamento()
-    {      
-        fromValue = 0f;
-        CambiaAlphaPannelloSfondo(1f);
+    private void CambiaAlphaPannelloSfondo()
+    {
+        fromValue = (!nuovaPartita && !caricaPartita) ? 0f : 1f;
+        alpha = (!nuovaPartita && !caricaPartita) ? 1f : 0f;        
+        iTween.ValueTo(pannelloImmagineSfondo.gameObject, iTween.Hash("from", fromValue, "to", alpha, "time", 3.0f, "easetype",
+             iTween.EaseType.easeOutCirc, "onupdatetarget", gameObject, "onupdate", "OnTweenUpdate", "onupdateparams", fromValue));
+    }
+
+    public void OnTweenUpdate(float newValue)
+    {
+        pannelloImmagineSfondo.color = new Color(1f, 1f, 1f, newValue);
     }
 
     public void Precedente()
     {
         IndiceClasseSuccessivaPrecedente--;
         VisualizzaValoriPersonaggio();
-        DecidiPercorsoSeCambiClasse();
+        indiceCambiato = true;
+        DecisionePercorsoCambioClasse();
     }
 
     public void Sucessivo()
     {
         IndiceClasseSuccessivaPrecedente++;
         VisualizzaValoriPersonaggio();
-        DecidiPercorsoSeCambiClasse();
-    }
-
-    /// <summary>
-    /// decido il percorso della telecamera se devo passare da una classe ad un'altra:
-    /// </summary>
-    private void DecidiPercorsoSeCambiClasse()
-    {
-        if (elencoSessiDropDown.value == 0)
-        {
-            obiettivoDaInquadrare = dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM].transform.position; ;
-            percorso = new Vector3[] { cameraT.position, new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, obiettivoDaInquadrare.z - ZOffSet) };
-        }
-        else
-        {
-            obiettivoDaInquadrare = dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF].transform.position;
-            percorso = new Vector3[] { cameraT.position, new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, obiettivoDaInquadrare.z + ZOffSet) };
-        }
         indiceCambiato = true;
-        MuoviCameraSuPgNuovo();
+        DecisionePercorsoCambioClasse();
+    } 
+
+    private void ObiettivoDaInquadrareXZ()
+    {
+        obiettivoDaInquadrare = (elencoSessiDropDown.value == 0) ?
+           dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM].transform.position :
+           dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF].transform.position;
+        zeta = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.z - ZOffSet) : obiettivoDaInquadrare.z + ZOffSet;
+        ics = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.x + 5) : (obiettivoDaInquadrare.x - 5);
+    }
+    
+    private void DecisionePercorsoCambioClasse()
+    {       
+        ObiettivoDaInquadrareXZ();        
+        percorso = new Vector3[] { cameraT.position, new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta) };
+        InquadraPersonaggioInNuovaPartita();
+    }  
+
+    public void DecisionePercorsoCambioSesso()
+    {     
+        ObiettivoDaInquadrareXZ();
+        percorso = new Vector3[] { cameraT.position, new Vector3(ics, obiettivoDaInquadrare.y + altezzaCamera, zeta),
+            new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta) };
+        InquadraPersonaggioInNuovaPartita();
     }
 
-    public void MuoviCameraSuPgNuovo()
-    {
-        if (!indiceCambiato)
-        {//decido il percorso se l'indice non è cambiato cioè se passo da un sesso all'altro senza cambiare classe:
-            if (elencoSessiDropDown.value == 0)
-            {
-                obiettivoDaInquadrare = dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM].transform.position;
-                percorso = new Vector3[] { cameraT.position, new Vector3(obiettivoDaInquadrare.x + 5, obiettivoDaInquadrare.y + altezzaCamera, obiettivoDaInquadrare.z - ZOffSet), new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, obiettivoDaInquadrare.z - ZOffSet) };
-            }
-            else
-            {
-                obiettivoDaInquadrare = dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF].transform.position;
-                percorso = new Vector3[] { cameraT.position, new Vector3(obiettivoDaInquadrare.x - 5, obiettivoDaInquadrare.y + altezzaCamera, obiettivoDaInquadrare.z + ZOffSet), new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, obiettivoDaInquadrare.z + ZOffSet) };
-            }
-        }
-        //muovo la telecamera verso l'obiettivo:
-        iTween.MoveTo(cameraT.gameObject, iTween.Hash("path", percorso, "time", 2f, "looktarget", obiettivoDaInquadrare, "looktime", 0f, "axis", "y", "easetype", iTween.EaseType.linear, "oncompletetarget", gameObject, "oncomplete", "ResettaIndiceCambiato"));
+    private void InquadraPersonaggioInNuovaPartita()
+    {     
+        iTween.MoveTo(cameraT.gameObject, iTween.Hash("path", percorso, "time", 2f, "looktarget", obiettivoDaInquadrare,
+            "looktime", 0f, "axis", "y", "easetype", iTween.EaseType.linear, "oncompletetarget", gameObject, "oncomplete", "ResettaIndiceCambiato"));
     }
 
     private void ResettaIndiceCambiato()
     {
         indiceCambiato = false;
     }   
-
-    // Update is called once per frame
-    private void Update()
-    {
-    }
 
     private void VisualizzaValoriPersonaggio()
     {
@@ -344,10 +317,7 @@ public class ManagerIniziale : MonoBehaviour
                 personaggioProvaEsiste = true;
         }
         int numeroCartelleMinimo = 0;
-        if (!personaggioProvaEsiste)
-            numeroCartelleMinimo = 0;
-        else
-            numeroCartelleMinimo = 1;
+        numeroCartelleMinimo = !personaggioProvaEsiste ? 0 : 1;     
         if (Drs.Length > numeroCartelleMinimo)
         {
             personaggiInCarica = true;
