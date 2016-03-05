@@ -6,14 +6,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-internal enum Sesso
-{
-    maschio,
-    femmina
-}
-
 public class ManagerIniziale : MonoBehaviour
-{ 
+{
     public Animator animatoreMainMenu;
     public Animator animatoreMenuCreazione;
     public Animator animatoreMenuCarica;
@@ -34,7 +28,6 @@ public class ManagerIniziale : MonoBehaviour
     public caratteristichePersonaggioV2 databaseInizialeProprieta;
     public Dropdown elencoCartelleDropDown;
     public Dropdown elencoSessiDropDown;
-    public Transform posizioneInizialeCamera;
     public Image pannelloImmagineSfondo;
     public Text nomeScenaText;
     public Transform posizioneCameraCarica;
@@ -42,11 +35,10 @@ public class ManagerIniziale : MonoBehaviour
     public float altezzaCamera = 1f;
     [Range(-20f, 20f)]
     public float ZOffSet;
-    public float DampTime;
 
     private int indiceClasseSuccessivaPrecedente = 0;
     private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
-    private Serializzabile<AmicizieSerializzabili> datiDiplomazia;  
+    private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
     private string scena = string.Empty;
     private GameObject tmpGODaEliminareSeSelezioniAltroGO = null;
     private GameObject tmpGOPrecedente = null;
@@ -54,12 +46,19 @@ public class ManagerIniziale : MonoBehaviour
     private bool nuovaPartita = false;
     private bool caricaPartita = false;
     private bool personaggiInCarica = false;
-    private bool personaggioProvaEsiste = false; 
-    private Transform targetT = null;
+    private bool personaggioProvaEsiste = false;
+    private Vector3 targetT;
     private Vector3 velocita = Vector3.zero;
     private Vector3 posizioneCamera;
     private Transform cameraT;
-    private Dictionary<string, GameObject> dizionarioCollegamentoNomiConModelli = new Dictionary<string, GameObject>();   
+    private Dictionary<string, GameObject> dizionarioCollegamentoNomiConModelli = new Dictionary<string, GameObject>();
+    private float fromValue;
+    private Vector3[] percorso;
+    private Vector3 obiettivoDaInquadrare;
+    private bool indiceCambiato = false; //mi serve per capire se sono passato da una classe ad un'altra
+    private float zeta;
+    private float ics;
+    private float alpha;
 
     public int IndiceClasseSuccessivaPrecedente
     {
@@ -71,7 +70,7 @@ public class ManagerIniziale : MonoBehaviour
         {
             int valoreMinimo = 0;
             int valoreMassimo = databaseInizialeProprieta.classePersonaggio.Count - 1;
-            indiceClasseSuccessivaPrecedente = Mathf.Clamp(value, valoreMinimo, valoreMassimo);
+            indiceClasseSuccessivaPrecedente = Mathf.Clamp(value, valoreMinimo, valoreMassimo);            
             if (value > valoreMassimo)
                 indiceClasseSuccessivaPrecedente = valoreMinimo;
             if (value < valoreMinimo)
@@ -79,32 +78,35 @@ public class ManagerIniziale : MonoBehaviour
         }
     }
 
-    // Use this for initialization
     private void Start()
-    {     
-        nomeScenaText.gameObject.SetActive(false);      
-        Statici.Metodo_Charlie(ref databseInizialeAmicizie, ref databaseInizialeProprieta);        
-        cameraT = Camera.main.transform;
-        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-        //istanzio tutti i personaggi
+    {
+        CambiaAlphaPannelloSfondo();
+        nomeScenaText.gameObject.SetActive(false);
+        Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
+        cameraT = Camera.main.transform;      
+        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);        
         for (int i = 0; i < databaseInizialeProprieta.matriceProprieta.Count; i++)
         {
             string tmpNomeModelloM = databaseInizialeProprieta.matriceProprieta[i].nomeM;
             string tmpNomeModelloF = databaseInizialeProprieta.matriceProprieta[i].nomeF;
-            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloM,Instantiate(Resources.Load(tmpNomeModelloM), GameObject.Find("postazione" + i).transform.FindChild("posizioneM").position, new Quaternion(0f, 180f, 0f, 0f)) as GameObject);            
-            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloF,Instantiate(Resources.Load(tmpNomeModelloF), GameObject.Find("postazione" + i).transform.FindChild("posizioneF").position, Quaternion.identity) as GameObject);          
+            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloM, Instantiate(Resources.Load(tmpNomeModelloM), GameObject.Find("postazione" + i).transform.FindChild("posizioneM").position, new Quaternion(0f, 180f, 0f, 0f)) as GameObject);
+            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloF, Instantiate(Resources.Load(tmpNomeModelloF), GameObject.Find("postazione" + i).transform.FindChild("posizioneF").position, Quaternion.identity) as GameObject);
             dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloM].name, GameObject.Find("postazione" + i).transform.FindChild("posizioneM"));
-            dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloF].name, GameObject.Find("postazione" + i).transform.FindChild("posizioneF"));          
+            dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloF].name, GameObject.Find("postazione" + i).transform.FindChild("posizioneF"));
         }
         Statici.CopiaIlDB();
-    }
+    }  
 
     public void NuovaPartita()
     {
         animatoreMenuCreazione.SetBool("Torna", true);
         animatoreMainMenu.SetBool("Via", true);
         nuovaPartita = true;
-        RecuperaSesso();
+        VisualizzaValoriPersonaggio();
+        CambiaAlphaPannelloSfondo();           
+        ObiettivoDaInquadrareXZ();      
+        cameraT.position = new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta);
+        iTween.LookTo(cameraT.gameObject, iTween.Hash("looktarget", obiettivoDaInquadrare, "time", 0f, "axis", "y", "easetype", iTween.EaseType.linear));
     }
 
     public void CaricaPartita()
@@ -114,27 +116,16 @@ public class ManagerIniziale : MonoBehaviour
         animatoreMainMenu.SetBool("Via", true);
         RecuperaElencoCartelle();
         RecuperaDatiGiocatore();
+        CambiaAlphaPannelloSfondo();
+        cameraT.position = new Vector3(posizioneCameraCarica.transform.position.x, posizioneCameraCarica.transform.position.y + altezzaCamera, posizioneCameraCarica.transform.position.z + ZOffSet);
+        iTween.LookTo(cameraT.gameObject, iTween.Hash("looktarget", posizioneCameraCarica.transform, "time", 0f, "axis", "y", "easetype", iTween.EaseType.linear));
     }
 
     public void CaricaScenaDaCaricamento()
     {
-        Statici.sonoPassatoDallaScenaIniziale = true;    
+        Statici.sonoPassatoDallaScenaIniziale = true;
         Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref GameManager.dizionarioPercorsi);
-        /*
-        l'if else qui sotto, serve per verificare se la scena in cui vogliamo far spuntare il personaggio
-        esiste ancora o no nel build settings. Perchè può capitare di cancellar euna scena o rinominalrla.
-        Per evitare di far andar ein errore il gioco, se la scena non esiste più il personaggio viene caricato
-        nell'isola altrimenti nell'ultima scena visitata.
-        */
-        if (!Application.CanStreamedLevelBeLoaded(datiPersonaggio.Dati.nomeScena))
-        {
-            datiPersonaggio.Dati.nomeScena = "Isola";
-            datiPersonaggio.Dati.posizioneCheckPoint = "start";
-            datiPersonaggio.Salva();          
-            StartCoroutine(ScenaInCaricamento("Isola"));
-        }
-        else           
-            StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
+        StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
     }
 
     public void CaricaPartitaDaCreazione()
@@ -155,7 +146,7 @@ public class ManagerIniziale : MonoBehaviour
                 erroreCreazioneText.text = "Esiste Gia Un Personaggio con questo nome";
                 return;
             }
-        }       
+        }
         Statici.nomePersonaggio = testoNome.text;
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
         if (datiPersonaggio.Dati.nomePersonaggio == null)
@@ -198,7 +189,7 @@ public class ManagerIniziale : MonoBehaviour
         }
         Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref GameManager.dizionarioPercorsi);
         personaggiInCarica = true;
-        StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));       
+        StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
     }
 
     public void AnnullaDaCreazione()
@@ -206,6 +197,7 @@ public class ManagerIniziale : MonoBehaviour
         animatoreMenuCreazione.SetBool("Torna", false);
         animatoreMainMenu.SetBool("Via", false);
         nuovaPartita = false;
+        CambiaAlphaPannelloSfondo();
     }
 
     public void AnnullaDaCaricamento()
@@ -218,71 +210,82 @@ public class ManagerIniziale : MonoBehaviour
         animatoreMenuCarica.SetBool("Torna", false);
         animatoreMainMenu.SetBool("Via", false);
         caricaPartita = false;
+        CambiaAlphaPannelloSfondo();
+    }
+
+    private void CambiaAlphaPannelloSfondo()
+    {
+        fromValue = (!nuovaPartita && !caricaPartita) ? 0f : 1f;
+        alpha = (!nuovaPartita && !caricaPartita) ? 1f : 0f;        
+        iTween.ValueTo(pannelloImmagineSfondo.gameObject, iTween.Hash("from", fromValue, "to", alpha, "time", 3.0f, "easetype",
+             iTween.EaseType.easeOutCirc, "onupdatetarget", gameObject, "onupdate", "OnTweenUpdate", "onupdateparams", fromValue));
+    }
+
+    public void OnTweenUpdate(float newValue)
+    {
+        pannelloImmagineSfondo.color = new Color(1f, 1f, 1f, newValue);
     }
 
     public void Precedente()
     {
         IndiceClasseSuccessivaPrecedente--;
-        RecuperaSesso();
+        VisualizzaValoriPersonaggio();
+        indiceCambiato = true;
+        DecisionePercorsoCambioClasse();
     }
 
     public void Sucessivo()
     {
         IndiceClasseSuccessivaPrecedente++;
-        RecuperaSesso();
+        VisualizzaValoriPersonaggio();
+        indiceCambiato = true;
+        DecisionePercorsoCambioClasse();
+    } 
+
+    private void ObiettivoDaInquadrareXZ()
+    {
+        obiettivoDaInquadrare = (elencoSessiDropDown.value == 0) ?
+           dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM].transform.position :
+           dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF].transform.position;
+        zeta = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.z - ZOffSet) : obiettivoDaInquadrare.z + ZOffSet;
+        ics = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.x + 5) : (obiettivoDaInquadrare.x - 5);
+    }
+    
+    private void DecisionePercorsoCambioClasse()
+    {       
+        ObiettivoDaInquadrareXZ();        
+        percorso = new Vector3[] { cameraT.position, new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta) };
+        InquadraPersonaggioInNuovaPartita();
+    }  
+
+    public void DecisionePercorsoCambioSesso()
+    {     
+        ObiettivoDaInquadrareXZ();
+        percorso = new Vector3[] { cameraT.position, new Vector3(ics, obiettivoDaInquadrare.y + altezzaCamera, zeta),
+            new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta) };
+        InquadraPersonaggioInNuovaPartita();
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void InquadraPersonaggioInNuovaPartita()
+    {     
+        iTween.MoveTo(cameraT.gameObject, iTween.Hash("path", percorso, "time", 2f, "looktarget", obiettivoDaInquadrare,
+            "looktime", 0f, "axis", "y", "easetype", iTween.EaseType.linear, "oncompletetarget", gameObject, "oncomplete", "ResettaIndiceCambiato"));
+    }
+
+    private void ResettaIndiceCambiato()
+    {
+        indiceCambiato = false;
+    }   
+
+    private void VisualizzaValoriPersonaggio()
     {
         casellaTipo.text = databaseInizialeProprieta.classePersonaggio[IndiceClasseSuccessivaPrecedente].ToString();
         valoreVita.text = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita.ToString();
         valoreAttacco.text = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Attacco.ToString();
         valoreDifesa.text = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].difesa.ToString();
-        //se non ho selezionato ne carica ne nuova partita oppure se sono in carica ma non ho personaggi già creati,
-        //inquadro la posizione iniziale.
-        if ((!nuovaPartita && !caricaPartita) || (caricaPartita && !personaggiInCarica))
-        {
-            Image tmpImage = pannelloImmagineSfondo;
-            if (tmpImage.color.a < 1f)
-                tmpImage.color += new Color(0f, 0f, 0f, 0.2f) * Time.deltaTime * 3f;
-            targetT = posizioneInizialeCamera;
-            posizioneCamera = new Vector3(targetT.position.x, targetT.position.y + altezzaCamera, targetT.position.z + ZOffSet);
-            CambiaPosizioneTelecamera();
-        }//inquadro il modello selezionato in carica partita:
-        else if (caricaPartita && !nuovaPartita)
-        {
-            Image tmpImage = pannelloImmagineSfondo;
-            if (tmpImage.color.a > 0f)
-                tmpImage.color -= new Color(0f, 0f, 0f, 0.1f) * Time.deltaTime * 1.5f;         
-            if(dizionarioCollegamentoNomiConModelli.ContainsKey(datiPersonaggio.Dati.nomeModello))
-            {
-                targetT = dizionarioCollegamentoNomiConModelli[datiPersonaggio.Dati.nomeModello].transform;
-                posizioneCamera = new Vector3(targetT.position.x, targetT.position.y + altezzaCamera, targetT.position.z + ZOffSet);
-                CambiaPosizioneTelecamera();
-            }
-        }//se scelgo il maschio in nuova partita lo inquadro:
-        else if (elencoSessiDropDown.value == 0 && nuovaPartita && !caricaPartita)
-        {
-            Image tmpImage = pannelloImmagineSfondo;
-            if (tmpImage.color.a > 0f)
-                tmpImage.color -= new Color(0f, 0f, 0f, 0.1f) * Time.deltaTime * 1.5f;          
-            targetT = dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM].transform;
-            posizioneCamera = new Vector3(targetT.position.x, targetT.position.y + altezzaCamera, targetT.position.z - ZOffSet);
-            CambiaPosizioneTelecamera();
-        }//se scelgo la femmina in nuova partita, la inquadro:
-        else if (elencoSessiDropDown.value == 1 && nuovaPartita && !caricaPartita)
-        {
-            Image tmpImage = pannelloImmagineSfondo;
-            if (tmpImage.color.a > 0f)
-                tmpImage.color -= new Color(0f, 0f, 0f, 0.1f) * Time.deltaTime * 1.5f;
-            targetT = dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF].transform;
-            posizioneCamera = new Vector3(targetT.position.x, targetT.position.y + altezzaCamera, targetT.position.z + ZOffSet);
-            CambiaPosizioneTelecamera();
-        }     
     }
 
-    IEnumerator ScenaInCaricamento(string nomeScena)
+    private IEnumerator ScenaInCaricamento(string nomeScena)
     {
         AsyncOperation asynCaricamentoScena = SceneManager.LoadSceneAsync(nomeScena);
         if (!asynCaricamentoScena.isDone && pannelloImmagineSfondo.color.a != 1f)
@@ -293,15 +296,8 @@ public class ManagerIniziale : MonoBehaviour
             nomeScenaText.gameObject.SetActive(true);
             nomeScenaText.text = "Loading... " + datiPersonaggio.Dati.nomeScena;
             pannelloImmagineSfondo.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
-        }     
+        }
         yield return null;
-    }
-
-    private void CambiaPosizioneTelecamera()
-    {
-        cameraT.position = Vector3.SmoothDamp(cameraT.position, posizioneCamera, ref velocita, DampTime);
-        if (ZOffSet != 0f)        
-            cameraT.LookAt(targetT.position);        
     }
 
     public void RecuperaElencoCartelle()
@@ -321,10 +317,7 @@ public class ManagerIniziale : MonoBehaviour
                 personaggioProvaEsiste = true;
         }
         int numeroCartelleMinimo = 0;
-        if (!personaggioProvaEsiste)
-            numeroCartelleMinimo = 0;
-        else
-            numeroCartelleMinimo = 1;
+        numeroCartelleMinimo = !personaggioProvaEsiste ? 0 : 1;     
         if (Drs.Length > numeroCartelleMinimo)
         {
             personaggiInCarica = true;
@@ -366,8 +359,8 @@ public class ManagerIniziale : MonoBehaviour
             tmpGOPrecedente.transform.position = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].position;
             tmpGOPrecedente.transform.rotation = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].rotation;
         }
-        if (datiPersonaggio == null) return;       
-        if(!dizionarioCollegamentoNomiConModelli.ContainsKey(datiPersonaggio.Dati.nomeModello))    
+        if (datiPersonaggio == null) return;
+        if (!dizionarioCollegamentoNomiConModelli.ContainsKey(datiPersonaggio.Dati.nomeModello))
         {
             erroreCaricamento.text = "Errore..Questo personaggio non e' più valido";
             bottoneCaricaDaCaricamento.interactable = false;
@@ -377,10 +370,10 @@ public class ManagerIniziale : MonoBehaviour
         {
             erroreCaricamento.text = "";
             bottoneCaricaDaCaricamento.interactable = true;
-        }      
+        }
         GameObject tmOj = dizionarioCollegamentoNomiConModelli[datiPersonaggio.Dati.nomeModello];
         tmOj.transform.position = posizioneCameraCarica.position;
-        tmOj.transform.rotation = posizioneCameraCarica.rotation;        
+        tmOj.transform.rotation = posizioneCameraCarica.rotation;
         tmpGOPrecedente = tmOj;
     }
 
@@ -393,17 +386,5 @@ public class ManagerIniziale : MonoBehaviour
             (Application.persistentDataPath, Statici.nomePersonaggio), true);
             RecuperaElencoCartelle();
         }
-    }
-
-    public void RecuperaSesso()
-    {
-        elencoSessiDropDown.options.Clear();
-        for (int i = 0; i < Enum.GetValues(typeof(Sesso)).Length; i++)
-        {
-            Dropdown.OptionData tmp = new Dropdown.OptionData();
-            tmp.text = Enum.GetName(typeof(Sesso), i);
-            elencoSessiDropDown.options.Add(tmp);
-        }
-        elencoCartelleDropDown.value = 0;
     }
 }

@@ -140,7 +140,7 @@ public class GameManager : MonoBehaviour
             //il personaggio verrà caricato sempre nella scena in cui si è fatto play.
             //N.B. se si vuole provare il salvataggio dell'ultima scena bisogna però fare la trafila a partire dalla prima scena
             //perchè questo else caricherà il personaggio solo nella scena in cui viene fatto play.(per maggiori info chiedere a Ninfea)
-            Statici.Metodo_Charlie(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
+            Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
             Statici.nomePersonaggio = "PersonaggioDiProva";  
             if (datiPersonaggio.Dati.nomePersonaggio == null)
             {
