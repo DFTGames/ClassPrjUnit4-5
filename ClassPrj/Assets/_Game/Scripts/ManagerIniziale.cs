@@ -172,15 +172,15 @@ public class ManagerIniziale : MonoBehaviour
         datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
         if (datiDiplomazia.Dati.tipoEssere[0] == null)
         {
-            for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
+            for (int i = 0; i < databseInizialeAmicizie.classiEssere.Length; i++)
             {
-                datiDiplomazia.Dati.tipoEssere[i] = databseInizialeAmicizie.tagEssere[i];
+                datiDiplomazia.Dati.tipoEssere[i] = databseInizialeAmicizie.classiEssere[i];
             }
-            for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
+            for (int i = 0; i < databseInizialeAmicizie.classiEssere.Length; i++)
             {
                 datiDiplomazia.Dati.matriceAmicizie[i] = databseInizialeAmicizie.matriceAmicizie[i];
 
-                for (int j = 0; j < databseInizialeAmicizie.tagEssere.Length; j++)
+                for (int j = 0; j < databseInizialeAmicizie.classiEssere.Length; j++)
                 {
                     datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] = databseInizialeAmicizie.matriceAmicizie[i].elementoAmicizia[j];
                 }

@@ -98,7 +98,7 @@ public class Statici
 
         if (datiDiplomazia.Dati.indexPercorsi.Equals(databseInizialeAmicizie.indexPercorsi)) return;  //CONTROLLARE SE METODO E' CORRETTO
 
-        for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
+        for (int i = 0; i < databseInizialeAmicizie.classiEssere.Length; i++)
 
         {
             datiDiplomazia.Dati.indexPercorsi[i] = databseInizialeAmicizie.indexPercorsi[i];

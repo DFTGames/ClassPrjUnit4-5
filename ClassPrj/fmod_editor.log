@@ -23,7 +23,6 @@
 [LOG] Thread::initThread                       : - Stacksize 65536.  Stack pointer 0000000000000000 : usesemaphore = 0 : sleeptime = 10
 [LOG] Thread::callback                         : * FMOD stream thread started
 [LOG] OutputWASAPI::feederUpdate               : WASAPI feeder thread set to 'Audio' characteristic
-[WRN] OutputWASAPI::feederUpdate               : Starvation detected in WASAPI output buffer!
 [LOG] Thread::initThread                       : Initializing FMOD Studio load thread.  priority 0
 [LOG] Thread::initThread                       : - Stacksize 65536.  Stack pointer 0000000000000000 : usesemaphore = 0 : sleeptime = 1
 [LOG] Thread::callback                         : * FMOD Studio load thread started
