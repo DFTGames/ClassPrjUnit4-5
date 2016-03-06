@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public class MixerControl : MonoBehaviour {
 
@@ -11,7 +12,7 @@ public class MixerControl : MonoBehaviour {
 
     private static MixerControl m_me;
     private Serializzabile<ClasseAudio> datiAudio;
-    private GestoreCanvasAltreScene gc_AltreScene;
+    public GestoreCanvasAltreScene gc_AltreScene;
     private static float volumiSfx;
     private static float volumiEnvironment;
     private float volumePrecedente;
@@ -20,15 +21,18 @@ public class MixerControl : MonoBehaviour {
 
     void Awake()
     {
+
         m_me = this;
     }
     void Start()
     {
-        Inizializza();     
+        if (Gc_AltreScene == null)
+            Gc_AltreScene = GameObject.Find("GestoreCanvas").GetComponent<GestoreCanvasAltreScene>();
+        Inizializza();
     }
     void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex != 0)
+        if (SceneManager.GetActiveScene().buildIndex > 0)
         {
             if (Gc_AltreScene.pannelloTest.activeInHierarchy)
             {
@@ -110,7 +114,8 @@ public class MixerControl : MonoBehaviour {
 
     public void Inizializza()
     {
-        datiAudio = new Serializzabile<ClasseAudio>(Statici.NomeFileAudio);
+        if (datiAudio == null)
+            datiAudio = new Serializzabile<ClasseAudio>(Statici.NomeFileAudio, true);
         if (!datiAudio.Dati.inizializzato)
         {
             datiAudio.Dati.volEnvironment = 0.5f;
@@ -119,6 +124,7 @@ public class MixerControl : MonoBehaviour {
             datiAudio.Salva();
         }
     }
+
     public void Carica()
     {
         if (datiAudio.Dati != null)
