@@ -331,6 +331,7 @@ public class ManagerIniziale : MonoBehaviour
             personaggiInCarica = false;
             Statici.nomePersonaggio = string.Empty;
             bottoneCaricaDaMainManu.interactable = false;
+            bottoneCaricaDaCaricamento.interactable = false;
             bottoneEliminaPartita.interactable = false;
             erroreCaricamento.text = "Non ci sono partite salvate";
             vitaCaricamento.text = "none";
