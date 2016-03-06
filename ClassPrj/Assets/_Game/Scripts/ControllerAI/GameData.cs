@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,14 +15,14 @@ public enum Amicizie
 [System.Serializable]
 public class GameData : ScriptableObject
 {
-    public string[] tagEssere = new string[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
-    public classiAmicizie[] matriceAmicizie = new classiAmicizie[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
+    public string[] classiEssere = new string[Enum.GetValues(typeof(classiPersonaggi)).Length];
+    public classiAmicizie[] matriceAmicizie = new classiAmicizie[Enum.GetValues(typeof(classiPersonaggi)).Length];
     public int[] indexPercorsi; //index riferimento al nome percorso (vedi EditorPercorsiClass) 
 }
 [System.Serializable]
 public class classiAmicizie
 {
-    public Amicizie[] elementoAmicizia = new Amicizie[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
+    public Amicizie[] elementoAmicizia = new Amicizie[Enum.GetValues(typeof(classiPersonaggi)).Length];
 }
 
 

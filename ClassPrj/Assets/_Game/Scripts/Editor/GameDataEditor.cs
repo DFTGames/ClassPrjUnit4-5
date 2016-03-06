@@ -80,8 +80,8 @@ namespace DFTGames.Tools.EditorTools
                 //Inizializzazione e set valori default=NON_ESISTE index percorso
                 if (gameData.indexPercorsi == null)
                 {
-                    gameData.indexPercorsi = new int[UnityEditorInternal.InternalEditorUtility.tags.Length - 5];
-                    for (int i = 0; i < gameData.tagEssere.Length; i++)
+                    gameData.indexPercorsi = new int[Enum.GetValues(typeof(classiPersonaggi)).Length];
+                    for (int i = 0; i < gameData.classiEssere.Length; i++)
                         gameData.indexPercorsi[i] = NON_ESISTE;
                 }
             }
@@ -149,29 +149,30 @@ namespace DFTGames.Tools.EditorTools
             GUILayout.Label(new GUIContent("Matrice Amicizie"), stileEtichetta, GUILayout.Width(140));
 
             //codice necessario in caso di aggiunta o rimozione di un tag:
-            if (gameData.tagEssere.Length != UnityEditorInternal.InternalEditorUtility.tags.Length - 5)
+            if (gameData.classiEssere.Length != Enum.GetValues(typeof(classiPersonaggi)).Length)
             {
-                int vecchio = gameData.tagEssere.Length;
-                int differenzaLunghezze = UnityEditorInternal.InternalEditorUtility.tags.Length - 5 - gameData.tagEssere.Length;
-                Array.Resize<string>(ref gameData.tagEssere, UnityEditorInternal.InternalEditorUtility.tags.Length - 5);
-                Array.Resize<classiAmicizie>(ref gameData.matriceAmicizie, UnityEditorInternal.InternalEditorUtility.tags.Length - 5);
+                int vecchio = gameData.classiEssere.Length;
+                int differenzaLunghezze = Enum.GetValues(typeof(classiPersonaggi)).Length - gameData.classiEssere.Length;
+                Array.Resize<string>(ref gameData.classiEssere, Enum.GetValues(typeof(classiPersonaggi)).Length);
+                Array.Resize<classiAmicizie>(ref gameData.matriceAmicizie, Enum.GetValues(typeof(classiPersonaggi)).Length);
 
-                for (int i = 0; i < gameData.tagEssere.Length; i++)
+                for (int i = 0; i < gameData.classiEssere.Length; i++)
                 {
                     if (gameData.matriceAmicizie[i] == null)
                         gameData.matriceAmicizie[i] = new classiAmicizie();
 
 
-                    Array.Resize<Amicizie>(ref gameData.matriceAmicizie[i].elementoAmicizia, UnityEditorInternal.InternalEditorUtility.tags.Length - 5);
+                    Array.Resize<Amicizie>(ref gameData.matriceAmicizie[i].elementoAmicizia, Enum.GetValues(typeof(classiPersonaggi)).Length);
                 }
 
                 if (differenzaLunghezze > 0)
                 {
-                    for (int i = vecchio; i < UnityEditorInternal.InternalEditorUtility.tags.Length - 5; i++)
+                    Array tmpClassi = Enum.GetValues(typeof(classiPersonaggi));
+                    for (int i = vecchio; i < tmpClassi.Length; i++)
                     {
-                        gameData.tagEssere[i] = UnityEditorInternal.InternalEditorUtility.tags[i + 5];
+                        gameData.classiEssere[i] = tmpClassi.GetValue(i).ToString();
                         gameData.indexPercorsi[i] = NON_ESISTE; //provvisorio finche si usano i tag
-                        for (int j = 0; j < UnityEditorInternal.InternalEditorUtility.tags.Length - 5; j++)
+                        for (int j = 0; j < tmpClassi.Length; j++)
                         {
                             gameData.matriceAmicizie[i].elementoAmicizia[j] = Amicizie.Neutro;
                             EditorUtility.SetDirty(gameData);
@@ -182,21 +183,21 @@ namespace DFTGames.Tools.EditorTools
             }
 
             //codice necessario per l'aggiornamento dei dati in caso qualcosa venga modificato
-            for (int i = 0; i < gameData.tagEssere.Length; i++)
+            for (int i = 0; i < gameData.classiEssere.Length; i++)
             {             
-                 EditorGUILayout.LabelField(gameData.tagEssere[gameData.tagEssere.Length - i-1], stileEtichetta2, GUILayout.Width(140));
+                 EditorGUILayout.LabelField(gameData.classiEssere[gameData.classiEssere.Length - i-1], stileEtichetta2, GUILayout.Width(140));
             }
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical((EditorStyles.objectFieldThumb));
-            for (int i = 0; i < gameData.tagEssere.Length; i++)
+            for (int i = 0; i < gameData.classiEssere.Length; i++)
             {
 
                 GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                EditorGUILayout.LabelField(gameData.tagEssere[i], stileEtichetta2, GUILayout.Width(140));
+                EditorGUILayout.LabelField(gameData.classiEssere[i], stileEtichetta2, GUILayout.Width(140));
      
-                for (int j = 0; j < (gameData.tagEssere.Length - i); j++)
+                for (int j = 0; j < (gameData.classiEssere.Length - i); j++)
                 {
                     //Qui recupera la texture da mettere al bottone che si sta mostrando
                     Texture tmp = new Texture();
@@ -241,14 +242,16 @@ namespace DFTGames.Tools.EditorTools
 
         private static void resettaParametri(GameData gameData)
         {
-            for (int r = 0; r < UnityEditorInternal.InternalEditorUtility.tags.Length - 5; r++)
-            {
-                gameData.tagEssere[r] = UnityEditorInternal.InternalEditorUtility.tags[r + 5];
+            Array tmpClassi = Enum.GetValues(typeof(classiPersonaggi));
+
+            for (int r = 0; r < tmpClassi.Length; r++)
+            {    
+                gameData.classiEssere[r] = tmpClassi.GetValue(r).ToString(); 
             }
-            for (int r = 0; r < UnityEditorInternal.InternalEditorUtility.tags.Length - 5; r++)
+            for (int r = 0; r < Enum.GetValues(typeof(classiPersonaggi)).Length; r++)
             {
-                for (int c = 0; c < UnityEditorInternal.InternalEditorUtility.tags.Length - 5; c++)
-                {
+                for (int c = 0; c < Enum.GetValues(typeof(classiPersonaggi)).Length; c++)
+                {                  
                     gameData.matriceAmicizie[r].elementoAmicizia[c] = Amicizie.Neutro;
                 }
             }

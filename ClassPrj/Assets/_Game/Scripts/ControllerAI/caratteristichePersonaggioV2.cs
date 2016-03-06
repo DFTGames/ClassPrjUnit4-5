@@ -8,6 +8,7 @@ public enum ProprietaPersonaggio
     CharacterM,
     CharacterF,
     Classe,
+    Giocabile,
     Vita,
     Livello,
     Mana,  
@@ -16,6 +17,12 @@ public enum ProprietaPersonaggio
     Difesa
 }
 
+public enum classiPersonaggi
+{
+   
+    magoAcqua,
+    magoTerra
+}
 
 [System.Serializable]
 public class caratteristichePersonaggioV2 : ScriptableObject
@@ -37,7 +44,8 @@ public class ClasseValorPersonaggioV2
     
     public string nomeM="nessun nome";
     public string nomeF = "nessun nome";
-    public string classe = "nessuna classe";
+    public classiPersonaggi classe = classiPersonaggi.magoAcqua;
+    public bool giocabile = false;
     public float Vita = 10f;
     public int Livello = 0;
     public float Mana = 10f;
