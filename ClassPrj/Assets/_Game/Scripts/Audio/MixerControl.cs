@@ -26,7 +26,7 @@ public class MixerControl : MonoBehaviour {
     }
     void Start()
     {
-        if (Gc_AltreScene == null)
+        if (Gc_AltreScene == null && SceneManager.GetActiveScene().buildIndex > 0)
             Gc_AltreScene = GameObject.Find("GestoreCanvas").GetComponent<GestoreCanvasAltreScene>();
         Inizializza();
     }
