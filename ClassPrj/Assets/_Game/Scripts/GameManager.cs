@@ -7,8 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {   
     public static string tagDiColuiCheVuoleCambiareAmicizia = "Player";   
-    public static List<string> nemici = null;   
-    public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();   
+    public static List<string> nemici = null;        
     public static Dictionary<string, List<string>> dizionarioDiNemici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiAmici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiIndifferenti = new Dictionary<string, List<string>>();
@@ -16,6 +15,7 @@ public class GameManager : MonoBehaviour
     public caratteristichePersonaggioV2 databaseInizialeProprieta;
     public static Transform PersonaggioPrincipaleT;
     public static PadreGestore padreGestore;
+    public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();
 
     private static GameManager me;
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
