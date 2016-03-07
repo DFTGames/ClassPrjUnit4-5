@@ -27,4 +27,4 @@ MonoBehaviour:
   - elementoAmicizia: 01000000010000000100000001000000010000000100000001000000
   - elementoAmicizia: 02000000020000000100000001000000010000000100000001000000
   - elementoAmicizia: 01000000010000000100000001000000010000000100000001000000
-  indexPercorsi: ffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+  indexPercorsi: ffffffffffffffffffffffff01000000ffffffffffffffffffffffff
