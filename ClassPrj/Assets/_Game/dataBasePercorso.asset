@@ -11,11 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2944e3484e1c545478c8085848587dbb, type: 3}
   m_Name: dataBasePercorso
   m_EditorClassIdentifier: 
-  indexPercorsi: 010000000200000003000000050000000600000007000000
+  indexPercorsi: 010000000200000003000000
   nomePercorsi:
-  - Corso Piero della Francesca
-  - Viale delle Ninfee
-  - Stretto dei Lippi
-  - Vialone Gaiardo
-  - Luca Top Oscar Street
-  - Charlie Avenue
+  - Corso dei Pini
+  - Via delle Ninfee
+  - corso dei lughi

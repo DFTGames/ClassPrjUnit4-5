@@ -11,16 +11,16 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
     private Color OriginalBg = GUI.backgroundColor;
     private Color OriginalCont = GUI.contentColor;
     private Color OriginalColor = GUI.color;
-  //  private const string STR_PercorsoConfig3 = "PercorsoConfigurazione";
-  //  private const string STR_DatabaseDiGioco3 = "/dataBasePersonaggioV2.asset";
+    //  private const string STR_PercorsoConfig3 = "PercorsoConfigurazione";
+    //  private const string STR_DatabaseDiGioco3 = "/dataBasePersonaggioV2.asset";
     private static bool preferenzeCaricate = false;
     private static string percorso;
-   
+
     private Vector2 posizioneScroll;
     private SerializedObject serializedObject;
     List<SerializedProperty> stringsProperty_M = new List<SerializedProperty>();
     List<SerializedProperty> stringsProperty_F = new List<SerializedProperty>();
-    
+
 
 
 
@@ -62,7 +62,7 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
         {
             percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig3);
             _caratteristichePersonaggioV2 = AssetDatabase.LoadAssetAtPath<caratteristichePersonaggioV2>(percorso + Statici.STR_DatabaseDiGioco3);
-          
+
 
         }
     }
@@ -96,7 +96,7 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
                 if (percorso != string.Empty)
                     _caratteristichePersonaggioV2 = ScriptableObject.CreateInstance<caratteristichePersonaggioV2>();
                 _caratteristichePersonaggioV2.classePersonaggio = new System.Collections.Generic.List<String>();
-              
+
 
                 AssetDatabase.CreateAsset(_caratteristichePersonaggioV2, percorso + Statici.STR_DatabaseDiGioco3);
                 AssetDatabase.Refresh();
@@ -127,19 +127,19 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
 
         if (_caratteristichePersonaggioV2.matriceProprieta == null)
             _caratteristichePersonaggioV2.matriceProprieta = new List<ClasseValorPersonaggioV2>();
-     
+
         if (GUILayout.Button("+", GUILayout.Width(100f)))
         {
-            
+
             string tmp = "nessuna classe";
             _caratteristichePersonaggioV2.classePersonaggio.Add(tmp);
             ClasseValorPersonaggioV2 tmpC = new ClasseValorPersonaggioV2();
-            ClasseValorPersonaggioV2 tmpF= new ClasseValorPersonaggioV2();
-     
+            ClasseValorPersonaggioV2 tmpF = new ClasseValorPersonaggioV2();
+
 
             _caratteristichePersonaggioV2.matriceProprieta.Add(tmpC);
-          
-           
+
+
             EditorUtility.SetDirty(_caratteristichePersonaggioV2);
             AssetDatabase.SaveAssets();
 
@@ -153,8 +153,8 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
         }
         GUILayout.EndHorizontal();
         GUILayout.BeginVertical(EditorStyles.objectFieldThumb);
-        
-       
+
+
         List<string> tmpclassePersonaggio = new List<string>();
         for (int k = 0; k < _caratteristichePersonaggioV2.classePersonaggio.Count; k++)
             tmpclassePersonaggio.Add(_caratteristichePersonaggioV2.classePersonaggio[k]);
@@ -163,7 +163,7 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
         for (int w = 0; w < _caratteristichePersonaggioV2.matriceProprieta.Count; w++)
             tmpMatrice.Add(_caratteristichePersonaggioV2.matriceProprieta[w]);
 
-      
+
 
 
         for (int i = 0; i < _caratteristichePersonaggioV2.classePersonaggio.Count; i++)
@@ -174,49 +174,49 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
             {
                 tmpclassePersonaggio.Remove(_caratteristichePersonaggioV2.classePersonaggio[i]);
                 tmpMatrice.Remove(_caratteristichePersonaggioV2.matriceProprieta[i]);
-               
+
                 stringsProperty_M.RemoveAt(i);
                 stringsProperty_F.RemoveAt(i);
             }
-            if(_caratteristichePersonaggioV2.classePersonaggio[i] == "nessuna classe")
-                 GUILayout.Label(new GUIContent(_caratteristichePersonaggioV2.classePersonaggio[i]), stileEtichetta, GUILayout.Width(150));
-            else 
-                 GUILayout.Label(new GUIContent(_caratteristichePersonaggioV2.classePersonaggio[i]), stileEtichetta, GUILayout.Width(150));
-           
+            if (_caratteristichePersonaggioV2.classePersonaggio[i] == "nessuna classe")
+                GUILayout.Label(new GUIContent(_caratteristichePersonaggioV2.classePersonaggio[i]), stileEtichetta, GUILayout.Width(150));
+            else
+                GUILayout.Label(new GUIContent(_caratteristichePersonaggioV2.classePersonaggio[i]), stileEtichetta, GUILayout.Width(150));
+
 
 
             GUILayout.EndHorizontal();
 
-       
-                GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                
-                for (int c = 0; c < Enum.GetValues(typeof(ProprietaPersonaggio)).Length; c++)
 
-                {
+            GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
+
+            for (int c = 0; c < Enum.GetValues(typeof(ProprietaPersonaggio)).Length; c++)
+
+            {
                 _caratteristichePersonaggioV2.schieraProprietaC[c] = Enum.GetName(typeof(ProprietaPersonaggio), c);
                 EditorGUILayout.LabelField(_caratteristichePersonaggioV2.schieraProprietaC[c], stileEtichetta2, GUILayout.Width(130));
-                }
-              
-                GUILayout.EndHorizontal();
+            }
 
-                GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                EditorGUI.BeginChangeCheck();
-                serializedObject = new SerializedObject(_caratteristichePersonaggioV2);
-                stringsProperty_M.Add(serializedObject.FindProperty("character_M"));
-                EditorGUILayout.PropertyField(stringsProperty_M[i], new GUIContent(""), true, GUILayout.Width(130));
-                if (EditorGUI.EndChangeCheck())
-                {
-				  
-						serializedObject.ApplyModifiedProperties();
-                      
-						
-                        tmpMatrice[i].nomeM = stringsProperty_M[i].objectReferenceValue.name;
-                    Undo.RecordObject(_caratteristichePersonaggioV2, "NomeM");
-						EditorUtility.SetDirty(_caratteristichePersonaggioV2);
-						AssetDatabase.SaveAssets();
-                 
+            GUILayout.EndHorizontal();
 
-                }
+            GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
+            EditorGUI.BeginChangeCheck();
+            serializedObject = new SerializedObject(_caratteristichePersonaggioV2);
+            stringsProperty_M.Add(serializedObject.FindProperty("character_M"));
+            EditorGUILayout.PropertyField(stringsProperty_M[i], new GUIContent(""), true, GUILayout.Width(130));
+            if (EditorGUI.EndChangeCheck())
+            {
+
+                serializedObject.ApplyModifiedProperties();
+
+
+                tmpMatrice[i].nomeM = stringsProperty_M[i].objectReferenceValue.name;
+                Undo.RecordObject(_caratteristichePersonaggioV2, "NomeM");
+                EditorUtility.SetDirty(_caratteristichePersonaggioV2);
+                AssetDatabase.SaveAssets();
+
+
+            }
 
             EditorGUI.BeginChangeCheck();
             serializedObject = new SerializedObject(_caratteristichePersonaggioV2);
@@ -238,7 +238,9 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
 
             }
 
+            //questa è la parte vecchia
 
+            /*
             string tmpC = EditorGUILayout.TextField(_caratteristichePersonaggioV2.matriceProprieta[i].classe, GUILayout.Width(130));
             if (tmpC.Trim().ToLower().Replace(" ","") != _caratteristichePersonaggioV2.matriceProprieta[i].classe.Trim().ToLower().Replace(" ", ""))
             {
@@ -256,60 +258,76 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
                     
                 }
             }
+            */
+            classiPersonaggi classePersScelto = (classiPersonaggi)EditorGUILayout.EnumPopup(_caratteristichePersonaggioV2.matriceProprieta[i].classe, GUILayout.Width(130));
+            if (classePersScelto != _caratteristichePersonaggioV2.matriceProprieta[i].classe)
+            {
+                
+                _caratteristichePersonaggioV2.matriceProprieta[i].classe = classePersScelto;
+                tmpclassePersonaggio[i] = _caratteristichePersonaggioV2.matriceProprieta[i].classe.ToString();
+                Undo.RecordObject(_caratteristichePersonaggioV2, "Classe");
+
+            }
+            bool tmpG = EditorGUILayout.Toggle(_caratteristichePersonaggioV2.matriceProprieta[i].giocabile, GUILayout.Width(130));
+            if (tmpG != _caratteristichePersonaggioV2.matriceProprieta[i].giocabile)
+            {
+                _caratteristichePersonaggioV2.matriceProprieta[i].giocabile = tmpG;
+                Undo.RecordObject(_caratteristichePersonaggioV2, "Giocabile");
+            }
 
             float tmpV = EditorGUILayout.FloatField(_caratteristichePersonaggioV2.matriceProprieta[i].Vita, GUILayout.Width(130));
-                if (tmpV != _caratteristichePersonaggioV2.matriceProprieta[i].Vita)
-                {
-                    _caratteristichePersonaggioV2.matriceProprieta[i].Vita = tmpV;
-                    Undo.RecordObject(_caratteristichePersonaggioV2, "Vita");
-                }
+            if (tmpV != _caratteristichePersonaggioV2.matriceProprieta[i].Vita)
+            {
+                _caratteristichePersonaggioV2.matriceProprieta[i].Vita = tmpV;
+                Undo.RecordObject(_caratteristichePersonaggioV2, "Vita");
+            }
 
-                float tmpM = EditorGUILayout.FloatField(_caratteristichePersonaggioV2.matriceProprieta[i].Mana, GUILayout.Width(130));
-                if (tmpM != _caratteristichePersonaggioV2.matriceProprieta[i].Mana)
-                {
-                    _caratteristichePersonaggioV2.matriceProprieta[i].Mana = tmpM;
-                    Undo.RecordObject(_caratteristichePersonaggioV2, "Mana");
-                }
+            float tmpM = EditorGUILayout.FloatField(_caratteristichePersonaggioV2.matriceProprieta[i].Mana, GUILayout.Width(130));
+            if (tmpM != _caratteristichePersonaggioV2.matriceProprieta[i].Mana)
+            {
+                _caratteristichePersonaggioV2.matriceProprieta[i].Mana = tmpM;
+                Undo.RecordObject(_caratteristichePersonaggioV2, "Mana");
+            }
 
-                int tmpL = EditorGUILayout.IntField(_caratteristichePersonaggioV2.matriceProprieta[i].Livello, GUILayout.Width(130));
-                if (tmpL != _caratteristichePersonaggioV2.matriceProprieta[i].Livello)
-                {
-                    _caratteristichePersonaggioV2.matriceProprieta[i].Livello = tmpL;
-                    Undo.RecordObject(_caratteristichePersonaggioV2, "Livello");
-                }
+            int tmpL = EditorGUILayout.IntField(_caratteristichePersonaggioV2.matriceProprieta[i].Livello, GUILayout.Width(130));
+            if (tmpL != _caratteristichePersonaggioV2.matriceProprieta[i].Livello)
+            {
+                _caratteristichePersonaggioV2.matriceProprieta[i].Livello = tmpL;
+                Undo.RecordObject(_caratteristichePersonaggioV2, "Livello");
+            }
 
-                float tmpXp = EditorGUILayout.FloatField(_caratteristichePersonaggioV2.matriceProprieta[i].Xp, GUILayout.Width(130));
-                if (tmpXp != _caratteristichePersonaggioV2.matriceProprieta[i].Xp)
-                {
-                    _caratteristichePersonaggioV2.matriceProprieta[i].Xp = tmpXp;
-                    Undo.RecordObject(_caratteristichePersonaggioV2, "Xp");
-                }
+            float tmpXp = EditorGUILayout.FloatField(_caratteristichePersonaggioV2.matriceProprieta[i].Xp, GUILayout.Width(130));
+            if (tmpXp != _caratteristichePersonaggioV2.matriceProprieta[i].Xp)
+            {
+                _caratteristichePersonaggioV2.matriceProprieta[i].Xp = tmpXp;
+                Undo.RecordObject(_caratteristichePersonaggioV2, "Xp");
+            }
 
-                float tmpA = EditorGUILayout.FloatField(_caratteristichePersonaggioV2.matriceProprieta[i].Attacco, GUILayout.Width(130));
-                if (tmpA != _caratteristichePersonaggioV2.matriceProprieta[i].Attacco)
-                {
-                    _caratteristichePersonaggioV2.matriceProprieta[i].Attacco = tmpA;
-                    Undo.RecordObject(_caratteristichePersonaggioV2, "Attacco");
-                }
-                float tmpD = EditorGUILayout.FloatField(_caratteristichePersonaggioV2.matriceProprieta[i].difesa, GUILayout.Width(130));
-                if (tmpD != _caratteristichePersonaggioV2.matriceProprieta[i].difesa)
-                {
-                    _caratteristichePersonaggioV2.matriceProprieta[i].difesa = tmpD;
-                    Undo.RecordObject(_caratteristichePersonaggioV2, "Difesa");
-                }
-    
-                GUILayout.EndHorizontal();
+            float tmpA = EditorGUILayout.FloatField(_caratteristichePersonaggioV2.matriceProprieta[i].Attacco, GUILayout.Width(130));
+            if (tmpA != _caratteristichePersonaggioV2.matriceProprieta[i].Attacco)
+            {
+                _caratteristichePersonaggioV2.matriceProprieta[i].Attacco = tmpA;
+                Undo.RecordObject(_caratteristichePersonaggioV2, "Attacco");
+            }
+            float tmpD = EditorGUILayout.FloatField(_caratteristichePersonaggioV2.matriceProprieta[i].difesa, GUILayout.Width(130));
+            if (tmpD != _caratteristichePersonaggioV2.matriceProprieta[i].difesa)
+            {
+                _caratteristichePersonaggioV2.matriceProprieta[i].difesa = tmpD;
+                Undo.RecordObject(_caratteristichePersonaggioV2, "Difesa");
+            }
+
+            GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
             EditorGUILayout.LabelField(_caratteristichePersonaggioV2.matriceProprieta[i].nomeM, stileEtichetta2, GUILayout.Width(130));
             EditorGUILayout.LabelField(_caratteristichePersonaggioV2.matriceProprieta[i].nomeF, stileEtichetta2, GUILayout.Width(130));
             GUILayout.EndHorizontal();
-          
+
         }
-        
+
         _caratteristichePersonaggioV2.classePersonaggio = tmpclassePersonaggio;
         _caratteristichePersonaggioV2.matriceProprieta = tmpMatrice;
-        
+
         GUILayout.EndVertical();
         if (GUI.changed)
         {
@@ -318,20 +336,21 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
         }
 
         GUILayout.EndVertical();
-        
+
     }
 
     private void resettaParametri()
     {
-      
+
         for (int i = 0; i < _caratteristichePersonaggioV2.classePersonaggio.Count; i++)
             _caratteristichePersonaggioV2.classePersonaggio[i] = "nessuna classe";
 
         for (int r = 0; r < _caratteristichePersonaggioV2.classePersonaggio.Count; r++)
         {
-            _caratteristichePersonaggioV2.matriceProprieta[r].classe = "nessuna classe";
+            _caratteristichePersonaggioV2.matriceProprieta[r].classe = classiPersonaggi.magoAcqua;
             _caratteristichePersonaggioV2.matriceProprieta[r].nomeM = "nessun nome";
             _caratteristichePersonaggioV2.matriceProprieta[r].nomeF = "nessun nome";
+            _caratteristichePersonaggioV2.matriceProprieta[r].giocabile = false;
             _caratteristichePersonaggioV2.matriceProprieta[r].Attacco = 0;
             _caratteristichePersonaggioV2.matriceProprieta[r].difesa = 0;
             _caratteristichePersonaggioV2.matriceProprieta[r].Livello = 0;
@@ -339,11 +358,11 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
             _caratteristichePersonaggioV2.matriceProprieta[r].Vita = 0;
             _caratteristichePersonaggioV2.matriceProprieta[r].Xp = 0;
 
-           
+
 
             for (int c = 0; c < Enum.GetValues(typeof(ProprietaPersonaggio)).Length; c++)
             {
-                _caratteristichePersonaggioV2.schieraProprietaC[c] = Enum.GetName(typeof(ProprietaPersonaggio), c);              
+                _caratteristichePersonaggioV2.schieraProprietaC[c] = Enum.GetName(typeof(ProprietaPersonaggio), c);
             }
             AssetDatabase.Refresh();
         }
@@ -352,7 +371,7 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
 
     }
 
-   
-    
+
+
 
 }

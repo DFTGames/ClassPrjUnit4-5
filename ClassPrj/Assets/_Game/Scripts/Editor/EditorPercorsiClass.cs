@@ -333,12 +333,12 @@ namespace DFTGames.Tools.EditorTools
                 EditorGUILayout.Separator();
                 bool setDirtyPersonaggi = false;
 
-                for (int i = 0; i < gameData1.tagEssere.Length; i++)
+                for (int i = 0; i < gameData1.classiEssere.Length; i++)
                 {
-                    if (gameData1.tagEssere[i] != "Player")
+                    if (gameData1.classiEssere[i] != "Player")
                     {
                         GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                        EditorGUILayout.LabelField(gameData1.tagEssere[i], stileEtichetta2, GUILayout.Width(130));
+                        EditorGUILayout.LabelField(gameData1.classiEssere[i], stileEtichetta2, GUILayout.Width(130));
 
                         int index = Array.IndexOf(percorsi.indexPercorsi.ToArray(), gameData1.indexPercorsi[i]);  //trova l'indice nella matrice che corrisponde al valore del campo indexPercorsi nella matrice diplomazia
                         int index2 = index;

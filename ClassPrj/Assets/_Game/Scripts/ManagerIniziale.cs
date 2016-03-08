@@ -72,7 +72,7 @@ public class ManagerIniziale : MonoBehaviour
         {
             int valoreMinimo = 0;
             int valoreMassimo = databaseInizialeProprieta.classePersonaggio.Count - 1;
-            indiceClasseSuccessivaPrecedente = Mathf.Clamp(value, valoreMinimo, valoreMassimo);            
+            indiceClasseSuccessivaPrecedente = Mathf.Clamp(value, valoreMinimo, valoreMassimo);
             if (value > valoreMassimo)
                 indiceClasseSuccessivaPrecedente = valoreMinimo;
             if (value < valoreMinimo)
@@ -89,6 +89,9 @@ public class ManagerIniziale : MonoBehaviour
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
         for (int i = 0; i < databaseInizialeProprieta.matriceProprieta.Count; i++)
         {
+            if (!databaseInizialeProprieta.matriceProprieta[i].giocabile)
+                continue;
+
             string tmpNomeModelloM = databaseInizialeProprieta.matriceProprieta[i].nomeM;
             string tmpNomeModelloF = databaseInizialeProprieta.matriceProprieta[i].nomeF;
             dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloM, Instantiate(Resources.Load(tmpNomeModelloM), GameObject.Find("postazione" + i).transform.FindChild("posizioneM").position, new Quaternion(0f, 180f, 0f, 0f)) as GameObject);
@@ -110,25 +113,25 @@ public class ManagerIniziale : MonoBehaviour
         animatoreMenuCreazione.SetBool("Torna", true);
         animatoreMainMenu.SetBool("Via", true);
         nuovaPartita = true;
-        erroreCreazioneText.text = string.Empty; 
+        erroreCreazioneText.text = string.Empty;
         VisualizzaValoriPersonaggio();
-        CambiaAlphaPannelloSfondo();           
-        ObiettivoDaInquadrareXZ();      
+        CambiaAlphaPannelloSfondo();
+        ObiettivoDaInquadrareXZ();
         cameraT.position = new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta);
         iTween.LookTo(cameraT.gameObject, iTween.Hash("looktarget", obiettivoDaInquadrare, "time", 0f, "axis", "y", "easetype", iTween.EaseType.linear));
-       
+
     }
 
     public void CaricaPartita()
     {
         caricaPartita = true;
         animatoreMenuCarica.SetBool("Torna", true);
-        animatoreMainMenu.SetBool("Via", true);   
+        animatoreMainMenu.SetBool("Via", true);
         RecuperaElencoCartelle();
         RecuperaDatiGiocatore();
         CambiaAlphaPannelloSfondo();
         cameraT.position = new Vector3(posizioneCameraCarica.transform.position.x, posizioneCameraCarica.transform.position.y + altezzaCamera, posizioneCameraCarica.transform.position.z + ZOffSet);
-        cameraT.rotation = posizioneCameraCarica.rotation;       
+        cameraT.rotation = posizioneCameraCarica.rotation;
     }
 
     public void CaricaScenaDaCaricamento()
@@ -139,17 +142,17 @@ public class ManagerIniziale : MonoBehaviour
     }
 
     public void CaricaPartitaDaCreazione()
-    { 
-         if (testoNome.text.Trim() == string.Empty)
-             erroreCreazioneText.text = "Inserire un nome";
-         else
-         {
-             erroreCreazioneText.text = string.Empty;             
+    {
+        if (testoNome.text.Trim() == string.Empty)
+            erroreCreazioneText.text = "Inserire un nome";
+        else
+        {
+            erroreCreazioneText.text = string.Empty;
             if (cartelleLocali.Contains(testoNome.text.Trim()))
                 erroreCreazioneText.text = "Esiste Gia Un Personaggio con questo nome";
             else
             {
-                erroreCaricamento.text = string.Empty;              
+                erroreCaricamento.text = string.Empty;
                 Statici.sonoPassatoDallaScenaIniziale = true;
                 Statici.nomePersonaggio = testoNome.text;
                 datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
@@ -176,27 +179,27 @@ public class ManagerIniziale : MonoBehaviour
                 datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
                 if (datiDiplomazia.Dati.tipoEssere[0] == null)
                 {
-                    for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
+                    for (int i = 0; i < databseInizialeAmicizie.classiEssere.Length; i++)
                     {
-                        datiDiplomazia.Dati.tipoEssere[i] = databseInizialeAmicizie.tagEssere[i];
+                        datiDiplomazia.Dati.tipoEssere[i] = databseInizialeAmicizie.classiEssere[i];
                     }
-                    for (int i = 0; i < databseInizialeAmicizie.tagEssere.Length; i++)
+                    for (int i = 0; i < databseInizialeAmicizie.classiEssere.Length; i++)
                     {
                         datiDiplomazia.Dati.matriceAmicizie[i] = databseInizialeAmicizie.matriceAmicizie[i];
 
-                        for (int j = 0; j < databseInizialeAmicizie.tagEssere.Length; j++)
+                        for (int j = 0; j < databseInizialeAmicizie.classiEssere.Length; j++)
                         {
                             datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] = databseInizialeAmicizie.matriceAmicizie[i].elementoAmicizia[j];
                         }
                     }
                     datiDiplomazia.Salva();
                 }
-                Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref GameManager.dizionarioPercorsi);
+            Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref GameManager.dizionarioPercorsi);
                 personaggiInCarica = true;
                 StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
-            } 
-       }
-   }  
+            }
+        }
+    }
 
     public void AnnullaDaCreazione()
     {
@@ -222,8 +225,8 @@ public class ManagerIniziale : MonoBehaviour
     private void CambiaAlphaPannelloSfondo()
     {
         fromValue = (!nuovaPartita && !caricaPartita) ? 0f : 1f;
-        alpha = (!nuovaPartita && !caricaPartita) ? 1f : 0f;        
-        iTween.ValueTo(pannelloImmagineSfondo.gameObject, iTween.Hash("from", fromValue, "to", alpha,"time",5f,"delay",0.1f, "easetype",
+        alpha = (!nuovaPartita && !caricaPartita) ? 1f : 0f;
+        iTween.ValueTo(pannelloImmagineSfondo.gameObject, iTween.Hash("from", fromValue, "to", alpha, "time", 5f, "delay", 0.1f, "easetype",
              iTween.EaseType.easeOutCirc, "onupdatetarget", gameObject, "onupdate", "OnTweenUpdate", "onupdateparams", fromValue));
     }
 
@@ -246,7 +249,7 @@ public class ManagerIniziale : MonoBehaviour
         VisualizzaValoriPersonaggio();
         indiceCambiato = true;
         DecisionePercorsoCambioClasse();
-    } 
+    }
 
     private void ObiettivoDaInquadrareXZ()
     {
@@ -256,16 +259,16 @@ public class ManagerIniziale : MonoBehaviour
         zeta = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.z - ZOffSet) : obiettivoDaInquadrare.z + ZOffSet;
         ics = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.x + 5) : (obiettivoDaInquadrare.x - 5);
     }
-    
+
     private void DecisionePercorsoCambioClasse()
-    {       
-        ObiettivoDaInquadrareXZ();        
+    {
+        ObiettivoDaInquadrareXZ();
         percorso = new Vector3[] { cameraT.position, new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta) };
         InquadraPersonaggioInNuovaPartita();
-    }  
+    }
 
     public void DecisionePercorsoCambioSesso()
-    {     
+    {
         ObiettivoDaInquadrareXZ();
         percorso = new Vector3[] { cameraT.position, new Vector3(ics, obiettivoDaInquadrare.y + altezzaCamera, zeta),
             new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta) };
@@ -273,7 +276,7 @@ public class ManagerIniziale : MonoBehaviour
     }
 
     private void InquadraPersonaggioInNuovaPartita()
-    {     
+    {
         iTween.MoveTo(cameraT.gameObject, iTween.Hash("path", percorso, "time", 2f, "looktarget", obiettivoDaInquadrare,
             "looktime", 0f, "axis", "y", "easetype", iTween.EaseType.linear, "oncompletetarget", gameObject, "oncomplete", "ResettaIndiceCambiato"));
     }
@@ -281,7 +284,7 @@ public class ManagerIniziale : MonoBehaviour
     private void ResettaIndiceCambiato()
     {
         indiceCambiato = false;
-    }   
+    }
 
     private void VisualizzaValoriPersonaggio()
     {
@@ -310,20 +313,20 @@ public class ManagerIniziale : MonoBehaviour
     {
         erroreCaricamento.text = string.Empty;
         Dropdown.OptionData Tmp = null;
-        elencoCartelleDropDown.options.Clear();      
+        elencoCartelleDropDown.options.Clear();
         for (int i = 0; i < cartelleLocali.Count; i++)
         {
             Tmp = new Dropdown.OptionData();
-           
+
             Tmp.text = cartelleLocali[i];
-            if(!cartelleLocali.Contains("PersonaggioDiProva"))        
+            if (!cartelleLocali.Contains("PersonaggioDiProva"))
                 elencoCartelleDropDown.options.Add(Tmp);
             else
                 personaggioProvaEsiste = true;
         }
         int numeroCartelleMinimo = 0;
-        numeroCartelleMinimo = !personaggioProvaEsiste ? 0 : 1;          
-       if(cartelleLocali.Count>numeroCartelleMinimo)
+        numeroCartelleMinimo = !personaggioProvaEsiste ? 0 : 1;
+        if (cartelleLocali.Count > numeroCartelleMinimo)
         {
             personaggiInCarica = true;
             bottoneCaricaDaMainManu.interactable = true;
