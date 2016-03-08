@@ -262,8 +262,11 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
             classiPersonaggi classePersScelto = (classiPersonaggi)EditorGUILayout.EnumPopup(_caratteristichePersonaggioV2.matriceProprieta[i].classe, GUILayout.Width(130));
             if (classePersScelto != _caratteristichePersonaggioV2.matriceProprieta[i].classe)
             {
+                
                 _caratteristichePersonaggioV2.matriceProprieta[i].classe = classePersScelto;
+                tmpclassePersonaggio[i] = _caratteristichePersonaggioV2.matriceProprieta[i].classe.ToString();
                 Undo.RecordObject(_caratteristichePersonaggioV2, "Classe");
+
             }
             bool tmpG = EditorGUILayout.Toggle(_caratteristichePersonaggioV2.matriceProprieta[i].giocabile, GUILayout.Width(130));
             if (tmpG != _caratteristichePersonaggioV2.matriceProprieta[i].giocabile)

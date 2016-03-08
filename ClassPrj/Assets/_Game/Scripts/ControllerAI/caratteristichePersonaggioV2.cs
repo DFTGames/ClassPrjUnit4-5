@@ -21,6 +21,7 @@ public enum classiPersonaggi
 {
    
     magoAcqua,
+    goblin,
     magoTerra
 }
 
