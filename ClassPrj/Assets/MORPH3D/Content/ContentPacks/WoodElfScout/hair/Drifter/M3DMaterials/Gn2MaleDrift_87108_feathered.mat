@@ -148,11 +148,11 @@ Material:
         second: 0
       data:
         first:
-          name: _Cull
+          name: _SmoothnessInAlbedo
         second: 0
       data:
         first:
-          name: _SmoothnessInAlbedo
+          name: _Cull
         second: 0
       data:
         first:
@@ -194,7 +194,7 @@ Material:
       data:
         first:
           name: _Color
-        second: {r: 0.518, g: 0.39611772, b: 0.07617652, a: 1}
+        second: {r: 0.18382353, g: 0.14579108, b: 0.04595588, a: 1}
       data:
         first:
           name: _SpecColor

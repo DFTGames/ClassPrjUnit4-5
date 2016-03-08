@@ -7,8 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {   
     public static string tagDiColuiCheVuoleCambiareAmicizia = "Player";   
-    public static List<string> nemici = null;   
-    public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();   
+    public static List<string> nemici = null;        
     public static Dictionary<string, List<string>> dizionarioDiNemici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiAmici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiIndifferenti = new Dictionary<string, List<string>>();
@@ -16,6 +15,7 @@ public class GameManager : MonoBehaviour
     public caratteristichePersonaggioV2 databaseInizialeProprieta;
     public static Transform PersonaggioPrincipaleT;
     public static PadreGestore padreGestore;
+    public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();
 
     private static GameManager me;
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
@@ -115,13 +115,10 @@ public class GameManager : MonoBehaviour
         if (tmpPdr != null)
             padreGestore = tmpPdr.GetComponent<PadreGestore>();
         else
-            Debug.LogError("Ma ci fai o ci sei ????..sei un cazzone....manca il padrePercorso");
-        //carico diplomazia
-        datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
-        //carico dati personaggio
-        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
+            Debug.LogError("Ma ci fai o ci sei ????..sei un cazzone....manca il padrePercorso");       
         if (Statici.sonoPassatoDallaScenaIniziale)
-        {       
+        {
+            FileSerializzatiDelPersonaggio();
             VitaMassima = datiPersonaggio.Dati.VitaMassima;
             VitaAttuale = datiPersonaggio.Dati.Vita;
             Attacco = datiPersonaggio.Dati.Attacco;
@@ -130,18 +127,17 @@ public class GameManager : MonoBehaviour
             Classe = datiPersonaggio.Dati.classe;
             GestoreCanvasAltreScene.AggiornaDati();
             GameObject tmpObjP = Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
-            PersonaggioPrincipaleT = tmpObjP.transform;        
+            PersonaggioPrincipaleT = tmpObjP.transform;
             RecuperaDizionariDiplomazia();
         }
         else
-        {
+        {            
             //Questo else serve nel caso in cui facciamo play da una scena che non sia quella iniziale
             //verrà così caricato un personaggio per fare le prove(il magoBlu).
-            //il personaggio verrà caricato sempre nella scena in cui si è fatto play.
-            //N.B. se si vuole provare il salvataggio dell'ultima scena bisogna però fare la trafila a partire dalla prima scena
-            //perchè questo else caricherà il personaggio solo nella scena in cui viene fatto play.(per maggiori info chiedere a Ninfea)
+            //il personaggio verrà caricato sempre nella scena in cui si è fatto play.           
             Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
-            Statici.nomePersonaggio = "PersonaggioDiProva";  
+            Statici.nomePersonaggio = "PersonaggioDiProva";
+            FileSerializzatiDelPersonaggio();
             if (datiPersonaggio.Dati.nomePersonaggio == null)
             {
                 datiPersonaggio.Dati.Vita = 10;
@@ -190,6 +186,14 @@ public class GameManager : MonoBehaviour
             Statici.CopiaIlDB();
             Statici.sonoPassatoDallaScenaIniziale = true;
         }
+    }
+
+    private void FileSerializzatiDelPersonaggio()
+    {   //N.B.:non invertire le due righe.
+        //carico dati personaggio
+        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
+        //carico diplomazia
+        datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
     }
 
     private void RecuperaDizionariDiplomazia()
