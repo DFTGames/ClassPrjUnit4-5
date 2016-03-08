@@ -1714,6 +1714,7 @@ MonoBehaviour:
   animatoreMenuCarica: {fileID: 9505688}
   bottoneCaricaDaMainManu: {fileID: 11481566}
   bottoneCaricaDaCaricamento: {fileID: 11433888}
+  bottoneCaricamentoDaCreazione: {fileID: 11435586}
   bottoneEliminaPartita: {fileID: 11478684}
   casellaTipo: {fileID: 11495002}
   valoreVita: {fileID: 11472312}
@@ -1731,6 +1732,7 @@ MonoBehaviour:
   elencoSessiDropDown: {fileID: 11483584}
   pannelloImmagineSfondo: {fileID: 11498736}
   nomeScenaText: {fileID: 11451004}
+  posizionePersonaggioCarica: {fileID: 0}
   posizioneCameraCarica: {fileID: 0}
   altezzaCamera: 1
   ZOffSet: 4
@@ -4123,7 +4125,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11405482}
-        m_MethodName: MuoviCameraSuPgNuovo
+        m_MethodName: DecisionePercorsoCambioSesso
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
