@@ -53,6 +53,7 @@ public class ClasseValorPersonaggioV2
     public float Xp = 0f;
     public float Attacco = 10f;
     public float difesa = 20f;
+
 }
 
 
