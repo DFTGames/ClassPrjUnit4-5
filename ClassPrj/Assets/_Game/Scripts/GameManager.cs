@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {   
-    public static string tagDiColuiCheVuoleCambiareAmicizia = "Player";   
+    public static string classeDiColuiCheVuoleCambiareAmicizia = "Player";   
     public static List<string> nemici = null;        
     public static Dictionary<string, List<string>> dizionarioDiNemici = new Dictionary<string, List<string>>();
     public static Dictionary<string, List<string>> dizionarioDiAmici = new Dictionary<string, List<string>>();
@@ -17,10 +17,11 @@ public class GameManager : MonoBehaviour
     public static PadreGestore padreGestore;
     public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();
 
+    private Dictionary<int, DatiPersonaggio> registroDatiPersonaggi = new Dictionary<int, DatiPersonaggio>();
     private static GameManager me;
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
     private Serializzabile<ValoriPersonaggioS> datiPersonaggio;    
-    private string tagEssereSelezionato = null;
+    private string classeEssereSelezionato = null;
     private RaycastHit hit;
     private Collider precedente = null;
     private Collider attuale = null;       
@@ -29,7 +30,8 @@ public class GameManager : MonoBehaviour
     private float attacco = 0f;
     private float difesa = 0f;
     private string classe = string.Empty;
-    private string nome = string.Empty;    
+    private string nome = string.Empty;
+    
 
     public static float VitaAttuale
     {
@@ -108,16 +110,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    void Awake()
     {
         me = this;
+    }
+  
+
+    private void Start()
+    {
         GameObject tmpPdr = GameObject.Find("PadrePercorso");
         if (tmpPdr != null)
             padreGestore = tmpPdr.GetComponent<PadreGestore>();
         else
-            Debug.LogError("Ma ci fai o ci sei ????..sei un cazzone....manca il padrePercorso");       
+            Debug.LogError("Ma ci fai o ci sei ????..sei un cazzone....manca il padrePercorso");
+        Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
         if (Statici.sonoPassatoDallaScenaIniziale)
-        {
+        {           
             FileSerializzatiDelPersonaggio();
             VitaMassima = datiPersonaggio.Dati.VitaMassima;
             VitaAttuale = datiPersonaggio.Dati.Vita;
@@ -134,9 +142,8 @@ public class GameManager : MonoBehaviour
         {            
             //Questo else serve nel caso in cui facciamo play da una scena che non sia quella iniziale
             //verrà così caricato un personaggio per fare le prove(il magoBlu).
-            //il personaggio verrà caricato sempre nella scena in cui si è fatto play.           
-            Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
-            Statici.nomePersonaggio = "PersonaggioDiProva";
+            //il personaggio verrà caricato sempre nella scena in cui si è fatto play.         
+           
             FileSerializzatiDelPersonaggio();
             if (datiPersonaggio.Dati.nomePersonaggio == null)
             {
@@ -147,7 +154,7 @@ public class GameManager : MonoBehaviour
                 datiPersonaggio.Dati.Livello = 1;
                 datiPersonaggio.Dati.nomeModello = "MagoBluM";
                 datiPersonaggio.Dati.nomePersonaggio = "PersonaggioDiProva";
-                datiPersonaggio.Dati.classe = "Mago";
+                datiPersonaggio.Dati.classe =classiPersonaggi.magoAcqua.ToString();
                 datiPersonaggio.Dati.VitaMassima = 10;
                 datiPersonaggio.Dati.ManaMassimo = 20;
                 datiPersonaggio.Dati.XPMassimo = 100;
@@ -171,6 +178,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
                 datiDiplomazia.Salva();
+                
             }
             Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref dizionarioPercorsi);
             GameObject tmpObjP = Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
@@ -185,9 +193,46 @@ public class GameManager : MonoBehaviour
             GestoreCanvasAltreScene.AggiornaDati();
             Statici.CopiaIlDB();
             Statici.sonoPassatoDallaScenaIniziale = true;
+           
         }
+        classeDiColuiCheVuoleCambiareAmicizia = Classe;
     }
 
+    public static void RegistraDatiPersonaggio(DatiPersonaggio datiPersonaggio)
+    {  
+        me.registroDatiPersonaggi.Add(datiPersonaggio.GetInstanceID(), datiPersonaggio);    
+    }
+
+    public static void RecuperaDati(DatiPersonaggio datiStatistici)
+    {
+        int tmpID = datiStatistici.GetInstanceID();       
+        int indice = me.databaseInizialeProprieta.classePersonaggio.IndexOf(me.registroDatiPersonaggi[tmpID].miaClasse.ToString());
+        me.registroDatiPersonaggi[tmpID].Giocabile = me.databaseInizialeProprieta.matriceProprieta[indice].giocabile;
+        if (!me.registroDatiPersonaggi[tmpID].Giocabile)
+        { //se è un personaggio AI recupero i dati dallo scriptble object
+            me.registroDatiPersonaggi[tmpID].Vita = me.databaseInizialeProprieta.matriceProprieta[indice].Vita;
+            me.registroDatiPersonaggi[tmpID].VitaMassima = me.databaseInizialeProprieta.matriceProprieta[indice].Vita;
+            me.registroDatiPersonaggi[tmpID].Mana = me.databaseInizialeProprieta.matriceProprieta[indice].Mana;
+            me.registroDatiPersonaggi[tmpID].ManaMassimo = me.databaseInizialeProprieta.matriceProprieta[indice].Mana;
+            me.registroDatiPersonaggi[tmpID].Livello = me.databaseInizialeProprieta.matriceProprieta[indice].Livello;
+            me.registroDatiPersonaggi[tmpID].Xp = me.databaseInizialeProprieta.matriceProprieta[indice].Xp;
+            me.registroDatiPersonaggi[tmpID].XpMassimo = me.databaseInizialeProprieta.matriceProprieta[indice].Xp;
+            me.registroDatiPersonaggi[tmpID].Attacco = me.databaseInizialeProprieta.matriceProprieta[indice].Attacco;
+            me.registroDatiPersonaggi[tmpID].Difesa = me.databaseInizialeProprieta.matriceProprieta[indice].difesa;
+        }
+        else
+        {  //se è giocabile recupero i dati dal file serializzato
+            me.registroDatiPersonaggi[tmpID].Vita = me.datiPersonaggio.Dati.Vita;
+            me.registroDatiPersonaggi[tmpID].VitaMassima = me.datiPersonaggio.Dati.VitaMassima;
+            me.registroDatiPersonaggi[tmpID].Mana = me.datiPersonaggio.Dati.Mana;
+            me.registroDatiPersonaggi[tmpID].ManaMassimo = me.datiPersonaggio.Dati.ManaMassimo;
+            me.registroDatiPersonaggi[tmpID].Livello = me.datiPersonaggio.Dati.Livello;
+            me.registroDatiPersonaggi[tmpID].Xp = me.datiPersonaggio.Dati.Xp;
+            me.registroDatiPersonaggi[tmpID].XpMassimo = me.datiPersonaggio.Dati.XPMassimo;
+            me.registroDatiPersonaggi[tmpID].Attacco = me.datiPersonaggio.Dati.Attacco;
+            me.registroDatiPersonaggi[tmpID].Difesa = me.datiPersonaggio.Dati.difesa;
+        }  
+    }
     private void FileSerializzatiDelPersonaggio()
     {   //N.B.:non invertire le due righe.
         //carico dati personaggio
@@ -261,7 +306,9 @@ public class GameManager : MonoBehaviour
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit) && !EventSystem.current.IsPointerOverGameObject())
             {
                 attuale = hit.collider;
-                tagEssereSelezionato = hit.collider.tag;
+                DatiPersonaggio tmpDati = hit.collider.GetComponent<DatiPersonaggio>();
+                if(tmpDati!=null)
+                   classeEssereSelezionato = hit.collider.GetComponent<DatiPersonaggio>().miaClasse.ToString();
 
                 if (precedente != attuale)
                 {
@@ -279,11 +326,11 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < me.datiDiplomazia.Dati.tipoEssere.Length; i++)
         {
-            if (me.datiDiplomazia.Dati.tipoEssere[i].Equals(tagDiColuiCheVuoleCambiareAmicizia))
+            if (me.datiDiplomazia.Dati.tipoEssere[i].Equals(classeDiColuiCheVuoleCambiareAmicizia))
             {
                 for (int j = 0; j < me.datiDiplomazia.Dati.tipoEssere.Length; j++)
                 {
-                    if (me.datiDiplomazia.Dati.tipoEssere[j].Equals(me.tagEssereSelezionato))
+                    if (me.datiDiplomazia.Dati.tipoEssere[j].Equals(me.classeEssereSelezionato))
                     {
                         if (me.datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] != Amicizie.Nemico)
                         {
@@ -305,11 +352,11 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < me.datiDiplomazia.Dati.tipoEssere.Length; i++)
         {
-            if (me.datiDiplomazia.Dati.tipoEssere[i].Equals(tagDiColuiCheVuoleCambiareAmicizia))
+            if (me.datiDiplomazia.Dati.tipoEssere[i].Equals(classeDiColuiCheVuoleCambiareAmicizia))
             {
                 for (int j = 0; j < me.datiDiplomazia.Dati.tipoEssere.Length; j++)
                 {
-                    if (me.datiDiplomazia.Dati.tipoEssere[j].Equals(me.tagEssereSelezionato))
+                    if (me.datiDiplomazia.Dati.tipoEssere[j].Equals(me.classeEssereSelezionato))
                     {
                         if (me.datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] != Amicizie.Alleato)
                         {
@@ -327,6 +374,7 @@ public class GameManager : MonoBehaviour
         me.RecuperaDizionariDiplomazia();
     }
 
+   
     public static void RiceviDanno()
     {
         VitaAttuale -= 1f;

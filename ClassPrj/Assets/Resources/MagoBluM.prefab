@@ -60,6 +60,7 @@ GameObject:
   - 114: {fileID: 11496664}
   - 114: {fileID: 11418160}
   - 114: {fileID: 11487460}
+  - 114: {fileID: 11450722}
   m_Layer: 11
   m_Name: MagoBluM
   m_TagString: Player
@@ -2013,6 +2014,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0956ebc3def958446bda261ef596ac35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11450722
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 561ee45bc75d75141b4cf8f0b2b810b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  miaClasse: 0
 --- !u!114 &11487460
 MonoBehaviour:
   m_ObjectHideFlags: 1

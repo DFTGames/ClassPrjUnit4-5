@@ -46,6 +46,8 @@ public class Vista : MonoBehaviour
     private float conta = 0f;
     private TipoArma tmpTipoArmaPrecedente;
     private bool armaCambiata = false;
+    private DatiPersonaggio datiPersonaggio;
+    private DatiPersonaggio datiAltroPersonaggio;
 
     private void Start()
     {
@@ -54,13 +56,20 @@ public class Vista : MonoBehaviour
         mioCervello.ObiettivoNemico = null;
         alphaGradMezzi = (mioCervello.alphaGrad) * 0.5f;
         tmpDaELiminare = new List<Transform>();
+        datiPersonaggio = GetComponent<DatiPersonaggio>();
+
     }
 
     private void OnTriggerEnter(Collider coll)
     {
-        //if (!GameManager.dizionarioDiNemici.ContainsKey(gameObject.tag)) return;
-        if (GameManager.dizionarioDiNemici[gameObject.tag].Contains(coll.tag))
-            listaNemiciDentroNonVisti.Add(coll.transform);
+        datiAltroPersonaggio = coll.GetComponent<DatiPersonaggio>();
+        if (datiAltroPersonaggio != null)
+        {
+           
+            //if (!GameManager.dizionarioDiNemici.ContainsKey(gameObject.tag)) return;
+            if (GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse.ToString()].Contains(datiAltroPersonaggio.miaClasse.ToString()))
+                listaNemiciDentroNonVisti.Add(coll.transform);
+        }
     }
 
     private void OnTriggerExit(Collider coll)
@@ -73,13 +82,17 @@ public class Vista : MonoBehaviour
 
     private void OnTriggerStay(Collider coll)
     {
-        // if (!GameManager.dizionarioDiNemici.ContainsKey(gameObject.tag)) return;
-        if (GameManager.dizionarioDiNemici[gameObject.tag].Contains(coll.tag) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
-            listaNemiciDentroNonVisti.Add(coll.transform);
-        else if (listaNemiciVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[gameObject.tag].Contains(coll.tag))
-            listaNemiciVisti.Remove(coll.transform);
-        else if (listaNemiciDentroNonVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[gameObject.tag].Contains(coll.tag))
-            listaNemiciDentroNonVisti.Remove(coll.transform);
+        datiAltroPersonaggio = coll.GetComponent<DatiPersonaggio>();
+        if (datiAltroPersonaggio != null)
+        {
+            // if (!GameManager.dizionarioDiNemici.ContainsKey(gameObject.tag)) return;
+            if (GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse.ToString()].Contains(datiAltroPersonaggio.miaClasse.ToString()) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
+                listaNemiciDentroNonVisti.Add(coll.transform);
+            else if (listaNemiciVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse.ToString()].Contains(datiAltroPersonaggio.miaClasse.ToString()))
+                listaNemiciVisti.Remove(coll.transform);
+            else if (listaNemiciDentroNonVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse.ToString()].Contains(datiAltroPersonaggio.miaClasse.ToString()))
+                listaNemiciDentroNonVisti.Remove(coll.transform);
+        }
     }
 
     private void Update()
