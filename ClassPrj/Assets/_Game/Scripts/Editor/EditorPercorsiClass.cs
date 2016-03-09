@@ -19,8 +19,7 @@ namespace DFTGames.Tools.EditorTools
 
     public class EditorPercorsiClass : EditorWindow
     {
-        public const int NON_ESISTE = -1;  //messo dal Prof...cosi' si capisce meglio
-
+       
         public PercorsiClass percorsi;
         public GameData gameData1;
 
@@ -36,8 +35,7 @@ namespace DFTGames.Tools.EditorTools
         private static bool preferenzePercorsiCaricate = false;
         private static string pathPercorsi;
 
-        private bool scenaDaSalvare;
-        private bool cambiatoAlmenoUnaScena;
+        
 
         [PreferenceItem("Percorsi")]
         private static void preferenzeDiGameGUI()
@@ -82,7 +80,7 @@ namespace DFTGames.Tools.EditorTools
                 string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig);
                 gameData1 = AssetDatabase.LoadAssetAtPath<GameData>(percorso + Statici.STR_DatabaseDiGioco);
             }
-            cambiatoAlmenoUnaScena = false; 
+            percorsi.cambiatoAlmenoUnaScena = false; 
         }
 
         void OnDisable()            //controlla la lista percorsi con i percorsi e se non c'e assegnazione mette indexpercorso del oggetto a default(NON_ESISTE) 
@@ -95,7 +93,7 @@ namespace DFTGames.Tools.EditorTools
                     EditorSceneManager.SaveScene(scenaCorrente);
             }
             
-            if (!cambiatoAlmenoUnaScena) return;
+            if (!percorsi.cambiatoAlmenoUnaScena) return;
 
             var sceneName2 = Path.GetFileNameWithoutExtension(scenaCorrente.path);
 
@@ -105,13 +103,13 @@ namespace DFTGames.Tools.EditorTools
                 
                 if (scene.enabled)
                 {
-                    scenaDaSalvare = false;
+                    percorsi.scenaDaSalvare = false;
                     var sceneName = Path.GetFileNameWithoutExtension(scene.path);
 
                     string tmpScene = "Assets/_Game/Scene/"+ sceneName + ".unity";
                     UnityEngine.SceneManagement.Scene tmpscenee = EditorSceneManager.OpenScene(tmpScene,OpenSceneMode.Single);
-                    ControlloIndexPercorsi();
-                    if (scenaDaSalvare)
+                    percorsi.ControlloIndexPercorsi();
+                    if (percorsi.scenaDaSalvare)
                     {
                         EditorSceneManager.MarkSceneDirty(tmpscenee);  //imposto Scena a dirty...
                         EditorSceneManager.SaveScene(tmpscenee);
@@ -125,25 +123,7 @@ namespace DFTGames.Tools.EditorTools
           
         }
     
-        private void ControlloIndexPercorsi()
-        {
 
-            GameObject tmpObj = GameObject.Find("PadrePercorso");
-
-            if (tmpObj != null)
-                for (int i = 0; i < tmpObj.transform.childCount; i++)
-                {
-                    Transform tmpPercorso = tmpObj.transform.GetChild(i);
-                    GestorePercorso gp = tmpPercorso.GetComponent<GestorePercorso>();
-                    if (gp.IndexPercorso == NON_ESISTE || (gp.IndexPercorso != NON_ESISTE && !percorsi.indexPercorsi.Contains(gp.IndexPercorso)))
-                    {
-                        tmpPercorso.name = "PERCORSO ERRATO";
-                        gp.IndexPercorso = NON_ESISTE;
-                        scenaDaSalvare = true;
-                    }
-
-                }
-        }
 
         private void OnGUI()
         {
@@ -219,13 +199,7 @@ namespace DFTGames.Tools.EditorTools
             }
         }
 
-        private void resetta()
-        {
-            percorsi.nomePercorsi.Clear();
-            percorsi.indexPercorsi.Clear();
-            ResettaIndexGameData1(NON_ESISTE);
-
-        }
+   
 
         private void InserisciModificaPercorsi()
         {         
@@ -242,7 +216,7 @@ namespace DFTGames.Tools.EditorTools
 
                 if (GUILayout.Button("Resetta", GUILayout.Width(100f)))
                 {
-                    resetta();
+                    percorsi.resetta(gameData1);
                     EditorUtility.SetDirty(percorsi);
                     AssetDatabase.SaveAssets();
                     percorsi.indexPercorsi.Clear();
@@ -259,11 +233,11 @@ namespace DFTGames.Tools.EditorTools
             if (GUILayout.Button(" + ", GUILayout.Width(30)))
             {
                 string tmp = "nome percorso";
-                int indexx = trovaIndexLibero(percorsi.indexPercorsi);
+                int indexx = percorsi.trovaIndexLibero(percorsi.indexPercorsi);
 
                 percorsi.indexPercorsi.Add(indexx);
                 percorsi.nomePercorsi.Add(tmp);
-                ordinaClasseListaDouble(ref percorsi.indexPercorsi, ref percorsi.nomePercorsi);
+                percorsi.ordinaClasseListaDouble(ref percorsi.indexPercorsi, ref percorsi.nomePercorsi);
                 EditorUtility.SetDirty(percorsi);
                 AssetDatabase.SaveAssets();
 
@@ -287,7 +261,7 @@ namespace DFTGames.Tools.EditorTools
                     }
                     if (GUILayout.Button(" - ", GUILayout.Width(30)))  //mi permette di cancellare le righe
                     {    
-                        ResettaIndexGameData1(percorsi.indexPercorsi[i]);
+                        percorsi.ResettaIndexGameData1(percorsi.indexPercorsi[i],gameData1);
                         percorsi.indexPercorsi.RemoveAt(i);
                         percorsi.nomePercorsi.RemoveAt(i);
                         EditorUtility.SetDirty(percorsi);
@@ -361,46 +335,6 @@ namespace DFTGames.Tools.EditorTools
                 }
 
             }
-        }
-
-
-        void ResettaIndexGameData1(int key)  //mi resetta(default = NON_ESISTE) i valori del indexPercorso GameData
-        {                                    // se key=NON_ESISTE mi resetta tutti i valori..altrimenti solo il valore corrispondente
-
-            for (int i = 0; i < gameData1.indexPercorsi.Length; i++)
-            {
-                if ((key == NON_ESISTE) || (gameData1.indexPercorsi[i] == key))
-                {
-                    gameData1.indexPercorsi[i] = NON_ESISTE;
-                    cambiatoAlmenoUnaScena = true;
-                }
-            }
-            ControlloIndexPercorsi();
-        }
-
-        private void ordinaClasseListaDouble(ref List<int> indexPercorsi, ref List<string> nomePercorsi) //mi effettua lo sort del index e stringa(questo costruito io)
-        {
-            List<int> tmpindex = new List<int>(indexPercorsi); //passaggio per valore IMPORTANTE
-            List<string> tmpPercorsi = new List<string>(nomePercorsi);  //passaggio per valore IMPORTANTE
-
-            indexPercorsi.Sort();
-
-            for (int i = 0; i < tmpindex.Count; i++)
-                nomePercorsi[i] = tmpPercorsi[tmpindex.IndexOf(indexPercorsi[i])];           //mi ordina la lista percorso sulla base della lista index riordinata con lo sort
-        }
-
-        private int trovaIndexLibero(List<int> indexPercorsi)   //mi trova l'index libero ciclando
-        {
-            int tmp = 0;
-            if (percorsi.indexPercorsi.Count > 0)
-            {
-                for (int i = 0; i < indexPercorsi.Count; i++)
-                {
-                    if (tmp < indexPercorsi[i] - 1) break;
-                    tmp = indexPercorsi[i];
-                }
-            }
-            return ++tmp;
-        }
+        }      
     }
 }
