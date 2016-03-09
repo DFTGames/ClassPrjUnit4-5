@@ -311,18 +311,24 @@ public class ManagerIniziale : MonoBehaviour
 
     public void RecuperaElencoCartelle()
     {
+        personaggioProvaEsiste = false;
         erroreCaricamento.text = string.Empty;
         Dropdown.OptionData Tmp = null;
         elencoCartelleDropDown.options.Clear();
+
         for (int i = 0; i < cartelleLocali.Count; i++)
-        {
+        {            
             Tmp = new Dropdown.OptionData();
 
             Tmp.text = cartelleLocali[i];
-            if (!cartelleLocali.Contains("PersonaggioDiProva"))
-                elencoCartelleDropDown.options.Add(Tmp);
-            else
+           
+            if (cartelleLocali[i] == "PersonaggioDiProva")
+            {
                 personaggioProvaEsiste = true;
+                continue;
+            }
+       
+            elencoCartelleDropDown.options.Add(Tmp);           
         }
         int numeroCartelleMinimo = 0;
         numeroCartelleMinimo = !personaggioProvaEsiste ? 0 : 1;
