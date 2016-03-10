@@ -45,7 +45,7 @@ public class Cursore : MonoBehaviour
                     case (11):
                         if (hit[i].collider.GetComponent<CapsuleCollider>())
                         {
-                            if (GameManager.dizionarioDiNemici[GameManager.Classe].Contains(hit[i].collider.GetComponent<DatiPersonaggio>().miaClasse.ToString()))
+                            if (GameManager.dizionarioDiNemici[GameManager.personaggio.miaClasse].Contains(hit[i].collider.GetComponent<DatiPersonaggio>().miaClasse))
 
                                 immagineCursore = immagineCombattere;
                             else
