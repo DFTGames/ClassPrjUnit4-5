@@ -131,6 +131,18 @@ namespace FMODUnity
             return attributes;
         }
 
+        public static FMOD.ATTRIBUTES_3D To3DAttributes(Transform transform, Rigidbody rigidbody = null)
+        {
+            FMOD.ATTRIBUTES_3D attributes = transform.To3DAttributes();
+
+            if (rigidbody)
+            {
+                attributes.velocity = rigidbody.velocity.ToFMODVector();
+            }
+
+            return attributes;
+        }
+
         public static FMOD.ATTRIBUTES_3D To3DAttributes(GameObject go, Rigidbody rigidbody = null)
         {
             FMOD.ATTRIBUTES_3D attributes = go.transform.To3DAttributes();
@@ -154,6 +166,8 @@ namespace FMODUnity
             return FMODPlatform.Mac;
             #elif UNITY_STANDALONE_LINUX
             return FMODPlatform.Linux;
+			#elif UNITY_TVOS
+			return FMODPlatform.AppleTV;
             #elif UNITY_IOS
             FMODPlatform result;
             switch (UnityEngine.iOS.Device.generation)
@@ -278,7 +292,7 @@ namespace FMODUnity
 
         internal static string GetPluginPath(string pluginName)
         {
-            #if UNITY_IOS
+			#if (UNITY_IOS || UNITY_TVOS || UNITY_PSP2)
 				return "";
 			#else
 	            #if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN || UNITY_XBOXONE || UNITY_WINRT_8_1

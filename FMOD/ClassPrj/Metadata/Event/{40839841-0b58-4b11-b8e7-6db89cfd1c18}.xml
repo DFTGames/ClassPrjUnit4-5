@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.01.07.00">
+<objects serializationModel="Studio.01.08.00">
     <object class="Event" id="{40839841-0b58-4b11-b8e7-6db89cfd1c18}">
         <property name="name">
             <value>EnvironmentVillaggio</value>
@@ -89,8 +89,8 @@
     </object>
     <object class="Timeline" id="{115ab8ae-10f7-4681-8312-b72c6f5e3f39}">
         <relationship name="modules">
-            <destination>{31cca327-af6b-4baa-8c8a-691a6ee4d88e}</destination>
             <destination>{f59d2151-b93d-490c-bf86-c0859ece893a}</destination>
+            <destination>{31cca327-af6b-4baa-8c8a-691a6ee4d88e}</destination>
         </relationship>
         <relationship name="markers">
             <destination>{759ecb23-7cc5-4606-9746-65f435a78abe}</destination>
@@ -106,7 +106,7 @@
     </object>
     <object class="EventMixerMaster" id="{d26e747f-ff42-4a94-8099-c1bbc5a491f9}">
         <property name="volume">
-            <value>-10.5</value>
+            <value>-5.5</value>
         </property>
         <relationship name="effectChain">
             <destination>{49ec6df8-1ab8-4e18-9854-6756b832bc20}</destination>
