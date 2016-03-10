@@ -44,6 +44,7 @@ public class ControllerMaga : MonoBehaviour
     private Vector3 posMouse;
     private NavMeshAgent navMeshAgent;
     private bool Destinazione = false;
+    private DatiPersonaggio datiPersonaggio;
     #endregion Variabili PRIVATE
 
     private void Start()
@@ -81,6 +82,10 @@ public class ControllerMaga : MonoBehaviour
         capsulaCentro = new Vector3(0.0f, capsula.center.y, 0.0f);
         IsPointAndClick = true;
         layerAlberi = ~layerAlberi;
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+            return;
+        datiPersonaggio = GetComponent<DatiPersonaggio>();
+        GameManager.RegistraDatiPersonaggio(datiPersonaggio);
     }
 
     private void Update()
@@ -227,5 +232,39 @@ public class ControllerMaga : MonoBehaviour
                 animatore.SetTrigger("attacco2");
         }
     }
-   
+
+    //richiamare questo metodo come evento dell'animazione attacco nel frame finale
+    public void FaiDanno()
+    {
+        //controllare se il personaggio è girato verso il nemico e quindi se è nel suo arco di attacco
+        //farsi dare la percentuale di resistere all'attacco dal nemico
+        //calcolare un numero random da 1 a 100, per esempio supponendo che la percentuale del nemico di resistere sia del 20%,
+        //se il  numero random è un numero inferiore a 20 l'attacco non è andato a buon fine se invece è un numero da 21 a 100 è andato a buonfine.
+        //se l'attacco è andato a buonfine:
+        //recuperare attaccobase del personaggio da DatiPersonaggio, e recuperare tutti i dati del nemico relativi alla sua difesa
+        //calcolare il danno da effettuare in base a tutti i valori sopra citati(secondo una qualche equazione che li lega)
+        //mandare un messaggio al metodo del nemico RiceviDanno passando come parametro la quantità di danno inflitta
+    }    
+    
+    public void RiceviDanno(float quanto)
+    {
+        datiPersonaggio.Vita -= quanto;
+        SalvaDatiVita();
+    }
+
+    private void SalvaDatiVita()
+    {
+        GameManager.datiPersonaggio.Dati.Vita = datiPersonaggio.Vita;
+        GameManager.datiPersonaggio.Salva();
+        GestoreCanvasAltreScene.AggiornaVita();
+    }
+
+    public void PozioneVita(float quanto)
+    {
+        datiPersonaggio.Vita += quanto;
+        SalvaDatiVita();
+    }
+
+    
+
 }

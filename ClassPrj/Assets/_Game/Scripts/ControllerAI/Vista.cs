@@ -1,45 +1,19 @@
-﻿/*
-1)Start:Per prima cosa raccolgo tutti i tag dei nemici di questo personaggio in base a quanto mostrato nel database
-e li raccolgo nella lista di stringhe "Nemici"
-2)OnTriggerEnter: ogni volta che entra qualcuno nello sphereCollider controllo se è un nemico e quindi se fa parte della lista Nemici che ho messo da parte,
-se trovo il suo tag nella lista dei nemici interrompo la ricerca e lo aggiungo nella lista chiamata "listaNemiciDentroNonVisti"
-3)Update:
-  a)se ci sono nemici nella listaNemiciDentroNonVisti controllo se è il caso di aggiungerli nella lista "listaNemiciVisti" che valuta se ogni singolo elemento di questa
-  lista rientra nell'angolo di visuale, se rientra in quest'angolo(e se il raggio che parte dal personaggio e arriva al suo nemico
-  non colpisce un ostacolo) vuol dire che è stato visto e quindi lo sposto in un'altra lista chiamata "listaNemiciVisti" e lo rimuovo
-  dalla listaNemiciDentroNonVisti. Altrimenti non lo sposto.
-  b)se ci sono elementi nella listaNemiciVisti, devo controllare se si spostano nella zona oltre l'angolo cioè se vanno fuori visuale, quindi
-  controllo se il nemico si è spostato o meno nella zona non visibile(ma sempre dentro la sfera), se è così lo trasferisco nella lista
-  listaNemiciDentroNonVisti, e lo rimuovo dalla listaNemiciVisti.
-  Inoltre, sempre se ci sono elementi nella listaNemiciVisti, se non sto ancora inseguendo nessuno(oppure se la persona che stavo inseguendo esce dalla lista dei visti
-  quindi non è più visto), cerco un altro nemico da inseguire che sarà il più vicino tra quelli che sto vedendo.
-  inoltre questo valore lo passerò al cervello.
-  c)Altrimenti cioè se non ci sono più nemici nella listaNemiciVisti ma poco prima ne stavo inseguendo uno, dico al cervello che può smettere di inseguire e tornare a pattugliare,
-  indicandogli che non ci sono più obiettivi nemici e  impostando il suo ObiettivoInVista=false, farò terminare lo stato corrente di inseguimento e farò
-  ripartire il prossimo stato cioè il pattugliamento.
-4)OnTriggerExit: se un elemento esce dallo spherecollider, se era nella listaNemiciVisti, lo tolgo oppure se era nella listaNemiciDentroNonVisti lo tolgo.
-
-*/
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Vista : MonoBehaviour
-{
-    private RaycastHit hit;
-    private float alphaGradMezzi;
-    private Vector3 vettoreDaTransformAObiettivo;
-
-    private float angoloTraForwardEObiettivo;
-    private float prodottoScalare;
-    private float prodottoMagnitudini;
-
-    private FSM mioCervello;
-    private List<string> Nemici = null;
-
+{   
     public List<Transform> listaNemiciDentroNonVisti;
     public List<Transform> listaNemiciVisti;
 
+    private RaycastHit hit;
+    private float alphaGradMezzi;
+    private Vector3 vettoreDaTransformAObiettivo;
+    private float angoloTraForwardEObiettivo;
+    private float prodottoScalare;
+    private float prodottoMagnitudini;
+    private FSM mioCervello;
+    private List<string> Nemici = null;
     private float distanzaMinore = 0f;
     private List<Transform> tmpDaELiminare;
     private bool amicizieCambiate = false;
@@ -48,6 +22,20 @@ public class Vista : MonoBehaviour
     private bool armaCambiata = false;
     private DatiPersonaggio datiPersonaggio;
     private DatiPersonaggio datiAltroPersonaggio;
+    private bool amiciziaCambiata = false;
+
+    public bool AmiciziaCambiata
+    {
+        get
+        {
+            return amiciziaCambiata;
+        }
+
+        set
+        {
+            amiciziaCambiata = value;
+        }
+    }
 
     private void Start()
     {
@@ -64,10 +52,8 @@ public class Vista : MonoBehaviour
     {
         datiAltroPersonaggio = coll.GetComponent<DatiPersonaggio>();
         if (datiAltroPersonaggio != null)
-        {
-           
-            //if (!GameManager.dizionarioDiNemici.ContainsKey(gameObject.tag)) return;
-            if (GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse.ToString()].Contains(datiAltroPersonaggio.miaClasse.ToString()))
+        {     
+            if (GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
                 listaNemiciDentroNonVisti.Add(coll.transform);
         }
     }
@@ -78,21 +64,22 @@ public class Vista : MonoBehaviour
             listaNemiciDentroNonVisti.Remove(coll.transform);
         else if (listaNemiciVisti.Contains(coll.transform))
             listaNemiciVisti.Remove(coll.transform);
+        datiAltroPersonaggio = null;
     }
 
     private void OnTriggerStay(Collider coll)
     {
-        datiAltroPersonaggio = coll.GetComponent<DatiPersonaggio>();
-        if (datiAltroPersonaggio != null)
+        if (AmiciziaCambiata)
         {
-            // if (!GameManager.dizionarioDiNemici.ContainsKey(gameObject.tag)) return;
-            if (GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse.ToString()].Contains(datiAltroPersonaggio.miaClasse.ToString()) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
+            datiAltroPersonaggio = coll.GetComponent<DatiPersonaggio>();
+            if (GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
                 listaNemiciDentroNonVisti.Add(coll.transform);
-            else if (listaNemiciVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse.ToString()].Contains(datiAltroPersonaggio.miaClasse.ToString()))
+            else if (listaNemiciVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
                 listaNemiciVisti.Remove(coll.transform);
-            else if (listaNemiciDentroNonVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse.ToString()].Contains(datiAltroPersonaggio.miaClasse.ToString()))
+            else if (listaNemiciDentroNonVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
                 listaNemiciDentroNonVisti.Remove(coll.transform);
-        }
+            AmiciziaCambiata = false;
+        }    
     }
 
     private void Update()

@@ -23,6 +23,7 @@ public class GestoreCanvasAltreScene : MonoBehaviour
     private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
     private bool fatto = false;
     private string tagDellAltro = null;
+    private DatiPersonaggio personaggio;
 
     public void Gerra()
     {
@@ -35,13 +36,15 @@ public class GestoreCanvasAltreScene : MonoBehaviour
     }
 
     public void BottoneAumentaVita()
-    {
-        GameManager.PozioneVita();
+    {     
+        float quanto = 1f;
+        personaggio.gameObject.GetComponent<ControllerMaga>().PozioneVita(quanto);
     }
 
     public void BottoneRiceviDanno()
     {
-        GameManager.RiceviDanno();
+        float quanto = 1f;
+       personaggio.gameObject.GetComponent<ControllerMaga>().RiceviDanno(quanto);
     }
 
     private void Awake()
@@ -49,22 +52,23 @@ public class GestoreCanvasAltreScene : MonoBehaviour
         me = this;
     }
   
-    public static void AggiornaDati()
-    {
-        me.nomeText.text = GameManager.Nome;
-        me.valoreVitaText.text = GameManager.VitaAttuale.ToString();
-        me.valoreTipoText.text = GameManager.Classe.ToString();
-        me.valoreAttaccoText.text = GameManager.Attacco.ToString();
-        me.valoreDifesaText.text = GameManager.Difesa.ToString();
+    public static void AggiornaDati(DatiPersonaggio datiPersonaggio)
+    {     
+        me.nomeText.text = datiPersonaggio.Nome;
+        me.valoreVitaText.text = datiPersonaggio.Vita.ToString();
+        me.valoreTipoText.text = datiPersonaggio.miaClasse.ToString();
+        me.valoreAttaccoText.text = datiPersonaggio.Attacco.ToString();
+        me.valoreDifesaText.text = datiPersonaggio.Difesa.ToString();
         me.sliderVita.minValue = 0f;
-        me.sliderVita.maxValue = GameManager.VitaMassima;
-        me.sliderVita.value = GameManager.VitaAttuale;
+        me.sliderVita.maxValue = datiPersonaggio.VitaMassima;
+        me.sliderVita.value = datiPersonaggio.Vita;
+        me.personaggio = datiPersonaggio;
     }
 
     public static void AggiornaVita()
     {
-        me.valoreVitaText.text = GameManager.VitaAttuale.ToString();
-        me.sliderVita.value = GameManager.VitaAttuale;
+        me.valoreVitaText.text = me.personaggio.Vita.ToString();
+        me.sliderVita.value = me.personaggio.Vita;
      
     }
 

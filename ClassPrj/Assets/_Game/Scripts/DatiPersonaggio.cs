@@ -14,7 +14,8 @@ public class DatiPersonaggio : MonoBehaviour {
     private float mana;
     private float xp;
     private float attacco;
-    private float difesa; 
+    private float difesa;
+    private string nome;
 
     public float Vita
     {
@@ -24,8 +25,8 @@ public class DatiPersonaggio : MonoBehaviour {
         }
 
         set
-        {
-            vita = value;
+        {        
+            vita= Mathf.Clamp(value, 0, vitaMassima);
         }
     }
 
@@ -63,8 +64,8 @@ public class DatiPersonaggio : MonoBehaviour {
         }
 
         set
-        {
-            mana = value;
+        {            
+            mana = Mathf.Clamp(value, 0, manaMassimo);
         }
     }
 
@@ -76,16 +77,23 @@ public class DatiPersonaggio : MonoBehaviour {
         }
 
         set
-        {
-            xp = value;
+        {          
+            xp = Mathf.Clamp(value, 0, xpMassimo);
         }
+    }
+
+    private float CalcolaAttaccoCorrente()
+    {
+        //aggiungere tutta la logica per calcolare l'attacco in base agli oggetti che indossa il personaggio che aumentano l'attacco base
+        //come l'arma, o che ne so un cappello particolare ecc...
+        return attacco;
     }
 
     public float Attacco
     {
         get
         {
-            return attacco;
+            return CalcolaAttaccoCorrente();
         }
 
         set
@@ -94,11 +102,18 @@ public class DatiPersonaggio : MonoBehaviour {
         }
     }
 
+    private float CalcolaDifesaCorrente()
+    {
+        //aggiungere tutta la logica per calcolare la difesa in base agli oggetti che indossa il personaggio che aumentano l'attacco base
+        //come la difesa che ha la tunica, o che ne so un cappello particolare ecc...
+        return difesa;
+    }
+
     public float Difesa
     {
         get
         {
-            return difesa;
+            return CalcolaDifesaCorrente();
         }
 
         set
@@ -146,19 +161,25 @@ public class DatiPersonaggio : MonoBehaviour {
         }
     }
 
+    public string Nome
+    {
+        get
+        {
+            return nome;
+        }
+
+        set
+        {
+            nome = value;
+        }
+    }
+
     // Use this for initialization
-    void Start () {
-        
-        if (SceneManager.GetActiveScene().buildIndex == 0)
-            return;
-        GameManager.RegistraDatiPersonaggio(this);
-        GameManager.RecuperaDati(this);
+    void Start () {     
+     
+      
       
     }
-	
-	// Update is called once per frame
-	void Update () {
-       
-    }
+
   
 }

@@ -40,6 +40,7 @@ public class FSM : MonoBehaviour
     private IStato pattugliamento;
     private IStato inseguimento;
     private IStato Attacco;
+    private DatiPersonaggio datiPersonaggio;
 
     public Transform ObiettivoNemico
     {
@@ -175,6 +176,8 @@ public class FSM : MonoBehaviour
         pattugliamento.Inizializza(this);
         inseguimento.Inizializza(this);
         statoCorrente = pattugliamento;
+        datiPersonaggio = GetComponent<DatiPersonaggio>();
+        GameManager.RegistraDatiPersonaggio(datiPersonaggio);
     }
 
     private void Update()
@@ -205,4 +208,23 @@ public class FSM : MonoBehaviour
     {
         colliderSferaVista.radius = quantoCiVedoSenzaOcchiali + ampiezza * Mathf.Sin(Time.time * velocitaOscillazioneVista);
     }
+
+    //richiamare questo metodo come evento dell'animazione attacco nel frame finale
+    public void FaiDanno()
+    {
+        //controllare se il personaggio è girato verso il nemico e quindi se è nel suo arco di attacco
+        //farsi dare la percentuale di resistere all'attacco dal nemico
+        //calcolare un numero random da 1 a 100, per esempio supponendo che la percentuale del nemico di resistere sia del 20%,
+        //se il  numero random è un numero inferiore a 20 l'attacco non è andato a buon fine se invece è un numero da 21 a 100 è andato a buonfine.
+        //se l'attacco è andato a buonfine:
+        //recuperare attaccobase del personaggio da DatiPersonaggio, e recuperare tutti i dati del nemico relativi alla sua difesa
+        //calcolare il danno da effettuare in base a tutti i valori sopra citati(secondo una qualche equazione che li lega)
+        //mandare un messaggio al metodo del nemico RiceviDanno passando come parametro la quantità di danno inflitta
+    }
+
+    public void RiceviDanno(float quanto)
+    {
+        datiPersonaggio.Vita -= quanto;
+    }
+
 }
