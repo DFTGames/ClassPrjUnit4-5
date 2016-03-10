@@ -2,8 +2,7 @@
 using UnityEngine;
 
 public class Vista : MonoBehaviour
-{
-    public static bool amiciziaCambiata = false;
+{   
     public List<Transform> listaNemiciDentroNonVisti;
     public List<Transform> listaNemiciVisti;
 
@@ -23,6 +22,20 @@ public class Vista : MonoBehaviour
     private bool armaCambiata = false;
     private DatiPersonaggio datiPersonaggio;
     private DatiPersonaggio datiAltroPersonaggio;
+    private bool amiciziaCambiata = false;
+
+    public bool AmiciziaCambiata
+    {
+        get
+        {
+            return amiciziaCambiata;
+        }
+
+        set
+        {
+            amiciziaCambiata = value;
+        }
+    }
 
     private void Start()
     {
@@ -56,12 +69,18 @@ public class Vista : MonoBehaviour
 
     private void OnTriggerStay(Collider coll)
     {
-        if (amiciziaCambiata)
+        if (AmiciziaCambiata)
         {
             datiAltroPersonaggio = coll.GetComponent<DatiPersonaggio>();
-            amiciziaCambiata = false;
+            if (GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
+                listaNemiciDentroNonVisti.Add(coll.transform);
+            else if (listaNemiciVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
+                listaNemiciVisti.Remove(coll.transform);
+            else if (listaNemiciDentroNonVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
+                listaNemiciDentroNonVisti.Remove(coll.transform);
+            AmiciziaCambiata = false;
         }
-        if (datiAltroPersonaggio != null)
+     /*   if (datiAltroPersonaggio != null)
         {          
             if (GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
                 listaNemiciDentroNonVisti.Add(coll.transform);
@@ -69,7 +88,7 @@ public class Vista : MonoBehaviour
                 listaNemiciVisti.Remove(coll.transform);
             else if (listaNemiciDentroNonVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
                 listaNemiciDentroNonVisti.Remove(coll.transform);
-        }
+        }*/
     }
 
     private void Update()

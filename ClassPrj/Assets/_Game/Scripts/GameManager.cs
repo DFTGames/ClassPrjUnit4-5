@@ -25,7 +25,8 @@ public class GameManager : MonoBehaviour
     private string classeEssereSelezionato = string.Empty;
     private RaycastHit hit;
     private Collider precedente = null;
-    private Collider attuale = null;  
+    private Collider attuale = null;
+    private Vista vistaGoblin; 
        
     void Awake()
     {
@@ -182,8 +183,9 @@ public class GameManager : MonoBehaviour
                 dizionarioDiAmici.Add((classiPersonaggi)i, tmpAmici);
             if (!dizionarioDiIndifferenti.ContainsKey((classiPersonaggi)i))
                 dizionarioDiIndifferenti.Add((classiPersonaggi)i, tmpIndifferenti);
-        }
-        Vista.amiciziaCambiata = true;
+        }     
+        if(vistaGoblin!=null)   
+           vistaGoblin.AmiciziaCambiata = true;
     }
         
 
@@ -196,8 +198,11 @@ public class GameManager : MonoBehaviour
             {
                 attuale = hit.collider;
                 DatiPersonaggio tmpDati = hit.collider.GetComponent<DatiPersonaggio>();
-                if(tmpDati!=null)
-                   classeEssereSelezionato = hit.collider.GetComponent<DatiPersonaggio>().miaClasse.ToString();
+                if (tmpDati != null)
+                {
+                    classeEssereSelezionato = hit.collider.GetComponent<DatiPersonaggio>().miaClasse.ToString();
+                    vistaGoblin = hit.collider.GetComponent<Vista>();
+                }
 
                 if (precedente != attuale)
                 {
