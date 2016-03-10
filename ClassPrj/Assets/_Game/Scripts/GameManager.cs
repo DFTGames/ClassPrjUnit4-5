@@ -6,116 +6,32 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {   
-    public static string classeDiColuiCheVuoleCambiareAmicizia = "Player";   
+    public static string classeDiColuiCheVuoleCambiareAmicizia = string.Empty;   
     public static List<string> nemici = null;        
-    public static Dictionary<string, List<string>> dizionarioDiNemici = new Dictionary<string, List<string>>();
-    public static Dictionary<string, List<string>> dizionarioDiAmici = new Dictionary<string, List<string>>();
-    public static Dictionary<string, List<string>> dizionarioDiIndifferenti = new Dictionary<string, List<string>>();
+    public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiNemici = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
+    public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiAmici = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
+    public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiIndifferenti = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
     public GameData databseInizialeAmicizie;
     public caratteristichePersonaggioV2 databaseInizialeProprieta;
     public static Transform PersonaggioPrincipaleT;
     public static PadreGestore padreGestore;
     public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();
+    public static DatiPersonaggio personaggio;
 
     private Dictionary<int, DatiPersonaggio> registroDatiPersonaggi = new Dictionary<int, DatiPersonaggio>();
     private static GameManager me;
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
-    private Serializzabile<ValoriPersonaggioS> datiPersonaggio;    
-    private string classeEssereSelezionato = null;
+    public static Serializzabile<ValoriPersonaggioS> datiPersonaggio;    
+    private string classeEssereSelezionato = string.Empty;
     private RaycastHit hit;
     private Collider precedente = null;
-    private Collider attuale = null;       
-    private float vitaAttuale;
-    private float vitaMassima = 0f;
-    private float attacco = 0f;
-    private float difesa = 0f;
-    private string classe = string.Empty;
-    private string nome = string.Empty;
-    
-
-    public static float VitaAttuale
-    {
-        get
-        {
-            return me.vitaAttuale;
-        }
-        set
-        {
-            me.vitaAttuale = Mathf.Clamp(value, 0, me.vitaMassima);
-        }
-    }
-
-    public static float VitaMassima
-    {
-        get
-        {
-            return me.vitaMassima;
-        }
-
-        set
-        {
-            me.vitaMassima = value;
-        }
-    }
-
-    public static float Attacco
-    {
-        get
-        {
-            return me.attacco;
-        }
-
-        set
-        {
-            me.attacco = value;
-        }
-    }
-
-    public static float Difesa
-    {
-        get
-        {
-            return me.difesa;
-        }
-
-        set
-        {
-            me.difesa = value;
-        }
-    }
-
-    public static string Classe
-    {
-        get
-        {
-            return me.classe;
-        }
-
-        set
-        {
-            me.classe = value;
-        }
-    }
-
-    public static string Nome
-    {
-        get
-        {
-            return me.nome;
-        }
-
-        set
-        {
-            me.nome = value;
-        }
-    }
-
+    private Collider attuale = null;  
+       
     void Awake()
     {
         me = this;
     }
   
-
     private void Start()
     {
         GameObject tmpPdr = GameObject.Find("PadrePercorso");
@@ -124,16 +40,9 @@ public class GameManager : MonoBehaviour
         else
             Debug.LogError("Ma ci fai o ci sei ????..sei un cazzone....manca il padrePercorso");
         Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
+        FileSerializzatiDelPersonaggio();
         if (Statici.sonoPassatoDallaScenaIniziale)
-        {           
-            FileSerializzatiDelPersonaggio();
-            VitaMassima = datiPersonaggio.Dati.VitaMassima;
-            VitaAttuale = datiPersonaggio.Dati.Vita;
-            Attacco = datiPersonaggio.Dati.Attacco;
-            Difesa = datiPersonaggio.Dati.difesa;
-            Nome = datiPersonaggio.Dati.nomePersonaggio;
-            Classe = datiPersonaggio.Dati.classe;
-            GestoreCanvasAltreScene.AggiornaDati();
+        {            
             GameObject tmpObjP = Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
             PersonaggioPrincipaleT = tmpObjP.transform;
             RecuperaDizionariDiplomazia();
@@ -142,9 +51,7 @@ public class GameManager : MonoBehaviour
         {            
             //Questo else serve nel caso in cui facciamo play da una scena che non sia quella iniziale
             //verrà così caricato un personaggio per fare le prove(il magoBlu).
-            //il personaggio verrà caricato sempre nella scena in cui si è fatto play.         
-           
-            FileSerializzatiDelPersonaggio();
+            //il personaggio verrà caricato sempre nella scena in cui si è fatto play.                   
             if (datiPersonaggio.Dati.nomePersonaggio == null)
             {
                 datiPersonaggio.Dati.Vita = 10;
@@ -177,30 +84,21 @@ public class GameManager : MonoBehaviour
                         datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] = databseInizialeAmicizie.matriceAmicizie[i].elementoAmicizia[j];
                     }
                 }
-                datiDiplomazia.Salva();
-                
+                datiDiplomazia.Salva();                
             }
             Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref dizionarioPercorsi);
             GameObject tmpObjP = Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
             PersonaggioPrincipaleT = tmpObjP.transform;
-            RecuperaDizionariDiplomazia();
-            VitaMassima = datiPersonaggio.Dati.VitaMassima;
-            VitaAttuale = datiPersonaggio.Dati.Vita;
-            Attacco = datiPersonaggio.Dati.Attacco;
-            Difesa = datiPersonaggio.Dati.difesa;
-            Nome = datiPersonaggio.Dati.nomePersonaggio;
-            Classe = datiPersonaggio.Dati.classe;
-            GestoreCanvasAltreScene.AggiornaDati();
+            RecuperaDizionariDiplomazia();      
             Statici.CopiaIlDB();
-            Statici.sonoPassatoDallaScenaIniziale = true;
-           
-        }
-        classeDiColuiCheVuoleCambiareAmicizia = Classe;
+            Statici.sonoPassatoDallaScenaIniziale = true;           
+        }       
     }
 
     public static void RegistraDatiPersonaggio(DatiPersonaggio datiPersonaggio)
     {  
-        me.registroDatiPersonaggi.Add(datiPersonaggio.GetInstanceID(), datiPersonaggio);    
+        me.registroDatiPersonaggi.Add(datiPersonaggio.GetInstanceID(), datiPersonaggio);
+        RecuperaDati(datiPersonaggio);  
     }
 
     public static void RecuperaDati(DatiPersonaggio datiStatistici)
@@ -210,27 +108,31 @@ public class GameManager : MonoBehaviour
         me.registroDatiPersonaggi[tmpID].Giocabile = me.databaseInizialeProprieta.matriceProprieta[indice].giocabile;
         if (!me.registroDatiPersonaggi[tmpID].Giocabile)
         { //se è un personaggio AI recupero i dati dallo scriptble object
-            me.registroDatiPersonaggi[tmpID].Vita = me.databaseInizialeProprieta.matriceProprieta[indice].Vita;
             me.registroDatiPersonaggi[tmpID].VitaMassima = me.databaseInizialeProprieta.matriceProprieta[indice].Vita;
-            me.registroDatiPersonaggi[tmpID].Mana = me.databaseInizialeProprieta.matriceProprieta[indice].Mana;
+            me.registroDatiPersonaggi[tmpID].Vita = me.databaseInizialeProprieta.matriceProprieta[indice].Vita;
             me.registroDatiPersonaggi[tmpID].ManaMassimo = me.databaseInizialeProprieta.matriceProprieta[indice].Mana;
+            me.registroDatiPersonaggi[tmpID].Mana = me.databaseInizialeProprieta.matriceProprieta[indice].Mana;      
             me.registroDatiPersonaggi[tmpID].Livello = me.databaseInizialeProprieta.matriceProprieta[indice].Livello;
-            me.registroDatiPersonaggi[tmpID].Xp = me.databaseInizialeProprieta.matriceProprieta[indice].Xp;
             me.registroDatiPersonaggi[tmpID].XpMassimo = me.databaseInizialeProprieta.matriceProprieta[indice].Xp;
+            me.registroDatiPersonaggi[tmpID].Xp = me.databaseInizialeProprieta.matriceProprieta[indice].Xp;          
             me.registroDatiPersonaggi[tmpID].Attacco = me.databaseInizialeProprieta.matriceProprieta[indice].Attacco;
-            me.registroDatiPersonaggi[tmpID].Difesa = me.databaseInizialeProprieta.matriceProprieta[indice].difesa;
+            me.registroDatiPersonaggi[tmpID].Difesa = me.databaseInizialeProprieta.matriceProprieta[indice].difesa;            
         }
         else
         {  //se è giocabile recupero i dati dal file serializzato
-            me.registroDatiPersonaggi[tmpID].Vita = me.datiPersonaggio.Dati.Vita;
-            me.registroDatiPersonaggi[tmpID].VitaMassima = me.datiPersonaggio.Dati.VitaMassima;
-            me.registroDatiPersonaggi[tmpID].Mana = me.datiPersonaggio.Dati.Mana;
-            me.registroDatiPersonaggi[tmpID].ManaMassimo = me.datiPersonaggio.Dati.ManaMassimo;
-            me.registroDatiPersonaggi[tmpID].Livello = me.datiPersonaggio.Dati.Livello;
-            me.registroDatiPersonaggi[tmpID].Xp = me.datiPersonaggio.Dati.Xp;
-            me.registroDatiPersonaggi[tmpID].XpMassimo = me.datiPersonaggio.Dati.XPMassimo;
-            me.registroDatiPersonaggi[tmpID].Attacco = me.datiPersonaggio.Dati.Attacco;
-            me.registroDatiPersonaggi[tmpID].Difesa = me.datiPersonaggio.Dati.difesa;
+            me.registroDatiPersonaggi[tmpID].VitaMassima = datiPersonaggio.Dati.VitaMassima;
+            me.registroDatiPersonaggi[tmpID].Vita = datiPersonaggio.Dati.Vita;
+            me.registroDatiPersonaggi[tmpID].ManaMassimo = datiPersonaggio.Dati.ManaMassimo;
+            me.registroDatiPersonaggi[tmpID].Mana = datiPersonaggio.Dati.Mana;           
+            me.registroDatiPersonaggi[tmpID].Livello = datiPersonaggio.Dati.Livello;       
+            me.registroDatiPersonaggi[tmpID].XpMassimo = datiPersonaggio.Dati.XPMassimo;
+            me.registroDatiPersonaggi[tmpID].Xp = datiPersonaggio.Dati.Xp;
+            me.registroDatiPersonaggi[tmpID].Attacco = datiPersonaggio.Dati.Attacco;
+            me.registroDatiPersonaggi[tmpID].Difesa = datiPersonaggio.Dati.difesa;
+            me.registroDatiPersonaggi[tmpID].Nome = datiPersonaggio.Dati.nomePersonaggio;
+            GestoreCanvasAltreScene.AggiornaDati(datiStatistici);
+            personaggio = datiStatistici;
+            classeDiColuiCheVuoleCambiareAmicizia = datiStatistici.miaClasse.ToString();
         }  
     }
     private void FileSerializzatiDelPersonaggio()
@@ -246,61 +148,48 @@ public class GameManager : MonoBehaviour
         dizionarioDiNemici.Clear();
         dizionarioDiIndifferenti.Clear();
         dizionarioDiAmici.Clear();
-        List<string> tmpNemici = null;
-        List<string> tmpAmici = null;
-        List<string> tmpIndifferenti = null;
+        List<classiPersonaggi> tmpNemici = null;
+        List<classiPersonaggi> tmpAmici = null;
+        List<classiPersonaggi> tmpIndifferenti = null;
         for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
         {
-            tmpNemici = new List<string>();
-            tmpIndifferenti = new List<string>();
-            tmpAmici = new List<string>();
+            tmpNemici = new List<classiPersonaggi>();
+            tmpIndifferenti = new List<classiPersonaggi>();
+            tmpAmici = new List<classiPersonaggi>();
             for (int j = 0; j < datiDiplomazia.Dati.tipoEssere.Length; j++)
             {
                 switch (datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j])
                 {
                     case Amicizie.Neutro:
-                        if (!tmpIndifferenti.Contains(datiDiplomazia.Dati.tipoEssere[j]))
-                        {
-                            tmpIndifferenti.Add(datiDiplomazia.Dati.tipoEssere[j]);
-                        }
+                        if (!tmpIndifferenti.Contains((classiPersonaggi)j))                        
+                            tmpIndifferenti.Add((classiPersonaggi)j);                        
                         break;
-
                     case Amicizie.Alleato:
-                        if (!tmpAmici.Contains(datiDiplomazia.Dati.tipoEssere[j]))
-                        {
-                            tmpAmici.Add(datiDiplomazia.Dati.tipoEssere[j]);
-                        }
+                        if (!tmpAmici.Contains((classiPersonaggi)j))                        
+                            tmpAmici.Add((classiPersonaggi)j);                        
                         break;
-
-                    case Amicizie.Nemico:
-                        if (!tmpNemici.Contains(datiDiplomazia.Dati.tipoEssere[j]))
-                        {
-                            tmpNemici.Add(datiDiplomazia.Dati.tipoEssere[j]);
-                        }
+                    case Amicizie.Nemico:                      
+                        if (!tmpNemici.Contains((classiPersonaggi)j))                        
+                            tmpNemici.Add((classiPersonaggi)j);                        
                         break;
-
                     default:
                         break;
                 }
             }
-            if (!dizionarioDiNemici.ContainsKey(datiDiplomazia.Dati.tipoEssere[i]))
-                dizionarioDiNemici.Add(datiDiplomazia.Dati.tipoEssere[i], tmpNemici);
-            if (!dizionarioDiAmici.ContainsKey(datiDiplomazia.Dati.tipoEssere[i]))
-                dizionarioDiAmici.Add(datiDiplomazia.Dati.tipoEssere[i], tmpAmici);
-            if (!dizionarioDiIndifferenti.ContainsKey(datiDiplomazia.Dati.tipoEssere[i]))
-                dizionarioDiIndifferenti.Add(datiDiplomazia.Dati.tipoEssere[i], tmpIndifferenti);
+            if (!dizionarioDiNemici.ContainsKey((classiPersonaggi)i))
+                dizionarioDiNemici.Add((classiPersonaggi)i, tmpNemici);
+            if (!dizionarioDiAmici.ContainsKey((classiPersonaggi)i))
+                dizionarioDiAmici.Add((classiPersonaggi)i, tmpAmici);
+            if (!dizionarioDiIndifferenti.ContainsKey((classiPersonaggi)i))
+                dizionarioDiIndifferenti.Add((classiPersonaggi)i, tmpIndifferenti);
         }
+        Vista.amiciziaCambiata = true;
     }
+        
 
     // Update is called once per frame
     private void Update()
-    { 
-        if (datiPersonaggio.Dati.Vita != VitaAttuale)
-        {
-            me.datiPersonaggio.Dati.Vita = VitaAttuale;
-            me.datiPersonaggio.Salva();
-            GestoreCanvasAltreScene.AggiornaVita();
-        }
+    {       
         if (Input.GetMouseButtonDown(0))
         {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit) && !EventSystem.current.IsPointerOverGameObject())
@@ -370,32 +259,21 @@ public class GameManager : MonoBehaviour
                     }
                 }
             }
-        }
+        }    
         me.RecuperaDizionariDiplomazia();
     }
-
-   
-    public static void RiceviDanno()
-    {
-        VitaAttuale -= 1f;
-    }
-
-    public static void PozioneVita()
-    {
-        VitaAttuale += 1f;
-    }
-
+  
     public static void MemorizzaCheckPoint(string nomeCheckPoint)
     {
-        me.datiPersonaggio.Dati.posizioneCheckPoint = nomeCheckPoint;
-        me.datiPersonaggio.Salva();
+        datiPersonaggio.Dati.posizioneCheckPoint = nomeCheckPoint;
+        datiPersonaggio.Salva();
     }
 
     public static void MemorizzaProssimaScena(string nomeScena, string nomeCheck)
     {
-        me.datiPersonaggio.Dati.posizioneCheckPoint = nomeCheck;
-        me.datiPersonaggio.Dati.nomeScena = nomeScena;
-        me.datiPersonaggio.Salva();
+        datiPersonaggio.Dati.posizioneCheckPoint = nomeCheck;
+        datiPersonaggio.Dati.nomeScena = nomeScena;
+        datiPersonaggio.Salva();
         me.StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica(nomeScena));
     }
 }
