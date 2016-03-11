@@ -72,12 +72,15 @@ public class Vista : MonoBehaviour
         if (AmiciziaCambiata)
         {
             datiAltroPersonaggio = coll.GetComponent<DatiPersonaggio>();
-            if (GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
-                listaNemiciDentroNonVisti.Add(coll.transform);
-            else if (listaNemiciVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
-                listaNemiciVisti.Remove(coll.transform);
-            else if (listaNemiciDentroNonVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
-                listaNemiciDentroNonVisti.Remove(coll.transform);
+            if (datiAltroPersonaggio != null)
+            {
+                if (GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
+                    listaNemiciDentroNonVisti.Add(coll.transform);
+                else if (listaNemiciVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
+                    listaNemiciVisti.Remove(coll.transform);
+                else if (listaNemiciDentroNonVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
+                    listaNemiciDentroNonVisti.Remove(coll.transform);               
+            }
             AmiciziaCambiata = false;
         }    
     }
