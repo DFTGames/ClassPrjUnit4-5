@@ -1,5 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+// Questo è un nuovo commento e pure cambiato
+
+using UnityEngine;
+using System.Collections; // Commento
 using System;
 
 [System.Serializable]
