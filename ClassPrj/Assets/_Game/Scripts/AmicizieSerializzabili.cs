@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+// Questo è un nuovo commento
+
+using UnityEngine;
 using System.Collections;
 using System;
 
