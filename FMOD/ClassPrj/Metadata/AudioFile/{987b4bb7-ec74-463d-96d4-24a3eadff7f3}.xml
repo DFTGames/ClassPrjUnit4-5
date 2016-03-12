@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.01.07.00">
+<objects serializationModel="Studio.01.08.00">
     <object class="AudioFile" id="{987b4bb7-ec74-463d-96d4-24a3eadff7f3}">
+        <property name="assetPath">
+            <value>Combat/Speels/SpeelSound_00c.wav</value>
+        </property>
         <property name="frequencyInKHz">
             <value>44.0999985</value>
         </property>
@@ -10,11 +13,8 @@
         <property name="length">
             <value>2.4989115646258502</value>
         </property>
-        <property name="audioFilePath">
-            <value>$(AUDIO_BIN_DIR)/SpeelSound_00c {9ddae5b2-b58d-4763-adab-909634d016a4}.wav</value>
-        </property>
-        <relationship name="container">
-            <destination>{2e82fdb8-bdd2-4cd9-a311-2da985d1953a}</destination>
+        <relationship name="masterAssetFolder">
+            <destination>{cbdaacbf-f328-457b-bedb-8c33cacc0690}</destination>
         </relationship>
     </object>
 </objects>

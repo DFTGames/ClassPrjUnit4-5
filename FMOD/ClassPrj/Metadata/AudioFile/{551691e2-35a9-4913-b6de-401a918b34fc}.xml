@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.01.07.00">
+<objects serializationModel="Studio.01.08.00">
     <object class="AudioFile" id="{551691e2-35a9-4913-b6de-401a918b34fc}">
+        <property name="assetPath">
+            <value>Environment/OceanoLoop_00.wav</value>
+        </property>
+        <property name="isStreaming">
+            <value>true</value>
+        </property>
         <property name="frequencyInKHz">
             <value>44.0999985</value>
         </property>
@@ -10,11 +16,8 @@
         <property name="length">
             <value>20.502244897959184</value>
         </property>
-        <property name="audioFilePath">
-            <value>$(AUDIO_BIN_DIR)/OceanoLoop_00 {bc2bc6f0-edf7-4e0b-9777-4c9987ab8358}.wav</value>
-        </property>
-        <relationship name="container">
-            <destination>{2264ae3d-76f0-4d87-b857-304552f7c639}</destination>
+        <relationship name="masterAssetFolder">
+            <destination>{cbdaacbf-f328-457b-bedb-8c33cacc0690}</destination>
         </relationship>
     </object>
 </objects>

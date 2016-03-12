@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.01.07.00">
+<objects serializationModel="Studio.01.08.00">
     <object class="AudioFile" id="{d7f27f3a-a7b9-4cb7-9e30-db22356e1fa0}">
+        <property name="assetPath">
+            <value>FootSteps/Metal/MetalArmor00c.wav</value>
+        </property>
         <property name="frequencyInKHz">
             <value>44.0999985</value>
         </property>
@@ -10,11 +13,8 @@
         <property name="length">
             <value>0.5</value>
         </property>
-        <property name="audioFilePath">
-            <value>$(AUDIO_BIN_DIR)/MetalArmor00c {9a5237b4-d27f-4294-8360-b8d5e2b07e27}.wav</value>
-        </property>
-        <relationship name="container">
-            <destination>{476bc57f-c8c0-4008-8a35-2a8d8ca20b37}</destination>
+        <relationship name="masterAssetFolder">
+            <destination>{cbdaacbf-f328-457b-bedb-8c33cacc0690}</destination>
         </relationship>
     </object>
 </objects>
