@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.01.07.00">
+<objects serializationModel="Studio.01.08.00">
     <object class="AudioFile" id="{da91595d-ec74-42da-94b7-30b50cebc100}">
+        <property name="assetPath">
+            <value>Combat/Whoosh/Whoosh_00.wav</value>
+        </property>
         <property name="frequencyInKHz">
             <value>44.0999985</value>
         </property>
@@ -10,11 +13,8 @@
         <property name="length">
             <value>0.50022675736961453</value>
         </property>
-        <property name="audioFilePath">
-            <value>$(AUDIO_BIN_DIR)/Whoosh_00 {3bbc303e-3fe8-41cb-8610-db7539acd352}.wav</value>
-        </property>
-        <relationship name="container">
-            <destination>{dc83019e-83f2-4048-91cc-38df49ab924d}</destination>
+        <relationship name="masterAssetFolder">
+            <destination>{cbdaacbf-f328-457b-bedb-8c33cacc0690}</destination>
         </relationship>
     </object>
 </objects>

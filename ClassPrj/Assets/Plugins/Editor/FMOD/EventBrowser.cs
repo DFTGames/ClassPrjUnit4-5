@@ -10,19 +10,13 @@ namespace FMODUnity
     class EventBrowser : EditorWindow, ISerializationCallbackReceiver
     {
         [MenuItem("FMOD/Event Browser", priority = 1)]
-        static void ShowEventBrowser()
+        public static void ShowEventBrowser()
         {
             EventBrowser eventBrowser = EditorWindow.GetWindow<EventBrowser>("FMOD Events");
             eventBrowser.minSize = new Vector2(280, 600);
             eventBrowser.Show();
         }
-        void OnLostFocus()
-        {
-            if (fromInspector)
-            {
-                Close();
-            }
-        }
+
         void OnDestroy()
         {
             EditorUtils.PreviewStop();
@@ -64,6 +58,7 @@ namespace FMODUnity
         Texture folderClosedIcon;
         Texture bankIcon;
         Texture snapshotIcon;
+        Texture2D borderIcon;
         GUIStyle eventStyle;
 
         [NonSerialized]
@@ -115,7 +110,7 @@ namespace FMODUnity
             {
                 foreach (var paramRef in eventRef.Parameters)
                 {
-                    previewParamValues.Add(paramRef.Name, 0);
+                    previewParamValues.Add(paramRef.Name, paramRef.Default);
                 }
             }
             eventPosition = new Vector2(0, 0);
@@ -141,15 +136,20 @@ namespace FMODUnity
         void ShowEventFolder(TreeItem item, Predicate<TreeItem> filter)
         {
             eventStyle.padding.left += 17;
-
-            if (item.EventRef != null || item.BankRef != null)
+            
             {
                 // Highlight first found item
-                if (!String.IsNullOrEmpty(searchString) && 
-                    itemCount == 0 &&
-                    selectedItem == null)
+                if (item.EventRef != null || item.BankRef != null)
                 {
-                    SetSelectedItem(item);
+                    if (!String.IsNullOrEmpty(searchString) &&
+                        itemCount == 0 &&
+                        selectedItem == null                       
+                        )
+                    {
+                        SetSelectedItem(item);
+                    }
+
+                    itemCount++;
                 }
 
                 item.Next = null;
@@ -159,7 +159,6 @@ namespace FMODUnity
                     lastDrawnItem.Next = item;
                 }
                 lastDrawnItem = item;
-                itemCount++;
             }
 
             if (item.EventRef != null)
@@ -181,8 +180,9 @@ namespace FMODUnity
 
                     if (fromInspector && e.clickCount >= 2)
                     {
+                        outputProperty.stringValue = "";
                         outputProperty.stringValue = item.EventRef.Path;
-                        EditorUtils.UpdateParamsOnEmmitter(outputProperty.serializedObject);
+                        EditorUtils.UpdateParamsOnEmitter(outputProperty.serializedObject, item.EventRef.Path);
                         outputProperty.serializedObject.ApplyModifiedProperties();
                         
                         Close();
@@ -242,10 +242,11 @@ namespace FMODUnity
             }
             else
             {
-                eventStyle.normal.background = null;
+                eventStyle.normal.background = selectedItem == item ? EditorGUIUtility.Load("FMOD/Selected.png") as Texture2D : null;
+
                 bool expanded = item.Expanded || !string.IsNullOrEmpty(searchString);
                 GUIContent content = new GUIContent(item.Name, expanded ? folderOpenIcon : folderClosedIcon);
-                GUILayout.Label(content, eventStyle);
+                GUILayout.Label(content, eventStyle, GUILayout.ExpandWidth(true));
 
                 Rect rect = GUILayoutUtility.GetLastRect();
                 if (Event.current.type == EventType.MouseDown && 
@@ -254,6 +255,7 @@ namespace FMODUnity
                 {
                     Event.current.Use();
                     item.Expanded = !item.Expanded;
+                    SetSelectedItem(item);
                 }
                 
                 if (item.Expanded || !string.IsNullOrEmpty(searchString))
@@ -273,6 +275,11 @@ namespace FMODUnity
                         }
                     }
                 }
+
+                if (Event.current.type == EventType.Repaint)
+                {
+                    item.Rect = rect;
+                }
             }
             eventStyle.padding.left -= 17;
         }
@@ -289,7 +296,7 @@ namespace FMODUnity
                 return;
             }
 
-            if (!EventManager.IsLoaded)
+            if (!EventManager.IsValid)
             {
                 this.ShowNotification(new GUIContent("No FMOD Studio banks loaded. Please check your settings."));
                 return;
@@ -299,7 +306,7 @@ namespace FMODUnity
             {
                 RebuildDisplayFromCache();
             }
-            
+
             //if (eventStyle == null)
             {
                 eventStyle = new GUIStyle(GUI.skin.button);
@@ -322,13 +329,19 @@ namespace FMODUnity
                 searchIcon = EditorGUIUtility.Load("FMOD/SearchIcon.png") as Texture;
                 bankIcon = EditorGUIUtility.Load("FMOD/BankIcon.png") as Texture;
                 snapshotIcon = EditorGUIUtility.Load("FMOD/SnapshotIcon.png") as Texture;
+                borderIcon = EditorGUIUtility.Load("FMOD/Border.png") as Texture2D;
+            }
+
+            if (fromInspector)
+            {
+                var border = new GUIStyle(GUI.skin.box);
+                border.normal.background = borderIcon;
+                GUI.Box(new Rect(1, 1, position.width - 1, position.height - 1), GUIContent.none, border);
             }
 
             // Split the window int search box, tree view, preview pane (only if full browser)
-            Rect searchRect = new Rect(0, 0, position.width, 16);
-            float previewBoxHeight = fromInspector ? 0 : 300;
-            Rect listRect = new Rect(0, searchRect.height + 2, position.width, position.height - previewBoxHeight - searchRect.height - 15);
-            Rect previewRect = new Rect(0, position.height - previewBoxHeight, position.width, previewBoxHeight);     
+            Rect searchRect, listRect, previewRect;
+            SplitWindow(out searchRect, out listRect, out previewRect);
 
             // Scroll the selected item in the tree view - put above the search box otherwise it will take
             // our key presses
@@ -361,6 +374,16 @@ namespace FMODUnity
                     }
                     Event.current.Use();
                 }
+                if (Event.current.keyCode == KeyCode.RightArrow)
+                {
+                    selectedItem.Expanded = true;
+                    Event.current.Use();
+                }
+                if (Event.current.keyCode == KeyCode.LeftArrow)
+                {
+                    selectedItem.Expanded = false;
+                    Event.current.Use();
+                }
             }
 
             // Show the search box at the top
@@ -368,28 +391,34 @@ namespace FMODUnity
             GUILayout.BeginHorizontal();
             GUILayout.Label(new GUIContent(searchIcon), GUILayout.ExpandWidth(false));
             GUI.SetNextControlName("SearchBox");
-            searchString = GUILayout.TextField(searchString);
+            searchString = EditorGUILayout.TextField(searchString);
             GUILayout.EndHorizontal();
             GUILayout.EndArea();
 
             if (fromInspector)
             {
-                GUI.FocusControl("SearchBox");
+                EditorGUI.FocusTextInControl("SearchBox");
 
-                if (selectedItem != null && Event.current.isKey && Event.current.keyCode == KeyCode.Return)
+                if (selectedItem != null && Event.current.isKey && Event.current.keyCode == KeyCode.Return
+                    && !(selectedItem.EventRef == null && selectedItem.BankRef == null))
                 {
                     Event.current.Use();
 
                     if (selectedItem.EventRef != null)
                     {
+                        outputProperty.stringValue = "";
                         outputProperty.stringValue = selectedItem.EventRef.Path;
-                        EditorUtils.UpdateParamsOnEmmitter(outputProperty.serializedObject);
+                        EditorUtils.UpdateParamsOnEmitter(outputProperty.serializedObject, selectedItem.EventRef.Path);
                     }
                     else
                     {
                         outputProperty.stringValue = selectedItem.BankRef.Name;
                     }
                     outputProperty.serializedObject.ApplyModifiedProperties();
+                    Close();
+                }
+                if (Event.current.isKey && Event.current.keyCode == KeyCode.Escape)
+                {
                     Close();
                 }
             }
@@ -400,7 +429,7 @@ namespace FMODUnity
             searchFilter = (x) => (x.Name.ToLower().Contains(searchString.ToLower()) || x.Children.Exists(searchFilter));
 
             // Check if our selected item still matches the search string
-            if (selectedItem != null && !String.IsNullOrEmpty(searchString))
+            if (selectedItem != null && !String.IsNullOrEmpty(searchString) && selectedItem.Children.Count == 0)
             {
                 Predicate<TreeItem> containsSelected = null;
                 containsSelected = (x) => (x == selectedItem || x.Children.Exists(containsSelected));
@@ -408,7 +437,7 @@ namespace FMODUnity
                 matchForSelected = (x) => (x.Name.ToLower().Contains(searchString.ToLower()) && (x == selectedItem || x.Children.Exists(containsSelected))) || x.Children.Exists(matchForSelected);
                 if (!treeItems.Exists(matchForSelected))
                 {
-                    SetSelectedItem(null);
+                  SetSelectedItem(null);
                 }
             }
 
@@ -428,11 +457,11 @@ namespace FMODUnity
             {
                 treeItems[2].Expanded = fromInspector ? true : treeItems[2].Expanded;
                 ShowEventFolder(treeItems[2], searchFilter);
-            }  
+            }
 
             GUILayout.EndScrollView();
             GUILayout.EndArea();
-            
+
             // If the standalone event browser show a preview of the selected item
             if (!fromInspector)
             {
@@ -456,6 +485,14 @@ namespace FMODUnity
             }
         }
 
+        private void SplitWindow(out Rect searchRect, out Rect listRect, out Rect previewRect)
+        {
+            searchRect = new Rect(4, 4, position.width - 8, 16);
+            float previewBoxHeight = fromInspector ? 0 : 300;
+            listRect = new Rect(0, searchRect.height + 6, position.width, position.height - previewBoxHeight - searchRect.height - 15);
+            previewRect = new Rect(0, position.height - previewBoxHeight, position.width, previewBoxHeight);
+        }
+
         Rect previewCustomRect;
         Rect previewPathRect;
 
@@ -469,18 +506,16 @@ namespace FMODUnity
             EditorStyles.label.fontStyle = FontStyle.Bold;
             EditorGUIUtility.labelWidth = 75;
 
-            EditorGUILayout.LabelField("Full Path", selectedEvent.Path, style);
-
-            if (Event.current.type == EventType.Repaint)
-            {
-                previewPathRect = GUILayoutUtility.GetLastRect();
-            }
-            if (Event.current.type == EventType.mouseDown && previewPathRect.Contains(Event.current.mousePosition) && Event.current.clickCount == 2)
+            var copyIcon = EditorGUIUtility.Load("FMOD/CopyIcon.png") as Texture;
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Full Path", selectedEvent.Path, style, GUILayout.ExpandWidth(true));
+            if (GUILayout.Button(copyIcon, GUILayout.ExpandWidth(false)))
             {
                 EditorGUIUtility.systemCopyBuffer = selectedEvent.Path;
-                this.ShowNotification(new GUIContent("Event Path Copied to Clipboard"));
-                Event.current.Use();
             }
+            EditorGUILayout.EndHorizontal();
+
+            
 
             StringBuilder builder = new StringBuilder();
             selectedEvent.Banks.ForEach((x) => { builder.Append(Path.GetFileNameWithoutExtension(x.Path)); builder.Append(", "); });
@@ -648,7 +683,7 @@ namespace FMODUnity
             {
                 if (!previewParamValues.ContainsKey(paramRef.Name))
                 {
-                    previewParamValues[paramRef.Name] = 0;
+                    previewParamValues[paramRef.Name] = paramRef.Default;
                 }
                 previewParamValues[paramRef.Name] = EditorGUILayout.Slider(paramRef.Name, previewParamValues[paramRef.Name], paramRef.Min, paramRef.Max);
                 EditorUtils.PreviewUpdateParameter(paramRef.Name, previewParamValues[paramRef.Name]);
@@ -686,17 +721,16 @@ namespace FMODUnity
 
         private void PreviewSnapshot(Rect previewRect, EditorEventRef selectedEvent)
         {
-            using (new GUILayout.AreaScope(previewRect))
-            {
-                var style = new GUIStyle(EditorStyles.label);
-                EditorStyles.label.fontStyle = FontStyle.Bold;
-                EditorGUIUtility.labelWidth = 75;
+            GUILayout.BeginArea(previewRect);
+            var style = new GUIStyle(EditorStyles.label);
+            EditorStyles.label.fontStyle = FontStyle.Bold;
+            EditorGUIUtility.labelWidth = 75;
 
-                EditorGUILayout.LabelField("Full Path", selectedEvent.Path, style);
+            EditorGUILayout.LabelField("Full Path", selectedEvent.Path, style);
 
-                EditorGUIUtility.labelWidth = 0;
-                EditorStyles.label.fontStyle = FontStyle.Normal;
-            }
+            EditorGUIUtility.labelWidth = 0;
+            EditorStyles.label.fontStyle = FontStyle.Normal;
+            GUILayout.EndArea();
         }
 
         private void RebuildDisplayFromCache()
@@ -809,6 +843,7 @@ namespace FMODUnity
             fromInspector = true;
             showBanks = false;
             outputProperty = property;
+            JumpToEvent(outputProperty.stringValue);
         }
 
         internal void SelectBank(SerializedProperty property)
@@ -816,6 +851,81 @@ namespace FMODUnity
             fromInspector = true;
             showEvents = false;
             outputProperty = property;
+            JumpToBank(outputProperty.stringValue);
+        }
+
+        public void JumpToEvent(string eventPath)
+        {
+            if (!String.IsNullOrEmpty(eventPath))
+            {
+                searchString = "";
+                RebuildDisplayFromCache();
+                TreeItem currentItem = null;
+                if (eventPath.StartsWith("event:/"))
+                {
+                    currentItem = treeItems[0];
+                    eventPath = eventPath.Replace("event:/", "");
+                }
+                else if (eventPath.StartsWith("snapshot:/"))
+                {
+                    currentItem = treeItems[1];
+                    eventPath = eventPath.Replace("snapshot:/", "");
+                }
+                else
+                {
+                    return;
+                }
+
+                currentItem.Expanded = true;
+                var pathElements = eventPath.Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var pathElement in pathElements)
+                {
+                    var nextItem = currentItem.Children.Find(x => x.Name.Equals(pathElement, StringComparison.CurrentCultureIgnoreCase));
+                    if (nextItem == null)
+                    {
+                        return;
+                    }
+                    nextItem.Expanded = true;
+                    if (nextItem.EventRef)
+                    {
+                        SetSelectedItem(nextItem);
+
+                        Rect searchRect, listRect, previewRect;
+                        SplitWindow(out searchRect, out listRect, out previewRect);
+                        if (selectedItem.Rect.y < treeScroll.y)
+                        {
+                            treeScroll.y = selectedItem.Rect.y;
+                        }
+                        else if (selectedItem.Rect.y + selectedItem.Rect.height > treeScroll.y + listRect.height)
+                        {
+                            treeScroll.y += (selectedItem.Rect.y + selectedItem.Rect.height) - listRect.height;
+                        }
+                        return;
+                    }
+                    currentItem = nextItem;
+                }
+            }
+        }
+
+        void JumpToBank(string bankName)
+        {
+            if (!String.IsNullOrEmpty(bankName))
+            {
+                RebuildDisplayFromCache();
+                TreeItem currentItem = treeItems[2];
+
+                currentItem.Expanded = true;
+                var nextItem = currentItem.Children.Find(x => x.Name.Equals(bankName, StringComparison.CurrentCultureIgnoreCase));
+                if (nextItem == null)
+                {
+                    return;
+                }
+                if (nextItem.BankRef)
+                {
+                    SetSelectedItem(nextItem);
+                    return;
+                }
+            }
         }
 
         public EventBrowser()
@@ -863,7 +973,6 @@ namespace FMODUnity
                         var emitter = Undo.AddComponent<StudioEventEmitter>(target);
                         emitter.Event = ((EditorEventRef)DragAndDrop.objectReferences[0]).Path;
                         var so = new SerializedObject(emitter);
-                        EditorUtils.UpdateParamsOnEmmitter(so);
                         so.ApplyModifiedProperties();
                     }
                     else
@@ -899,7 +1008,6 @@ namespace FMODUnity
                         var emitter = newObject.AddComponent<StudioEventEmitter>();
                         emitter.Event = path;
                         var so = new SerializedObject(emitter);
-                        EditorUtils.UpdateParamsOnEmmitter(so);
                         so.ApplyModifiedProperties();
                         Undo.RegisterCreatedObjectUndo(newObject, "Create FMOD Studio Emitter");
                     }

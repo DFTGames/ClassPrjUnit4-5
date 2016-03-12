@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.01.07.00">
+<objects serializationModel="Studio.01.08.00">
     <object class="Event" id="{e23bcb92-9bd2-42af-ac5f-2068a0e90c4f}">
         <property name="name">
             <value>GruntsGoblin</value>
@@ -86,8 +86,8 @@
             <destination>{822922b7-aebe-4058-9578-a8b0ad323322}</destination>
         </relationship>
         <relationship name="markers">
-            <destination>{5af38513-7168-45a8-ac33-7152b192a723}</destination>
             <destination>{cf2805d6-9920-472d-a6e2-c58d187a802c}</destination>
+            <destination>{5af38513-7168-45a8-ac33-7152b192a723}</destination>
             <destination>{2f37ee3c-af40-4542-ad97-17ba53dcebd1}</destination>
         </relationship>
     </object>
@@ -103,6 +103,9 @@
         </property>
     </object>
     <object class="EventMixerMaster" id="{b48d8b31-c228-45d0-8285-b1bfff619eb1}">
+        <property name="volume">
+            <value>-5.5</value>
+        </property>
         <relationship name="effectChain">
             <destination>{cc161746-7529-448c-9116-921295ff9aa8}</destination>
         </relationship>
@@ -178,23 +181,6 @@
             <destination>{b48d8b31-c228-45d0-8285-b1bfff619eb1}</destination>
         </relationship>
     </object>
-    <object class="LoopRegion" id="{5af38513-7168-45a8-ac33-7152b192a723}">
-        <property name="position">
-            <value>0</value>
-        </property>
-        <property name="length">
-            <value>1.6000000000000001</value>
-        </property>
-        <relationship name="timeline">
-            <destination>{cbbe18e0-686c-4191-afc8-5c5e73a551b3}</destination>
-        </relationship>
-        <relationship name="markerTrack">
-            <destination>{58860cde-da3e-4e17-8fd3-e46473576c9f}</destination>
-        </relationship>
-        <relationship name="triggerConditions">
-            <destination>{912b434d-6db7-44fe-9e9b-e34f936db7e0}</destination>
-        </relationship>
-    </object>
     <object class="NamedMarker" id="{cf2805d6-9920-472d-a6e2-c58d187a802c}">
         <property name="position">
             <value>2</value>
@@ -209,6 +195,23 @@
             <destination>{58860cde-da3e-4e17-8fd3-e46473576c9f}</destination>
         </relationship>
     </object>
+    <object class="LoopRegion" id="{5af38513-7168-45a8-ac33-7152b192a723}">
+        <property name="position">
+            <value>0</value>
+        </property>
+        <property name="length">
+            <value>1.6000000000000001</value>
+        </property>
+        <relationship name="triggerConditions">
+            <destination>{912b434d-6db7-44fe-9e9b-e34f936db7e0}</destination>
+        </relationship>
+        <relationship name="timeline">
+            <destination>{cbbe18e0-686c-4191-afc8-5c5e73a551b3}</destination>
+        </relationship>
+        <relationship name="markerTrack">
+            <destination>{58860cde-da3e-4e17-8fd3-e46473576c9f}</destination>
+        </relationship>
+    </object>
     <object class="TransitionRegion" id="{2f37ee3c-af40-4542-ad97-17ba53dcebd1}">
         <property name="position">
             <value>0</value>
@@ -216,8 +219,8 @@
         <property name="length">
             <value>1.6000000000000001</value>
         </property>
-        <relationship name="destination">
-            <destination>{cf2805d6-9920-472d-a6e2-c58d187a802c}</destination>
+        <relationship name="triggerConditions">
+            <destination>{0313ca73-c098-4585-92c0-f6fc387d1f21}</destination>
         </relationship>
         <relationship name="timeline">
             <destination>{cbbe18e0-686c-4191-afc8-5c5e73a551b3}</destination>
@@ -225,8 +228,8 @@
         <relationship name="markerTrack">
             <destination>{debaa98e-fc17-46ed-8390-7c503b8e8487}</destination>
         </relationship>
-        <relationship name="triggerConditions">
-            <destination>{0313ca73-c098-4585-92c0-f6fc387d1f21}</destination>
+        <relationship name="destination">
+            <destination>{cf2805d6-9920-472d-a6e2-c58d187a802c}</destination>
         </relationship>
     </object>
     <object class="MixerBusEffectChain" id="{cc161746-7529-448c-9116-921295ff9aa8}">

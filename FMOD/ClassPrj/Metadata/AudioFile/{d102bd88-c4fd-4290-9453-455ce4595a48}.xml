@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.01.07.00">
+<objects serializationModel="Studio.01.08.00">
     <object class="AudioFile" id="{d102bd88-c4fd-4290-9453-455ce4595a48}">
+        <property name="assetPath">
+            <value>FootSteps/Leather/SimilarLeather_00c.wav</value>
+        </property>
         <property name="frequencyInKHz">
             <value>44.0999985</value>
         </property>
@@ -10,11 +13,8 @@
         <property name="length">
             <value>0.63460317460317461</value>
         </property>
-        <property name="audioFilePath">
-            <value>$(AUDIO_BIN_DIR)/SimilarLeather_00c {13724767-3601-4561-94fe-9aa4835e6ef4}.wav</value>
-        </property>
-        <relationship name="container">
-            <destination>{ec9c87e6-da6d-47f2-b741-aec7dadadcd6}</destination>
+        <relationship name="masterAssetFolder">
+            <destination>{cbdaacbf-f328-457b-bedb-8c33cacc0690}</destination>
         </relationship>
     </object>
 </objects>

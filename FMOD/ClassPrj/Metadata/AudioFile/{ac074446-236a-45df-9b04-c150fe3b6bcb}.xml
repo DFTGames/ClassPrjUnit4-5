@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.01.07.00">
+<objects serializationModel="Studio.01.08.00">
     <object class="AudioFile" id="{ac074446-236a-45df-9b04-c150fe3b6bcb}">
+        <property name="assetPath">
+            <value>Female/Sfx_Female_00f.wav</value>
+        </property>
         <property name="frequencyInKHz">
             <value>44.0999985</value>
         </property>
@@ -10,11 +13,8 @@
         <property name="length">
             <value>0.50015873015873014</value>
         </property>
-        <property name="audioFilePath">
-            <value>$(AUDIO_BIN_DIR)/Sfx_Female_00f {2d319e19-220f-4c2f-bdb0-1ff1f3900830}.wav</value>
-        </property>
-        <relationship name="container">
-            <destination>{953e71c6-6474-4337-8106-3cdcdf0a0d43}</destination>
+        <relationship name="masterAssetFolder">
+            <destination>{cbdaacbf-f328-457b-bedb-8c33cacc0690}</destination>
         </relationship>
     </object>
 </objects>

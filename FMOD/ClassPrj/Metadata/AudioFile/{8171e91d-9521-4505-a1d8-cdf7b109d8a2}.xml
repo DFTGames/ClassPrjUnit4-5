@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.01.07.00">
+<objects serializationModel="Studio.01.08.00">
     <object class="AudioFile" id="{8171e91d-9521-4505-a1d8-cdf7b109d8a2}">
+        <property name="assetPath">
+            <value>Goblin/Sfx_Goblin_00d.wav</value>
+        </property>
         <property name="frequencyInKHz">
             <value>44.0999985</value>
         </property>
@@ -10,11 +13,8 @@
         <property name="length">
             <value>1.2003854875283446</value>
         </property>
-        <property name="audioFilePath">
-            <value>$(AUDIO_BIN_DIR)/Sfx_Goblin_00d {4e18833a-4480-4763-b127-187e971fb1ad}.wav</value>
-        </property>
-        <relationship name="container">
-            <destination>{b96a038d-4b85-4a24-bfe5-b54fdb430ec9}</destination>
+        <relationship name="masterAssetFolder">
+            <destination>{cbdaacbf-f328-457b-bedb-8c33cacc0690}</destination>
         </relationship>
     </object>
 </objects>

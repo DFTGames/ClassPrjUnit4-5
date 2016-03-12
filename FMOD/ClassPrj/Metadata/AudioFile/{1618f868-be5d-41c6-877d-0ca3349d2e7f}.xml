@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<objects serializationModel="Studio.01.07.00">
+<objects serializationModel="Studio.01.08.00">
     <object class="AudioFile" id="{1618f868-be5d-41c6-877d-0ca3349d2e7f}">
+        <property name="assetPath">
+            <value>FootSteps/Mud/FootMud_00b.wav</value>
+        </property>
         <property name="frequencyInKHz">
             <value>44.0999985</value>
         </property>
@@ -10,11 +13,8 @@
         <property name="length">
             <value>0.50140589569160998</value>
         </property>
-        <property name="audioFilePath">
-            <value>$(AUDIO_BIN_DIR)/FootMud_00b {5c3df916-e0b7-4d42-bc9e-eab8d50b4d1b}.wav</value>
-        </property>
-        <relationship name="container">
-            <destination>{38ebe269-b4be-4f92-9b1f-8ca8e259f63c}</destination>
+        <relationship name="masterAssetFolder">
+            <destination>{cbdaacbf-f328-457b-bedb-8c33cacc0690}</destination>
         </relationship>
     </object>
 </objects>
