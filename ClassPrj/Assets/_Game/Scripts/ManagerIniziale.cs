@@ -61,6 +61,7 @@ public class ManagerIniziale : MonoBehaviour
     private float ics;
     private float alpha;
     private List<string> cartelleLocali = new List<string>();
+    private int contatoreGiocabili = 0;
 
     public int IndiceClasseSuccessivaPrecedente
     {
@@ -71,7 +72,7 @@ public class ManagerIniziale : MonoBehaviour
         set
         {
             int valoreMinimo = 0;
-            int valoreMassimo = databaseInizialeProprieta.classePersonaggio.Count - 1;
+            int valoreMassimo = databaseInizialeProprieta.classePersonaggio.Count-1;
             indiceClasseSuccessivaPrecedente = Mathf.Clamp(value, valoreMinimo, valoreMassimo);
             if (value > valoreMassimo)
                 indiceClasseSuccessivaPrecedente = valoreMinimo;
@@ -87,17 +88,17 @@ public class ManagerIniziale : MonoBehaviour
         Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
         cameraT = Camera.main.transform;
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-        for (int i = 0; i < databaseInizialeProprieta.matriceProprieta.Count; i++)
+        for (int i = 0; i < databaseInizialeProprieta.matriceProprieta.Count; i++)       
         {
-            if (!databaseInizialeProprieta.matriceProprieta[i].giocabile)
-                continue;
-
+            if (!databaseInizialeProprieta.matriceProprieta[i].giocabile)            
+                continue;              
             string tmpNomeModelloM = databaseInizialeProprieta.matriceProprieta[i].nomeM;
             string tmpNomeModelloF = databaseInizialeProprieta.matriceProprieta[i].nomeF;
-            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloM, Instantiate(Resources.Load(tmpNomeModelloM), GameObject.Find("postazione" + i).transform.FindChild("posizioneM").position, new Quaternion(0f, 180f, 0f, 0f)) as GameObject);
-            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloF, Instantiate(Resources.Load(tmpNomeModelloF), GameObject.Find("postazione" + i).transform.FindChild("posizioneF").position, Quaternion.identity) as GameObject);
-            dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloM].name, GameObject.Find("postazione" + i).transform.FindChild("posizioneM"));
-            dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloF].name, GameObject.Find("postazione" + i).transform.FindChild("posizioneF"));
+            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloM, Instantiate(Resources.Load(tmpNomeModelloM), GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneM").position, new Quaternion(0f, 180f, 0f, 0f)) as GameObject);
+            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloF, Instantiate(Resources.Load(tmpNomeModelloF), GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneF").position, Quaternion.identity) as GameObject);
+            dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloM].name, GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneM"));
+            dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloF].name, GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneF"));
+            contatoreGiocabili += 1;
         }
         Statici.CopiaIlDB();
         DirectoryInfo dI = new DirectoryInfo(Application.persistentDataPath);
@@ -238,14 +239,18 @@ public class ManagerIniziale : MonoBehaviour
     public void Precedente()
     {
         IndiceClasseSuccessivaPrecedente--;
+        while (!databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].giocabile)          
+           IndiceClasseSuccessivaPrecedente--;
         VisualizzaValoriPersonaggio();
         indiceCambiato = true;
         DecisionePercorsoCambioClasse();
     }
 
     public void Sucessivo()
-    {
+    { 
         IndiceClasseSuccessivaPrecedente++;
+        while (!databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].giocabile)
+            IndiceClasseSuccessivaPrecedente++;     
         VisualizzaValoriPersonaggio();
         indiceCambiato = true;
         DecisionePercorsoCambioClasse();
@@ -287,7 +292,7 @@ public class ManagerIniziale : MonoBehaviour
     }
 
     private void VisualizzaValoriPersonaggio()
-    {
+    {      
         casellaTipo.text = databaseInizialeProprieta.classePersonaggio[IndiceClasseSuccessivaPrecedente].ToString();
         valoreVita.text = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita.ToString();
         valoreAttacco.text = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Attacco.ToString();
