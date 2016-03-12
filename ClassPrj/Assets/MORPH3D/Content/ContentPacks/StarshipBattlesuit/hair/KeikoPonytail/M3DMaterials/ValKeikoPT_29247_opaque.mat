@@ -10,7 +10,7 @@ Material:
   m_Shader: {fileID: 4800000, guid: e9a234471563b4cb199c99b275ed7c10, type: 3}
   m_ShaderKeywords: _ALPHATEST_ON _NORMALMAP
   m_LightmapFlags: 5
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: 2450
   stringTagMap:
     RenderType: TransparentCutout
   m_SavedProperties:
@@ -105,7 +105,7 @@ Material:
       data:
         first:
           name: _Cutoff
-        second: 0.522
+        second: 0.541
       data:
         first:
           name: _Parallax
