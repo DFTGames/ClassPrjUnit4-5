@@ -1,7 +1,7 @@
-// Questo è un nuovo commento
+// Questo è un nuovo commento e pure cambiato
 
 using UnityEngine;
-using System.Collections;
+using System.Collections; // Commento
 using System;
 
 [System.Serializable]
