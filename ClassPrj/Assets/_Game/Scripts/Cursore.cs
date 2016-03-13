@@ -43,7 +43,7 @@ public class Cursore : MonoBehaviour
                         break;
 
                     case (11):
-                        if (hit[i].collider.GetComponent<CapsuleCollider>())
+                        if (hit[i].collider.GetComponent<CapsuleCollider>() && hit[i].collider.GetComponent<DatiPersonaggio>()!=null)
                         {
                             if (GameManager.dizionarioDiNemici[GameManager.personaggio.miaClasse].Contains(hit[i].collider.GetComponent<DatiPersonaggio>().miaClasse))
 

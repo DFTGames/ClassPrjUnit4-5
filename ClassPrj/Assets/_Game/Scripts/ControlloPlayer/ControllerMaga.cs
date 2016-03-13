@@ -45,10 +45,24 @@ public class ControllerMaga : MonoBehaviour
     private NavMeshAgent navMeshAgent;
     private bool Destinazione = false;
     private DatiPersonaggio datiPersonaggio;
+    private SwitchVivoMorto switchVivoMorto;
+
+    public DatiPersonaggio DatiPersonaggio
+    {
+        get
+        {
+            return datiPersonaggio;
+        }
+
+        set
+        {
+            datiPersonaggio = value;
+        }
+    }
     #endregion Variabili PRIVATE
 
     private void Start()
-    {
+    {        
         transform_m = GetComponent<Transform>();
 
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -82,10 +96,17 @@ public class ControllerMaga : MonoBehaviour
         capsulaCentro = new Vector3(0.0f, capsula.center.y, 0.0f);
         IsPointAndClick = true;
         layerAlberi = ~layerAlberi;
+        switchVivoMorto = GetComponent<SwitchVivoMorto>();
         if (SceneManager.GetActiveScene().buildIndex == 0)
             return;
-        datiPersonaggio = GetComponent<DatiPersonaggio>();
-        GameManager.RegistraDatiPersonaggio(datiPersonaggio);
+        DatiPersonaggio = GetComponent<DatiPersonaggio>();
+        GameManager.RegistraDatiPersonaggio(DatiPersonaggio);
+        //se all'inizio della partita si ritrova a 0 di vita, gli do 1 di vita così non nasce morto.
+        if (DatiPersonaggio.Vita <= 0f)
+        {
+            DatiPersonaggio.Vita = 1f;
+            SalvaDatiVita();
+        }
     }
 
     private void Update()
@@ -248,21 +269,32 @@ public class ControllerMaga : MonoBehaviour
     
     public void RiceviDanno(float quanto)
     {
-        datiPersonaggio.Vita -= quanto;
+        DatiPersonaggio.Vita -= quanto;      
+        if (DatiPersonaggio.Vita <= 0f)
+            switchVivoMorto.AttivaRagdoll();     
+         SalvaDatiVita();
+    }
+    public void Resuscita(float quanto)
+    {
+        DatiPersonaggio.Vita += quanto;       
+        switchVivoMorto.DisattivaRagdoll();
         SalvaDatiVita();
     }
 
     private void SalvaDatiVita()
     {
-        GameManager.datiPersonaggio.Dati.Vita = datiPersonaggio.Vita;
+        GameManager.datiPersonaggio.Dati.Vita = DatiPersonaggio.Vita;
         GameManager.datiPersonaggio.Salva();
         GestoreCanvasAltreScene.AggiornaVita();
     }
 
     public void PozioneVita(float quanto)
     {
-        datiPersonaggio.Vita += quanto;
-        SalvaDatiVita();
+        if (DatiPersonaggio.Vita > 0f)
+        {
+            DatiPersonaggio.Vita += quanto;
+            SalvaDatiVita();
+        }
     }
 
     

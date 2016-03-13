@@ -79,9 +79,10 @@ public class Vista : MonoBehaviour
                 else if (listaNemiciVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
                     listaNemiciVisti.Remove(coll.transform);
                 else if (listaNemiciDentroNonVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
-                    listaNemiciDentroNonVisti.Remove(coll.transform);               
+                    listaNemiciDentroNonVisti.Remove(coll.transform);
+                AmiciziaCambiata = false;
             }
-            AmiciziaCambiata = false;
+            
         }    
     }
 
