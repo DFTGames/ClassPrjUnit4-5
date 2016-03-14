@@ -40,7 +40,10 @@ public class FSM : MonoBehaviour
     private IStato pattugliamento;
     private IStato inseguimento;
     private IStato Attacco;
+    private IStato morte;
     private DatiPersonaggio datiPersonaggio;
+    private SwitchVivoMortoAI switchVivoMorto;
+    private bool ucciso = false;
 
     public Transform ObiettivoNemico
     {
@@ -159,25 +162,68 @@ public class FSM : MonoBehaviour
         }
     }
 
-    private void Start()
+    public bool Ucciso
     {
+        get
+        {
+            return ucciso;
+        }
+
+        set
+        {
+            ucciso = value;
+        }
+    }
+
+    public DatiPersonaggio DatiPersonaggio
+    {
+        get
+        {
+            return datiPersonaggio;
+        }
+
+        set
+        {
+            datiPersonaggio = value;
+        }
+    }
+
+    public SwitchVivoMortoAI SwitchVivoMorto
+    {
+        get
+        {
+            return switchVivoMorto;
+        }
+
+        set
+        {
+            switchVivoMorto = value;
+        }
+    }
+
+    private void Start()
+    {        
         miaTransform = GetComponent<Transform>();
         agente = GetComponent<NavMeshAgent>();
         animatore = GetComponent<Animator>();
+        DatiPersonaggio = GetComponent<DatiPersonaggio>();
+        colliderSferaVista = GetComponentInChildren<SphereCollider>();
+        colliderSferaVista = gameObject.transform.FindChild("SferaVista").GetComponent<SphereCollider>();
+        SwitchVivoMorto = GetComponent<SwitchVivoMortoAI>();
         obiettivoNemico = null;
         obiettivoInVista = false;
-        inZonaAttacco = false;
-        colliderSferaVista = GetComponentInChildren<SphereCollider>();
+        inZonaAttacco = false;     
         colliderSferaVista.radius = quantoCiVedoSenzaOcchiali;
         pattugliamento = new Pattugliamento();
         inseguimento = new Inseguimento();
         Attacco = new Attacco();
+        morte = new Morte();
         Attacco.Inizializza(this);
         pattugliamento.Inizializza(this);
         inseguimento.Inizializza(this);
-        statoCorrente = pattugliamento;
-        datiPersonaggio = GetComponent<DatiPersonaggio>();
-        GameManager.RegistraDatiPersonaggio(datiPersonaggio);
+        morte.Inizializza(this);
+        statoCorrente = pattugliamento;        
+        GameManager.RegistraDatiPersonaggio(DatiPersonaggio);            
     }
 
     private void Update()
@@ -188,25 +234,35 @@ public class FSM : MonoBehaviour
                 statoPrecedente.EsecuzioneTerminata();
             statoCorrente.PreparoEsecuzione();
             statoPrecedente = statoCorrente;
-        }
+        }        
+         if(DatiPersonaggio.Vita>0)
+          {
+              if (ObiettivoNemico != null)
+              {
+                  if (inZonaAttacco && ObiettivoInVista)
+                      statoCorrente = Attacco;
+                  else
+                      statoCorrente = inseguimento;
+              }
+              else
+                  statoCorrente = pattugliamento;
 
-        if (ObiettivoNemico != null)
-        {
-            if (inZonaAttacco && ObiettivoInVista)
-                statoCorrente = Attacco;
-            else
-                statoCorrente = inseguimento;
-        }
-        else
-            statoCorrente = pattugliamento;
-
-        statoCorrente.Esecuzione();
-
+               statoCorrente.Esecuzione();
+          }
+          else if (!Ucciso)
+          {
+              statoCorrente = morte;
+              statoCorrente.Esecuzione();
+          }         
     }
 
     private void FixedUpdate()
     {
-        colliderSferaVista.radius = quantoCiVedoSenzaOcchiali + ampiezza * Mathf.Sin(Time.time * velocitaOscillazioneVista);
+       if (!Ucciso)
+            colliderSferaVista.radius = quantoCiVedoSenzaOcchiali + ampiezza * Mathf.Sin(Time.time * velocitaOscillazioneVista);
+       else//se non lo metto a 0 non cade quando è morto.        
+            colliderSferaVista.radius = 0;
+          
     }
 
     //richiamare questo metodo come evento dell'animazione attacco nel frame finale
@@ -224,7 +280,13 @@ public class FSM : MonoBehaviour
 
     public void RiceviDanno(float quanto)
     {
-        datiPersonaggio.Vita -= quanto;
+        DatiPersonaggio.Vita -= quanto;
+    }
+    public void Resuscita(float quanto)
+    {
+        DatiPersonaggio.Vita += quanto;
+        Ucciso = false;
+        SwitchVivoMorto.DisattivaRagdoll();
     }
 
 }
