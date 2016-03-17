@@ -40,8 +40,11 @@ public class GameManager : MonoBehaviour
             padreGestore = tmpPdr.GetComponent<PadreGestore>();
         else
             Debug.LogError("Ma ci fai o ci sei ????..sei un cazzone....manca il padrePercorso");
-        Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
-        FileSerializzatiDelPersonaggio();
+        Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta);     
+        if (Statici.nomePersonaggio.Equals(string.Empty))
+            Statici.nomePersonaggio = "PersonaggioDiProva";
+        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
+        datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
         if (Statici.sonoPassatoDallaScenaIniziale)
         {            
             GameObject tmpObjP = Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
@@ -135,13 +138,6 @@ public class GameManager : MonoBehaviour
             personaggio = datiStatistici;
             classeDiColuiCheVuoleCambiareAmicizia = datiStatistici.miaClasse.ToString();
         }  
-    }
-    private void FileSerializzatiDelPersonaggio()
-    {
-        if (Statici.nomePersonaggio.Equals(string.Empty))
-            Statici.nomePersonaggio = "PersonaggioDiProva";
-        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);        
-        datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
     }
 
     private void RecuperaDizionariDiplomazia()
