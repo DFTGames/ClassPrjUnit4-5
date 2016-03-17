@@ -45,8 +45,7 @@ public class SwitchVivoMortoAI : MonoBehaviour {
     {            
         agente = GetComponent<NavMeshAgent>();
         agente.enabled = false;      
-        colliderPadre.enabled = false;      
-        cervello.ColliderSferaVista.enabled = false;
+        colliderPadre.enabled = false;          
         for (int i = 0; i < ColliderRagdoll.Count-1; i++)
         {
             ColliderRagdoll[i].enabled = true;
@@ -63,8 +62,7 @@ public class SwitchVivoMortoAI : MonoBehaviour {
             rbFigli[i].useGravity = false;
             
         }
-        colliderPadre.enabled = true;     
-        cervello.ColliderSferaVista.enabled = true;
+        colliderPadre.enabled = true;       
         agente = GetComponent<NavMeshAgent>();
         agente.enabled = true;
         animatore.enabled = true;

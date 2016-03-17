@@ -3,9 +3,15 @@ using System.Collections;
 
 public class TriggerCheckPoint : MonoBehaviour {
 
-	void OnTriggerEnter(Collider coll)
-    {
-        if(coll.CompareTag("Player"))
-        GameManager.MemorizzaCheckPoint(transform.name);
-    }
+    private DatiPersonaggio datiGiocatore;   
+    void OnTriggerEnter(Collider coll)
+    {       
+        datiGiocatore = coll.GetComponent<DatiPersonaggio>();
+      if (datiGiocatore!=null && datiGiocatore.Giocabile)
+        {
+            GameManager.datiPersonaggio.Dati.posizioneCheckPoint = transform.name;
+            GameManager.datiPersonaggio.Salva();
+        }
+
+    }  
 }

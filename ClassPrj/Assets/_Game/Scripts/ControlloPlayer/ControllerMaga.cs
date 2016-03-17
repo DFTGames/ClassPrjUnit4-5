@@ -254,7 +254,8 @@ public class ControllerMaga : MonoBehaviour
         }
     }
 
-    //richiamare questo metodo come evento dell'animazione attacco nel frame finale
+    //richiamare questo metodo come evento dell'animazione attacco nel frame finale o se viene lanciaato qualcosa appena viene colpito il bersaglio
+    //quindi a seconda dell'attacco.
     public void FaiDanno()
     {
         //controllare se il personaggio è girato verso il nemico e quindi se è nel suo arco di attacco
@@ -279,6 +280,7 @@ public class ControllerMaga : MonoBehaviour
         DatiPersonaggio.Vita += quanto;       
         switchVivoMorto.DisattivaRagdoll();
         SalvaDatiVita();
+        GameManager.PersonaggioPrincipaleT.position = GameObject.Find(GameManager.datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
     }
 
     private void SalvaDatiVita()
