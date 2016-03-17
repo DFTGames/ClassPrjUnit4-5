@@ -137,10 +137,10 @@ public class GameManager : MonoBehaviour
         }  
     }
     private void FileSerializzatiDelPersonaggio()
-    {   //N.B.:non invertire le due righe.
-        //carico dati personaggio
-        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-        //carico diplomazia
+    {
+        if (Statici.nomePersonaggio.Equals(string.Empty))
+            Statici.nomePersonaggio = "PersonaggioDiProva";
+        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);        
         datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
     }
 
