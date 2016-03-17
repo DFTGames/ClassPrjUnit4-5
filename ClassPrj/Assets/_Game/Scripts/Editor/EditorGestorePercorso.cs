@@ -19,8 +19,8 @@ namespace DFTGames.Tools.EditorTools
         GestorePercorso me;
         public string[] percorsiNomi;
 
-        private List<string> percorsiDisponibili;
-        private List<int> indexDisponibili;
+        private List<string> percorsiDisponibili = new List<string>();
+        private List<int> indexDisponibili = new List<int>();
 
         private List<int> tmpIndexLiberi;
         private List<string> tmpPercorsiLiberi;
@@ -39,6 +39,8 @@ namespace DFTGames.Tools.EditorTools
                 percorsi = AssetDatabase.LoadAssetAtPath<PercorsiClass>(pathPercorsi + Statici.STR_DatabaseDiGioco2);
 
             }
+            AlimentaListe();
+
 
         }
 
@@ -65,8 +67,8 @@ namespace DFTGames.Tools.EditorTools
                     var utility = typeof(EditorGUIUtility);
                     var impostaIcona = utility.GetMethod("SetIconForObject", BindingFlags.NonPublic | BindingFlags.Static);
                     impostaIcona.Invoke(null, new object[] { nuovo, ResourceHelper.Icon1 });
-                    e.Use();                  
-                   UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+                    e.Use();
+                    UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
                     //AGGIUNTO MarkSceneDirty (si ringrazia Armando della dftStudent che ha fornito la classe) PER OVVIARE AL BUG DI UNITY DOVE UN PERCORSO CREATO VIA SCRIPT NON ME LO VEDE DA SALVARE QUANDO SI CAMBIA SCENA
                 }
             }
@@ -90,9 +92,8 @@ namespace DFTGames.Tools.EditorTools
 
             if (Selection.activeTransform != transformOggettoSelezionato)
             {
+
                 transformOggettoSelezionato = Selection.activeTransform;
-                percorsiDisponibili = percorsi.nomePercorsi;
-                indexDisponibili = percorsi.indexPercorsi;
                 tmpIndexLiberi = new List<int>(indexDisponibili);  //creata lista indexDisponibili
                 tmpPercorsiLiberi = new List<string>(percorsiDisponibili); //ceata lista Nomi percorsi Disponibili
 
@@ -100,7 +101,7 @@ namespace DFTGames.Tools.EditorTools
                 {
                     EditorGUILayout.HelpBox(" Lista dei Percorsi Vuota....Inserirli in Windows ToolGame", MessageType.Error);
                     EditorGUILayout.Separator();
-                    return;                  
+                    return;
                 }
 
                 GameObject tmpObj = GameObject.Find("PadrePercorso");
@@ -147,6 +148,7 @@ namespace DFTGames.Tools.EditorTools
             me.offsetSpostaOggetto = EditorGUILayout.Slider(new GUIContent("OffsetSollevaOggetto", "Di quando l'oggetto va sollevato dalla superficie"), me.offsetSpostaOggetto, 0, 2);
             me.colore = EditorGUILayout.ColorField(new GUIContent("Colore Percorso", "Imposta il colore dei nodi dei percorsi"), me.colore);
 
+
             int index = tmpIndexLiberi.IndexOf(me.IndexPercorso);
             int index2 = index;
             index = EditorGUILayout.Popup("Percorsi Disponibili", index, tmpPercorsiLiberi.ToArray()); //assegna index selezionato nella lista dei Liberi
@@ -160,14 +162,23 @@ namespace DFTGames.Tools.EditorTools
             EditorGUILayout.EndVertical();
             if (GUI.changed)
             {
-                EditorUtility.SetDirty(target);         
+                EditorUtility.SetDirty(target);
                 UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
                 UnityEditor.SceneManagement.EditorSceneManager.SaveScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
-    
+
             }
 
         }
 
+        private void AlimentaListe()
+        {
+            Debug.Log("le sto alimentando");
+            for (int k = 0; k < percorsi.percorsi.Count; k++)    // //      percorsiDisponibili = percorsi.percorsi;   era questo in principio..ma non sono riuscito a Convertirlo
+            {
+                percorsiDisponibili.Add(percorsi.percorsi[k].nomePercorsi);
+                indexDisponibili.Add(percorsi.percorsi[k].indice);
+            }
+        }
     }
 }
 

@@ -83,29 +83,36 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
             GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
             if (GUILayout.Button("Crea il DataBase"))
             {
-                string tmpStr = "Assets";
-                if (percorso == null || percorso == string.Empty)
-                {
-                    string tmpPercosro = EditorUtility.OpenFolderPanel("Percorso per Database", tmpStr, "");
-                    if (tmpPercosro != string.Empty)
-                    {
-                        percorso = "Assets" + tmpPercosro.Substring(Application.dataPath.Length);
-                        EditorPrefs.SetString(Statici.STR_PercorsoConfig3, percorso);
-                    }
-                }
-                if (percorso != string.Empty)
-                    _caratteristichePersonaggioV2 = ScriptableObject.CreateInstance<caratteristichePersonaggioV2>();
-                _caratteristichePersonaggioV2.classePersonaggio = new System.Collections.Generic.List<String>();
-
-
-                AssetDatabase.CreateAsset(_caratteristichePersonaggioV2, percorso + Statici.STR_DatabaseDiGioco3);
-                AssetDatabase.Refresh();
-                ProjectWindowUtil.ShowCreatedAsset(_caratteristichePersonaggioV2);
-                resettaParametri();
+                _caratteristichePersonaggioV2 = CreaDatabase();
             }
             EditorGUILayout.HelpBox("DataBase Mancante", MessageType.Error);
             GUILayout.EndHorizontal();
         }
+    }
+
+    public static caratteristichePersonaggioV2 CreaDatabase()
+    {
+        string tmpStr = "Assets";
+        caratteristichePersonaggioV2 _caratteristichePersonaggioV2 = null;
+        if (percorso == null || percorso == string.Empty)
+        {
+            string tmpPercosro = EditorUtility.OpenFolderPanel("Percorso per Database", tmpStr, "");
+            if (tmpPercosro != string.Empty)
+            {
+                percorso = "Assets" + tmpPercosro.Substring(Application.dataPath.Length);
+                EditorPrefs.SetString(Statici.STR_PercorsoConfig3, percorso);
+            }
+        }
+        if (percorso != string.Empty)
+            _caratteristichePersonaggioV2 = ScriptableObject.CreateInstance<caratteristichePersonaggioV2>();
+        _caratteristichePersonaggioV2.classePersonaggio = new System.Collections.Generic.List<String>();
+
+
+        AssetDatabase.CreateAsset(_caratteristichePersonaggioV2, percorso + Statici.STR_DatabaseDiGioco3);
+        AssetDatabase.Refresh();
+        ProjectWindowUtil.ShowCreatedAsset(_caratteristichePersonaggioV2);
+        resettaParametri(_caratteristichePersonaggioV2);
+        return _caratteristichePersonaggioV2;
     }
 
     private void GestisciProprieta()
@@ -147,7 +154,7 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
         }
         if (GUILayout.Button("Resetta", GUILayout.Width(100f)))
         {
-            resettaParametri();
+            resettaParametri(_caratteristichePersonaggioV2);
             EditorUtility.SetDirty(_caratteristichePersonaggioV2);
             AssetDatabase.SaveAssets();
         }
@@ -262,7 +269,7 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
             classiPersonaggi classePersScelto = (classiPersonaggi)EditorGUILayout.EnumPopup(_caratteristichePersonaggioV2.matriceProprieta[i].classe, GUILayout.Width(130));
             if (classePersScelto != _caratteristichePersonaggioV2.matriceProprieta[i].classe)
             {
-                
+
                 _caratteristichePersonaggioV2.matriceProprieta[i].classe = classePersScelto;
                 tmpclassePersonaggio[i] = _caratteristichePersonaggioV2.matriceProprieta[i].classe.ToString();
                 Undo.RecordObject(_caratteristichePersonaggioV2, "Classe");
@@ -339,7 +346,7 @@ public class caratteristichePersonaggioEditorV2 : EditorWindow
 
     }
 
-    private void resettaParametri()
+    private static void resettaParametri(caratteristichePersonaggioV2 _caratteristichePersonaggioV2)
     {
 
         for (int i = 0; i < _caratteristichePersonaggioV2.classePersonaggio.Count; i++)

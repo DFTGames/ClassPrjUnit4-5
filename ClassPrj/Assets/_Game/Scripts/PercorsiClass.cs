@@ -15,27 +15,46 @@ public class PercorsiClass : ScriptableObject
 
     public bool scenaDaSalvare;
 
-    public List<int> indexPercorsi = new List<int>();
+    //public List<string> nomeClassi = new List<string>();
 
-    public List<string> nomePercorsi = new List<string>();
+    public List<GruppoPercorsi> percorsi = new List<GruppoPercorsi>();
+
+    public List<Road> road;
+
+    [System.Serializable]
+    public class Road
+    {
+        public string nomeClassi = string.Empty;
+        public int indice = -1;
+
+    }
+
+    [System.Serializable]
+    public class GruppoPercorsi
+    {
+        public string nomePercorsi = string.Empty;
+        public int indice = NON_ESISTE;
+
+    }
 
 
-    public void ResettaIndexGameData1(int key,GameData gameData1)  //mi resetta(default = NON_ESISTE) i valori del indexPercorso GameData
+
+    public void ResettaIndicePercorso(int key)  //mi resetta(default = NON_ESISTE) i valori del indexPercorso GameData
     {                                    // se key=NON_ESISTE mi resetta tutti i valori..altrimenti solo il valore corrispondente
 
-        for (int i = 0; i < gameData1.indexPercorsi.Length; i++)
+        for (int i = 0; i < road.Count; i++)
         {
-            if ((key == NON_ESISTE) || (gameData1.indexPercorsi[i] == key))
+            if ((key == NON_ESISTE) || (road[i].indice == key))
             {
-                gameData1.indexPercorsi[i] = NON_ESISTE;
+                road[i].indice = NON_ESISTE;
                 cambiatoAlmenoUnaScena = true;
             }
         }
         ControlloIndexPercorsi();
     }
 
-
-   public void ordinaClasseListaDouble(ref List<int> indexPercorsi, ref List<string> nomePercorsi) //mi effettua lo sort del index e stringa(questo costruito io)
+    /*  FUNZIONE INUTILE PER PINO..DA TOGLIERE
+    public void ordinaClasseListaDouble(ref List<int> indexPercorsi, ref List<string> nomePercorsi) //mi effettua lo sort del index e stringa(questo costruito io)
     {
         List<int> tmpindex = new List<int>(indexPercorsi); //passaggio per valore IMPORTANTE
         List<string> tmpPercorsi = new List<string>(nomePercorsi);  //passaggio per valore IMPORTANTE
@@ -45,20 +64,30 @@ public class PercorsiClass : ScriptableObject
         for (int i = 0; i < tmpindex.Count; i++)
             nomePercorsi[i] = tmpPercorsi[tmpindex.IndexOf(indexPercorsi[i])];           //mi ordina la lista percorso sulla base della lista index riordinata con lo sort
     }
+    */
 
-    public int trovaIndexLibero(List<int> indexPercorsi)   //mi trova l'index libero ciclando
+    public int trovaIndexLibero()   //mi trova l'index libero (metodo da me brevettato...e' veloce e funzionale e non fa uso di ricorsione)
     {
-        int tmp = 0;
-        if (indexPercorsi.Count > 0)
+        if (percorsi.Count == 0) return 0;
+
+        List<int> tmpOrdino = new List<int>();  //creata lista provvisoria
+
+        for (int i = 0; i < percorsi.Count; i++)  //alimenta la lista e poi la ordina
+            tmpOrdino.Add(percorsi[i].indice);
+
+        tmpOrdino.Sort();
+
+        int primo = 0;
+
+        for (int fi = 0; fi < tmpOrdino.Count; fi++)  //trova il primo indice libero
         {
-            for (int i = 0; i < indexPercorsi.Count; i++)
-            {
-                if (tmp < indexPercorsi[i] - 1) break;
-                tmp = indexPercorsi[i];
-            }
+            if (primo == tmpOrdino[fi]) primo++;
+            else break;
         }
-        return ++tmp;
+        return primo;
     }
+
+
 
     public void ControlloIndexPercorsi()
     {
@@ -70,7 +99,7 @@ public class PercorsiClass : ScriptableObject
             {
                 Transform tmpPercorso = tmpObj.transform.GetChild(i);
                 GestorePercorso gp = tmpPercorso.GetComponent<GestorePercorso>();
-                if (gp.IndexPercorso == NON_ESISTE || (gp.IndexPercorso != NON_ESISTE && !indexPercorsi.Contains(gp.IndexPercorso)))
+                if (gp.IndexPercorso == NON_ESISTE) //ESCLUSO DAL CONTROLLO MOMENTANEAMENTE..VEDERE SE CI STA O MENO || (gp.IndexPercorso != NON_ESISTE && !indexPercorsi.Contains(gp.IndexPercorso)))
                 {
                     tmpPercorso.name = "PERCORSO ERRATO";
                     gp.IndexPercorso = NON_ESISTE;
@@ -80,11 +109,12 @@ public class PercorsiClass : ScriptableObject
             }
     }
 
-    public void resetta(GameData gameData1)
+    public void resetta()
     {
-        nomePercorsi.Clear();
-        indexPercorsi.Clear();
-        ResettaIndexGameData1(NON_ESISTE, gameData1);
+        percorsi.Clear();
+        road.Clear();
+        //   ResettaIndexGameData1(NON_ESISTE, gameData1);
+        //DA SISTEMARE...
 
     }
 
