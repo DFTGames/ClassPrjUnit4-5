@@ -267,18 +267,4 @@ public class GameManager : MonoBehaviour
         }    
         me.RecuperaDizionariDiplomazia();
     }
-  
-    public static void MemorizzaCheckPoint(string nomeCheckPoint)
-    {
-        datiPersonaggio.Dati.posizioneCheckPoint = nomeCheckPoint;
-        datiPersonaggio.Salva();
-    }
-
-    public static void MemorizzaProssimaScena(string nomeScena, string nomeCheck)
-    {
-        datiPersonaggio.Dati.posizioneCheckPoint = nomeCheck;
-        datiPersonaggio.Dati.nomeScena = nomeScena;
-        datiPersonaggio.Salva();
-        me.StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica(nomeScena));
-    }
 }

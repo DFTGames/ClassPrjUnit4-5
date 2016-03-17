@@ -19,8 +19,6 @@ public class GestoreCanvasAltreScene : MonoBehaviour
     public GameObject pannelloTest;
 
     private static GestoreCanvasAltreScene me;
-    private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
-    private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
     private bool fatto = false;
     private string tagDellAltro = null;
     private DatiPersonaggio personaggio;

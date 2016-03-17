@@ -13,7 +13,7 @@ public class ClickPortale : MonoBehaviour {
     
         destinazione = gameObject.GetComponentInParent<TriggerPortale>().destinazione;
         particelle = GetComponent<ParticleSystem>();
-     
+        playerT = GameManager.PersonaggioPrincipaleT;
     }
 
   
@@ -26,39 +26,31 @@ public class ClickPortale : MonoBehaviour {
 
         if (distanza.magnitude < 5f)
         {
-            GestoreCanvasAltreScene.nomeProssimaScena = destinazione;
-            GameManager.MemorizzaProssimaScena(destinazione, transform.parent.name + "RitornoPortale");
+            GestoreCanvasAltreScene.nomeProssimaScena = destinazione;        
+            GameManager.datiPersonaggio.Dati.posizioneCheckPoint = transform.parent.name + "RitornoPortale";
+            GameManager.datiPersonaggio.Dati.nomeScena = destinazione;
+            GameManager.datiPersonaggio.Salva();
+            StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica(destinazione));
         }
      
     }
+ 
 
-   /// <summary>
-   /// se il mouse è sopra il portale, controllo se il giocatore è ad una distanza dal portale 
-   /// inferiore ad un certo valore che sarebbe il valore necessario a renderlo funzionante.
-   /// nel caso si trovi al di sotto di questo valore, quindi il player è abbastanza vicino al portale,
-   /// il portale diventa più intenso, altrimenti se tolgo il mouse o non sono alla distanza corretta,
-   /// l'intensità del portale torna normale.
-   /// N.B.non ho usato start color per cambiargli colore perchè non mi piace il risultato preferisco 
-   /// che diventi più intenso se il mouse sta sopra.
-   /// N.B.2: ho provato di nuovo ad usare colorOverLifetime ma non lo posso ne abilitare da script
-   /// usando enabled ne agiro sul colore con color perchè mi dice che è read only.
-   /// </summary>
+    /// <summary>
+    /// se il mouse è sopra il portale, controllo se il giocatore è ad una distanza dal portale 
+    /// inferiore ad un certo valore che sarebbe il valore necessario a renderlo funzionante.
+    /// nel caso si trovi al di sotto di questo valore, quindi il player è abbastanza vicino al portale,
+    /// il portale diventa più intenso, altrimenti se tolgo il mouse o non sono alla distanza corretta,
+    /// l'intensità del portale torna normale.   
+    /// </summary>
     void OnMouseOver()
-    {
-
-        if (playerT == null && GameObject.FindGameObjectWithTag("Player") != null)
-        {
-            playerT = GameObject.FindGameObjectWithTag("Player").transform;
-
-        }
-        else if (playerT != null)
-        {
+    {     
             distanza = (playerT.position - transform.position);
             if (distanza.magnitude < 5f && particelle.maxParticles != 2)
                 particelle.maxParticles = 2;
             else if (distanza.magnitude > 5f && particelle.maxParticles != 1)
                 particelle.maxParticles = 1;
-        }
+
       
     }
     void OnMouseExit()

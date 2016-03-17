@@ -280,6 +280,7 @@ public class ControllerMaga : MonoBehaviour
         DatiPersonaggio.Vita += quanto;       
         switchVivoMorto.DisattivaRagdoll();
         SalvaDatiVita();
+        GameManager.PersonaggioPrincipaleT.position = GameObject.Find(GameManager.datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
     }
 
     private void SalvaDatiVita()
