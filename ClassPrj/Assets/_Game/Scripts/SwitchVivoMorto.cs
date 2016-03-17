@@ -28,8 +28,10 @@ public class SwitchVivoMorto : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.F))
             controller.RiceviDanno(controller.DatiPersonaggio.VitaMassima);
         else
-            if (Input.GetKeyDown(KeyCode.G))
-            controller.Resuscita(controller.DatiPersonaggio.VitaMassima);
+            if (Input.GetKeyDown(KeyCode.G))       
+            controller.Resuscita(controller.DatiPersonaggio.VitaMassima);      
+        
+           
 	}
 
     public void AttivaRagdoll()
