@@ -26,8 +26,9 @@ public class GameManager : MonoBehaviour
     private RaycastHit hit;
     private Collider precedente = null;
     private Collider attuale = null;
-    private Vista vistaGoblin; 
-       
+    private Vista vistaGoblin;
+    private OggettiDaMarcare oggettoDaMarcare;
+
     void Awake()
     {
         me = this;
@@ -182,6 +183,8 @@ public class GameManager : MonoBehaviour
         }     
         if(vistaGoblin!=null)   
            vistaGoblin.AmiciziaCambiata = true;
+        if (oggettoDaMarcare != null)
+            oggettoDaMarcare.AmiciziaCambiata = true;
     }
         
 
@@ -198,16 +201,17 @@ public class GameManager : MonoBehaviour
                 {
                     classeEssereSelezionato = hit.collider.GetComponent<DatiPersonaggio>().miaClasse.ToString();
                     vistaGoblin = hit.collider.GetComponent<Vista>();
+                    oggettoDaMarcare= hit.collider.GetComponent<OggettiDaMarcare>();
                 }
 
                 if (precedente != attuale)
                 {
-                    if (precedente != null && precedente.transform.FindChild("quadDiSelezione") && precedente.transform.FindChild("quadDiSelezione").gameObject.activeInHierarchy)
-                        precedente.transform.FindChild("quadDiSelezione").gameObject.SetActive(false);
+                    if (precedente != null && precedente.transform.FindChild("luceSelezione") && precedente.transform.FindChild("luceSelezione").gameObject.activeInHierarchy)
+                        precedente.transform.FindChild("luceSelezione").gameObject.SetActive(false);
                     precedente = attuale;
                 }
-                if (attuale.transform.FindChild("quadDiSelezione"))
-                    attuale.transform.FindChild("quadDiSelezione").gameObject.SetActive(true);
+                if (attuale.transform.FindChild("luceSelezione"))
+                    attuale.transform.FindChild("luceSelezione").gameObject.SetActive(true);
             }
         }
     }
