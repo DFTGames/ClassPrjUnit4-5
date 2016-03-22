@@ -18,7 +18,7 @@ public class OggettiDaMarcare : MonoBehaviour {
     private classiPersonaggi classePlayer;
     private bool sonoUnEssereVivente = false;
     private float misuraSprite = 20f;
-    private bool amiciziaCambiata = false;
+    private bool amiciziaCambiata = true;
 
     public bool BloccaOggetto
     {
@@ -130,8 +130,11 @@ public class OggettiDaMarcare : MonoBehaviour {
         NuovaPosizioneMarcatore = minimappa.CalcolaPosizioneMarcatore(transform.position); //imposto la posizione
         imageMarcatore.rectTransform.localPosition = NuovaPosizioneMarcatore;//assegno la posizione.       
         minimappa.GestisciVisibilitaMarcatore(this); //Gestisco La visibilità o l'invisibilità del marcatore
-        if (sonoUnEssereVivente)
-          CambiaSpritePerDiplomazia();
+        if (sonoUnEssereVivente && AmiciziaCambiata)
+        {
+            CambiaSpritePerDiplomazia();
+            AmiciziaCambiata = false;
+        }
     }
     public bool Visibile()
     {
