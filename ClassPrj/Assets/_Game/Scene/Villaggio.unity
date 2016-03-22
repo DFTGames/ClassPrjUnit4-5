@@ -700,6 +700,33 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 747b62b23fd5aa34fa8666ffda894d34, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &44286359
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1291636190}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 44286360}
+  m_Layer: 0
+  m_Name: Missing Prefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &44286360
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1291636190}
+  m_GameObject: {fileID: 44286359}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 21
 --- !u!1 &45372756
 GameObject:
   m_ObjectHideFlags: 0
@@ -26749,7 +26776,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22468200, guid: 566cb5b5afc524f4aacdb0e832b67ddc, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 120266, guid: 566cb5b5afc524f4aacdb0e832b67ddc, type: 2}
       propertyPath: m_IsActive
