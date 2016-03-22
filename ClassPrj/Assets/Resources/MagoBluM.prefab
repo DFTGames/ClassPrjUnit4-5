@@ -65,6 +65,7 @@ GameObject:
   - 114: {fileID: 11487460}
   - 114: {fileID: 11450722}
   - 114: {fileID: 11493908}
+  - 114: {fileID: 11452256}
   m_Layer: 11
   m_Name: MagoBluM
   m_TagString: Player
@@ -951,6 +952,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &187282
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 474720}
+  - 108: {fileID: 10820388}
+  m_Layer: 0
+  m_Name: luceSelezione
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
 --- !u!1 &188590
 GameObject:
   m_ObjectHideFlags: 1
@@ -1587,6 +1604,7 @@ Transform:
   m_Children:
   - {fileID: 435870}
   - {fileID: 404508}
+  - {fileID: 474720}
   m_Father: {fileID: 0}
   m_RootOrder: 0
 --- !u!4 &451158
@@ -1815,6 +1833,18 @@ Transform:
   - {fileID: 496274}
   m_Father: {fileID: 435710}
   m_RootOrder: 0
+--- !u!4 &474720
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 187282}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071067}
+  m_LocalPosition: {x: 0, y: 2.5499992, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 449886}
+  m_RootOrder: 2
 --- !u!4 &475074
 Transform:
   m_ObjectHideFlags: 1
@@ -2209,6 +2239,39 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!108 &10820388
+Light:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 187282}
+  m_Enabled: 1
+  serializedVersion: 6
+  m_Type: 0
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 7.08
+  m_Range: 40
+  m_SpotAngle: 53
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+  m_Cookie: {fileID: 2800000, guid: 9b50397d3bce938448440894068a8356, type: 3}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294965247
+  m_Lightmapping: 4
+  m_BounceIntensity: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_AreaSize: {x: 1, y: 1}
 --- !u!114 &11414796
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2248,6 +2311,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   miaClasse: 0
+--- !u!114 &11452256
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26ee95305ead8f043a0ec5cb52a3185d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nascondiSeFuoriMappa: 1
 --- !u!114 &11487460
 MonoBehaviour:
   m_ObjectHideFlags: 1

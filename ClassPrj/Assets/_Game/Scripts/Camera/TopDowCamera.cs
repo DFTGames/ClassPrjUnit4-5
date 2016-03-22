@@ -33,7 +33,7 @@ public class TopDowCamera : MonoBehaviour
             Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         else if (Target != null)
         {
-            Obiettivo = new Vector3(Target.position.x, Target.position.y + altezza, Target.position.z + ZOffSet);
+            Obiettivo = new Vector3(Target.position.x, Target.position.y + altezza, Target.position.z - ZOffSet);
 
             myTransform.position = Vector3.SmoothDamp(myTransform.position, Obiettivo, ref velocita, DampTime);
 
