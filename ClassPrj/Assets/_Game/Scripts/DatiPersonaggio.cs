@@ -3,7 +3,8 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 
 public class DatiPersonaggio : MonoBehaviour {
-    public classiPersonaggi miaClasse;
+
+    public classiPersonaggi miaClasse;   
 
     private float vita;
     private float vitaMassima;

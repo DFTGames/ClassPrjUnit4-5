@@ -1317,19 +1317,19 @@ Prefab:
       objectReference: {fileID: 619803863}
     - target: {fileID: 22472890, guid: e35ff89f6a7a20a4a8441391d260d301, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22431462, guid: e35ff89f6a7a20a4a8441391d260d301, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22445818, guid: e35ff89f6a7a20a4a8441391d260d301, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22412900, guid: e35ff89f6a7a20a4a8441391d260d301, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e35ff89f6a7a20a4a8441391d260d301, type: 2}

@@ -90,10 +90,12 @@ namespace DFTGames.Tools.EditorTools
 
             if (Selection.activeTransform != transformOggettoSelezionato)
             {
+
                 transformOggettoSelezionato = Selection.activeTransform;
-                percorsiDisponibili = percorsi.nomePercorsi;
-                indexDisponibili = percorsi.indexPercorsi;
-                tmpIndexLiberi = new List<int>(indexDisponibili);  //creata lista indexDisponibili
+                percorsiDisponibili = percorsi.elencaPercorsi();
+                indexDisponibili = percorsi.elencaIdxPercorsi();
+          
+               tmpIndexLiberi = new List<int>(indexDisponibili);  //creata lista indexDisponibili
                 tmpPercorsiLiberi = new List<string>(percorsiDisponibili); //ceata lista Nomi percorsi Disponibili
 
                 if (percorsiDisponibili.Count < 1)

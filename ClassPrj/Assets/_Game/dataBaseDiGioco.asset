@@ -16,7 +16,6 @@ MonoBehaviour:
   - goblin
   - magoTerra
   matriceAmicizie:
-  - elementoAmicizia: 010000000100000001000000
-  - elementoAmicizia: 010000000100000001000000
-  - elementoAmicizia: 010000000100000001000000
-  indexPercorsi: 020000000300000001000000
+  - elementoAmicizia: 020000000200000001000000
+  - elementoAmicizia: 020000000200000001000000
+  - elementoAmicizia: 020000000100000001000000

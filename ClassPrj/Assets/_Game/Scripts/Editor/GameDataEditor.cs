@@ -69,6 +69,7 @@ namespace DFTGames.Tools.EditorTools
 
         private void OnGUI()
         {
+
             if (gameData != null)
             {
 
@@ -77,26 +78,23 @@ namespace DFTGames.Tools.EditorTools
                 GUILayout.EndHorizontal();
                 EditorGUILayout.Separator();
                 GestisciDiplomazia();
-                //Inizializzazione e set valori default=NON_ESISTE index percorso
-                if (gameData.indexPercorsi == null)
-                {
-                    gameData.indexPercorsi = new int[Enum.GetValues(typeof(classiPersonaggi)).Length];
-                    for (int i = 0; i < gameData.classiEssere.Length; i++)
-                        gameData.indexPercorsi[i] = NON_ESISTE;
-                }
+        
             }
             else
             {
                 GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
+                
                 if (GUILayout.Button("Crea il DataBase"))
                 {
                    gameData= CreaDatabase();
                 }
-                EditorGUILayout.HelpBox("DataBase Mancante", MessageType.Error);
+                
+                 EditorGUILayout.HelpBox("DataBase Mancante", MessageType.Error);              
                 GUILayout.EndHorizontal();
             }
         }
 
+        
         public static  GameData CreaDatabase()
         {
             string tmpStr = "Assets";
@@ -121,7 +119,7 @@ namespace DFTGames.Tools.EditorTools
             resettaParametri(gameData);
             return gameData;
         }
-
+     
         private void GestisciDiplomazia()
         {
             GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
@@ -171,7 +169,6 @@ namespace DFTGames.Tools.EditorTools
                     for (int i = vecchio; i < tmpClassi.Length; i++)
                     {
                         gameData.classiEssere[i] = tmpClassi.GetValue(i).ToString();
-                        gameData.indexPercorsi[i] = NON_ESISTE; //provvisorio finche si usano i tag
                         for (int j = 0; j < tmpClassi.Length; j++)
                         {
                             gameData.matriceAmicizie[i].elementoAmicizia[j] = Amicizie.Neutro;

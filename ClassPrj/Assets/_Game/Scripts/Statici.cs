@@ -9,6 +9,7 @@ public class Statici
 {
     public const string NomeFilePersonaggio = "Personaggio.dat";
     public const string nomeFileDiplomazia = "diplomazia.dat";
+    public const string nomeFilePercorsi = "percorsi.dat";
     public const string NomeFileAudio = "Audio.dat";
     public static string nomePersonaggio = string.Empty;
 
@@ -58,14 +59,14 @@ public class Statici
 
 
     /// <summary>
-    /// Lo script metodo charlie e serializza percorsi sono due metodi statici perchè vengono richiamati
+    /// Lo script metodo assegnaAssetDatabase e serializza percorsi sono due metodi statici perchè vengono richiamati
     /// in due script cioè manager iniziale e gamemanager.
     /// Per evitare di avere due metodi identici dentro entrambi gli script li ho spostati qui e resi statici
     /// in modo che siano scritti una volta sola e richiamati dove si vuole.
     /// </summary>
     /// <param name="databseInizialeAmicizie"></param>
     /// <param name="databaseInizialeProprieta"></param>
-    public static void assegnaAssetDatabase(ref GameData databseInizialeAmicizie,ref caratteristichePersonaggioV2 databaseInizialeProprieta)   //metodo per assegnare gli asset dentro l'inspector... By Luca del dftStudent
+    public static void assegnaAssetDatabase(ref GameData databseInizialeAmicizie,ref caratteristichePersonaggioV2 databaseInizialeProprieta,ref PercorsiClass databaseInizialePercorsi)   //metodo per assegnare gli asset dentro l'inspector... By Luca del dftStudent
     {
         if (databseInizialeAmicizie == null)
         {
@@ -83,37 +84,33 @@ public class Statici
                 databaseInizialeProprieta = AssetDatabase.LoadAssetAtPath<caratteristichePersonaggioV2>(percorso + Statici.STR_DatabaseDiGioco3);
             }
         }
+        if (databaseInizialePercorsi == null)
+        {
+            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig2))
+            {
+                string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig2);
+                databaseInizialePercorsi = AssetDatabase.LoadAssetAtPath<PercorsiClass>(percorso + Statici.STR_DatabaseDiGioco2);
+            }
+        }
     }
 
-    public static void SerializzaPercorsi(ref GameData databseInizialeAmicizie, ref Serializzabile<AmicizieSerializzabili> datiDiplomazia, ref Dictionary<string, int> dizionarioPercorsi)   //Controlla e se necessario riserializza i percorsi
+    public static void SerializzaPercorsi(ref PercorsiClass databaseInizialePercorsi,ref Serializzabile<PercorsiClass> datiPercorsi)   //Controlla e se necessario riserializza i percorsi
     {
         //Controlla i percorsi se sono gia serializzati e se ci sono variazioni li reserializza
         //se non sono serializzati li serializza
-        //se non ci sono variazioni non fa niente
+        //se non ci sono variazioni non fa niente  
 
-        if (databseInizialeAmicizie == null) return;
+        //IMPLEMENTARE IL CONTROLLO..CHE SE C'E UN CAMBIAMENTO ...LO RISERIALIZZA..(un campo salvato nella classe)..chiedere al prof
+  
+        if (databaseInizialePercorsi == null) return;
 
-        if (datiDiplomazia == null)
+        if (datiPercorsi == null)   //SI PUO' TOGLIERE LA PAARTE DELLA SERIALIZAZIONE DAL MANAGERINIZIALE E DAL GAMEMANAGER E LASCIARLO SOLO QUA?
 
-            datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
-
-        if (datiDiplomazia.Dati.indexPercorsi.Equals(databseInizialeAmicizie.indexPercorsi)) return;  //CONTROLLARE SE METODO E' CORRETTO
-
-        for (int i = 0; i < databseInizialeAmicizie.classiEssere.Length; i++)
-
-        {
-            datiDiplomazia.Dati.indexPercorsi[i] = databseInizialeAmicizie.indexPercorsi[i];
-        }
-
-        datiDiplomazia.Salva();
-
-        // AGGIUNTO PER IL DIZIONARIO SUI PERCORSO
-        dizionarioPercorsi.Clear();
-
-        for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
-            dizionarioPercorsi.Add(datiDiplomazia.Dati.tipoEssere[i], datiDiplomazia.Dati.indexPercorsi[i]);
-
-
+            datiPercorsi = new Serializzabile<PercorsiClass>(Statici.nomeFilePercorsi);
+        for (int i = 0; i < databaseInizialePercorsi.per.Count; i++)    //li trasferisco dal asset database al file serializzato
+            datiPercorsi.Dati.per[i] = databaseInizialePercorsi.per[i];
+        datiPercorsi.Salva();
+ 
     }
 }
 

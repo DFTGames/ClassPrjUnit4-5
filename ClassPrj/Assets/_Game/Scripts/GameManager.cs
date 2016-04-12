@@ -13,15 +13,16 @@ public class GameManager : MonoBehaviour
     public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiIndifferenti = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
     public GameData databseInizialeAmicizie;
     public caratteristichePersonaggioV2 databaseInizialeProprieta;
+    public PercorsiClass databaseInizialePercorsi;
     public static Transform PersonaggioPrincipaleT;
     public static PadreGestore padreGestore;
-    public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();
     public static DatiPersonaggio personaggio;
 
     private Dictionary<int, DatiPersonaggio> registroDatiPersonaggi = new Dictionary<int, DatiPersonaggio>();
     private static GameManager me;
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
-    public static Serializzabile<ValoriPersonaggioS> datiPersonaggio;    
+    public static Serializzabile<ValoriPersonaggioS> datiPersonaggio;
+    public Serializzabile<PercorsiClass> datiPercorsi;
     private string classeEssereSelezionato = string.Empty;
     private RaycastHit hit;
     private Collider precedente = null;
@@ -35,12 +36,13 @@ public class GameManager : MonoBehaviour
   
     private void Start()
     {
+       
         GameObject tmpPdr = GameObject.Find("PadrePercorso");
         if (tmpPdr != null)
             padreGestore = tmpPdr.GetComponent<PadreGestore>();
         else
             Debug.LogError("Ma ci fai o ci sei ????..sei un cazzone....manca il padrePercorso");
-        Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
+        Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta, ref databaseInizialePercorsi);
         FileSerializzatiDelPersonaggio();
         if (Statici.sonoPassatoDallaScenaIniziale)
         {            
@@ -87,7 +89,7 @@ public class GameManager : MonoBehaviour
                 }
                 datiDiplomazia.Salva();                
             }
-            Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref dizionarioPercorsi);
+            Statici.SerializzaPercorsi(ref databaseInizialePercorsi, ref datiPercorsi);          
             GameObject tmpObjP = Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
             PersonaggioPrincipaleT = tmpObjP.transform;
             RecuperaDizionariDiplomazia();      
@@ -142,6 +144,8 @@ public class GameManager : MonoBehaviour
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
         //carico diplomazia
         datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
+        //carico percorsi
+        datiPercorsi = new Serializzabile<PercorsiClass>(Statici.nomeFilePercorsi);
     }
 
     private void RecuperaDizionariDiplomazia()

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
-
+using System.Collections.Generic;
 
 public class Pattugliamento : IStato
 {
@@ -14,8 +13,9 @@ public class Pattugliamento : IStato
     private GestorePercorso Percorso=null;
 
 
-    private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
- 
+    private Serializzabile<PercorsiClass> datiPercorsi;
+
+    private List<int> elencoPercorsiDisponibili = new List<int>();
 
     public void Esecuzione()
     {
@@ -54,10 +54,17 @@ public class Pattugliamento : IStato
 
         MioCervello = oggetto;
 
+        if (!MioCervello.DatiPersonaggio.Giocabile)
+        { elencoPercorsiDisponibili= datiPercorsi.Dati.trovaPercorsiDaPersonaggio(MioCervello.DatiPersonaggio.miaClasse);
+                }
 
+        if (elencoPercorsiDisponibili.Count > 0)
+            MioCervello.IndexPercorso = elencoPercorsiDisponibili[Random.Range(0, elencoPercorsiDisponibili.Count)];  //per ora gli assegno percorso casuale...da sistemare e completare
+
+        /*
         if (GameManager.dizionarioPercorsi.ContainsKey(MioCervello.gameObject.tag))
             MioCervello.IndexPercorso = GameManager.dizionarioPercorsi[MioCervello.gameObject.tag];
-
+            */
         //-Vedere se meglio con impostazione nostra di indiceDestionazioni oppure fare in modo che a ogni chiamata al Gestore PErcorso si incrementa da solo
 
         if (MioCervello.IndexPercorso < 0) //

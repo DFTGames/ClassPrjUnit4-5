@@ -10,7 +10,7 @@ using UnityEditor.SceneManagement;
 
 namespace DFTGames.Tools.EditorTools
 {
-   
+
     enum DoveSono
     {
         Modifica,
@@ -19,9 +19,9 @@ namespace DFTGames.Tools.EditorTools
 
     public class EditorPercorsiClass : EditorWindow
     {
-       
+
         public PercorsiClass percorsi;
-        public GameData gameData1;
+        public PercorsiClass.Percorso percorso;
 
         public int contaPercorso;
         private DoveSono scelta = DoveSono.Gestione;
@@ -29,13 +29,11 @@ namespace DFTGames.Tools.EditorTools
         private Color OriginalBg = GUI.backgroundColor;
         private Color OriginalCont = GUI.contentColor;
         private Color OriginalColor = GUI.color;
-        //public const string STR_PercorsoConfig2 = "PercorsoConfigurazione";  //Path memorizzazione del Percorso
-        //public const string STR_DatabaseDiGioco2 = "/dataBasePercorso.asset";
 
         private static bool preferenzePercorsiCaricate = false;
         private static string pathPercorsi;
 
-        
+
 
         [PreferenceItem("Percorsi")]
         private static void preferenzeDiGameGUI()
@@ -75,12 +73,7 @@ namespace DFTGames.Tools.EditorTools
                 percorsi = AssetDatabase.LoadAssetAtPath<PercorsiClass>(pathPercorsi + Statici.STR_DatabaseDiGioco2);
             }
 
-            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig))
-            {
-                string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig);
-                gameData1 = AssetDatabase.LoadAssetAtPath<GameData>(percorso + Statici.STR_DatabaseDiGioco);
-            }
-            percorsi.cambiatoAlmenoUnaScena = false; 
+            if (percorsi != null) percorsi.cambiatoAlmenoUnaScena = false;   //QUA C'E UN PROBLEMA..ME LO FA MA NON ALLA PRIMA CREAZIONE...PARTE DALLA SECONDA..CHIEDERE A PINO
         }
 
         void OnDisable()            //controlla la lista percorsi con i percorsi e se non c'e assegnazione mette indexpercorso del oggetto a default(NON_ESISTE) 
@@ -92,7 +85,7 @@ namespace DFTGames.Tools.EditorTools
                 if (scelta)
                     EditorSceneManager.SaveScene(scenaCorrente);
             }
-            
+
             if (!percorsi.cambiatoAlmenoUnaScena) return;
 
             var sceneName2 = Path.GetFileNameWithoutExtension(scenaCorrente.path);
@@ -100,42 +93,41 @@ namespace DFTGames.Tools.EditorTools
             for (var i = 0; i < EditorBuildSettings.scenes.Length; i++)  //MI FA IL CAMBIAMENTO IN TUTTE LE SCENE DEL GIOCO
             {
                 var scene = EditorBuildSettings.scenes[i];
-                
+
                 if (scene.enabled)
                 {
                     percorsi.scenaDaSalvare = false;
                     var sceneName = Path.GetFileNameWithoutExtension(scene.path);
 
-                    string tmpScene = "Assets/_Game/Scene/"+ sceneName + ".unity";
-                    UnityEngine.SceneManagement.Scene tmpscenee = EditorSceneManager.OpenScene(tmpScene,OpenSceneMode.Single);
+                    string tmpScene = "Assets/_Game/Scene/" + sceneName + ".unity";
+                    UnityEngine.SceneManagement.Scene tmpscenee = EditorSceneManager.OpenScene(tmpScene, OpenSceneMode.Single);
                     percorsi.ControlloIndexPercorsi();
                     if (percorsi.scenaDaSalvare)
                     {
                         EditorSceneManager.MarkSceneDirty(tmpscenee);  //imposto Scena a dirty...
                         EditorSceneManager.SaveScene(tmpscenee);
                     }
-                    EditorSceneManager.CloseScene(tmpscenee, true);               
+                    EditorSceneManager.CloseScene(tmpscenee, true);
                 }
             }
 
             string tmpScenaCorrente = "Assets/_Game/Scene/" + sceneName2 + ".unity";  //mi ricarica la scena iniziale
             EditorSceneManager.OpenScene(tmpScenaCorrente, OpenSceneMode.Single);
-          
+
         }
-    
+
 
 
         private void OnGUI()
         {
-            if (gameData1 == null)
+            if (Enum.GetNames(typeof(classiPersonaggi)).Length == 0)
+
             {
 
                 EditorGUILayout.HelpBox("DataBaseDiGioco Mancante nel GameObject GruppoPercorsi", MessageType.Error);
                 EditorGUILayout.Separator();
-
                 GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                if (GUILayout.Button("Crea il DataBase"))              
-                    gameData1 = GameDataEditor.CreaDatabase();
+
                 EditorGUILayout.HelpBox("DataBase Mancante", MessageType.Error);
                 GUILayout.EndHorizontal();
 
@@ -145,7 +137,6 @@ namespace DFTGames.Tools.EditorTools
 
             if (percorsi != null)
             {
-
                 GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
                 GUILayout.Label("Editor by DFT Students", GUI.skin.GetStyle("Label"));
                 GUILayout.EndHorizontal();
@@ -154,10 +145,10 @@ namespace DFTGames.Tools.EditorTools
                 if (GUILayout.Button("Inserisci/Modifca Percorsi"))
                     scelta = DoveSono.Modifica;
 
-                if (percorsi.nomePercorsi.Count > 0)
+                if (percorsi.per.Count > 0)
                     if (GUILayout.Button("Gestisci Percorsi"))
                         scelta = DoveSono.Gestione;
-                
+
                 GUILayout.EndHorizontal();
                 EditorGUILayout.Separator();
                 switch (scelta)
@@ -199,10 +190,10 @@ namespace DFTGames.Tools.EditorTools
             }
         }
 
-   
+
 
         private void InserisciModificaPercorsi()
-        {         
+        {
             GUIStyle stileEtichetta = new GUIStyle(GUI.skin.GetStyle("Label"));
             stileEtichetta.alignment = TextAnchor.MiddleCenter;
             stileEtichetta.fontStyle = FontStyle.Bold;
@@ -211,16 +202,14 @@ namespace DFTGames.Tools.EditorTools
             GUILayout.Label("Inserisci/Modifica Nome Percorsi", stileEtichetta);
             GUILayout.EndHorizontal();
             GUILayout.BeginVertical(EditorStyles.objectFieldThumb);
-
-            if (percorsi.nomePercorsi.Count > 0)
+            if (percorsi.per.Count > 0)
 
                 if (GUILayout.Button("Resetta", GUILayout.Width(100f)))
                 {
-                    percorsi.resetta(gameData1);
+                    //    percorsi.resetta(gameData1); da  togliere....
+                    percorsi.per.RemoveAll();
                     EditorUtility.SetDirty(percorsi);
                     AssetDatabase.SaveAssets();
-                    percorsi.indexPercorsi.Clear();
-                    percorsi.nomePercorsi.Clear();
                 }
             EditorGUILayout.Separator();
             GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
@@ -233,39 +222,38 @@ namespace DFTGames.Tools.EditorTools
             if (GUILayout.Button(" + ", GUILayout.Width(30)))
             {
                 string tmp = "nome percorso";
-                int indexx = percorsi.trovaIndexLibero(percorsi.indexPercorsi);
 
-                percorsi.indexPercorsi.Add(indexx);
-                percorsi.nomePercorsi.Add(tmp);
-                percorsi.ordinaClasseListaDouble(ref percorsi.indexPercorsi, ref percorsi.nomePercorsi);
+                percorso = new PercorsiClass.Percorso();
+                percorso.nomePercorsi = tmp;
+                percorsi.per.Add(percorso);
+
+
                 EditorUtility.SetDirty(percorsi);
                 AssetDatabase.SaveAssets();
 
             }
             GUILayout.EndHorizontal();
 
-            if (percorsi.nomePercorsi.Count > 0)
+            if (percorsi.per.Count > 0)
             {
-                for (int i = 0; i < percorsi.indexPercorsi.Count; i++)
+                for (int i = 0; i < percorsi.per.Count; i++)
 
                 {
                     GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                    GUILayout.Label("ID   " + percorsi.indexPercorsi[i]);
-                    string tmp = EditorGUILayout.TextField(percorsi.nomePercorsi[i]);
-
-                    if (tmp != percorsi.nomePercorsi[i])
+                    string tmp = EditorGUILayout.TextField(percorsi.per[i].nomePercorsi);
+                    if (tmp != percorsi.per[i].nomePercorsi)
                     {
-                        percorsi.nomePercorsi[i] = tmp;
-                        EditorUtility.SetDirty(percorsi);
-                        AssetDatabase.SaveAssets();
+                        if (percorsi.per.ControlloNomiPercorso(tmp)) //problema che gia alla prima lettera mi fa il controllo..MODIFICARLO..(come non so..)
+                        {
+                            percorsi.per[i].nomePercorsi = tmp;
+                            EditorUtility.SetDirty(percorsi);
+                            AssetDatabase.SaveAssets();
+                        }
                     }
                     if (GUILayout.Button(" - ", GUILayout.Width(30)))  //mi permette di cancellare le righe
-                    {    
-                        percorsi.ResettaIndexGameData1(percorsi.indexPercorsi[i],gameData1);
-                        percorsi.indexPercorsi.RemoveAt(i);
-                        percorsi.nomePercorsi.RemoveAt(i);
+                    {
+                        percorsi.per.RemoveAt(i);
                         EditorUtility.SetDirty(percorsi);
-                        EditorUtility.SetDirty(gameData1);
                         AssetDatabase.SaveAssets();
                     }
 
@@ -279,62 +267,78 @@ namespace DFTGames.Tools.EditorTools
         private void GestisciPercorsi()
         {
 
-            if (gameData1 == null || percorsi == null) return;
-            if (percorsi.nomePercorsi.Count < 1) return;
+            if (percorsi == null) return;
 
+            if (percorsi.per.Count == 0) return;
+       
+            GUIStyle stileEtichetta = new GUIStyle(GUI.skin.GetStyle("Label"));
+            stileEtichetta.alignment = TextAnchor.MiddleCenter;
+            stileEtichetta.fontStyle = FontStyle.Bold;
+            stileEtichetta.fontSize = 14;
+            GUIStyle stileEtichetta2 = new GUIStyle(GUI.skin.GetStyle("Label"));
+            stileEtichetta2.alignment = TextAnchor.MiddleLeft;
+            stileEtichetta2.fontStyle = FontStyle.Bold;
+            stileEtichetta2.fontSize = 11;
+            GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
+            GUILayout.Label("Gestione Percorsi", stileEtichetta);
+            GUILayout.EndHorizontal();
+            EditorGUILayout.Separator();
 
-            if (gameData1 != null && percorsi != null && percorsi.nomePercorsi[0] != string.Empty && percorsi.nomePercorsi[0] != null)  //Paranoia Luc_Code
-            {         
-                GUIStyle stileEtichetta = new GUIStyle(GUI.skin.GetStyle("Label"));
-                stileEtichetta.alignment = TextAnchor.MiddleCenter;
-                stileEtichetta.fontStyle = FontStyle.Bold;
-                stileEtichetta.fontSize = 14;
-                GUIStyle stileEtichetta2 = new GUIStyle(GUI.skin.GetStyle("Label"));
-                stileEtichetta2.alignment = TextAnchor.MiddleLeft;
-                stileEtichetta2.fontStyle = FontStyle.Bold;
-                stileEtichetta2.fontSize = 11;
-                GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                GUILayout.Label("Gestione Percorsi", stileEtichetta);
-                GUILayout.EndHorizontal();
-                EditorGUILayout.Separator();
+            GUILayout.BeginVertical(EditorStyles.objectFieldThumb);
+            GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
+            EditorGUILayout.Separator();
+            GUILayout.Label(new GUIContent("Assegnazione Percorsi "), stileEtichetta, GUILayout.Width(200));
+            GUILayout.Label(" (Premere + per aggiungere personaggi al percorso)", stileEtichetta2);
 
-                GUILayout.BeginVertical(EditorStyles.objectFieldThumb);
-                GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                EditorGUILayout.Separator();
-                GUILayout.Label(new GUIContent("Assegnazione Percorsi "), stileEtichetta, GUILayout.Width(200));
-                GUILayout.EndHorizontal();
-                EditorGUILayout.Separator();
-                EditorGUILayout.Separator();
-                bool setDirtyPersonaggi = false;
+            EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
+            GUILayout.EndHorizontal();
+            EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
 
-                for (int i = 0; i < gameData1.classiEssere.Length; i++)
+            bool setDirtyPersonaggi = false;
+
+            for (int i = 0; i < percorsi.per.Count; i++)
+            {
+                int countPer = percorsi.per[i].classi.Count;
+                if (countPer == 0) countPer++;
+                  for (int c = 0; c < countPer; c++)
+             
                 {
-                    if (gameData1.classiEssere[i] != "Player")
+                    GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);                   
+                 if (c==0)  EditorGUILayout.LabelField(percorsi.per[i].nomePercorsi, stileEtichetta2, GUILayout.Width(130));
+                    else EditorGUILayout.LabelField(string.Empty, stileEtichetta2, GUILayout.Width(130));
+                   
+                    int index = -1;
+                    if (percorsi.per[i].classi.Count > 0)                 
+                        index = Array.IndexOf((int[])Enum.GetValues(typeof(classiPersonaggi)), (int)percorsi.per[i].classi[c]);  //trova l'indice nella matrice che corrisponde al valore del campo indexPercorsi nella matrice diplomazia
+                                                                                                                                                                                                                                   //    percorsi.elencaPercorsi
+                    int index2 = index;
+        
+                    index = EditorGUILayout.Popup(index, (string[])Enum.GetNames(typeof(classiPersonaggi)));
+                    if (GUILayout.Button(" + ", GUILayout.Width(30)))
                     {
-                        GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                        EditorGUILayout.LabelField(gameData1.classiEssere[i], stileEtichetta2, GUILayout.Width(130));
-
-                        int index = Array.IndexOf(percorsi.indexPercorsi.ToArray(), gameData1.indexPercorsi[i]);  //trova l'indice nella matrice che corrisponde al valore del campo indexPercorsi nella matrice diplomazia
-                        int index2 = index;
-
-                        index = EditorGUILayout.Popup(index, percorsi.nomePercorsi.ToArray()); //assegna index selezionato della matrice
-
-                        if (index != index2)   //se e' stato fatto modifica
-                        {
-                            gameData1.indexPercorsi[i] = percorsi.indexPercorsi[index];
-                            setDirtyPersonaggi = true;
-                        }
-                        GUILayout.EndHorizontal();
+                        percorsi.per[i].classi.Add(classiPersonaggi.goblin);
+                        EditorUtility.SetDirty(percorsi);
+                        AssetDatabase.SaveAssets();
                     }
+                    if (index != index2)   //se e' stato fatto modifica
+                    {
+                        if (percorsi.per[i].classi.Count == 0)
+                           percorsi.per[i].classi.Add((classiPersonaggi)index);
+                        percorsi.per[i].classi[c] = (classiPersonaggi)index;
+                        setDirtyPersonaggi = true;
+                    }
+                    GUILayout.EndHorizontal();
                 }
-                GUILayout.EndVertical();
-                if (setDirtyPersonaggi)
-                {
-                    EditorUtility.SetDirty(gameData1);
-                    AssetDatabase.SaveAssets();
-                }
-
+            }  //  (ciclo for)
+           GUILayout.EndVertical();
+            
+            if (setDirtyPersonaggi)
+            {
+                AssetDatabase.SaveAssets();
             }
-        }      
+
+        }
     }
 }
