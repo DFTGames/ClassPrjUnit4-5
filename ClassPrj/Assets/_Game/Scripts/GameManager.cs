@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiIndifferenti = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
     public GameData databseInizialeAmicizie;
     public caratteristichePersonaggioV2 databaseInizialeProprieta;
-    public PercorsiClass databaseInizialePercorsi;
+    public static PercorsiClass databaseInizialePercorsi;
     public static Transform PersonaggioPrincipaleT;
     public static PadreGestore padreGestore;
     public static DatiPersonaggio personaggio;
@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
     private static GameManager me;
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
     public static Serializzabile<ValoriPersonaggioS> datiPersonaggio;
-    public Serializzabile<PercorsiClass> datiPercorsi;
     private string classeEssereSelezionato = string.Empty;
     private RaycastHit hit;
     private Collider precedente = null;
@@ -88,8 +87,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
                 datiDiplomazia.Salva();                
-            }
-            Statici.SerializzaPercorsi(ref databaseInizialePercorsi, ref datiPercorsi);          
+            }         
             GameObject tmpObjP = Instantiate(Resources.Load(datiPersonaggio.Dati.nomeModello), GameObject.Find(datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
             PersonaggioPrincipaleT = tmpObjP.transform;
             RecuperaDizionariDiplomazia();      
@@ -144,8 +142,6 @@ public class GameManager : MonoBehaviour
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
         //carico diplomazia
         datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
-        //carico percorsi
-        datiPercorsi = new Serializzabile<PercorsiClass>(Statici.nomeFilePercorsi);
     }
 
     private void RecuperaDizionariDiplomazia()

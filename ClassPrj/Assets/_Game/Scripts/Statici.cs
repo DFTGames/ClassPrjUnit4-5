@@ -94,24 +94,7 @@ public class Statici
         }
     }
 
-    public static void SerializzaPercorsi(ref PercorsiClass databaseInizialePercorsi,ref Serializzabile<PercorsiClass> datiPercorsi)   //Controlla e se necessario riserializza i percorsi
-    {
-        //Controlla i percorsi se sono gia serializzati e se ci sono variazioni li reserializza
-        //se non sono serializzati li serializza
-        //se non ci sono variazioni non fa niente  
-
-        //IMPLEMENTARE IL CONTROLLO..CHE SE C'E UN CAMBIAMENTO ...LO RISERIALIZZA..(un campo salvato nella classe)..chiedere al prof
-  
-        if (databaseInizialePercorsi == null) return;
-
-        if (datiPercorsi == null)   //SI PUO' TOGLIERE LA PAARTE DELLA SERIALIZAZIONE DAL MANAGERINIZIALE E DAL GAMEMANAGER E LASCIARLO SOLO QUA?
-
-            datiPercorsi = new Serializzabile<PercorsiClass>(Statici.nomeFilePercorsi);
-        for (int i = 0; i < databaseInizialePercorsi.per.Count; i++)    //li trasferisco dal asset database al file serializzato
-            datiPercorsi.Dati.per[i] = databaseInizialePercorsi.per[i];
-        datiPercorsi.Salva();
- 
-    }
+   
 }
 
 

@@ -49,12 +49,8 @@ public class PercorsiClass : ScriptableObject
 
         public bool ControlloNomiPercorso(string nomePercorso)  //ritorna  false se il nome e' gia presente
         {
-            // if (percorsi.Length == 0) return false;
-            //   if (percorsi == null) return true;
             for (int i = 0; i < percorsi.Length; i++)
             {
-                // Debug.Log(" percorso Aggiunto " + percorso.nomePercorsi);
-                //Debug.Log(" percorsi storici " +  percorsi[i].nomePercorsi);
                 if (percorsi[i].nomePercorsi.Contains(nomePercorso))
                 {
                     Debug.LogError("Capra !! Capra !! Capra !  percorso gia usato..Riprova..la prox volta sarai piu' fortunato ");
@@ -76,7 +72,7 @@ public class PercorsiClass : ScriptableObject
 
         }
 
-        public bool RemoveAt(int idx)
+        public bool RemoveAt(int idx)   //mi rimuove l'idx del percorso
         {
 
             if (idx >= 0 && idx < percorsi.Length)
@@ -91,12 +87,19 @@ public class PercorsiClass : ScriptableObject
             }
             else return false;
         }
+
+        public void RemoveAtClass(int idx,int idxClasse)   //mi rimuove l'idx della classe al percorso[idx]
+        {
+            if ((idx >= 0 && idx < percorsi.Length) && (idxClasse >= 0 && idxClasse < percorsi[idx].classi.Count))
+                percorsi[idx].classi.RemoveAt(idxClasse);
+        }
+
         public void RemoveAll()  // da implementarlo correttamente..
         {
             percorsi = new Percorso[0];   //ho pensato di resettarlo in questo modo...chiedere a pino se va bene...
 
         }
-        public IEnumerator GetEnumerator()
+        public IEnumerator GetEnumerator()   //LA USO A FARE QUALCOSA OPPURE SERVE SOLO PER LA SERIALIZZAZIONE? (IN QUESTO CASO HO SERIALIZZATO NEL ASSET)
         {
             return percorsi.GetEnumerator();
         }
@@ -200,14 +203,14 @@ public class PercorsiClass : ScriptableObject
         return elenco;
     }
 
-    public List<classiPersonaggi> trovaPersonaggiDaPercorsi(string percorso)
+    public List<classiPersonaggi> trovaPersonaggiDaIdxPercorsi(int idx) 
     {
         List<classiPersonaggi> elenco = new List<classiPersonaggi>();
 
 
         for (int i = 0; i < per.Count; i++)   //VA BENE COSI' OPPURE IMPLEMENTO ENUMERATOR ?  (  while (per.GetEnumerator().MoveNext))           
         {
-            if (percorso == per[i].nomePercorsi)
+            if (idx == per[i].idx)
                 for (int ii = 0; ii < per[i].classi.Count; ii++)
                     elenco.Add(per[i].classi[ii]);
 
@@ -215,6 +218,8 @@ public class PercorsiClass : ScriptableObject
 
         return elenco;
     }
+
+
 
 
     public void ControlloIndexPercorsi()

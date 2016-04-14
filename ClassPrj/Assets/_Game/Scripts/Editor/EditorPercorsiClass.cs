@@ -20,12 +20,14 @@ namespace DFTGames.Tools.EditorTools
     public class EditorPercorsiClass : EditorWindow
     {
 
+
         public PercorsiClass percorsi;
         public PercorsiClass.Percorso percorso;
 
         public int contaPercorso;
         private DoveSono scelta = DoveSono.Gestione;
 
+        private const int Default = -1;
         private Color OriginalBg = GUI.backgroundColor;
         private Color OriginalCont = GUI.contentColor;
         private Color OriginalColor = GUI.color;
@@ -33,7 +35,7 @@ namespace DFTGames.Tools.EditorTools
         private static bool preferenzePercorsiCaricate = false;
         private static string pathPercorsi;
 
-
+     //   private bool alimentaPErcorsiDisponibili = true;
 
         [PreferenceItem("Percorsi")]
         private static void preferenzeDiGameGUI()
@@ -74,6 +76,30 @@ namespace DFTGames.Tools.EditorTools
             }
 
             if (percorsi != null) percorsi.cambiatoAlmenoUnaScena = false;   //QUA C'E UN PROBLEMA..ME LO FA MA NON ALLA PRIMA CREAZIONE...PARTE DALLA SECONDA..CHIEDERE A PINO
+
+            /*
+             foreach (classiPersonaggi gg in percorsi.elencoPersonaggiDisponibili(0).ToArray())
+            {
+                Debug.Log("elenco disponbii 0 " + gg);
+
+            }
+
+            foreach (classiPersonaggi gg in percorsi.elencoPersonaggiDisponibili(1).ToArray())
+            {
+                Debug.Log("elenco disponbii 1" + gg);
+
+            }
+            foreach (classiPersonaggi gg in percorsi.elencoPersonaggiDisponibili(2).ToArray())
+            {
+                Debug.Log("elenco disponbii 2" + gg);
+
+            }
+            foreach (classiPersonaggi gg in percorsi.elencoPersonaggiDisponibili(3).ToArray())
+            {
+                Debug.Log("elenco disponbii 3" + gg);
+
+            }
+            */
         }
 
         void OnDisable()            //controlla la lista percorsi con i percorsi e se non c'e assegnazione mette indexpercorso del oggetto a default(NON_ESISTE) 
@@ -183,7 +209,6 @@ namespace DFTGames.Tools.EditorTools
                         AssetDatabase.Refresh();
                         ProjectWindowUtil.ShowCreatedAsset(percorsi);
                     }
-                    //  resettaPercorsi();
                 }
                 EditorGUILayout.HelpBox("DataBasePercorsi Mancante", MessageType.Error);
                 GUILayout.EndHorizontal();
@@ -206,7 +231,6 @@ namespace DFTGames.Tools.EditorTools
 
                 if (GUILayout.Button("Resetta", GUILayout.Width(100f)))
                 {
-                    //    percorsi.resetta(gameData1); da  togliere....
                     percorsi.per.RemoveAll();
                     EditorUtility.SetDirty(percorsi);
                     AssetDatabase.SaveAssets();
@@ -295,38 +319,61 @@ namespace DFTGames.Tools.EditorTools
             GUILayout.EndHorizontal();
             EditorGUILayout.Separator();
             EditorGUILayout.Separator();
-
+            
             bool setDirtyPersonaggi = false;
 
             for (int i = 0; i < percorsi.per.Count; i++)
             {
                 int countPer = percorsi.per[i].classi.Count;
-                if (countPer == 0) countPer++;
-                  for (int c = 0; c < countPer; c++)
-             
+                if (countPer == 0) countPer++;          
+                  for (int c = 0; c < countPer; c++)           
                 {
                     GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);                   
                  if (c==0)  EditorGUILayout.LabelField(percorsi.per[i].nomePercorsi, stileEtichetta2, GUILayout.Width(130));
                     else EditorGUILayout.LabelField(string.Empty, stileEtichetta2, GUILayout.Width(130));
                    
                     int index = -1;
-                    if (percorsi.per[i].classi.Count > 0)                 
-                        index = Array.IndexOf((int[])Enum.GetValues(typeof(classiPersonaggi)), (int)percorsi.per[i].classi[c]);  //trova l'indice nella matrice che corrisponde al valore del campo indexPercorsi nella matrice diplomazia
-                                                                                                                                                                                                                                   //    percorsi.elencaPercorsi
-                    int index2 = index;
-        
-                    index = EditorGUILayout.Popup(index, (string[])Enum.GetNames(typeof(classiPersonaggi)));
-                    if (GUILayout.Button(" + ", GUILayout.Width(30)))
+
+                    if (percorsi.per[i].classi.Count > 0)
                     {
-                        percorsi.per[i].classi.Add(classiPersonaggi.goblin);
-                        EditorUtility.SetDirty(percorsi);
+                  
+                        index = Array.IndexOf((int[])Enum.GetValues(typeof(classiPersonaggi)), (int)percorsi.per[i].classi[c]);
+
+                    }
+                 
+                    int index2 = index;
+
+                    // VOLEVO METTERCI UN TASTO DI SCELTA DELLA SCENA IN CUI SCEGLIE DOVE AVERE IL PERCORSO...MA NON SO COME FARE L'ELENCO DEI NOMI
+                    // DELLE SCENE ..CHIEDERE 
+
+                      index = EditorGUILayout.Popup(index, (string[])Enum.GetNames(typeof(classiPersonaggi)));
+ 
+                    if (percorsi.per[i].classi.Count > 0)
+                  {
+                       if ((c == percorsi.per[i].classi.Count-1) && GUILayout.Button(" + ", GUILayout.Width(30)) )
+                    {
+                            percorsi.per[i].classi.Add((classiPersonaggi)Default);
+                            EditorUtility.SetDirty(percorsi);
                         AssetDatabase.SaveAssets();
                     }
+
+                      if (c>0 && GUILayout.Button(" - ", GUILayout.Width(30)))
+                        {
+                            percorsi.per.RemoveAtClass(i, c);
+                            EditorUtility.SetDirty(percorsi);
+                            AssetDatabase.SaveAssets();
+                            setDirtyPersonaggi = true;
+
+                        }
+                   }
+                  
                     if (index != index2)   //se e' stato fatto modifica
                     {
                         if (percorsi.per[i].classi.Count == 0)
-                           percorsi.per[i].classi.Add((classiPersonaggi)index);
-                        percorsi.per[i].classi[c] = (classiPersonaggi)index;
+                             percorsi.per[i].classi.Add((classiPersonaggi)index);
+                                         
+                         percorsi.per[i].classi[c] = (classiPersonaggi)index;
+
                         setDirtyPersonaggi = true;
                     }
                     GUILayout.EndHorizontal();

@@ -41,7 +41,6 @@ public class ManagerIniziale : MonoBehaviour
     private int indiceClasseSuccessivaPrecedente = 0;
     private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
-    private Serializzabile<PercorsiClass> datiPercorsi;
     private string scena = string.Empty;
     private GameObject tmpGODaEliminareSeSelezioniAltroGO = null;
     private GameObject tmpGOPrecedente = null;
@@ -90,7 +89,6 @@ public class ManagerIniziale : MonoBehaviour
         Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta, ref databaseInizialePercorsi);
         cameraT = Camera.main.transform;
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-        datiPercorsi = new Serializzabile<PercorsiClass>(Statici.nomeFilePercorsi);
         for (int i = 0; i < databaseInizialeProprieta.matriceProprieta.Count; i++)       
         {
             if (!databaseInizialeProprieta.matriceProprieta[i].giocabile)            
@@ -141,7 +139,6 @@ public class ManagerIniziale : MonoBehaviour
     public void CaricaScenaDaCaricamento()
     {
         Statici.sonoPassatoDallaScenaIniziale = true;
-        Statici.SerializzaPercorsi(ref databaseInizialePercorsi, ref datiPercorsi);
         StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
     }
 
@@ -198,7 +195,7 @@ public class ManagerIniziale : MonoBehaviour
                     }
                     datiDiplomazia.Salva();
                 }
-                Statici.SerializzaPercorsi(ref databaseInizialePercorsi, ref datiPercorsi);
+
                 personaggiInCarica = true;
                 StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
             }
