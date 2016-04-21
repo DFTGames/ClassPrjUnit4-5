@@ -26,7 +26,7 @@ public class ManagerIniziale : MonoBehaviour
     public Text difesaCaricamento;
     public GameData databseInizialeAmicizie;
     public caratteristichePersonaggioV2 databaseInizialeProprieta;
-    public PercorsiClass databaseInizialePercorsi;
+    public Percorsi databaseInizialePercorsi;
     public Dropdown elencoCartelleDropDown;
     public Dropdown elencoSessiDropDown;
     public Image pannelloImmagineSfondo;

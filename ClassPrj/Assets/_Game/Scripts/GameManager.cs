@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiIndifferenti = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
     public GameData databseInizialeAmicizie;
     public caratteristichePersonaggioV2 databaseInizialeProprieta;
-    public static PercorsiClass databaseInizialePercorsi;
+    public static Percorsi databaseInizialePercorsi;
     public static Transform PersonaggioPrincipaleT;
     public static PadreGestore padreGestore;
     public static DatiPersonaggio personaggio;

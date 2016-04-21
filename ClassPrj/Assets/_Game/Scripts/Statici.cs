@@ -23,7 +23,8 @@ public class Statici
     public const string STR_DatabaseDiGioco3 = "/dataBasePersonaggioV2.asset";
 
     public static bool sonoPassatoDallaScenaIniziale = false;
-   
+
+    public const string tmpPercorsi = "nome Percorso";
 
     static string origine = Application.streamingAssetsPath + "/dbgioco.db";
     static string destinazione = Application.persistentDataPath + "/dbgioco.db";
@@ -66,7 +67,7 @@ public class Statici
     /// </summary>
     /// <param name="databseInizialeAmicizie"></param>
     /// <param name="databaseInizialeProprieta"></param>
-    public static void assegnaAssetDatabase(ref GameData databseInizialeAmicizie,ref caratteristichePersonaggioV2 databaseInizialeProprieta,ref PercorsiClass databaseInizialePercorsi)   //metodo per assegnare gli asset dentro l'inspector... By Luca del dftStudent
+    public static void assegnaAssetDatabase(ref GameData databseInizialeAmicizie,ref caratteristichePersonaggioV2 databaseInizialeProprieta,ref Percorsi databaseInizialePercorsi)   //metodo per assegnare gli asset dentro l'inspector... By Luca del dftStudent
     {
         if (databseInizialeAmicizie == null)
         {
@@ -89,7 +90,7 @@ public class Statici
             if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig2))
             {
                 string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig2);
-                databaseInizialePercorsi = AssetDatabase.LoadAssetAtPath<PercorsiClass>(percorso + Statici.STR_DatabaseDiGioco2);
+                databaseInizialePercorsi = AssetDatabase.LoadAssetAtPath<Percorsi>(percorso + Statici.STR_DatabaseDiGioco2);
             }
         }
     }

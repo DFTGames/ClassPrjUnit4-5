@@ -25,7 +25,7 @@ namespace DFTGames.Tools.EditorTools
         private List<int> tmpIndexLiberi;
         private List<string> tmpPercorsiLiberi;
 
-        private PercorsiClass percorsi;
+        private Percorsi percorsi;
         private Transform transformOggettoSelezionato = null;
 
         void OnEnable()
@@ -36,7 +36,7 @@ namespace DFTGames.Tools.EditorTools
             if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig2))
             {
                 string pathPercorsi = EditorPrefs.GetString(Statici.STR_PercorsoConfig2);
-                percorsi = AssetDatabase.LoadAssetAtPath<PercorsiClass>(pathPercorsi + Statici.STR_DatabaseDiGioco2);
+                percorsi = AssetDatabase.LoadAssetAtPath<Percorsi>(pathPercorsi + Statici.STR_DatabaseDiGioco2);
 
             }
 

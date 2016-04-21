@@ -19,7 +19,7 @@ public enum ProprietaPersonaggio
 
 public enum classiPersonaggi
 {
-   
+    indefinito=-1,
     magoAcqua,
     goblin,
     magoTerra
@@ -37,6 +37,52 @@ public class caratteristichePersonaggioV2 : ScriptableObject
     public List<ClasseValorPersonaggioV2> matriceProprieta;
     
     public List<String> classePersonaggio = new List<string>();
+
+    /// <summary>
+    /// Elenca personaggi giocabili e non 
+    /// </summary>
+    /// <param name="tp"></param>
+    /// <returns></returns> schiera di enum
+    public classiPersonaggi[] elencaClassiNonGiocabiliToEnumArray()
+    {
+        List<classiPersonaggi> tmp = new List<classiPersonaggi>();
+
+        for (int i=0; i<matriceProprieta.Count;i++)
+            if ( !matriceProprieta[i].giocabile) tmp.Add(matriceProprieta[i].classe);
+       
+        return tmp.ToArray();
+    }
+
+    public classiPersonaggi[] elencaClassiGiocabiliToEnumArray()
+    {
+        List<classiPersonaggi> tmp = new List<classiPersonaggi>();
+
+        for (int i = 0; i < matriceProprieta.Count; i++)
+            if (matriceProprieta[i].giocabile) tmp.Add(matriceProprieta[i].classe);
+
+        return tmp.ToArray();
+    }
+
+    public string[] elencaClassiNonGiocabiliToString()
+    {
+        List<string> tmp = new List<string>();
+
+        for (int i = 0; i < matriceProprieta.Count; i++)
+            if (!matriceProprieta[i].giocabile) tmp.Add(matriceProprieta[i].classe.ToString());
+
+        return tmp.ToArray();
+    }
+
+    public string[] elencaClassiGiocabiliToString()
+    {
+        List<string> tmp = new List<string>();
+
+        for (int i = 0; i < matriceProprieta.Count; i++)
+            if (matriceProprieta[i].giocabile) tmp.Add(matriceProprieta[i].classe.ToString());
+
+        return tmp.ToArray();
+    }
+
 }
 
 [System.Serializable]

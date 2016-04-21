@@ -4,132 +4,183 @@ using System.Collections.Generic;
 using System;
 
 [System.Serializable]
-public class PercorsiClass : ScriptableObject
+public class Percorsi : ScriptableObject , IEnumerable, IDisposable
 {
-    const int NON_ESISTE = -1;
+   const int NON_ESISTE = -1;
 
     public bool cambiatoAlmenoUnaScena;
 
     public bool scenaDaSalvare;
 
-    public Percorsi per = null;
-
-
-    public PercorsiClass()     //chiedere se va bene fatto in questo modo per evitare di creare istanza da dentro editor
-    {
-        per = new Percorsi();
-    }
 
     [System.Serializable]
-    public class Percorso
+    public class Percorso : IDisposable
     {
         public string nomePercorsi = string.Empty;
-        public int idx = NON_ESISTE;
         public List<classiPersonaggi> classi = new List<classiPersonaggi>();
 
+        public void Dispose()
+        {
+            classi.Clear();
+            classi = null;
+            nomePercorsi = null;
+
+        }
     }
 
 
-    [System.Serializable]
-    public class Percorsi : IEnumerable
+    public Percorsi()         //metto il costruttore oppure quando dichiaro la variabile privata la metto = new Percorso[0];
     {
-        private Percorso[] percorsi;
+        percorsi = new Percorso[0];
+    }
 
-        public Percorsi()
+    private Percorso[] percorsi;
+
+
+    public int Count
+    {
+        get
         {
-            percorsi = new Percorso[0];
-        }
-        public void Add(Percorso percorso)
-        {
-            if (!ControlloNomiPercorso(percorso.nomePercorsi)) return;
-            percorso.idx = trovaIndexLibero(percorsi);
-            Array.Resize<Percorso>(ref percorsi, percorsi.Length + 1);
-            percorsi[percorsi.Length - 1] = percorso;
+            return percorsi.Length;
         }
 
-        public bool ControlloNomiPercorso(string nomePercorso)  //ritorna  false se il nome e' gia presente
+    }
+
+
+    public void Add(string nomePercorso)
+    {
+        Percorso tmp = new Percorso();
+        tmp.nomePercorsi = nomePercorso;
+
+        Add(tmp);
+
+    }
+    public void Add(Percorso percorso)
+    {      
+        Array.Resize<Percorso>(ref percorsi, percorsi.Length + 1);
+        percorsi[percorsi.Length - 1] = percorso;
+
+        percorsi[percorsi.Length - 1].classi.Add(classiPersonaggi.indefinito);
+    }
+
+    public bool ControlloNomiPercorso(string nomePercorso)  //ritorna  false se il nome e' gia presente
+    {
+        for (int i = 0; i < percorsi.Length; i++)
         {
-            for (int i = 0; i < percorsi.Length; i++)
+            if (percorsi[i].nomePercorsi.Contains(nomePercorso) && nomePercorso != Statici.tmpPercorsi)
             {
-                if (percorsi[i].nomePercorsi.Contains(nomePercorso))
-                {
-                    Debug.LogError("Capra !! Capra !! Capra !  percorso gia usato..Riprova..la prox volta sarai piu' fortunato ");
-                    return (false);
-                }
+                Debug.LogError("Capra !! Capra !! Capra !  percorso gia usato..Riprova..la prox volta sarai piu' fortunato ");
+                return (false);
             }
-            return (true);
-        }
 
-        public int Count
+        }
+        return (true);
+    }
+
+
+    public void EliminaPercorsiVuoti() 
+    {                                      
+        if (percorsi.Length == 0) return;         //QUANDO NE METTO 2 VUOTI.ME NE LASCIA UNO..VEDERE dove sta il buco..
+
+        for (int i=0; i< percorsi.Length; i++)
         {
-            get
+            if (percorsi[i].nomePercorsi.Equals(Statici.tmpPercorsi))
             {
-                //provvosorio
-                if (percorsi == null) return 0;
-                //***********
-                return percorsi.Length;
+                RemoveAt(i);
+                if (i == 0) i--;   //Perdono Pino..e' poco leggibile lo so...pero' se il percorso e' al primo giro non funziona..perche lo metterei di nuovo a 0..ma poi lui lo incrementa alla fine..quindi non me li toglie tutti
+                     else i = 0;
             }
-
         }
+    }
 
-        public bool RemoveAt(int idx)   //mi rimuove l'idx del percorso
+    public void EliminaClassiVuote()
+    {
+        
+        for (int i = 0; i < percorsi.Length; i++)
         {
+            for (int c = 0; c < percorsi[i].classi.Count; c++)
+                if ((c > 0) && percorsi[i].classi[c]==classiPersonaggi.indefinito)
+            {
+                    RemoveAtClass(i, c);
+                   if (c == 1) c--;   //Continuo del Percorso (uguale a sopra)
+                       else c = 1;
+            }
+        }
+    }
 
+
+    public bool RemoveAt(int idx)   //mi rimuove l'idx del percorso
+    {
+
+        if (idx >= 0 && idx < percorsi.Length)
+        {
+            percorsi[idx].Dispose();
+            percorsi[idx] = null;
+            for (int i = idx; i < percorsi.Length - 1; i++)
+                percorsi[i] = percorsi[i + 1];
+
+            Array.Resize<Percorso>(ref percorsi, percorsi.Length - 1);
+            return true;
+        }
+        else return false;
+    }
+
+
+    public bool RemoveAtClass(int idx, int idxClasse)   //mi rimuove l'idx della classe al percorso[idx]
+    {
+        if ((idx >= 0 && idx < percorsi.Length) && (idxClasse >= 0 && idxClasse < percorsi[idx].classi.Count))
+        {
+            percorsi[idx].classi.RemoveAt(idxClasse);
+            return true;
+        }
+        return false;
+    }
+
+    public void Clear()
+    {
+        for (int i = 0; i < percorsi.Length; i++)
+        {
+            percorsi[i].Dispose();
+            percorsi[i] = null;
+        }
+        Array.Resize(ref percorsi, 0);
+    }
+
+    public IEnumerator GetEnumerator()   //LA USO A FARE QUALCOSA OPPURE SERVE SOLO PER LA SERIALIZZAZIONE? (IN QUESTO CASO HO SERIALIZZATO NEL ASSET)
+    {
+        return percorsi.GetEnumerator();
+    }
+
+    public void Dispose()
+    {
+
+        Clear();
+        percorsi = null;
+    }
+
+    public Percorso this[int idx]
+    {
+        get
+        {
+            if (idx >= 0 && idx < percorsi.Length)
+                return percorsi[idx];
+            Debug.LogError("Capra2 !! Capra2 !! numero fuori valori amessi");
+            return null;
+        }
+       
+        set   //NON USATO
+        {
             if (idx >= 0 && idx < percorsi.Length)
             {
-
-                for (int i = idx; i < percorsi.Length - 1; i++)
-                    percorsi[i] = percorsi[i + 1];
-
-
-                Array.Resize<Percorso>(ref percorsi, percorsi.Length - 1);
-                return true;
+                percorsi[idx] = value;
             }
-            else return false;
+            else Debug.LogError("Fesso!! numero fuori valori ammessi!!!");
         }
-
-        public void RemoveAtClass(int idx,int idxClasse)   //mi rimuove l'idx della classe al percorso[idx]
-        {
-            if ((idx >= 0 && idx < percorsi.Length) && (idxClasse >= 0 && idxClasse < percorsi[idx].classi.Count))
-                percorsi[idx].classi.RemoveAt(idxClasse);
-        }
-
-        public void RemoveAll()  // da implementarlo correttamente..
-        {
-            percorsi = new Percorso[0];   //ho pensato di resettarlo in questo modo...chiedere a pino se va bene...
-
-        }
-        public IEnumerator GetEnumerator()   //LA USO A FARE QUALCOSA OPPURE SERVE SOLO PER LA SERIALIZZAZIONE? (IN QUESTO CASO HO SERIALIZZATO NEL ASSET)
-        {
-            return percorsi.GetEnumerator();
-        }
-
-        public Percorso this[int idx]
-        {
-            get
-            {
-                //    Debug.Log("son nel get");
-                if (idx >= 0 && idx < percorsi.Length)
-                    return percorsi[idx];
-                throw new IndexOutOfRangeException("Capra2 !! Capra2 !! numero fuori valori amessi");
-            }
-
-
-            set
-            {
-
-                if (idx >= 0 && idx < percorsi.Length)
-                {
-
-                    percorsi[idx] = value;
-                }
-                else throw new IndexOutOfRangeException("Fesso!! numero fuori valori ammessi!!!");
-            }
-
-        }
-
+        
     }
 
+
+    /* FUNZIONE ELIMINATA DA PINO...PERCHE INUTILE..(SOSTITUITO IDX CON LA POSIZIONE NEL ARRAY)..MA IO LA TENGO QUA COME RICORDO...Tra i migliori script del .net da me creati..potenza e velocita in unico script
     public static int trovaIndexLibero(Percorso[] way)   //mi trova l'index libero (metodo da me brevettato...e' veloce e funzionale e non fa uso di ricorsione)
     {
         if (way.Length == 0) return 0;
@@ -150,76 +201,60 @@ public class PercorsiClass : ScriptableObject
         }
         return primo;
     }
-
+    */
 
     public List<string> elencaPercorsi()
     {
         List<string> arrayPer = new List<string>();
 
-        for (int i = 0; i < per.Count; i++)
-        {        
-            arrayPer.Add(per[i].nomePercorsi);          
+        for (int i = 0; i < Count; i++)
+        {
+            arrayPer.Add(percorsi[i].nomePercorsi);
         }
 
         return arrayPer;
 
     }
+
+    
     public List<int> elencaIdxPercorsi()
     {
         List<int> arrayPer = new List<int>();
 
-        for (int i = 0; i < per.Count; i++)
-            arrayPer.Add(per[i].idx);
+        for (int i = 0; i < Count; i++)
+            arrayPer.Add(i);
         return arrayPer;
 
     }
-
-
-    public classiPersonaggi[] elencaClassiPersonaggi()  //ritorna array di ClassePersonaggi usate nel assegnazione percorsi   VALUTARE SE  TENERE O NO
-    {
-        List<classiPersonaggi> cl = new List<classiPersonaggi>();
-
-        for (int i = 0; i < per.Count; i++)
-            for (int c = 0; c < per[i].classi.Count; c++)
-                if (!(cl.Contains(per[i].classi[c]))) cl.Add(per[i].classi[c]);
-
-        return cl.ToArray();
-
-    }
-
+    
 
     public List<int> trovaPercorsiDaPersonaggio(classiPersonaggi classe)
     {
         List<int> elenco = new List<int>();
 
 
-        for (int i = 0; i < per.Count; i++)   //VA BENE COSI' OPPURE IMPLEMENTO ENUMERATOR ?  (  while (per.GetEnumerator().MoveNext))
-            for (int ii = 0; ii < per[i].classi.Count; ii++)
+        for (int i = 0; i < Count; i++)  
+            for (int ii = 0; ii < percorsi[i].classi.Count; ii++)
             {
-                if (classe == per[i].classi[ii]) elenco.Add(per[i].idx);
+                if (classe == percorsi[i].classi[ii]) elenco.Add(i);
                 break;
             }
 
         return elenco;
     }
 
-    public List<classiPersonaggi> trovaPersonaggiDaIdxPercorsi(int idx) 
+    public List<classiPersonaggi> trovaPersonaggiDaIndicePercorsi(int idx)
     {
         List<classiPersonaggi> elenco = new List<classiPersonaggi>();
 
-
-        for (int i = 0; i < per.Count; i++)   //VA BENE COSI' OPPURE IMPLEMENTO ENUMERATOR ?  (  while (per.GetEnumerator().MoveNext))           
+        for (int i = 0; i < Count; i++)   
         {
-            if (idx == per[i].idx)
-                for (int ii = 0; ii < per[i].classi.Count; ii++)
-                    elenco.Add(per[i].classi[ii]);
-
+            if (idx == i)
+                for (int ii = 0; ii < percorsi[i].classi.Count; ii++)
+                    elenco.Add(percorsi[i].classi[ii]);
         }
-
         return elenco;
     }
-
-
 
 
     public void ControlloIndexPercorsi()
@@ -232,7 +267,7 @@ public class PercorsiClass : ScriptableObject
             {
                 Transform tmpPercorso = tmpObj.transform.GetChild(i);
                 GestorePercorso gp = tmpPercorso.GetComponent<GestorePercorso>();
-                if (gp.IndexPercorso == NON_ESISTE) //|| (gp.IndexPercorso != NON_ESISTE && !indexPercorsi.Contains(gp.IndexPercorso)))  IMPLEMENTARLO CORRETTAMENTE..
+                if ((gp.IndexPercorso == NON_ESISTE) || (gp.IndexPercorso != NON_ESISTE && !elencaIdxPercorsi().Contains(gp.IndexPercorso)))  
                 {
                     tmpPercorso.name = "PERCORSO ERRATO";
                     gp.IndexPercorso = NON_ESISTE;
@@ -241,4 +276,10 @@ public class PercorsiClass : ScriptableObject
 
             }
     }
+
+
+
+
+
+
 }

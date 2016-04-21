@@ -25,20 +25,10 @@ MonoBehaviour:
   - Attacco
   - Difesa
   matriceProprieta:
-  - nomeM: Mago_M3D
-    nomeF: Maga_M3D
+  - nomeM: nessun nome
+    nomeF: Maga
     classe: 0
-    giocabile: 1
-    Vita: 10
-    Livello: 0
-    Mana: 10
-    Xp: 0
-    Attacco: 10
-    difesa: 20
-  - nomeM: Mago_M3D2
-    nomeF: Maga_M3D2
-    classe: 2
-    giocabile: 1
+    giocabile: 0
     Vita: 10
     Livello: 0
     Mana: 10
@@ -46,16 +36,26 @@ MonoBehaviour:
     Attacco: 10
     difesa: 20
   - nomeM: goblin
-    nomeF: MagoBluM
+    nomeF: nessun nome
     classe: 1
     giocabile: 0
-    Vita: 10100
+    Vita: 10
+    Livello: 0
+    Mana: 10
+    Xp: 0
+    Attacco: 10
+    difesa: 20
+  - nomeM: gunnerF
+    nomeF: nessun nome
+    classe: 2
+    giocabile: 0
+    Vita: 10
     Livello: 0
     Mana: 10
     Xp: 0
     Attacco: 10
     difesa: 20
   classePersonaggio:
-  - magoAcqua
-  - magoTerra
+  - nessuna classe
   - goblin
+  - magoTerra
