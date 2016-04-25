@@ -9,8 +9,8 @@ public class TriggerCheckPoint : MonoBehaviour {
         datiGiocatore = coll.GetComponent<DatiPersonaggio>();
       if (datiGiocatore!=null && datiGiocatore.Giocabile)
         {
-            GameManager.datiPersonaggio.Dati.posizioneCheckPoint = transform.name;
-            GameManager.datiPersonaggio.Salva();
+            Statici.datiPersonaggio.Dati.posizioneCheckPoint = transform.name;
+            Statici.datiPersonaggio.Salva();
         }
 
     }  

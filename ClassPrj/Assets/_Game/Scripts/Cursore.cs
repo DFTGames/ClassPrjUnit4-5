@@ -1,82 +1,62 @@
 ﻿using UnityEngine;
 
+
 public class Cursore : MonoBehaviour
 {
+    public Texture2D immagineCombattere;
     public Texture2D immagineCursore;
     public Texture2D immagineNormale;
-    public Texture2D immagineToccare;
     public Texture2D immagineParlare;
-    public Texture2D immagineCombattere;
     public Texture2D immagineRaccogliere;
+    public Texture2D immagineToccare;
 
+    private static Cursore me;
     private int cursorSizeX = 32;
     private int cursorSizeY = 32;
 
     // private RaycastHit hit;
     private bool ignoraTrigger = false;
 
-    private void Start()
+    /// <summary>
+    /// Questo metodo serve per cambiare l'immagine del cursore. 
+    /// </summary>
+    /// <param name="numeroLayer"></param>
+    /// <param name="miaClasse"></param>
+    public static void CambiaCursore(int numeroLayer, classiPersonaggi miaClasse)
     {
-        Cursor.visible = true;
-        immagineCursore = immagineNormale;
-    }
-
-    private void Update()
-    {
-        immagineCursore = immagineNormale;
-        RaycastHit[] hit = Physics.RaycastAll(Camera.main.ScreenPointToRay(Input.mousePosition), float.MaxValue, -1, ignoraTrigger ? QueryTriggerInteraction.Ignore : QueryTriggerInteraction.Collide);
-        //if (!EventSystem.current.IsPointerOverGameObject() && Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, float.MaxValue, -1, QueryTriggerInteraction.Ignore))
-        if (hit != null)
+        switch (numeroLayer)
         {
-            for (int i = 0; i < hit.Length; i++)
-            {
-                switch (hit[i].transform.gameObject.layer)
-                {
-                    case (10):
-                        immagineCursore = immagineToccare;
-                 
-                        break;
+            case (10)://layer Toccare: se è un oggetto cliccabile e vuoi che spunti la mano col dito.
+                me.immagineCursore = me.immagineToccare;
+                break;
 
-                    case (12):
-                        immagineCursore = immagineRaccogliere;
+            case (12)://layer Raccogliere: l'immagine è di una mano quasi chiusa come se devi raccogliere qualcosa.
+                me.immagineCursore = me.immagineRaccogliere;
+                break;
 
-                        break;
+            case (11)://layer EssereVivente: l'immagine può essere un fumetto se si è amici o una spadina se si è nemici.
 
-                    case (11):
-                        if (hit[i].collider.GetComponent<CapsuleCollider>() && hit[i].collider.GetComponent<DatiPersonaggio>()!=null)
-                        {
-                            if (GameManager.dizionarioDiNemici[GameManager.personaggio.miaClasse].Contains(hit[i].collider.GetComponent<DatiPersonaggio>().miaClasse))
+                if (Statici.dizionarioDiNemici[Statici.personaggio.miaClasse].Contains(miaClasse))
+                    me.immagineCursore = me.immagineCombattere;
+                else
+                    me.immagineCursore = me.immagineParlare;
+                break;
 
-                                immagineCursore = immagineCombattere;
-                            else
-
-                                immagineCursore = immagineParlare;
-                        }
-                       
-                        break;
-
-                    case (9):
-                        ignoraTrigger = true;
-                        immagineCursore = immagineNormale;
-                        break;
-
-                    default:
-                        ignoraTrigger = false;
-                        immagineCursore = immagineNormale;
-                        
-                        break;
-                }
-            }
-        }
-        else
-        {
-            ignoraTrigger = false;
-            immagineCursore = immagineNormale;
+            default://altri layer : l'immagine è quella di default cioè una freccia dorata.
+                me.immagineCursore = me.immagineNormale;
+                break;
         }
     }
 
     private void OnGUI()
     {
         GUI.DrawTexture(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, cursorSizeX, cursorSizeY), immagineCursore);
+    }
+
+    private void Start()
+    {
+        me = this;
+        Cursor.visible = true;
+        immagineCursore = immagineNormale;
     }
 }

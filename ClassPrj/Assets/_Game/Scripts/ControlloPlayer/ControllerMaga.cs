@@ -100,7 +100,7 @@ public class ControllerMaga : MonoBehaviour
         if (SceneManager.GetActiveScene().buildIndex == 0)
             return;
         DatiPersonaggio = GetComponent<DatiPersonaggio>();
-        GameManager.RegistraDatiPersonaggio(DatiPersonaggio);
+        Statici.RegistraDatiPersonaggio(DatiPersonaggio);
         //se all'inizio della partita si ritrova a 0 di vita, gli do 1 di vita così non nasce morto.
         if (DatiPersonaggio.Vita <= 0f)
         {
@@ -280,13 +280,13 @@ public class ControllerMaga : MonoBehaviour
         DatiPersonaggio.Vita += quanto;       
         switchVivoMorto.DisattivaRagdoll();
         SalvaDatiVita();
-        GameManager.PersonaggioPrincipaleT.position = GameObject.Find(GameManager.datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
+        Statici.PersonaggioPrincipaleT.position = GameObject.Find(Statici.datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
     }
 
     private void SalvaDatiVita()
     {
-        GameManager.datiPersonaggio.Dati.Vita = DatiPersonaggio.Vita;
-        GameManager.datiPersonaggio.Salva();
+        Statici.datiPersonaggio.Dati.Vita = DatiPersonaggio.Vita;
+        Statici.datiPersonaggio.Salva();
         GestoreCanvasAltreScene.AggiornaVita();
     }
 

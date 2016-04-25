@@ -11,6 +11,17 @@ public class Statici
     public const string nomeFileDiplomazia = "diplomazia.dat";
     public const string NomeFileAudio = "Audio.dat";
     public static string nomePersonaggio = string.Empty;
+    public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiNemici = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
+    public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiAmici = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
+    public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiIndifferenti = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
+    public static Transform PersonaggioPrincipaleT;
+    public static PadreGestore padreGestore;
+    public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();
+    public static DatiPersonaggio personaggio;
+    public static Serializzabile<ValoriPersonaggioS> datiPersonaggio;
+    public static Dictionary<int, DatiPersonaggio> registroDatiPersonaggi = new Dictionary<int, DatiPersonaggio>();
+    public static caratteristichePersonaggioV2 databaseInizialeProprieta;
+    public static string classeDiColuiCheVuoleCambiareAmicizia = string.Empty;//da verificare se servirà ancora o no
 
     public const string STR_PercorsoConfig = "PercorsoConfigurazione";
     public const string STR_DatabaseDiGioco = "/dataBaseDiGioco.asset";
@@ -112,10 +123,58 @@ public class Statici
 
         for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
             dizionarioPercorsi.Add(datiDiplomazia.Dati.tipoEssere[i], datiDiplomazia.Dati.indexPercorsi[i]);
-
-
     }
+    /// <summary>
+    /// salva in un dizionario il personaggio e le sue caratteristiche (vita, livello ecc)
+    /// </summary>
+    /// <param name="datiPersonaggioDaRegistrare"></param>
+     public static void RegistraDatiPersonaggio(DatiPersonaggio datiPersonaggioDaRegistrare)
+    {
+        registroDatiPersonaggi.Add(datiPersonaggioDaRegistrare.GetInstanceID(), datiPersonaggioDaRegistrare);
+        RecuperaDati(datiPersonaggioDaRegistrare);
+    }
+    /// <summary>
+    /// recupera i dati del personaggio(giocatore o AI) e li assegna
+    /// </summary>
+    /// <param name="datiStatistici"></param>
+    public static void RecuperaDati(DatiPersonaggio datiStatistici)
+    {
+        int tmpID = datiStatistici.GetInstanceID();
+        int indice = databaseInizialeProprieta.classePersonaggio.IndexOf(registroDatiPersonaggi[tmpID].miaClasse.ToString());
+        registroDatiPersonaggi[tmpID].Giocabile = databaseInizialeProprieta.matriceProprieta[indice].giocabile;
+        if (!registroDatiPersonaggi[tmpID].Giocabile)
+        { //se è un personaggio AI recupero i dati dallo scriptble object
+            registroDatiPersonaggi[tmpID].VitaMassima = databaseInizialeProprieta.matriceProprieta[indice].Vita;
+            registroDatiPersonaggi[tmpID].Vita = databaseInizialeProprieta.matriceProprieta[indice].Vita;
+            registroDatiPersonaggi[tmpID].ManaMassimo = databaseInizialeProprieta.matriceProprieta[indice].Mana;
+            registroDatiPersonaggi[tmpID].Mana = databaseInizialeProprieta.matriceProprieta[indice].Mana;
+            registroDatiPersonaggi[tmpID].Livello = databaseInizialeProprieta.matriceProprieta[indice].Livello;
+            registroDatiPersonaggi[tmpID].XpMassimo = databaseInizialeProprieta.matriceProprieta[indice].Xp;
+            registroDatiPersonaggi[tmpID].Xp = databaseInizialeProprieta.matriceProprieta[indice].Xp;
+            registroDatiPersonaggi[tmpID].Attacco = databaseInizialeProprieta.matriceProprieta[indice].Attacco;
+            registroDatiPersonaggi[tmpID].Difesa = databaseInizialeProprieta.matriceProprieta[indice].difesa;
+        }
+        else
+        {  //se è giocabile recupero i dati dal file serializzato
+            registroDatiPersonaggi[tmpID].VitaMassima = Statici.datiPersonaggio.Dati.VitaMassima;
+            registroDatiPersonaggi[tmpID].Vita = Statici.datiPersonaggio.Dati.Vita;
+            registroDatiPersonaggi[tmpID].ManaMassimo = Statici.datiPersonaggio.Dati.ManaMassimo;
+            registroDatiPersonaggi[tmpID].Mana = Statici.datiPersonaggio.Dati.Mana;
+            registroDatiPersonaggi[tmpID].Livello = Statici.datiPersonaggio.Dati.Livello;
+            registroDatiPersonaggi[tmpID].XpMassimo = Statici.datiPersonaggio.Dati.XPMassimo;
+            registroDatiPersonaggi[tmpID].Xp = Statici.datiPersonaggio.Dati.Xp;
+            registroDatiPersonaggi[tmpID].Attacco = Statici.datiPersonaggio.Dati.Attacco;
+            registroDatiPersonaggi[tmpID].Difesa = Statici.datiPersonaggio.Dati.difesa;
+            registroDatiPersonaggi[tmpID].Nome = Statici.datiPersonaggio.Dati.nomePersonaggio;
+            PersonaggioPrincipaleT.GetComponentInChildren<TextMesh>().text = registroDatiPersonaggi[tmpID].Nome;
+            GestoreCanvasAltreScene.AggiornaDati(datiStatistici);
+            Statici.personaggio = datiStatistici;
+            classeDiColuiCheVuoleCambiareAmicizia = datiStatistici.miaClasse.ToString();
+        }
+    }
+
 }
+
 
 
 

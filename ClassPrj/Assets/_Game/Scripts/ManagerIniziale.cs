@@ -138,7 +138,7 @@ public class ManagerIniziale : MonoBehaviour
     public void CaricaScenaDaCaricamento()
     {
         Statici.sonoPassatoDallaScenaIniziale = true;
-        Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref GameManager.dizionarioPercorsi);
+        Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref Statici.dizionarioPercorsi);
         StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
     }
 
@@ -195,7 +195,7 @@ public class ManagerIniziale : MonoBehaviour
                     }
                     datiDiplomazia.Salva();
                 }
-            Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref GameManager.dizionarioPercorsi);
+            Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref Statici.dizionarioPercorsi);
                 personaggiInCarica = true;
                 StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
             }
