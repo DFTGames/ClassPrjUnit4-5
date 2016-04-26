@@ -21,30 +21,9 @@ public class GestoreCanvasAltreScene : MonoBehaviour
     private static GestoreCanvasAltreScene me;
     private bool fatto = false;
     private string tagDellAltro = null;
-    private DatiPersonaggio personaggio;
+    private DatiPersonaggio personaggio;     
 
-    public void Gerra()
-    {
-        GameManager.DichiaroGuerra();
-    }
-
-    public void Pace()
-    {
-        GameManager.MiAlleo();
-    }
-
-    public void BottoneAumentaVita()
-    {     
-        float quanto = 1f;
-        personaggio.gameObject.GetComponent<ControllerMaga>().PozioneVita(quanto);
-    }
-
-    public void BottoneRiceviDanno()
-    {
-        float quanto = 1f;
-       personaggio.gameObject.GetComponent<ControllerMaga>().RiceviDanno(quanto);
-    }
-
+   
     private void Awake()
     {
         me = this;

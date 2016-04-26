@@ -223,7 +223,7 @@ public class FSM : MonoBehaviour
         inseguimento.Inizializza(this);
         morte.Inizializza(this);
         statoCorrente = pattugliamento;        
-        GameManager.RegistraDatiPersonaggio(DatiPersonaggio);            
+        Statici.RegistraDatiPersonaggio(DatiPersonaggio);            
     }
 
     private void Update()

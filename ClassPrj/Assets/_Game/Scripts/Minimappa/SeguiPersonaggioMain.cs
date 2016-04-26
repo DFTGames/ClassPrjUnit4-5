@@ -7,7 +7,7 @@ public class SeguiPersonaggioMain : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        playerT = GameManager.PersonaggioPrincipaleT;        
+        playerT = Statici.PersonaggioPrincipaleT;        
     }
 
     // Update is called once per frame

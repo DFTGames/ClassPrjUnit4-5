@@ -88,7 +88,7 @@ public class OggettiDaMarcare : MonoBehaviour {
                 break;
             case (11):
                 miaClasse = gameObject.GetComponent<DatiPersonaggio>().miaClasse;
-                classePlayer = GameManager.PersonaggioPrincipaleT.GetComponent<DatiPersonaggio>().miaClasse;
+                classePlayer = Statici.PersonaggioPrincipaleT.GetComponent<DatiPersonaggio>().miaClasse;
                 spriteOggetto = minimappa.spriteAmico;
                 misuraSprite = minimappa.misuraSpriteAmico;
                 sonoUnEssereVivente = true;     
@@ -109,7 +109,7 @@ public class OggettiDaMarcare : MonoBehaviour {
 
     private void CambiaSpritePerDiplomazia()
     {
-        if (GameManager.dizionarioDiNemici[miaClasse].Contains(classePlayer))
+        if (Statici.dizionarioDiNemici[miaClasse].Contains(classePlayer))
         {
             spriteOggetto = minimappa.spriteNemico;
             misuraSprite = minimappa.misuraSpriteNemico;

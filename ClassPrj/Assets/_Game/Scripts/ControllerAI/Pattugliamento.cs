@@ -55,8 +55,8 @@ public class Pattugliamento : IStato
         MioCervello = oggetto;
 
 
-        if (GameManager.dizionarioPercorsi.ContainsKey(MioCervello.gameObject.tag))
-            MioCervello.IndexPercorso = GameManager.dizionarioPercorsi[MioCervello.gameObject.tag];
+        if (Statici.dizionarioPercorsi.ContainsKey(MioCervello.gameObject.tag))
+            MioCervello.IndexPercorso = Statici.dizionarioPercorsi[MioCervello.gameObject.tag];
 
         //-Vedere se meglio con impostazione nostra di indiceDestionazioni oppure fare in modo che a ogni chiamata al Gestore PErcorso si incrementa da solo
 
@@ -66,7 +66,7 @@ public class Pattugliamento : IStato
             return;
         }
         
-        Percorso = GameManager.padreGestore[MioCervello.IndexPercorso];
+        Percorso = Statici.padreGestore[MioCervello.IndexPercorso];
         indiceDestinazioni = -1;  //per convenzione ho assegnato il valore -1 per default (percorso no assegnato)
     }
 

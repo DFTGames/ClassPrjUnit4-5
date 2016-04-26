@@ -13,8 +13,7 @@ public class Vista : MonoBehaviour
     private float prodottoScalare;
     private float prodottoMagnitudini;
     private FSM mioCervello;
-    private List<string> Nemici = null;
-    private float distanzaMinore = 0f;
+    private List<string> Nemici = null;   
     private List<Transform> tmpDaELiminare;
     private bool amicizieCambiate = false;
     private float conta = 0f;
@@ -53,7 +52,7 @@ public class Vista : MonoBehaviour
         datiAltroPersonaggio = coll.GetComponent<DatiPersonaggio>();
         if (datiAltroPersonaggio != null)
         {     
-            if (GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
+            if (Statici.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
                 listaNemiciDentroNonVisti.Add(coll.transform);
         }
     }
@@ -74,11 +73,11 @@ public class Vista : MonoBehaviour
             datiAltroPersonaggio = coll.GetComponent<DatiPersonaggio>();
             if (datiAltroPersonaggio != null)
             {
-                if (GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
+                if (Statici.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
                     listaNemiciDentroNonVisti.Add(coll.transform);
-                else if (listaNemiciVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
+                else if (listaNemiciVisti.Contains(coll.transform) && !Statici.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
                     listaNemiciVisti.Remove(coll.transform);
-                else if (listaNemiciDentroNonVisti.Contains(coll.transform) && !GameManager.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
+                else if (listaNemiciDentroNonVisti.Contains(coll.transform) && !Statici.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
                     listaNemiciDentroNonVisti.Remove(coll.transform);
                 AmiciziaCambiata = false;
             }
