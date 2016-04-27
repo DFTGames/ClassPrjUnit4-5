@@ -52,7 +52,7 @@ public class Pattugliamento : IStato
         MioCervello = oggetto;
 
         if (!MioCervello.DatiPersonaggio.Giocabile)
-            elencoPercorsiDisponibili = GameManager.databaseInizialePercorsi.trovaPercorsiDaPersonaggio(MioCervello.DatiPersonaggio.miaClasse);
+            elencoPercorsiDisponibili = Statici.databaseInizialePercorsi.trovaPercorsiDaPersonaggio(MioCervello.DatiPersonaggio.miaClasse);
 
         if (elencoPercorsiDisponibili.Count > 0)
             MioCervello.IndexPercorso = elencoPercorsiDisponibili[Random.Range(0, elencoPercorsiDisponibili.Count)];  //per ora gli assegno percorso casuale...da sistemare e completare

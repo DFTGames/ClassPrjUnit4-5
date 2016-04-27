@@ -4,8 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public GameData databseInizialeAmicizie;
-    public static Percorsi databaseInizialePercorsi;
+    //public GameData databseInizialeAmicizie;
+    //public static Percorsi databaseInizialePercorsi;
 
     private static GameManager me;
     private Collider attuale = null;
@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
             Statici.padreGestore = tmpPdr.GetComponent<PadreGestore>();
         else
             Debug.LogError("Ma ci fai o ci sei ????..sei un cazzone....manca il padrePercorso");
-        Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref Statici.databaseInizialeProprieta, ref databaseInizialePercorsi);
+        Statici.assegnaAssetDatabase(ref Statici.databseInizialeAmicizie, ref Statici.databaseInizialeProprieta, ref Statici.databaseInizialePercorsi);
         if (Statici.nomePersonaggio.Equals(string.Empty))
             Statici.nomePersonaggio = "PersonaggioDiProva";
         Statici.datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
@@ -60,17 +60,17 @@ public class GameManager : MonoBehaviour
             }
             if (datiDiplomazia.Dati.tipoEssere[0] == null)
             {
-                for (int i = 0; i < databseInizialeAmicizie.classiEssere.Length; i++)
+                for (int i = 0; i < Statici.databseInizialeAmicizie.classiEssere.Length; i++)
                 {
-                    datiDiplomazia.Dati.tipoEssere[i] = databseInizialeAmicizie.classiEssere[i];
+                    datiDiplomazia.Dati.tipoEssere[i] = Statici.databseInizialeAmicizie.classiEssere[i];
                 }
-                for (int i = 0; i < databseInizialeAmicizie.classiEssere.Length; i++)
+                for (int i = 0; i < Statici.databseInizialeAmicizie.classiEssere.Length; i++)
                 {
-                    datiDiplomazia.Dati.matriceAmicizie[i] = databseInizialeAmicizie.matriceAmicizie[i];
+                    datiDiplomazia.Dati.matriceAmicizie[i] = Statici.databseInizialeAmicizie.matriceAmicizie[i];
 
-                    for (int j = 0; j < databseInizialeAmicizie.classiEssere.Length; j++)
+                    for (int j = 0; j < Statici.databseInizialeAmicizie.classiEssere.Length; j++)
                     {
-                        datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] = databseInizialeAmicizie.matriceAmicizie[i].elementoAmicizia[j];
+                        datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] = Statici.databseInizialeAmicizie.matriceAmicizie[i].elementoAmicizia[j];
                     }
                 }
                 datiDiplomazia.Salva();

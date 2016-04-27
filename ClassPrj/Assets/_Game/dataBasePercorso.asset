@@ -8,18 +8,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2944e3484e1c545478c8085848587dbb, type: 3}
+  m_Script: {fileID: 11500000, guid: dd7c862ec7e1caa408c0e5f887cad20c, type: 3}
   m_Name: dataBasePercorso
   m_EditorClassIdentifier: 
-  cambiatoAlmenoUnaScena: 0
-  scenaDaSalvare: 0
   percorsi:
-  - nomePercorsi: e
-    indice: 0
-  - nomePercorsi: f
-    indice: 1
-  - nomePercorsi: b
-    indice: 2
-  road:
-  - nomeClassi: goblin
-    indice: 0
+  - nomePercorsi: a1
+    classi: 01000000
+  - nomePercorsi: a7
+    classi: 01000000
+  - nomePercorsi: a3
+    classi: 01000000

@@ -16,11 +16,13 @@ public class Statici
     public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiIndifferenti = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
     public static Transform PersonaggioPrincipaleT;
     public static PadreGestore padreGestore;
-    public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();
+   // public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();
     public static DatiPersonaggio personaggio;
     public static Serializzabile<ValoriPersonaggioS> datiPersonaggio;
     public static Dictionary<int, DatiPersonaggio> registroDatiPersonaggi = new Dictionary<int, DatiPersonaggio>();
     public static caratteristichePersonaggioV2 databaseInizialeProprieta;
+    public static Percorsi databaseInizialePercorsi;
+    public static  GameData databseInizialeAmicizie;
     public static string classeDiColuiCheVuoleCambiareAmicizia = string.Empty;//da verificare se servirà ancora o no
 
     public const string STR_PercorsoConfig = "PercorsoConfigurazione";
@@ -109,6 +111,7 @@ public class Statici
             {
                 string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig2);
                 databaseInizialePercorsi = AssetDatabase.LoadAssetAtPath<Percorsi>(percorso + Statici.STR_DatabaseDiGioco2);
+           
             }
         }
     }

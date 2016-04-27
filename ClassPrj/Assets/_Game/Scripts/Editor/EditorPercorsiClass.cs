@@ -114,7 +114,7 @@ namespace DFTGames.Tools.EditorTools
             for (var i = 0; i < EditorBuildSettings.scenes.Length; i++)  //MI FA IL CAMBIAMENTO IN TUTTE LE SCENE DEL GIOCO
             {
                 var scene = EditorBuildSettings.scenes[i];
-
+                Debug.Log("scena" + scene);
                 if (scene.enabled)
                 {
                     var sceneName = Path.GetFileNameWithoutExtension(scene.path);
@@ -124,9 +124,9 @@ namespace DFTGames.Tools.EditorTools
                     sceneDaSalvare=percorsi.ControlloIndexPercorsi();
                     if (sceneDaSalvare)
                     {
-                        Debug.Log("1 " + tmpscenee);
+                     //   Debug.Log("1 " + tmpscenee);
                         EditorSceneManager.MarkSceneDirty(tmpscenee);  //imposto Scena a dirty...
-                        Debug.Log("2 " + tmpscenee);
+                     //   Debug.Log("2 " + tmpscenee);
                         EditorSceneManager.SaveScene(tmpscenee);
                     }
                     EditorSceneManager.CloseScene(tmpscenee, true);
