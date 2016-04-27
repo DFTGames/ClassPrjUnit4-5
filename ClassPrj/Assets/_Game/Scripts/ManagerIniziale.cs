@@ -26,6 +26,7 @@ public class ManagerIniziale : MonoBehaviour
     public Text difesaCaricamento;
     public GameData databseInizialeAmicizie;
     public caratteristichePersonaggioV2 databaseInizialeProprieta;
+    public Percorsi databaseInizialePercorsi;
     public Dropdown elencoCartelleDropDown;
     public Dropdown elencoSessiDropDown;
     public Image pannelloImmagineSfondo;
@@ -85,7 +86,7 @@ public class ManagerIniziale : MonoBehaviour
     {
         CambiaAlphaPannelloSfondo();
         nomeScenaText.gameObject.SetActive(false);
-        Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
+        Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta, ref databaseInizialePercorsi);
         cameraT = Camera.main.transform;
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
         for (int i = 0; i < databaseInizialeProprieta.matriceProprieta.Count; i++)       
@@ -137,8 +138,7 @@ public class ManagerIniziale : MonoBehaviour
 
     public void CaricaScenaDaCaricamento()
     {
-        Statici.sonoPassatoDallaScenaIniziale = true;
-        Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref Statici.dizionarioPercorsi);
+        Statici.sonoPassatoDallaScenaIniziale = true;    
         StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
     }
 
@@ -194,8 +194,7 @@ public class ManagerIniziale : MonoBehaviour
                         }
                     }
                     datiDiplomazia.Salva();
-                }
-            Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref Statici.dizionarioPercorsi);
+                }           
                 personaggiInCarica = true;
                 StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
             }

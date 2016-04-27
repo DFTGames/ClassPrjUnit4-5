@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public GameData databseInizialeAmicizie;
+    public static Percorsi databaseInizialePercorsi;
 
     private static GameManager me;
     private Collider attuale = null;
@@ -27,7 +28,7 @@ public class GameManager : MonoBehaviour
             Statici.padreGestore = tmpPdr.GetComponent<PadreGestore>();
         else
             Debug.LogError("Ma ci fai o ci sei ????..sei un cazzone....manca il padrePercorso");
-        Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref Statici.databaseInizialeProprieta);
+        Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref Statici.databaseInizialeProprieta, ref databaseInizialePercorsi);
         if (Statici.nomePersonaggio.Equals(string.Empty))
             Statici.nomePersonaggio = "PersonaggioDiProva";
         Statici.datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
@@ -73,8 +74,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
                 datiDiplomazia.Salva();
-            }
-            Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref Statici.dizionarioPercorsi);
+            }         
             GameObject tmpObjP = Instantiate(Resources.Load(Statici.datiPersonaggio.Dati.nomeModello), GameObject.Find(Statici.datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
             Statici.PersonaggioPrincipaleT = tmpObjP.transform;
             RecuperaDizionariDiplomazia();
