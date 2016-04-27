@@ -24,8 +24,9 @@ public class ManagerIniziale : MonoBehaviour
     public Text vitaCaricamento;
     public Text attaccoCaricamento;
     public Text difesaCaricamento;
-    public GameData databseInizialeAmicizie;
-    public caratteristichePersonaggioV2 databaseInizialeProprieta;
+  //  public GameData databseInizialeAmicizie;
+  //  public caratteristichePersonaggioV2 databaseInizialeProprieta;
+ //   public Percorsi databaseInizialePercorsi;
     public Dropdown elencoCartelleDropDown;
     public Dropdown elencoSessiDropDown;
     public Image pannelloImmagineSfondo;
@@ -72,7 +73,7 @@ public class ManagerIniziale : MonoBehaviour
         set
         {
             int valoreMinimo = 0;
-            int valoreMassimo = databaseInizialeProprieta.classePersonaggio.Count-1;
+            int valoreMassimo = Statici.databaseInizialeProprieta.classePersonaggio.Count-1;
             indiceClasseSuccessivaPrecedente = Mathf.Clamp(value, valoreMinimo, valoreMassimo);
             if (value > valoreMassimo)
                 indiceClasseSuccessivaPrecedente = valoreMinimo;
@@ -85,15 +86,15 @@ public class ManagerIniziale : MonoBehaviour
     {
         CambiaAlphaPannelloSfondo();
         nomeScenaText.gameObject.SetActive(false);
-        Statici.assegnaAssetDatabase(ref databseInizialeAmicizie, ref databaseInizialeProprieta);
+        Statici.assegnaAssetDatabase(ref Statici.databseInizialeAmicizie, ref Statici.databaseInizialeProprieta,ref Statici.databaseInizialePercorsi);
         cameraT = Camera.main.transform;
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-        for (int i = 0; i < databaseInizialeProprieta.matriceProprieta.Count; i++)       
+        for (int i = 0; i < Statici.databaseInizialeProprieta.matriceProprieta.Count; i++)       
         {
-            if (!databaseInizialeProprieta.matriceProprieta[i].giocabile)            
+            if (!Statici.databaseInizialeProprieta.matriceProprieta[i].giocabile)            
                 continue;              
-            string tmpNomeModelloM = databaseInizialeProprieta.matriceProprieta[i].nomeM;
-            string tmpNomeModelloF = databaseInizialeProprieta.matriceProprieta[i].nomeF;
+            string tmpNomeModelloM = Statici.databaseInizialeProprieta.matriceProprieta[i].nomeM;
+            string tmpNomeModelloF = Statici.databaseInizialeProprieta.matriceProprieta[i].nomeF;
             dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloM, Instantiate(Resources.Load(tmpNomeModelloM), GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneM").position, new Quaternion(0f, 180f, 0f, 0f)) as GameObject);
             dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloF, Instantiate(Resources.Load(tmpNomeModelloF), GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneF").position, Quaternion.identity) as GameObject);
             dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloM].name, GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneM"));
@@ -137,8 +138,7 @@ public class ManagerIniziale : MonoBehaviour
 
     public void CaricaScenaDaCaricamento()
     {
-        Statici.sonoPassatoDallaScenaIniziale = true;
-        Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref Statici.dizionarioPercorsi);
+        Statici.sonoPassatoDallaScenaIniziale = true;    
         StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
     }
 
@@ -159,20 +159,20 @@ public class ManagerIniziale : MonoBehaviour
                 datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
                 if (datiPersonaggio.Dati.nomePersonaggio == null)
                 {
-                    datiPersonaggio.Dati.Vita = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita;
-                    datiPersonaggio.Dati.Attacco = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Attacco;
-                    datiPersonaggio.Dati.difesa = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].difesa;
-                    datiPersonaggio.Dati.Xp = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Xp;
-                    datiPersonaggio.Dati.Livello = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Livello;
+                    datiPersonaggio.Dati.Vita = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita;
+                    datiPersonaggio.Dati.Attacco = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Attacco;
+                    datiPersonaggio.Dati.difesa = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].difesa;
+                    datiPersonaggio.Dati.Xp = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Xp;
+                    datiPersonaggio.Dati.Livello = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Livello;
                     if (elencoSessiDropDown.value == 0)
-                        datiPersonaggio.Dati.nomeModello = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM;
+                        datiPersonaggio.Dati.nomeModello = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM;
                     else
-                        datiPersonaggio.Dati.nomeModello = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF;
+                        datiPersonaggio.Dati.nomeModello = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF;
                     datiPersonaggio.Dati.nomePersonaggio = testoNome.text;
                     datiPersonaggio.Dati.classe = casellaTipo.text;
-                    datiPersonaggio.Dati.VitaMassima = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita;
-                    datiPersonaggio.Dati.ManaMassimo = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Mana;
-                    datiPersonaggio.Dati.XPMassimo = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Xp;
+                    datiPersonaggio.Dati.VitaMassima = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita;
+                    datiPersonaggio.Dati.ManaMassimo = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Mana;
+                    datiPersonaggio.Dati.XPMassimo = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Xp;
                     datiPersonaggio.Dati.posizioneCheckPoint = "start";
                     datiPersonaggio.Dati.nomeScena = "Isola";
                     datiPersonaggio.Salva();
@@ -180,22 +180,21 @@ public class ManagerIniziale : MonoBehaviour
                 datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
                 if (datiDiplomazia.Dati.tipoEssere[0] == null)
                 {
-                    for (int i = 0; i < databseInizialeAmicizie.classiEssere.Length; i++)
+                    for (int i = 0; i < Statici.databseInizialeAmicizie.classiEssere.Length; i++)
                     {
-                        datiDiplomazia.Dati.tipoEssere[i] = databseInizialeAmicizie.classiEssere[i];
+                        datiDiplomazia.Dati.tipoEssere[i] = Statici.databseInizialeAmicizie.classiEssere[i];
                     }
-                    for (int i = 0; i < databseInizialeAmicizie.classiEssere.Length; i++)
+                    for (int i = 0; i < Statici.databseInizialeAmicizie.classiEssere.Length; i++)
                     {
-                        datiDiplomazia.Dati.matriceAmicizie[i] = databseInizialeAmicizie.matriceAmicizie[i];
+                        datiDiplomazia.Dati.matriceAmicizie[i] = Statici.databseInizialeAmicizie.matriceAmicizie[i];
 
-                        for (int j = 0; j < databseInizialeAmicizie.classiEssere.Length; j++)
+                        for (int j = 0; j < Statici.databseInizialeAmicizie.classiEssere.Length; j++)
                         {
-                            datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] = databseInizialeAmicizie.matriceAmicizie[i].elementoAmicizia[j];
+                            datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] = Statici.databseInizialeAmicizie.matriceAmicizie[i].elementoAmicizia[j];
                         }
                     }
                     datiDiplomazia.Salva();
-                }
-            Statici.SerializzaPercorsi(ref databseInizialeAmicizie, ref datiDiplomazia, ref Statici.dizionarioPercorsi);
+                }           
                 personaggiInCarica = true;
                 StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
             }
@@ -239,7 +238,7 @@ public class ManagerIniziale : MonoBehaviour
     public void Precedente()
     {
         IndiceClasseSuccessivaPrecedente--;
-        while (!databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].giocabile)          
+        while (!Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].giocabile)          
            IndiceClasseSuccessivaPrecedente--;
         VisualizzaValoriPersonaggio();
         indiceCambiato = true;
@@ -249,7 +248,7 @@ public class ManagerIniziale : MonoBehaviour
     public void Sucessivo()
     { 
         IndiceClasseSuccessivaPrecedente++;
-        while (!databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].giocabile)
+        while (!Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].giocabile)
             IndiceClasseSuccessivaPrecedente++;     
         VisualizzaValoriPersonaggio();
         indiceCambiato = true;
@@ -259,8 +258,8 @@ public class ManagerIniziale : MonoBehaviour
     private void ObiettivoDaInquadrareXZ()
     {
         obiettivoDaInquadrare = (elencoSessiDropDown.value == 0) ?
-           dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM].transform.position :
-           dizionarioCollegamentoNomiConModelli[databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF].transform.position;
+           dizionarioCollegamentoNomiConModelli[Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM].transform.position :
+           dizionarioCollegamentoNomiConModelli[Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF].transform.position;
         zeta = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.z - ZOffSet) : obiettivoDaInquadrare.z + ZOffSet;
         ics = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.x + 5) : (obiettivoDaInquadrare.x - 5);
     }
@@ -293,10 +292,10 @@ public class ManagerIniziale : MonoBehaviour
 
     private void VisualizzaValoriPersonaggio()
     {      
-        casellaTipo.text = databaseInizialeProprieta.classePersonaggio[IndiceClasseSuccessivaPrecedente].ToString();
-        valoreVita.text = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita.ToString();
-        valoreAttacco.text = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Attacco.ToString();
-        valoreDifesa.text = databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].difesa.ToString();
+        casellaTipo.text = Statici.databaseInizialeProprieta.classePersonaggio[IndiceClasseSuccessivaPrecedente].ToString();
+        valoreVita.text = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita.ToString();
+        valoreAttacco.text = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Attacco.ToString();
+        valoreDifesa.text = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].difesa.ToString();
     }
 
     private IEnumerator ScenaInCaricamento(string nomeScena)

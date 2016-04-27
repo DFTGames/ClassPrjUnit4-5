@@ -11,6 +11,5 @@ public class AmicizieSerializzabili {
 
     public classiAmicizie[] matriceAmicizie = new classiAmicizie[Enum.GetValues(typeof(classiPersonaggi)).Length];
   
-    public int[] indexPercorsi = new int[Enum.GetValues(typeof(classiPersonaggi)).Length];  //Aggiunto index per memorizzazione percorso
   
 }
