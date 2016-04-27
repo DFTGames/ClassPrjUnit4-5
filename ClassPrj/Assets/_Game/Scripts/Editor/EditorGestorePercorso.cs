@@ -25,7 +25,7 @@ namespace DFTGames.Tools.EditorTools
         private List<int> tmpIndexLiberi;
         private List<string> tmpPercorsiLiberi;
 
-        private PercorsiClass percorsi;
+        private Percorsi percorsi;
         private Transform transformOggettoSelezionato = null;
 
         void OnEnable()
@@ -36,11 +36,9 @@ namespace DFTGames.Tools.EditorTools
             if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig2))
             {
                 string pathPercorsi = EditorPrefs.GetString(Statici.STR_PercorsoConfig2);
-                percorsi = AssetDatabase.LoadAssetAtPath<PercorsiClass>(pathPercorsi + Statici.STR_DatabaseDiGioco2);
+                percorsi = AssetDatabase.LoadAssetAtPath<Percorsi>(pathPercorsi + Statici.STR_DatabaseDiGioco2);
 
             }
-            AlimentaListe();
-
 
         }
 
@@ -94,8 +92,12 @@ namespace DFTGames.Tools.EditorTools
             {
 
                 transformOggettoSelezionato = Selection.activeTransform;
+                percorsiDisponibili = percorsi.elencaPercorsi();
+                indexDisponibili = percorsi.elencaIdxPercorsi();
+
                 tmpIndexLiberi = new List<int>(indexDisponibili);  //creata lista indexDisponibili
                 tmpPercorsiLiberi = new List<string>(percorsiDisponibili); //ceata lista Nomi percorsi Disponibili
+
 
                 if (percorsiDisponibili.Count < 1)
                 {
@@ -170,15 +172,6 @@ namespace DFTGames.Tools.EditorTools
 
         }
 
-        private void AlimentaListe()
-        {
-            Debug.Log("le sto alimentando");
-            for (int k = 0; k < percorsi.percorsi.Count; k++)    // //      percorsiDisponibili = percorsi.percorsi;   era questo in principio..ma non sono riuscito a Convertirlo
-            {
-                percorsiDisponibili.Add(percorsi.percorsi[k].nomePercorsi);
-                indexDisponibili.Add(percorsi.percorsi[k].indice);
-            }
-        }
     }
 }
 
