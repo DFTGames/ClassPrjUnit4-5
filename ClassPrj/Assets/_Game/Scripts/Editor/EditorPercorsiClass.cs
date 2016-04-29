@@ -7,7 +7,6 @@ using System.Linq;
 using System.IO;
 using UnityEditor.SceneManagement;
 
-
 namespace DFTGames.Tools.EditorTools
 {
 
@@ -20,12 +19,13 @@ namespace DFTGames.Tools.EditorTools
     public class EditorPercorsiClass : EditorWindow
     {
 
-        public PercorsiClass percorsi;
         public caratteristichePersonaggioV2 personaggi;
+        public Percorsi percorsi;
 
         public int contaPercorso;
-        private DoveSono scelta = DoveSono.Gestione;
+        private DoveSono scelta = DoveSono.Modifica;
 
+        private const int Default = -1;
         private Color OriginalBg = GUI.backgroundColor;
         private Color OriginalCont = GUI.contentColor;
         private Color OriginalColor = GUI.color;
@@ -33,9 +33,12 @@ namespace DFTGames.Tools.EditorTools
         private static bool preferenzePercorsiCaricate = false;
         private static string pathPercorsi;
 
-        string[] array;   //array provvisory usati per costruire la logica del popUp
-        int[] ar;         //array provvisory usati per costruire la logica del popUp
-        bool caricaArray = true;
+        private bool isDirty = false;
+        private bool controlloPercorsiNulli = false;
+        private bool controlloPersonaggiNulli = false;
+        private bool  sceneDaSalvare=false;
+
+      //  private bool cambiatoAlmenoUnaScena = false;  Bohh...non mi ricordo perche e' stato mess..riguardarsi la lezione
 
         [PreferenceItem("Percorsi")]
         private static void preferenzeDiGameGUI()
@@ -69,50 +72,61 @@ namespace DFTGames.Tools.EditorTools
 
         private void OnEnable()
         {
+
+            controlloPercorsiNulli = false;
+            controlloPersonaggiNulli = false;
+
             if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig2))
             {
                 pathPercorsi = EditorPrefs.GetString(Statici.STR_PercorsoConfig2);
-                percorsi = AssetDatabase.LoadAssetAtPath<PercorsiClass>(pathPercorsi + Statici.STR_DatabaseDiGioco2);
+                percorsi = AssetDatabase.LoadAssetAtPath<Percorsi>(pathPercorsi + Statici.STR_DatabaseDiGioco2);
             }
 
-            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig))
+
+            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig3))
             {
-                string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig);
-                personaggi = AssetDatabase.LoadAssetAtPath<caratteristichePersonaggioV2>(percorso + Statici.STR_DatabaseDiGioco3);
+                pathPercorsi = EditorPrefs.GetString(Statici.STR_PercorsoConfig3);
+                personaggi = AssetDatabase.LoadAssetAtPath<caratteristichePersonaggioV2>(pathPercorsi + Statici.STR_DatabaseDiGioco3);
+                
             }
-            percorsi.cambiatoAlmenoUnaScena = false;
+
+           // if (percorsi != null) cambiatoAlmenoUnaScena = false;   //NON MI RICORDO PERCHE L'HO MESSO...BOHH RIGUARDARSI LA LEZIONE
 
         }
 
         void OnDisable()            //controlla la lista percorsi con i percorsi e se non c'e assegnazione mette indexpercorso del oggetto a default(NON_ESISTE) 
         {
+            controlloPercorsiVuoti();
+            controlloPercorsiVuoti();
+            SalvaAsset();   //LO MESSO QUA INIZIO..PERRCHE SE LO METTO ALLA FINE NON MI FUNZIONA..
             var scenaCorrente = EditorSceneManager.GetActiveScene();
             if (scenaCorrente.isDirty)  //chiedo se la scena corrente e' a dirty
             {
-                bool scelta = EditorUtility.DisplayDialog("Save", "Salvi La Scena? ", " Ok ", "No");
+                bool scelta = EditorUtility.DisplayDialog("Save", "Salvi La Scena? ", " Ok ", "Cancel");
                 if (scelta)
                     EditorSceneManager.SaveScene(scenaCorrente);
             }
 
-            if (!percorsi.cambiatoAlmenoUnaScena) return;
+          //  if (!cambiatoAlmenoUnaScena) return;   //NON MI RICORDO PERCHE L'HO MESSO...BOHH RIGUARDARSI LA LEZIONE
 
             var sceneName2 = Path.GetFileNameWithoutExtension(scenaCorrente.path);
 
             for (var i = 0; i < EditorBuildSettings.scenes.Length; i++)  //MI FA IL CAMBIAMENTO IN TUTTE LE SCENE DEL GIOCO
             {
                 var scene = EditorBuildSettings.scenes[i];
-
+                Debug.Log("scena" + scene);
                 if (scene.enabled)
                 {
-                    percorsi.scenaDaSalvare = false;
                     var sceneName = Path.GetFileNameWithoutExtension(scene.path);
 
                     string tmpScene = "Assets/_Game/Scene/" + sceneName + ".unity";
                     UnityEngine.SceneManagement.Scene tmpscenee = EditorSceneManager.OpenScene(tmpScene, OpenSceneMode.Single);
-                    //       percorsi.ControlloIndexPercorsi(); 14 MARZO 2016...DA RIMETTERE
-                    if (percorsi.scenaDaSalvare)
+                    sceneDaSalvare=percorsi.ControlloIndexPercorsi();
+                    if (sceneDaSalvare)
                     {
+                     //   Debug.Log("1 " + tmpscenee);
                         EditorSceneManager.MarkSceneDirty(tmpscenee);  //imposto Scena a dirty...
+                     //   Debug.Log("2 " + tmpscenee);
                         EditorSceneManager.SaveScene(tmpscenee);
                     }
                     EditorSceneManager.CloseScene(tmpscenee, true);
@@ -121,31 +135,38 @@ namespace DFTGames.Tools.EditorTools
 
             string tmpScenaCorrente = "Assets/_Game/Scene/" + sceneName2 + ".unity";  //mi ricarica la scena iniziale
             EditorSceneManager.OpenScene(tmpScenaCorrente, OpenSceneMode.Single);
-
         }
 
+        private void SalvaAsset()
+        {
+            if (!isDirty) return;
+            EditorUtility.SetDirty(percorsi);
+            AssetDatabase.SaveAssets();
+        }
+
+        private void controlloPercorsiVuoti() //VIENE CHIAMATO SU ONDISABLE OPPURE QUANDO PASSA NEL ALTRO MENU
+        {
+            if (controlloPercorsiNulli)
+            {
+                percorsi.EliminaPercorsiVuoti();
+                controlloPercorsiNulli = false;
+            }
+        }
+        private void controlloPersonaggiVuoti() //VIENE CHIAMATO SU ONDISABLE OPPURE QUANDO PASSA NEL ALTRO MENU
+        {
+            if (controlloPersonaggiNulli)
+            {
+                percorsi.EliminaClassiVuote();
+                controlloPersonaggiNulli = false;
+              //  SalvaAsset();
+            }
+        }
 
         private void OnGUI()
         {
-            if (personaggi == null)
-            {
-
-                EditorGUILayout.HelpBox("DataBasePersonaggi Mancante ", MessageType.Error);
-                EditorGUILayout.Separator();
-
-                GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                if (GUILayout.Button("Crea il DataBase"))
-                    personaggi = caratteristichePersonaggioEditorV2.CreaDatabase();
-                EditorGUILayout.HelpBox("DataBase Mancante", MessageType.Error);
-                GUILayout.EndHorizontal();
-
-
-                return;
-            }
-
+            isDirty = false;
             if (percorsi != null)
             {
-
                 GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
                 GUILayout.Label("Editor by DFT Students", GUI.skin.GetStyle("Label"));
                 GUILayout.EndHorizontal();
@@ -154,7 +175,7 @@ namespace DFTGames.Tools.EditorTools
                 if (GUILayout.Button("Inserisci/Modifca Percorsi"))
                     scelta = DoveSono.Modifica;
 
-                if (percorsi.percorsi.Count > 0)
+                if (percorsi.Count > 0)
                     if (GUILayout.Button("Gestisci Percorsi"))
                         scelta = DoveSono.Gestione;
 
@@ -187,7 +208,7 @@ namespace DFTGames.Tools.EditorTools
                     }
                     if (pathPercorsi != string.Empty)
                     {
-                        percorsi = ScriptableObject.CreateInstance<PercorsiClass>();
+                        percorsi = ScriptableObject.CreateInstance<Percorsi>();
                         AssetDatabase.CreateAsset(percorsi, pathPercorsi + Statici.STR_DatabaseDiGioco2);
                         AssetDatabase.Refresh();
                         ProjectWindowUtil.ShowCreatedAsset(percorsi);
@@ -196,12 +217,12 @@ namespace DFTGames.Tools.EditorTools
                 EditorGUILayout.HelpBox("DataBasePercorsi Mancante", MessageType.Error);
                 GUILayout.EndHorizontal();
             }
+            SalvaAsset();
         }
-
-
 
         private void InserisciModificaPercorsi()
         {
+            controlloPersonaggiVuoti();
             GUIStyle stileEtichetta = new GUIStyle(GUI.skin.GetStyle("Label"));
             stileEtichetta.alignment = TextAnchor.MiddleCenter;
             stileEtichetta.fontStyle = FontStyle.Bold;
@@ -210,14 +231,12 @@ namespace DFTGames.Tools.EditorTools
             GUILayout.Label("Inserisci/Modifica Nome Percorsi", stileEtichetta);
             GUILayout.EndHorizontal();
             GUILayout.BeginVertical(EditorStyles.objectFieldThumb);
-
-            if (percorsi.percorsi.Count > 0)
+            if (percorsi.Count > 0)
 
                 if (GUILayout.Button("Resetta", GUILayout.Width(100f)))
                 {
-                    percorsi.resetta();
-                    EditorUtility.SetDirty(percorsi);
-                    AssetDatabase.SaveAssets();
+                    percorsi.Clear();
+                    isDirty = true;
                 }
             EditorGUILayout.Separator();
             GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
@@ -226,45 +245,34 @@ namespace DFTGames.Tools.EditorTools
             stileEtichetta.fontSize = 12;
             GUILayout.Label("Classe Percorsi (Premere + per aggiungere percorso)", stileEtichetta);
 
-
             if (GUILayout.Button(" + ", GUILayout.Width(30)))
             {
+                string tmp = Statici.tmpPercorsi;
 
-                PercorsiClass.GruppoPercorsi tmpp = new PercorsiClass.GruppoPercorsi();
-                tmpp.nomePercorsi = "nome percorso";
-                tmpp.indice = percorsi.trovaIndexLibero();
-                percorsi.percorsi.Add(tmpp);
-                EditorUtility.SetDirty(percorsi);
-                AssetDatabase.SaveAssets();
-
-                caricaArray = true;
-
+                controlloPercorsiNulli = true;
+                percorsi.Add(tmp);
             }
             GUILayout.EndHorizontal();
 
-            if (percorsi.percorsi.Count > 0)
+            if (percorsi.Count > 0)
             {
-                for (int i = 0; i < percorsi.percorsi.Count; i++)
+                for (int i = 0; i < percorsi.Count; i++)
 
                 {
                     GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                    string tmp = EditorGUILayout.TextField(percorsi.percorsi[i].nomePercorsi.ToString());
-
-                    if (tmp != percorsi.percorsi[i].nomePercorsi)
+                    string tmp = EditorGUILayout.TextField(percorsi[i].nomePercorsi);
+                    if (tmp != percorsi[i].nomePercorsi)
                     {
-                        percorsi.percorsi[i].nomePercorsi = tmp;
-                        EditorUtility.SetDirty(percorsi);
-                        AssetDatabase.SaveAssets();
+                        if (percorsi.ControlloNomiPercorso(tmp)) //problema che gia alla prima lettera mi fa il controllo..MODIFICARLO..(come non so..)
+                        {
+                            percorsi[i].nomePercorsi = tmp;
+                            isDirty = true;
+                        }
                     }
                     if (GUILayout.Button(" - ", GUILayout.Width(30)))  //mi permette di cancellare le righe
                     {
-                        //  percorsi.ResettaIndice(percorsi.n)
-                        percorsi.ResettaIndicePercorso(percorsi.percorsi[i].indice);
-                        //    percorsi.indexPercorsi.RemoveAt(i);
-                        percorsi.percorsi.RemoveAt(i);
-                        EditorUtility.SetDirty(percorsi);
-                        //   EditorUtility.SetDirty(gameData1);
-                        AssetDatabase.SaveAssets();
+                        percorsi.RemoveAt(i);
+                        isDirty = true;
                     }
 
                     GUILayout.EndHorizontal();
@@ -276,104 +284,100 @@ namespace DFTGames.Tools.EditorTools
 
         private void GestisciPercorsi()
         {
+            if (percorsi == null) return;
 
-            if (personaggi == null || percorsi == null) return;
-            if (percorsi.percorsi.Count < 1) return;
+            if (percorsi.Count == 0) return;
 
-            //if personaggi != null && percorsi != null &&  percorsi.road != null
-            if (percorsi.percorsi[0].nomePercorsi != string.Empty)  //Paranoia Luc_Code
+            if (personaggi == null)
             {
-                GUIStyle stileEtichetta = new GUIStyle(GUI.skin.GetStyle("Label"));
-                stileEtichetta.alignment = TextAnchor.MiddleCenter;
-                stileEtichetta.fontStyle = FontStyle.Bold;
-                stileEtichetta.fontSize = 14;
-                GUIStyle stileEtichetta2 = new GUIStyle(GUI.skin.GetStyle("Label"));
-                stileEtichetta2.alignment = TextAnchor.MiddleLeft;
-                stileEtichetta2.fontStyle = FontStyle.Bold;
-                stileEtichetta2.fontSize = 11;
-                GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                GUILayout.Label("Gestione Percorsi", stileEtichetta);
-                GUILayout.EndHorizontal();
-                EditorGUILayout.Separator();
+                EditorGUILayout.HelpBox("DataBase Caratteristiche Personaggi mancante.....Crearlo e alimentarlo", MessageType.Error);
+                return;
+            }
 
-                GUILayout.BeginVertical(EditorStyles.objectFieldThumb);
-                GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                EditorGUILayout.Separator();
-                GUILayout.Label(new GUIContent("Assegnazione Percorsi "), stileEtichetta, GUILayout.Width(200));
-                GUILayout.EndHorizontal();
-                EditorGUILayout.Separator();
-                EditorGUILayout.Separator();
-                bool setDirtyPersonaggi = false;
-
-                //controllo lista road...se non presente l'alimento
-                if (percorsi.road == null) percorsi.road = new List<PercorsiClass.Road>();
-
-                for (int i = 0; i < personaggi.matriceProprieta.Count; i++)
-                {
-                    if (!personaggi.matriceProprieta[i].giocabile)
-                    {
-                        bool stoppete = false;
-                        for (int gi = 0; gi < percorsi.road.Count; gi++)
-                            if (percorsi.road[gi].nomeClassi.Equals(personaggi.matriceProprieta[i].classe.ToString()))
-                            {
-                                stoppete = true;
-                                break;
-                            }
-
-                        if (!stoppete)
-                        {
-                            PercorsiClass.Road tmR = new PercorsiClass.Road();
-                            tmR.nomeClassi = personaggi.matriceProprieta[i].classe.ToString();
-                            tmR.indice = -1;
-                            percorsi.road.Add(tmR);
-                        }
-                    }
-
-
-                }
-                for (int i = 0; i < percorsi.road.Count; i++)
+            if (personaggi.elencaClassiNonGiocabiliToString().Length == 0)
+            {
+                EditorGUILayout.HelpBox("Classi non Giocabili mancanti nel DataBase Caratteristiche Personaggi ", MessageType.Error);
+                return;
+            }
+            controlloPercorsiVuoti();  //HO DECISO DI FARE CONTROLLO PERCORSI VUOTI ANCHE QUANDO VADO IN GESTISCIPERCORSI..
+            GUIStyle stileEtichetta = new GUIStyle(GUI.skin.GetStyle("Label"));
+            stileEtichetta.alignment = TextAnchor.MiddleCenter;
+            stileEtichetta.fontStyle = FontStyle.Bold;
+            stileEtichetta.fontSize = 14;
+            GUIStyle stileEtichetta2 = new GUIStyle(GUI.skin.GetStyle("Label"));
+            stileEtichetta2.alignment = TextAnchor.MiddleLeft;
+            stileEtichetta2.fontStyle = FontStyle.Bold;
+            stileEtichetta2.fontSize = 11;
+            GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
+            GUILayout.Label("Gestione Percorsi", stileEtichetta);
+            GUILayout.EndHorizontal();
+            EditorGUILayout.Separator();
+            GUILayout.BeginVertical(EditorStyles.objectFieldThumb);
+            GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
+            EditorGUILayout.Separator();
+            GUILayout.Label(new GUIContent("Assegnazione Percorsi "), stileEtichetta, GUILayout.Width(200));
+            GUILayout.Label(" (Premere + per aggiungere personaggi al percorso)", stileEtichetta2);
+            EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
+            GUILayout.EndHorizontal();
+            EditorGUILayout.Separator();
+            EditorGUILayout.Separator();
+            bool setDirtyPersonaggi = false;
+            for (int i = 0; i < percorsi.Count; i++)
+            {
+                EditorGUILayout.LabelField(percorsi[i].nomePercorsi, stileEtichetta2, GUILayout.Width(130));
+                for (int c = 0; c < percorsi[i].classi.Count; c++)
                 {
                     GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
-                    EditorGUILayout.LabelField(percorsi.road[i].nomeClassi, stileEtichetta2, GUILayout.Width(130));
-
-
-                    if (caricaArray)
-                        CaricaArray();
-
-                    int index = Array.IndexOf(ar, percorsi.road[i].indice);
+                    int index = -1;
+                    index = Array.IndexOf(personaggi.elencaClassiNonGiocabiliToEnumArray(), percorsi[i].classi[c]);
 
                     int index2 = index;
+                    EditorGUILayout.LabelField(string.Empty, stileEtichetta2, GUILayout.Width(130));
+ 
+                    index = EditorGUILayout.Popup(index, personaggi.elencaClassiNonGiocabiliToString());
 
-                    index = EditorGUILayout.Popup(index, array);
+                    if ((c == percorsi[i].classi.Count - 1) && (GUILayout.Button(" + ", GUILayout.Width(30))))
+                    {
+                        percorsi[i].classi.Add(classiPersonaggi.indefinito);
+                        controlloPersonaggiNulli = true;
 
+                    }
+                    if (c > 0 && GUILayout.Button(" - ", GUILayout.Width(30)))
+                    {
+                        percorsi.RemoveAtClass(i, c);
+
+                        setDirtyPersonaggi = true;
+                    }
                     if (index != index2)   //se e' stato fatto modifica
                     {
-                        percorsi.road[i].indice = ar[index];
-                        setDirtyPersonaggi = true;
-                        caricaArray = !caricaArray;
+                        if (percorsi.trovaPersonaggiDaIndicePercorsi(i).Contains(personaggi.elencaClassiNonGiocabiliToEnumArray()[index]))
+                        {
+                            percorsi[i].classi[c] = classiPersonaggi.indefinito;
+                            controlloPersonaggiNulli = true;
+                            Debug.LogError("Ti si e' disconnesso il cervello per qualche secondo ?....hai scelto un personaggio gia usato ");
+                        }
+                        else
+                        {
+
+                            if (index == -1)
+                                percorsi[i].classi[c] = classiPersonaggi.indefinito;
+                            else percorsi[i].classi[c] = personaggi.elencaClassiNonGiocabiliToEnumArray()[index];
+                        }
+
+                        setDirtyPersonaggi = true; ;
                     }
                     GUILayout.EndHorizontal();
                 }
-                GUILayout.EndVertical();
-                if (setDirtyPersonaggi)
-                {
-                    EditorUtility.SetDirty(percorsi);
-                    AssetDatabase.SaveAssets();
-                }
-            }
-        }
+            }  //  (ciclo for)
 
-        private void CaricaArray()   //EditorGuiLayout.Popup vuole un array di strighe...e ho dovuto fare questo 
-        {
-            array = new string[percorsi.percorsi.Count];
-            ar = new int[percorsi.percorsi.Count];
-            for (int fr = 0; fr < percorsi.percorsi.Count; fr++)
+            GUILayout.EndVertical();
+
+            if (setDirtyPersonaggi)  //mi salva i cambiamenti dentrl al GestisciPercorsi
             {
-                array[fr] = percorsi.percorsi[fr].nomePercorsi;
-                ar[fr] = percorsi.percorsi[fr].indice;
+                EditorUtility.SetDirty(percorsi);
+                AssetDatabase.SaveAssets();
             }
-            caricaArray = !caricaArray;
         }
     }
-
 }

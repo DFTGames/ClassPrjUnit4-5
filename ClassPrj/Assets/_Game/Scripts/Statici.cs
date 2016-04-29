@@ -16,11 +16,13 @@ public class Statici
     public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiIndifferenti = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
     public static Transform PersonaggioPrincipaleT;
     public static PadreGestore padreGestore;
-    public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();
+   // public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();
     public static DatiPersonaggio personaggio;
     public static Serializzabile<ValoriPersonaggioS> datiPersonaggio;
     public static Dictionary<int, DatiPersonaggio> registroDatiPersonaggi = new Dictionary<int, DatiPersonaggio>();
     public static caratteristichePersonaggioV2 databaseInizialeProprieta;
+    public static Percorsi databaseInizialePercorsi;
+    public static  GameData databseInizialeAmicizie;
     public static string classeDiColuiCheVuoleCambiareAmicizia = string.Empty;//da verificare se servirà ancora o no
 
     public const string STR_PercorsoConfig = "PercorsoConfigurazione";
@@ -33,7 +35,8 @@ public class Statici
     public const string STR_DatabaseDiGioco3 = "/dataBasePersonaggioV2.asset";
 
     public static bool sonoPassatoDallaScenaIniziale = false;
-   
+
+    public const string tmpPercorsi = "nome Percorso";
 
     static string origine = Application.streamingAssetsPath + "/dbgioco.db";
     static string destinazione = Application.persistentDataPath + "/dbgioco.db";
@@ -76,7 +79,15 @@ public class Statici
     /// </summary>
     /// <param name="databseInizialeAmicizie"></param>
     /// <param name="databaseInizialeProprieta"></param>
-    public static void assegnaAssetDatabase(ref GameData databseInizialeAmicizie,ref caratteristichePersonaggioV2 databaseInizialeProprieta)   //metodo per assegnare gli asset dentro l'inspector... By Luca del dftStudent
+    /// <summary>
+    /// Lo script metodo assegnaAssetDatabase e serializza percorsi sono due metodi statici perchè vengono richiamati
+    /// in due script cioè manager iniziale e gamemanager.
+    /// Per evitare di avere due metodi identici dentro entrambi gli script li ho spostati qui e resi statici
+    /// in modo che siano scritti una volta sola e richiamati dove si vuole.
+    /// </summary>
+    /// <param name="databseInizialeAmicizie"></param>
+    /// <param name="databaseInizialeProprieta"></param>
+    public static void assegnaAssetDatabase(ref GameData databseInizialeAmicizie, ref caratteristichePersonaggioV2 databaseInizialeProprieta, ref Percorsi databaseInizialePercorsi)   //metodo per assegnare gli asset dentro l'inspector... By Luca del dftStudent
     {
         if (databseInizialeAmicizie == null)
         {
@@ -94,36 +105,18 @@ public class Statici
                 databaseInizialeProprieta = AssetDatabase.LoadAssetAtPath<caratteristichePersonaggioV2>(percorso + Statici.STR_DatabaseDiGioco3);
             }
         }
-    }
-
-    public static void SerializzaPercorsi(ref GameData databseInizialeAmicizie, ref Serializzabile<AmicizieSerializzabili> datiDiplomazia, ref Dictionary<string, int> dizionarioPercorsi)   //Controlla e se necessario riserializza i percorsi
-    {
-        //Controlla i percorsi se sono gia serializzati e se ci sono variazioni li reserializza
-        //se non sono serializzati li serializza
-        //se non ci sono variazioni non fa niente
-
-        if (databseInizialeAmicizie == null) return;
-
-        if (datiDiplomazia == null)
-
-            datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
-
-        if (datiDiplomazia.Dati.indexPercorsi.Equals(databseInizialeAmicizie.indexPercorsi)) return;  //CONTROLLARE SE METODO E' CORRETTO
-
-        for (int i = 0; i < databseInizialeAmicizie.classiEssere.Length; i++)
-
+        if (databaseInizialePercorsi == null)
         {
-            datiDiplomazia.Dati.indexPercorsi[i] = databseInizialeAmicizie.indexPercorsi[i];
+            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig2))
+            {
+                string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig2);
+                databaseInizialePercorsi = AssetDatabase.LoadAssetAtPath<Percorsi>(percorso + Statici.STR_DatabaseDiGioco2);
+           
+            }
         }
-
-        datiDiplomazia.Salva();
-
-        // AGGIUNTO PER IL DIZIONARIO SUI PERCORSO
-        dizionarioPercorsi.Clear();
-
-        for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
-            dizionarioPercorsi.Add(datiDiplomazia.Dati.tipoEssere[i], datiDiplomazia.Dati.indexPercorsi[i]);
     }
+
+  
     /// <summary>
     /// salva in un dizionario il personaggio e le sue caratteristiche (vita, livello ecc)
     /// </summary>

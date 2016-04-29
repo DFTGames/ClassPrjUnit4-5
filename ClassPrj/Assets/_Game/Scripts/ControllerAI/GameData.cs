@@ -17,7 +17,6 @@ public class GameData : ScriptableObject
 {
     public string[] classiEssere = new string[Enum.GetValues(typeof(classiPersonaggi)).Length];
     public classiAmicizie[] matriceAmicizie = new classiAmicizie[Enum.GetValues(typeof(classiPersonaggi)).Length];
-    public int[] indexPercorsi; //index riferimento al nome percorso (vedi EditorPercorsiClass) 
 }
 [System.Serializable]
 public class classiAmicizie
