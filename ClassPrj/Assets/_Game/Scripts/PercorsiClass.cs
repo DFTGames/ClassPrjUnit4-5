@@ -1,79 +1,124 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
-
-[System.Serializable]
+using System;
 
 public class PercorsiClass : ScriptableObject
+//PROGETTO GEROLAMO 401.....Dove le stelline sono d'obbligo..
 {
-    // public Dictionary<int, string> nomePercorsi = new Dictionary<int, string>();  //sostituita il dizionario con 2 liste per problemi di serializzazione
-
-    public const int NON_ESISTE = -1;  //messo dal Prof...cosi' si capisce meglio
+    const int NON_ESISTE = -1;
 
     public bool cambiatoAlmenoUnaScena;
 
     public bool scenaDaSalvare;
 
-    //public List<string> nomeClassi = new List<string>();
+    public Percorsi per =null;
 
-    public List<GruppoPercorsi> percorsi = new List<GruppoPercorsi>();
 
-    public List<Road> road;
-
-    [System.Serializable]
-    public class Road
+    public PercorsiClass()     //chiedere se va bene fatto in questo modo per evitare di creare istanza da dentro editor
     {
-        public string nomeClassi = string.Empty;
-        public int indice = -1;
-
+        per= new Percorsi();
     }
 
     [System.Serializable]
-    public class GruppoPercorsi
+    public class Percorso
     {
         public string nomePercorsi = string.Empty;
-        public int indice = NON_ESISTE;
+        public int idx = NON_ESISTE;
+        public classiPersonaggi[] classi;
 
     }
 
 
+    [System.Serializable]
+    public class Percorsi : IEnumerable
+    {
+        private Percorso[] percorsi;
 
-    public void ResettaIndicePercorso(int key)  //mi resetta(default = NON_ESISTE) i valori del indexPercorso GameData
-    {                                    // se key=NON_ESISTE mi resetta tutti i valori..altrimenti solo il valore corrispondente
-
-        for (int i = 0; i < road.Count; i++)
+        public void Add(Percorso percorso)
         {
-            if ((key == NON_ESISTE) || (road[i].indice == key))
+
+            for (int i = 0; i < percorsi.Length; i++)
             {
-                road[i].indice = NON_ESISTE;
-                cambiatoAlmenoUnaScena = true;
+                if (percorsi[i].nomePercorsi.Contains(percorso.nomePercorsi))
+                {
+                    Debug.LogError("Capra !! Capra !! Capra !  percorso gia usato..Riprova..la prox volta sarai piu' fortunato ");
+                    return;
+                }
+            }
+
+            percorso.idx = trovaIndexLibero(percorsi);
+            Array.Resize<Percorso>(ref percorsi, percorsi.Length + 1);
+            percorsi[percorsi.Length - 1] = percorso;
+
+        }
+
+        public int Count
+        {
+            get
+            {
+                //provvosorio
+                if (percorsi == null) return 0;
+                //***********
+                return percorsi.Length;              
+            }
+
+        }
+
+        public bool RemoveAt(int idx)
+        {
+            int idx2 = percorsi.Length - 1;
+
+            if (idx2 >= 0 && idx2 < percorsi.Length)
+            {
+
+                for (int i = idx2; i < percorsi.Length - 1; i++)
+                    percorsi[i] = percorsi[i + 1];
+
+
+                Array.Resize<Percorso>(ref percorsi, percorsi.Length - 1);
+                return true;
+            }
+            else return false;
+        }
+        public void RemoveAll()  // da implementarlo correttamente..
+        {
+            percorsi = null;
+
+        }
+        public IEnumerator GetEnumerator()
+        {
+            return percorsi.GetEnumerator();
+        }
+
+        public Percorso this[int idx]
+        {
+            get
+            {
+                if (idx >= 0 && idx < percorsi.Length)
+                    return percorsi[idx];
+                throw new IndexOutOfRangeException("Capra2 !! Capra2 !! numero fuori valori amessi");
+            }
+            set
+            {
+                if (idx >= 0 && idx < percorsi.Length)
+                {
+
+                    percorsi[idx] = value;
+                }
+                else throw new IndexOutOfRangeException("Fesso!! numero fuori valori ammessi!!!");
             }
         }
-        ControlloIndexPercorsi();
+
     }
-
-    /*  FUNZIONE INUTILE PER PINO..DA TOGLIERE
-    public void ordinaClasseListaDouble(ref List<int> indexPercorsi, ref List<string> nomePercorsi) //mi effettua lo sort del index e stringa(questo costruito io)
+    public static int trovaIndexLibero(Percorso[] way)   //mi trova l'index libero (metodo da me brevettato...e' veloce e funzionale e non fa uso di ricorsione)
     {
-        List<int> tmpindex = new List<int>(indexPercorsi); //passaggio per valore IMPORTANTE
-        List<string> tmpPercorsi = new List<string>(nomePercorsi);  //passaggio per valore IMPORTANTE
-
-        indexPercorsi.Sort();
-
-        for (int i = 0; i < tmpindex.Count; i++)
-            nomePercorsi[i] = tmpPercorsi[tmpindex.IndexOf(indexPercorsi[i])];           //mi ordina la lista percorso sulla base della lista index riordinata con lo sort
-    }
-    */
-
-    public int trovaIndexLibero()   //mi trova l'index libero (metodo da me brevettato...e' veloce e funzionale e non fa uso di ricorsione)
-    {
-        if (percorsi.Count == 0) return 0;
+        if (way.Length == 0) return 0;
 
         List<int> tmpOrdino = new List<int>();  //creata lista provvisoria
 
-        for (int i = 0; i < percorsi.Count; i++)  //alimenta la lista e poi la ordina
-            tmpOrdino.Add(percorsi[i].indice);
+        for (int i = 0; i < way.Length; i++)  //alimenta la lista e poi la ordina
+            tmpOrdino.Add(way[i].idx);
 
         tmpOrdino.Sort();
 
@@ -88,7 +133,29 @@ public class PercorsiClass : ScriptableObject
     }
 
 
+    /*
+    public List<int> trovaPercorsiDaPersonaggio(classiPersonaggi per)
+    {
+        List<int> lista = new List<int>();
 
+        for (int i = 0; i < percorsi.Length; i++)
+
+            for (int ii = 0; ii < percorsi[i].classi.Length; ii++)
+                if (per == percorsi[i].classi[ii]) lista.Add(percorsi[i].idx);
+
+        return lista;
+    }
+
+    public List<classiPersonaggi> trovaPersonaggiDaPercorsi(string percorso)
+    {
+        List<classiPersonaggi> lista = new List<classiPersonaggi>();
+
+
+
+        return lista;
+
+    }
+    */
     public void ControlloIndexPercorsi()
     {
 
@@ -99,7 +166,7 @@ public class PercorsiClass : ScriptableObject
             {
                 Transform tmpPercorso = tmpObj.transform.GetChild(i);
                 GestorePercorso gp = tmpPercorso.GetComponent<GestorePercorso>();
-                if (gp.IndexPercorso == NON_ESISTE) //ESCLUSO DAL CONTROLLO MOMENTANEAMENTE..VEDERE SE CI STA O MENO || (gp.IndexPercorso != NON_ESISTE && !indexPercorsi.Contains(gp.IndexPercorso)))
+                if (gp.IndexPercorso == NON_ESISTE ) //|| (gp.IndexPercorso != NON_ESISTE && !indexPercorsi.Contains(gp.IndexPercorso)))  IMPLEMENTARLO CORRETTAMENTE..
                 {
                     tmpPercorso.name = "PERCORSO ERRATO";
                     gp.IndexPercorso = NON_ESISTE;
@@ -108,14 +175,4 @@ public class PercorsiClass : ScriptableObject
 
             }
     }
-
-    public void resetta()
-    {
-        percorsi.Clear();
-        road.Clear();
-        //   ResettaIndexGameData1(NON_ESISTE, gameData1);
-        //DA SISTEMARE...
-
-    }
-
 }
