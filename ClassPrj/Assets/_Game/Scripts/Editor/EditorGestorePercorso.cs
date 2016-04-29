@@ -173,10 +173,10 @@ namespace DFTGames.Tools.EditorTools
         private void AlimentaListe()
         {
             Debug.Log("le sto alimentando");
-            for (int k = 0; k < percorsi.percorsi.Count; k++)    // //      percorsiDisponibili = percorsi.percorsi;   era questo in principio..ma non sono riuscito a Convertirlo
+            for (int k = 0; k < percorsi.per.Count; k++)    
             {
-                percorsiDisponibili.Add(percorsi.percorsi[k].nomePercorsi);
-                indexDisponibili.Add(percorsi.percorsi[k].indice);
+                percorsiDisponibili.Add(percorsi.per[k].nomePercorsi);
+                indexDisponibili.Add(percorsi.per[k].idx);
             }
         }
     }
