@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Name: dataBasePercorso
   m_EditorClassIdentifier: 
   percorsi:
-  - nomePercorsi: a1
+  - nomePercorsi: Viale degli assenti
     classi: 01000000
-  - nomePercorsi: a7
+  - nomePercorsi: PIazza del non presenti
     classi: 01000000
-  - nomePercorsi: a3
+  - nomePercorsi: Corso Dei solitari
     classi: 01000000
