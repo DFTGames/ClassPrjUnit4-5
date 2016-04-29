@@ -97,7 +97,7 @@ namespace DFTGames.Tools.EditorTools
         void OnDisable()            //controlla la lista percorsi con i percorsi e se non c'e assegnazione mette indexpercorso del oggetto a default(NON_ESISTE) 
         {
             controlloPercorsiVuoti();
-            controlloPercorsiVuoti();
+            controlloPersonaggiDoppi();
             SalvaAsset();   //LO MESSO QUA INIZIO..PERRCHE SE LO METTO ALLA FINE NON MI FUNZIONA..
             var scenaCorrente = EditorSceneManager.GetActiveScene();
             if (scenaCorrente.isDirty)  //chiedo se la scena corrente e' a dirty
@@ -114,7 +114,7 @@ namespace DFTGames.Tools.EditorTools
             for (var i = 0; i < EditorBuildSettings.scenes.Length; i++)  //MI FA IL CAMBIAMENTO IN TUTTE LE SCENE DEL GIOCO
             {
                 var scene = EditorBuildSettings.scenes[i];
-                Debug.Log("scena" + scene);
+
                 if (scene.enabled)
                 {
                     var sceneName = Path.GetFileNameWithoutExtension(scene.path);
@@ -124,12 +124,10 @@ namespace DFTGames.Tools.EditorTools
                     sceneDaSalvare=percorsi.ControlloIndexPercorsi();
                     if (sceneDaSalvare)
                     {
-                     //   Debug.Log("1 " + tmpscenee);
                         EditorSceneManager.MarkSceneDirty(tmpscenee);  //imposto Scena a dirty...
-                     //   Debug.Log("2 " + tmpscenee);
                         EditorSceneManager.SaveScene(tmpscenee);
                     }
-                    EditorSceneManager.CloseScene(tmpscenee, true);
+                  //  EditorSceneManager.CloseScene(tmpscenee, true);   TOLTO perche mi dava errore  (vedi lezione unita6 modulo 27)
                 }
             }
 
@@ -152,14 +150,15 @@ namespace DFTGames.Tools.EditorTools
                 controlloPercorsiNulli = false;
             }
         }
-        private void controlloPersonaggiVuoti() //VIENE CHIAMATO SU ONDISABLE OPPURE QUANDO PASSA NEL ALTRO MENU
+        private void controlloPersonaggiDoppi() //VIENE CHIAMATO SU ONDISABLE OPPURE QUANDO PASSA NEL ALTRO MENU
         {
             if (controlloPersonaggiNulli)
             {
-                percorsi.EliminaClassiVuote();
+                percorsi.EliminaClassiDoppie();
                 controlloPersonaggiNulli = false;
               //  SalvaAsset();
             }
+      
         }
 
         private void OnGUI()
@@ -222,7 +221,7 @@ namespace DFTGames.Tools.EditorTools
 
         private void InserisciModificaPercorsi()
         {
-            controlloPersonaggiVuoti();
+            controlloPersonaggiDoppi();
             GUIStyle stileEtichetta = new GUIStyle(GUI.skin.GetStyle("Label"));
             stileEtichetta.alignment = TextAnchor.MiddleCenter;
             stileEtichetta.fontStyle = FontStyle.Bold;
@@ -321,6 +320,7 @@ namespace DFTGames.Tools.EditorTools
             EditorGUILayout.Separator();
             GUILayout.EndHorizontal();
             EditorGUILayout.Separator();
+            GUILayout.Label(" Le classi personaggi doppie all'interno di ciascun percorso VERRANNO CANCELLATI al cambio di menu o al uscita dal editor", stileEtichetta2);
             EditorGUILayout.Separator();
             bool setDirtyPersonaggi = false;
             for (int i = 0; i < percorsi.Count; i++)
@@ -331,7 +331,6 @@ namespace DFTGames.Tools.EditorTools
                     GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
                     int index = -1;
                     index = Array.IndexOf(personaggi.elencaClassiNonGiocabiliToEnumArray(), percorsi[i].classi[c]);
-
                     int index2 = index;
                     EditorGUILayout.LabelField(string.Empty, stileEtichetta2, GUILayout.Width(130));
  
@@ -339,32 +338,18 @@ namespace DFTGames.Tools.EditorTools
 
                     if ((c == percorsi[i].classi.Count - 1) && (GUILayout.Button(" + ", GUILayout.Width(30))))
                     {
-                        percorsi[i].classi.Add(classiPersonaggi.indefinito);
+                        percorsi[i].classi.Add(classiPersonaggi.goblin);
                         controlloPersonaggiNulli = true;
-
                     }
                     if (c > 0 && GUILayout.Button(" - ", GUILayout.Width(30)))
                     {
                         percorsi.RemoveAtClass(i, c);
-
                         setDirtyPersonaggi = true;
                     }
                     if (index != index2)   //se e' stato fatto modifica
                     {
-                        if (percorsi.trovaPersonaggiDaIndicePercorsi(i).Contains(personaggi.elencaClassiNonGiocabiliToEnumArray()[index]))
-                        {
-                            percorsi[i].classi[c] = classiPersonaggi.indefinito;
-                            controlloPersonaggiNulli = true;
-                            Debug.LogError("Ti si e' disconnesso il cervello per qualche secondo ?....hai scelto un personaggio gia usato ");
-                        }
-                        else
-                        {
-
-                            if (index == -1)
-                                percorsi[i].classi[c] = classiPersonaggi.indefinito;
-                            else percorsi[i].classi[c] = personaggi.elencaClassiNonGiocabiliToEnumArray()[index];
-                        }
-
+                        controlloPersonaggiNulli = true;                   
+                        percorsi[i].classi[c] = personaggi.elencaClassiNonGiocabiliToEnumArray()[index];       
                         setDirtyPersonaggi = true; ;
                     }
                     GUILayout.EndHorizontal();

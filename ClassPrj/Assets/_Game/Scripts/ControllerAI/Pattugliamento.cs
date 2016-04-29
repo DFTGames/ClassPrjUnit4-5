@@ -57,9 +57,9 @@ public class Pattugliamento : IStato
         if (elencoPercorsiDisponibili.Count > 0)
             MioCervello.IndexPercorso = elencoPercorsiDisponibili[Random.Range(0, elencoPercorsiDisponibili.Count)];  //per ora gli assegno percorso casuale...da sistemare e completare
 
-        foreach (int elem in elencoPercorsiDisponibili)
-            Debug.Log("classe" + MioCervello.DatiPersonaggio.miaClasse + " idx " + elem);
-        Debug.Log("percorso scelto " + MioCervello.IndexPercorso);
+      //  foreach (int elem in elencoPercorsiDisponibili)
+      //      Debug.Log("classe" + MioCervello.DatiPersonaggio.miaClasse + " idx " + elem);
+      //  Debug.Log("percorso scelto " + MioCervello.IndexPercorso);
 
         /*
         if (GameManager.dizionarioPercorsi.ContainsKey(MioCervello.gameObject.tag))

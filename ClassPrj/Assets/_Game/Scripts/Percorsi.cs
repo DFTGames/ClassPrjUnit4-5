@@ -56,7 +56,7 @@ public class Percorsi : ScriptableObject , IEnumerable, IDisposable
         Array.Resize<Percorso>(ref percorsi, percorsi.Length + 1);
         percorsi[percorsi.Length - 1] = percorso;
 
-        percorsi[percorsi.Length - 1].classi.Add(classiPersonaggi.indefinito);
+        percorsi[percorsi.Length - 1].classi.Add(classiPersonaggi.goblin);
     }
 
     public bool ControlloNomiPercorso(string nomePercorso)  //ritorna  false se il nome e' gia presente
@@ -89,18 +89,29 @@ public class Percorsi : ScriptableObject , IEnumerable, IDisposable
         }
     }
 
-    public void EliminaClassiVuote()
+    public void EliminaClassiDoppie()
     {
         
+
         for (int i = 0; i < percorsi.Length; i++)
         {
-            for (int c = 0; c < percorsi[i].classi.Count; c++)
-                if ((c > 0) && percorsi[i].classi[c]==classiPersonaggi.indefinito)
-            {
-                    RemoveAtClass(i, c);
-                   if (c == 1) c--;   //Continuo del Percorso (uguale a sopra)
-                       else c = 1;
-            }
+            if (percorsi[i].classi.Count < 2) continue;
+              else
+                      
+                for (int c = 0; c < percorsi[i].classi.Count; c++)
+                {
+                    classiPersonaggi tmp = percorsi[i].classi[c];
+                    List<classiPersonaggi> tmpList = new List<classiPersonaggi>(percorsi[i].classi);
+                    tmpList.Remove(tmp);
+                    if (tmpList.Contains(tmp))
+                    {
+                        RemoveAtClass(i, c);
+                        if (c == 1) c--;   //Continuo del Percorso (uguale a sopra)
+                        else c = 0;
+                    }
+             
+                }        
+           
         }
     }
 
