@@ -25,7 +25,6 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -40,12 +39,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a425bb679279a745b056cda1999f111, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  databseInizialeAmicizie: {fileID: 11400000, guid: 1f4a373869586784888e39b7d1e52245,
-    type: 2}
-  databaseInizialePercorsi: {fileID: 11400000, guid: 9e87a68e26df3754f9e9de79b63f2271,
-    type: 2}
-  databaseInizialeProprieta: {fileID: 11400000, guid: f711d7c5d4610f640b8d93cc49a87796,
-    type: 2}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

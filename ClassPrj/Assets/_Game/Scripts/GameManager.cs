@@ -3,7 +3,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
-{  
+{
+    //public GameData databseInizialeAmicizie;
+    //public static Percorsi databaseInizialePercorsi;
+
     private static GameManager me;
     private Collider attuale = null;
     private string classeEssereSelezionato = string.Empty;
@@ -12,8 +15,6 @@ public class GameManager : MonoBehaviour
     private OggettiDaMarcare oggettoDaMarcare;
     private Collider precedente = null;
     private Vista vistaGoblin;
-
-
 
     private void Awake()
     {
