@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 23fab56650ad80a418e074ffe5395a14
+timeCreated: 1462030366
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - databseInizialeAmicizie: {instanceID: 0}
+  - databaseInizialePercorsi: {instanceID: 0}
+  - databaseInizialeProprieta: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

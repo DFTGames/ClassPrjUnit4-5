@@ -6639,16 +6639,19 @@ public class iTween : MonoBehaviour{
 	
 	private static void DrawLineHelper(Vector3[] line, Color color, string method){
 		Gizmos.color=color;
+        # if UNITY_EDITOR
         UnityEditor.Handles.color = color;
+        #endif
         for (int i = 0; i < line.Length-1; i++) {
 			if(method == "gizmos"){
 				Gizmos.DrawLine(line[i], line[i+1]);;
 			}else if(method == "handles"){
                 //Debug.LogError("iTween Error: Drawing a line with Handles is temporarily disabled because of compatability issues with Unity 2.6!");
-               
-				UnityEditor.Handles.DrawLine(line[i], line[i+1]);
-			}
-		}
+#if UNITY_EDITOR
+                UnityEditor.Handles.DrawLine(line[i], line[i+1]);
+#endif
+            }
+        }
 	}		
 	
 	private static void DrawPathHelper(Vector3[] path, Color color, string method){
@@ -7144,9 +7147,9 @@ public class iTween : MonoBehaviour{
 		StartCoroutine("TweenDelay");
 	}	
 	
-	#endregion	
+#endregion
 	
-	#region Easing Curves
+#region Easing Curves
 	
 	private float linear(float start, float end, float value){
 		return Mathf.Lerp(start, end, value);
@@ -7453,9 +7456,9 @@ public class iTween : MonoBehaviour{
 	}		
 	/* GFX47 MOD END */
 	
-	#endregion	
+#endregion
 	
-	#region Deprecated and Renamed
+#region Deprecated and Renamed
 	/*
 	public static void audioFrom(GameObject target, Hashtable args){Debug.LogError("iTween Error: audioFrom() has been renamed to AudioFrom().");}
 	public static void audioTo(GameObject target, Hashtable args){Debug.LogError("iTween Error: audioTo() has been renamed to AudioTo().");}
@@ -7501,5 +7504,5 @@ public class iTween : MonoBehaviour{
 	public static void stopType(GameObject target, Hashtable args){Debug.LogError("iTween Error: stopType() has been deprecated. Please investigate Stop().");}
 	public static void tweenCount(GameObject target, Hashtable args){Debug.LogError("iTween Error: tweenCount() has been deprecated. Please investigate Count().");}
 	*/
-	#endregion
+#endregion
 } 
