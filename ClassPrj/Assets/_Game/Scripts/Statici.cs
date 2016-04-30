@@ -87,7 +87,8 @@ public class Statici
     /// </summary>
     /// <param name="databseInizialeAmicizie"></param>
     /// <param name="databaseInizialeProprieta"></param>
-    public static void assegnaAssetDatabase(ref GameData databseInizialeAmicizie, ref caratteristichePersonaggioV2 databaseInizialeProprieta, ref Percorsi databaseInizialePercorsi)   //metodo per assegnare gli asset dentro l'inspector... By Luca del dftStudent
+   
+    public static void assegnaAssetDatabase()   //metodo per assegnare gli asset dentro l'inspector... By Luca del dftStudent
     {
         if (databseInizialeAmicizie == null)
         {

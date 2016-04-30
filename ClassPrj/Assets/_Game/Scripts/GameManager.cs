@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
             Statici.padreGestore = tmpPdr.GetComponent<PadreGestore>();
         else
             Debug.LogError("Ma ci fai o ci sei ????..sei un cazzone....manca il padrePercorso");
-        Statici.assegnaAssetDatabase(ref Statici.databseInizialeAmicizie, ref Statici.databaseInizialeProprieta, ref Statici.databaseInizialePercorsi);
+        Statici.assegnaAssetDatabase( );
         if (Statici.nomePersonaggio.Equals(string.Empty))
             Statici.nomePersonaggio = "PersonaggioDiProva";
         Statici.datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);

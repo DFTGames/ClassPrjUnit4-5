@@ -8,9 +8,12 @@ using UnityEngine.UI;
 
 public class ManagerIniziale : MonoBehaviour
 {
+    
+    public GameObject net;
     public Animator animatoreMainMenu;
     public Animator animatoreMenuCreazione;
     public Animator animatoreMenuCarica;
+    public Animator animatoreMultiplayer;
     public Button bottoneCaricaDaMainManu;
     public Button bottoneCaricaDaCaricamento;    
     public Button bottoneEliminaPartita;
@@ -38,6 +41,7 @@ public class ManagerIniziale : MonoBehaviour
     [Range(-20f, 20f)]
     public float ZOffSet;
 
+    private static ManagerIniziale me;
     private int indiceClasseSuccessivaPrecedente = 0;
     private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
     private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
@@ -64,6 +68,8 @@ public class ManagerIniziale : MonoBehaviour
     private List<string> cartelleLocali = new List<string>();
     private int contatoreGiocabili = 0;
 
+    private static bool networking = false;
+
     public int IndiceClasseSuccessivaPrecedente
     {
         get
@@ -84,9 +90,11 @@ public class ManagerIniziale : MonoBehaviour
 
     private void Start()
     {
+        me = this;
+        networking = false;
         CambiaAlphaPannelloSfondo();
         nomeScenaText.gameObject.SetActive(false);
-        Statici.assegnaAssetDatabase(ref Statici.databseInizialeAmicizie, ref Statici.databaseInizialeProprieta,ref Statici.databaseInizialePercorsi);
+        Statici.assegnaAssetDatabase();
         cameraT = Camera.main.transform;
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
         for (int i = 0; i < Statici.databaseInizialeProprieta.matriceProprieta.Count; i++)       
@@ -121,6 +129,44 @@ public class ManagerIniziale : MonoBehaviour
         ObiettivoDaInquadrareXZ();
         cameraT.position = new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta);
         iTween.LookTo(cameraT.gameObject, iTween.Hash("looktarget", obiettivoDaInquadrare, "time", 0f, "axis", "y", "easetype", iTween.EaseType.linear));
+
+    }
+
+    public void PannelloMultiplayer()
+    {
+        animatoreMultiplayer.SetBool("Torna", true);
+        animatoreMainMenu.SetBool("Via", true);
+      //  nuovaPartita = true;
+      //  erroreCreazioneText.text = string.Empty;
+      //  VisualizzaValoriPersonaggio();
+        CambiaAlphaPannelloSfondo();
+       ObiettivoDaInquadrareXZ();
+       cameraT.position = new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta);
+       iTween.LookTo(cameraT.gameObject, iTween.Hash("looktarget", obiettivoDaInquadrare, "time", 0f, "axis", "y", "easetype", iTween.EaseType.linear));
+
+    }
+
+    public void NetworkingLogin()
+    {
+
+        net.SetActive(true);
+
+    }
+
+    public static void NetworkingConnected()
+    {
+
+        me.net.GetComponent<LobbyController>().gameObject.SetActive(true);
+
+        me.net.GetComponent<LoginController>().gameObject.SetActive(false);
+
+    }
+
+    public static void NetworkingNotConnected()
+    {
+        me.net.GetComponent<LoginController>().gameObject.SetActive(true);
+
+        me.net.GetComponent<LobbyController>().gameObject.SetActive(false);     
 
     }
 
@@ -208,6 +254,15 @@ public class ManagerIniziale : MonoBehaviour
         nuovaPartita = false;
         CambiaAlphaPannelloSfondo();
     }
+
+    public void AnnullaDaNetwork()
+    {
+        animatoreMultiplayer.SetBool("Torna", false);
+        animatoreMainMenu.SetBool("Via", false);
+        nuovaPartita = false;
+        CambiaAlphaPannelloSfondo();
+    }
+
 
     public void AnnullaDaCaricamento()
     {

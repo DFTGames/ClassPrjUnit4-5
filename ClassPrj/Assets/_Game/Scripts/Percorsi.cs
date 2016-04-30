@@ -76,15 +76,14 @@ public class Percorsi : ScriptableObject , IEnumerable, IDisposable
 
     public void EliminaPercorsiVuoti() 
     {                                      
-        if (percorsi.Length == 0) return;         //QUANDO NE METTO 2 VUOTI.ME NE LASCIA UNO..VEDERE dove sta il buco..
+        if (percorsi.Length == 0) return;        
 
         for (int i=0; i< percorsi.Length; i++)
         {
             if (percorsi[i].nomePercorsi.Equals(Statici.tmpPercorsi))
             {
                 RemoveAt(i);
-                if (i == 0) i--;   //Perdono Pino..e' poco leggibile lo so...pero' se il percorso e' al primo giro non funziona..perche lo metterei di nuovo a 0..ma poi lui lo incrementa alla fine..quindi non me li toglie tutti
-                     else i = 0;
+                i = -1;
             }
         }
     }
@@ -92,26 +91,19 @@ public class Percorsi : ScriptableObject , IEnumerable, IDisposable
     public void EliminaClassiDoppie()
     {
         
-
         for (int i = 0; i < percorsi.Length; i++)
         {
             if (percorsi[i].classi.Count < 2) continue;
-              else
-                      
-                for (int c = 0; c < percorsi[i].classi.Count; c++)
+            else
+                percorsi[i].classi.Sort();
+                for (int c = 0; c < percorsi[i].classi.Count-1; c++)
                 {
-                    classiPersonaggi tmp = percorsi[i].classi[c];
-                    List<classiPersonaggi> tmpList = new List<classiPersonaggi>(percorsi[i].classi);
-                    tmpList.Remove(tmp);
-                    if (tmpList.Contains(tmp))
-                    {
-                        RemoveAtClass(i, c);
-                        if (c == 1) c--;   //Continuo del Percorso (uguale a sopra)
-                        else c = 0;
-                    }
-             
-                }        
-           
+                if (percorsi[i].classi[c] == percorsi[i].classi[c + 1])
+                {
+                    percorsi[i].classi.RemoveAt(c + 1);
+                    c = - 1;
+                        }               
+                }                  
         }
     }
 
