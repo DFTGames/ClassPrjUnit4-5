@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Mono.Data.Sqlite;
-using UnityEditor;
+//using UnityEditor;
 
 public class Statici
 {
@@ -88,36 +88,48 @@ public class Statici
     /// <param name="databseInizialeAmicizie"></param>
     /// <param name="databaseInizialeProprieta"></param>
    
+       
     public static void assegnaAssetDatabase()   //metodo per assegnare gli asset dentro l'inspector... By Luca del dftStudent
     {
-        if (databseInizialeAmicizie == null)
+
+        //EVOLUZIONE DI CHARLI PER PROBLEMI USI EDITOR E BUILDING
+        if (sonoPassatoDallaScenaIniziale)
         {
-            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig))
-            {
-                string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig);
-                databseInizialeAmicizie = AssetDatabase.LoadAssetAtPath<GameData>(percorso + Statici.STR_DatabaseDiGioco);
-            }
+            databseInizialeAmicizie = DataBase.GiveMeAmicizie();
+            databaseInizialeProprieta = DataBase.GiveMeProprieta();
+            databaseInizialePercorsi = DataBase.GiveMePercorsi();
         }
-        if (databaseInizialeProprieta == null)
-        {
-            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig3))
+        /*
+       
+            if (databseInizialeAmicizie == null)
             {
-                string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig3);
-                databaseInizialeProprieta = AssetDatabase.LoadAssetAtPath<caratteristichePersonaggioV2>(percorso + Statici.STR_DatabaseDiGioco3);
+                if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig))
+                {
+                    string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig);
+                    databseInizialeAmicizie = AssetDatabase.LoadAssetAtPath<GameData>(percorso + Statici.STR_DatabaseDiGioco);
+                }
             }
-        }
-        if (databaseInizialePercorsi == null)
-        {
-            if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig2))
+            if (databaseInizialeProprieta == null)
             {
-                string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig2);
-                databaseInizialePercorsi = AssetDatabase.LoadAssetAtPath<Percorsi>(percorso + Statici.STR_DatabaseDiGioco2);
-           
+                if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig3))
+                {
+                    string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig3);
+                    databaseInizialeProprieta = AssetDatabase.LoadAssetAtPath<caratteristichePersonaggioV2>(percorso + Statici.STR_DatabaseDiGioco3);
+                }
             }
-        }
+            if (databaseInizialePercorsi == null)
+            {
+                if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig2))
+                {
+                    string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig2);
+                    databaseInizialePercorsi = AssetDatabase.LoadAssetAtPath<Percorsi>(percorso + Statici.STR_DatabaseDiGioco2);
+
+                }
+            }
+        */
     }
 
-  
+
     /// <summary>
     /// salva in un dizionario il personaggio e le sue caratteristiche (vita, livello ecc)
     /// </summary>
