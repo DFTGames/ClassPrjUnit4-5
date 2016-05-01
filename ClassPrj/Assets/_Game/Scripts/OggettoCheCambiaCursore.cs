@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Questa classe deve essere attaccata ad un oggetto su cui vogliamo che l'immagine del cursore cambi,
@@ -18,6 +19,8 @@ public class OggettoCheCambiaCursore : MonoBehaviour
 
     private void OnMouseExit()
     {
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+            return;
         Cursore.CambiaCursore(0, 0);
         if (luceSelezioneGO != null)
             luceSelezioneGO.SetActive(false);
@@ -25,6 +28,8 @@ public class OggettoCheCambiaCursore : MonoBehaviour
 
     private void OnMouseOver()
     {
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+            return;
         Cursore.CambiaCursore(gameObject.layer, miaClasse);
         if (luceSelezioneGO != null)
             luceSelezioneGO.SetActive(true);
@@ -32,6 +37,8 @@ public class OggettoCheCambiaCursore : MonoBehaviour
 
     private void Start()
     {
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+            return;
         datiPersonaggio = GetComponent<DatiPersonaggio>();
         if (datiPersonaggio != null)
         {
