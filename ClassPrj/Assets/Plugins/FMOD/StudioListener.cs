@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
+
 namespace FMODUnity
 {
     [AddComponentMenu("FMOD Studio/FMOD Studio Listener")]

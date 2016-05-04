@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DataBase : MonoBehaviour {
+public class DataBase : MonoBehaviour
+{
 
     private static DataBase me;
 
@@ -9,8 +10,13 @@ public class DataBase : MonoBehaviour {
     public Percorsi databaseInizialePercorsi;
     public caratteristichePersonaggioV2 databaseInizialeProprieta;
 
+    static public void Inizializza()
+        {
+        if (GameObject.Find("DataBaseSingleton") == null)
+            Instantiate(Resources.Load("DataBaseSingleton"));
+        }
     public static GameData GiveMeAmicizie()
-    {
+    {      
         return me.databseInizialeAmicizie;
     }
     public static Percorsi GiveMePercorsi()
@@ -21,7 +27,7 @@ public class DataBase : MonoBehaviour {
     {
         return me.databaseInizialeProprieta;
     }
-    private void Start()
+    private void Awake()
     {
 
         me = this;

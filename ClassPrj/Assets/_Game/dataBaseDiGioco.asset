@@ -17,6 +17,5 @@ MonoBehaviour:
   - magoTerra
   matriceAmicizie:
   - elementoAmicizia: 030000000300000003000000
+  - elementoAmicizia: 030000000300000001000000
   - elementoAmicizia: 030000000100000001000000
-  - elementoAmicizia: 030000000100000001000000
-  indexPercorsi: 020000000300000001000000

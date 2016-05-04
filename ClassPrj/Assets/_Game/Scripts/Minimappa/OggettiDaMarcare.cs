@@ -76,7 +76,8 @@ public class OggettiDaMarcare : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        if (SceneManager.GetActiveScene().buildIndex == 0)
+        // if (SceneManager.GetActiveScene().buildIndex == 0)   PROVVISORIO
+        if (SceneManager.GetActiveScene().buildIndex <= 1)
             return;     
         minimappa = GameObject.Find("Minimappa").GetComponent<Minimappa>();
         switch (gameObject.layer)
@@ -125,7 +126,8 @@ public class OggettiDaMarcare : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (SceneManager.GetActiveScene().buildIndex == 0)
+        //  if (SceneManager.GetActiveScene().buildIndex == 0)  PROVVISORIO
+        if (SceneManager.GetActiveScene().buildIndex <= 1)
             return;
         NuovaPosizioneMarcatore = minimappa.CalcolaPosizioneMarcatore(transform.position); //imposto la posizione
         imageMarcatore.rectTransform.localPosition = NuovaPosizioneMarcatore;//assegno la posizione.       
