@@ -19,7 +19,6 @@ public enum ProprietaPersonaggio
 
 public enum classiPersonaggi
 {
-    indefinito = -1,
     magoAcqua,
     goblin,
     magoTerra

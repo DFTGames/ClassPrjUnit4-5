@@ -16,13 +16,12 @@ public class Statici
     public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiIndifferenti = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
     public static Transform PersonaggioPrincipaleT;
     public static PadreGestore padreGestore;
-   // public static Dictionary<string, int> dizionarioPercorsi = new Dictionary<string, int>();
     public static DatiPersonaggio personaggio;
     public static Serializzabile<ValoriPersonaggioS> datiPersonaggio;
     public static Dictionary<int, DatiPersonaggio> registroDatiPersonaggi = new Dictionary<int, DatiPersonaggio>();
     public static caratteristichePersonaggioV2 databaseInizialeProprieta;
     public static Percorsi databaseInizialePercorsi;
-    public static  GameData databseInizialeAmicizie;
+    public static GameData databseInizialeAmicizie;
     public static string classeDiColuiCheVuoleCambiareAmicizia = string.Empty;//da verificare se servirà ancora o no
 
     public const string STR_PercorsoConfig = "PercorsoConfigurazione";
@@ -87,46 +86,45 @@ public class Statici
     /// </summary>
     /// <param name="databseInizialeAmicizie"></param>
     /// <param name="databaseInizialeProprieta"></param>
-   
-       
+
+
     public static void assegnaAssetDatabase()   //metodo per assegnare gli asset dentro l'inspector... By Luca del dftStudent
     {
+        DataBase.Inizializza();
+        databseInizialeAmicizie = DataBase.GiveMeAmicizie();
+        databaseInizialeProprieta = DataBase.GiveMeProprieta();
+        databaseInizialePercorsi = DataBase.GiveMePercorsi();
 
-        //EVOLUZIONE DI CHARLI PER PROBLEMI USI EDITOR E BUILDING
-        if (sonoPassatoDallaScenaIniziale)
-        {
-            databseInizialeAmicizie = DataBase.GiveMeAmicizie();
-            databaseInizialeProprieta = DataBase.GiveMeProprieta();
-            databaseInizialePercorsi = DataBase.GiveMePercorsi();
-        }
+
+        // ELIMINATO METODO SOTTO DI ASSEGNAZIONE AUTOMATICA DEI DATABASE IN QUANDO NELLA COMPILAZIONE DA ERRORI 
+        //(VEDI LEZIONE MODULO Unità 6 - Modulo 29 )
         /*
-       
-            if (databseInizialeAmicizie == null)
-            {
-                if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig))
-                {
-                    string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig);
-                    databseInizialeAmicizie = AssetDatabase.LoadAssetAtPath<GameData>(percorso + Statici.STR_DatabaseDiGioco);
-                }
-            }
-            if (databaseInizialeProprieta == null)
-            {
-                if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig3))
-                {
-                    string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig3);
-                    databaseInizialeProprieta = AssetDatabase.LoadAssetAtPath<caratteristichePersonaggioV2>(percorso + Statici.STR_DatabaseDiGioco3);
-                }
-            }
-            if (databaseInizialePercorsi == null)
-            {
-                if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig2))
-                {
-                    string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig2);
-                    databaseInizialePercorsi = AssetDatabase.LoadAssetAtPath<Percorsi>(percorso + Statici.STR_DatabaseDiGioco2);
+              if (databseInizialeAmicizie == null)
+              {
+                  if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig))
+                  {
+                      string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig);
+                      databseInizialeAmicizie = AssetDatabase.LoadAssetAtPath<GameData>(percorso + Statici.STR_DatabaseDiGioco);
+                  }
+              }
+              if (databaseInizialeProprieta == null)
+              {
+                  if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig3))
+                  {
+                      string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig3);
+                      databaseInizialeProprieta = AssetDatabase.LoadAssetAtPath<caratteristichePersonaggioV2>(percorso + Statici.STR_DatabaseDiGioco3);
+                  }
+              }
+              if (databaseInizialePercorsi == null)
+              {
+                  if (EditorPrefs.HasKey(Statici.STR_PercorsoConfig2))
+                  {
+                      string percorso = EditorPrefs.GetString(Statici.STR_PercorsoConfig2);
+                      databaseInizialePercorsi = AssetDatabase.LoadAssetAtPath<Percorsi>(percorso + Statici.STR_DatabaseDiGioco2);
 
-                }
-            }
-        */
+                  }
+              }
+       */
     }
 
 
@@ -134,7 +132,7 @@ public class Statici
     /// salva in un dizionario il personaggio e le sue caratteristiche (vita, livello ecc)
     /// </summary>
     /// <param name="datiPersonaggioDaRegistrare"></param>
-     public static void RegistraDatiPersonaggio(DatiPersonaggio datiPersonaggioDaRegistrare)
+    public static void RegistraDatiPersonaggio(DatiPersonaggio datiPersonaggioDaRegistrare)
     {
         registroDatiPersonaggi.Add(datiPersonaggioDaRegistrare.GetInstanceID(), datiPersonaggioDaRegistrare);
         RecuperaDati(datiPersonaggioDaRegistrare);
