@@ -7,8 +7,6 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/_Game/Scene/Scena Iniziale.unity
-  - enabled: 1
-    path: Assets/_Game/Scene/ScenaLobby.unity
   - enabled: 0
     path: Assets/_Game/Scene/Goblin.unity
   - enabled: 1

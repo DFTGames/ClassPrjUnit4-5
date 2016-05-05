@@ -17,8 +17,6 @@ public class ManagerIniziale : MonoBehaviour
     public Button bottoneCaricaDaMainManu;
     public Button bottoneCaricaDaCaricamento;    
     public Button bottoneEliminaPartita;
-    public Slider volumiSFX;
-    public Slider volumiAmbiente;
     public Text casellaTipo;
     public Text valoreVita;
     public Text valoreAttacco;
@@ -29,6 +27,9 @@ public class ManagerIniziale : MonoBehaviour
     public Text vitaCaricamento;
     public Text attaccoCaricamento;
     public Text difesaCaricamento;
+  //  public GameData databseInizialeAmicizie;
+  //  public caratteristichePersonaggioV2 databaseInizialeProprieta;
+ //   public Percorsi databaseInizialePercorsi;
     public Dropdown elencoCartelleDropDown;
     public Dropdown elencoSessiDropDown;
     public Image pannelloImmagineSfondo;
@@ -40,7 +41,6 @@ public class ManagerIniziale : MonoBehaviour
     [Range(-20f, 20f)]
     public float ZOffSet;
 
-    private Serializzabile<ClasseAudio> datiAudio;
     private static ManagerIniziale me;
     private int indiceClasseSuccessivaPrecedente = 0;
     private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
@@ -70,9 +70,6 @@ public class ManagerIniziale : MonoBehaviour
 
     private static bool networking = false;
 
-    FMOD.Studio.Bus SFXBus;
-    FMOD.Studio.Bus EnviromentBus;
-
     public int IndiceClasseSuccessivaPrecedente
     {
         get
@@ -90,20 +87,6 @@ public class ManagerIniziale : MonoBehaviour
                 indiceClasseSuccessivaPrecedente = valoreMassimo;
         }
     }
-
-    public void cambiaSfx(float p)
-    {
-        SFXBus.setFaderLevel(p);
-        datiAudio.Dati.volSFX = p;
-        datiAudio.Salva();
-    }
-    public void cambiaAmbiente(float p)
-    {
-        EnviromentBus.setFaderLevel(p);
-        datiAudio.Dati.volEnvironment = p;
-        datiAudio.Salva();
-    }
-
 
     private void Start()
     {
@@ -133,27 +116,6 @@ public class ManagerIniziale : MonoBehaviour
         {
             cartelleLocali.Add(dirs[i].Name);
         }
-
-        SFXBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
-        EnviromentBus = FMODUnity.RuntimeManager.GetBus("bus:/Environment");
-
-        datiAudio = new Serializzabile<ClasseAudio>(Statici.NomeFileAudio, true);
-        if (!datiAudio.Dati.inizializzato)
-        {
-            SFXBus.getFaderLevel(out datiAudio.Dati.volSFX);
-            EnviromentBus.getFaderLevel(out datiAudio.Dati.volEnvironment);
-            datiAudio.Dati.inizializzato = true;
-            datiAudio.Salva();
-        }
-        else
-        {
-            SFXBus.setFaderLevel(datiAudio.Dati.volSFX);
-            EnviromentBus.setFaderLevel(datiAudio.Dati.volEnvironment);
-        }
-
-        volumiAmbiente.value = datiAudio.Dati.volEnvironment;
-        volumiSFX.value = datiAudio.Dati.volSFX;
-
     }
 
     public void NuovaPartita()
@@ -181,16 +143,32 @@ public class ManagerIniziale : MonoBehaviour
        ObiettivoDaInquadrareXZ();
        cameraT.position = new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta);
        iTween.LookTo(cameraT.gameObject, iTween.Hash("looktarget", obiettivoDaInquadrare, "time", 0f, "axis", "y", "easetype", iTween.EaseType.linear));
-        NetworkingLogin();
+
     }
 
-  
     public void NetworkingLogin()
     {
 
         net.SetActive(true);
+
     }
 
+    public static void NetworkingConnected()
+    {
+
+        me.net.GetComponent<LobbyController>().gameObject.SetActive(true);
+
+        me.net.GetComponent<LoginController>().gameObject.SetActive(false);
+
+    }
+
+    public static void NetworkingNotConnected()
+    {
+        me.net.GetComponent<LoginController>().gameObject.SetActive(true);
+
+        me.net.GetComponent<LobbyController>().gameObject.SetActive(false);     
+
+    }
 
     public void CaricaPartita()
     {

@@ -43,9 +43,9 @@ public class LobbyController : MonoBehaviour {
 		if (SmartFoxConnection.IsInitialized) {
 			sfs = SmartFoxConnection.Connection;
 		} else {
-            Application.LoadLevel("Scena Iniziale");
-            //  ManagerIniziale.NetworkingConnected();
-            return;
+            //Application.LoadLevel("Login");
+            ManagerIniziale.NetworkingNotConnected();
+			return;
 		}
 
 		loggedInText.text = "Logged in as " + sfs.MySelf.Name;
@@ -64,10 +64,10 @@ public class LobbyController : MonoBehaviour {
 		populateGamesList();
 
 		// Disable chat controls until the lobby Room is joined successfully
-	//	chatControls.interactable = false;
-        chatControls.interactable = true;
-        // Join the lobby Room (must exist in the Zone!)
-        sfs.Send(new JoinRoomRequest("The Lobby"));
+		chatControls.interactable = false;
+
+		// Join the lobby Room (must exist in the Zone!)
+		sfs.Send(new JoinRoomRequest("The Lobby"));
 	}
 	
 	// Update is called once per frame

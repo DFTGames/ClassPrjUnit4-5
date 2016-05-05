@@ -10303,11 +10303,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 15
       objectReference: {fileID: 0}
-    - target: {fileID: 11413128, guid: 4b4f743ac5e4c904f9eee6f0c260f9df, type: 2}
-      propertyPath: databseInizialeAmicizie
-      value: 
-      objectReference: {fileID: 11400000, guid: 1f4a373869586784888e39b7d1e52245,
-        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4b4f743ac5e4c904f9eee6f0c260f9df, type: 2}
   m_IsPrefabParent: 0
@@ -29522,7 +29517,7 @@ Transform:
   - {fileID: 403987882}
   - {fileID: 1858688412}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 12
 --- !u!1 &1445450565
 GameObject:
   m_ObjectHideFlags: 0

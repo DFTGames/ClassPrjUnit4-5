@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
                 datiDiplomazia.Salva();
-            }           
+            }         
             GameObject tmpObjP = Instantiate(Resources.Load(Statici.datiPersonaggio.Dati.nomeModello), GameObject.Find(Statici.datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
             Statici.PersonaggioPrincipaleT = tmpObjP.transform;
             RecuperaDizionariDiplomazia();

@@ -6641,7 +6641,7 @@ public class iTween : MonoBehaviour{
 		Gizmos.color=color;
         # if UNITY_EDITOR
         UnityEditor.Handles.color = color;
-       #endif
+        #endif
         for (int i = 0; i < line.Length-1; i++) {
 			if(method == "gizmos"){
 				Gizmos.DrawLine(line[i], line[i+1]);;

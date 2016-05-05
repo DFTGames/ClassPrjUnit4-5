@@ -33,6 +33,7 @@ public class LoginController : MonoBehaviour {
 	//----------------------------------------------------------
 
 	public InputField nameInput;
+	public Button loginButton;
 	public Text errorText;
 
 	//----------------------------------------------------------
@@ -175,7 +176,8 @@ public class LoginController : MonoBehaviour {
 
 		if ((bool)evt.Params["success"]) {
 
-            Application.LoadLevel("scenaLobby");
+            //Application.LoadLevel("Lobby");
+            ManagerIniziale.NetworkingConnected();
             
 		} else {
 			// Disconnect

@@ -19,7 +19,7 @@ public class OggettoCheCambiaCursore : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (SceneManager.GetActiveScene().buildIndex <= 1)
+        if (SceneManager.GetActiveScene().buildIndex == 0)
             return;
         Cursore.CambiaCursore(0, 0);
         if (luceSelezioneGO != null)
@@ -28,7 +28,7 @@ public class OggettoCheCambiaCursore : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (SceneManager.GetActiveScene().buildIndex <= 1)
+        if (SceneManager.GetActiveScene().buildIndex == 0)
             return;
         Cursore.CambiaCursore(gameObject.layer, miaClasse);
         if (luceSelezioneGO != null)
@@ -37,7 +37,7 @@ public class OggettoCheCambiaCursore : MonoBehaviour
 
     private void Start()
     {
-        if (SceneManager.GetActiveScene().buildIndex <= 1)
+        if (SceneManager.GetActiveScene().buildIndex == 0)
             return;
         datiPersonaggio = GetComponent<DatiPersonaggio>();
         if (datiPersonaggio != null)

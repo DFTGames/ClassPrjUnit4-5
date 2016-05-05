@@ -28,7 +28,7 @@ MonoBehaviour:
   - {fileID: 11445916}
   - {fileID: 11472508}
   MasterBankRef: {fileID: 11409300}
-  stringsBankWriteTime: 635942534653924457
+  stringsBankWriteTime: 635957964703003786
   cacheVersion: 1
 --- !u!114 &11408670
 MonoBehaviour:
@@ -57,7 +57,7 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   Path: ./..\FMOD\ClassPrj\Build\Desktop\Bank_SFX.bank
-  lastModified: 635942534653504433
+  lastModified: 635957964699613149
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   Path: ./..\FMOD\ClassPrj\Build\Desktop\Bank_BGM.bank
-  lastModified: 635942534653144412
+  lastModified: 635957964698797576
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -181,7 +181,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11496614}
+  - {fileID: 11460678}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11436690
@@ -203,7 +203,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11448074}
+  - {fileID: 11425670}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11437036
@@ -225,24 +225,9 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11467158}
+  - {fileID: 11459596}
   MinDistance: 1
   MaxDistance: 20
---- !u!114 &11437100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: FMODStudioCache
-  m_EditorClassIdentifier: 
-  Name: Oceano
-  Min: 0
-  Max: 1
-  Default: 0
 --- !u!114 &11441278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,7 +247,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11437100}
+  - {fileID: 11498954}
   MinDistance: 0
   MaxDistance: 10
 --- !u!114 &11444322
@@ -307,21 +292,6 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
---- !u!114 &11448074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: FMODStudioCache
-  m_EditorClassIdentifier: 
-  Name: CampFire
-  Min: 0
-  Max: 1
-  Default: 0
 --- !u!114 &11451334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -362,7 +332,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11485558}
+  - {fileID: 11461900}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11459596
@@ -409,21 +379,6 @@ MonoBehaviour:
   Name: Attack
   Min: 0
   Max: 3
-  Default: 0
---- !u!114 &11467158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: FMODStudioCache
-  m_EditorClassIdentifier: 
-  Name: CriticalDamage
-  Min: 0
-  Max: 100
   Default: 0
 --- !u!114 &11468296
 MonoBehaviour:
@@ -527,21 +482,6 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
---- !u!114 &11485558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: FMODStudioCache
-  m_EditorClassIdentifier: 
-  Name: Attack
-  Min: 0
-  Max: 3
-  Default: 0
 --- !u!114 &11485870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -593,21 +533,6 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
---- !u!114 &11496614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: FMODStudioCache
-  m_EditorClassIdentifier: 
-  Name: Death
-  Min: 0
-  Max: 100
-  Default: 100
 --- !u!114 &11498954
 MonoBehaviour:
   m_ObjectHideFlags: 0
