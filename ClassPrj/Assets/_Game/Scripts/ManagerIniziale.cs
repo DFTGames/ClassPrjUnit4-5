@@ -8,15 +8,16 @@ using UnityEngine.UI;
 
 public class ManagerIniziale : MonoBehaviour
 {
-    
-    public GameObject net;
+
     public Animator animatoreMainMenu;
     public Animator animatoreMenuCreazione;
     public Animator animatoreMenuCarica;
     public Animator animatoreMultiplayer;
     public Button bottoneCaricaDaMainManu;
-    public Button bottoneCaricaDaCaricamento;    
+    public Button bottoneCaricaDaCaricamento;
     public Button bottoneEliminaPartita;
+    public Slider volumiSFX;
+    public Slider volumiAmbiente;
     public Text casellaTipo;
     public Text valoreVita;
     public Text valoreAttacco;
@@ -27,9 +28,6 @@ public class ManagerIniziale : MonoBehaviour
     public Text vitaCaricamento;
     public Text attaccoCaricamento;
     public Text difesaCaricamento;
-  //  public GameData databseInizialeAmicizie;
-  //  public caratteristichePersonaggioV2 databaseInizialeProprieta;
- //   public Percorsi databaseInizialePercorsi;
     public Dropdown elencoCartelleDropDown;
     public Dropdown elencoSessiDropDown;
     public Image pannelloImmagineSfondo;
@@ -41,6 +39,7 @@ public class ManagerIniziale : MonoBehaviour
     [Range(-20f, 20f)]
     public float ZOffSet;
 
+    private Serializzabile<ClasseAudio> datiAudio;
     private static ManagerIniziale me;
     private int indiceClasseSuccessivaPrecedente = 0;
     private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
@@ -68,7 +67,9 @@ public class ManagerIniziale : MonoBehaviour
     private List<string> cartelleLocali = new List<string>();
     private int contatoreGiocabili = 0;
 
-    private static bool networking = false;
+
+    FMOD.Studio.Bus SFXBus;
+    FMOD.Studio.Bus EnviromentBus;
 
     public int IndiceClasseSuccessivaPrecedente
     {
@@ -79,7 +80,7 @@ public class ManagerIniziale : MonoBehaviour
         set
         {
             int valoreMinimo = 0;
-            int valoreMassimo = Statici.databaseInizialeProprieta.classePersonaggio.Count-1;
+            int valoreMassimo = Statici.databaseInizialeProprieta.classePersonaggio.Count - 1;
             indiceClasseSuccessivaPrecedente = Mathf.Clamp(value, valoreMinimo, valoreMassimo);
             if (value > valoreMassimo)
                 indiceClasseSuccessivaPrecedente = valoreMinimo;
@@ -88,19 +89,32 @@ public class ManagerIniziale : MonoBehaviour
         }
     }
 
+    public void cambiaSfx(float p)
+    {
+        SFXBus.setFaderLevel(p);
+        datiAudio.Dati.volSFX = p;
+        datiAudio.Salva();
+    }
+    public void cambiaAmbiente(float p)
+    {
+        EnviromentBus.setFaderLevel(p);
+        datiAudio.Dati.volEnvironment = p;
+        datiAudio.Salva();
+    }
+
+
     private void Start()
     {
         me = this;
-        networking = false;
         CambiaAlphaPannelloSfondo();
         nomeScenaText.gameObject.SetActive(false);
         Statici.assegnaAssetDatabase();
         cameraT = Camera.main.transform;
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-        for (int i = 0; i < Statici.databaseInizialeProprieta.matriceProprieta.Count; i++)       
+        for (int i = 0; i < Statici.databaseInizialeProprieta.matriceProprieta.Count; i++)
         {
-            if (!Statici.databaseInizialeProprieta.matriceProprieta[i].giocabile)            
-                continue;              
+            if (!Statici.databaseInizialeProprieta.matriceProprieta[i].giocabile)
+                continue;
             string tmpNomeModelloM = Statici.databaseInizialeProprieta.matriceProprieta[i].nomeM;
             string tmpNomeModelloF = Statici.databaseInizialeProprieta.matriceProprieta[i].nomeF;
             dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloM, Instantiate(Resources.Load(tmpNomeModelloM), GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneM").position, new Quaternion(0f, 180f, 0f, 0f)) as GameObject);
@@ -116,6 +130,27 @@ public class ManagerIniziale : MonoBehaviour
         {
             cartelleLocali.Add(dirs[i].Name);
         }
+
+        SFXBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
+        EnviromentBus = FMODUnity.RuntimeManager.GetBus("bus:/Environment");
+
+        datiAudio = new Serializzabile<ClasseAudio>(Statici.NomeFileAudio, true);
+        if (!datiAudio.Dati.inizializzato)
+        {
+            SFXBus.getFaderLevel(out datiAudio.Dati.volSFX);
+            EnviromentBus.getFaderLevel(out datiAudio.Dati.volEnvironment);
+            datiAudio.Dati.inizializzato = true;
+            datiAudio.Salva();
+        }
+        else
+        {
+            SFXBus.setFaderLevel(datiAudio.Dati.volSFX);
+            EnviromentBus.setFaderLevel(datiAudio.Dati.volEnvironment);
+        }
+
+        volumiAmbiente.value = datiAudio.Dati.volEnvironment;
+        volumiSFX.value = datiAudio.Dati.volSFX;
+
     }
 
     public void NuovaPartita()
@@ -132,43 +167,7 @@ public class ManagerIniziale : MonoBehaviour
 
     }
 
-    public void PannelloMultiplayer()
-    {
-        animatoreMultiplayer.SetBool("Torna", true);
-        animatoreMainMenu.SetBool("Via", true);
-      //  nuovaPartita = true;
-      //  erroreCreazioneText.text = string.Empty;
-      //  VisualizzaValoriPersonaggio();
-        CambiaAlphaPannelloSfondo();
-       ObiettivoDaInquadrareXZ();
-       cameraT.position = new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta);
-       iTween.LookTo(cameraT.gameObject, iTween.Hash("looktarget", obiettivoDaInquadrare, "time", 0f, "axis", "y", "easetype", iTween.EaseType.linear));
 
-    }
-
-    public void NetworkingLogin()
-    {
-
-        net.SetActive(true);
-
-    }
-
-    public static void NetworkingConnected()
-    {
-
-        me.net.GetComponent<LobbyController>().gameObject.SetActive(true);
-
-        me.net.GetComponent<LoginController>().gameObject.SetActive(false);
-
-    }
-
-    public static void NetworkingNotConnected()
-    {
-        me.net.GetComponent<LoginController>().gameObject.SetActive(true);
-
-        me.net.GetComponent<LobbyController>().gameObject.SetActive(false);     
-
-    }
 
     public void CaricaPartita()
     {
@@ -184,7 +183,7 @@ public class ManagerIniziale : MonoBehaviour
 
     public void CaricaScenaDaCaricamento()
     {
-        Statici.sonoPassatoDallaScenaIniziale = true;    
+        Statici.sonoPassatoDallaScenaIniziale = true;
         StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
     }
 
@@ -240,7 +239,7 @@ public class ManagerIniziale : MonoBehaviour
                         }
                     }
                     datiDiplomazia.Salva();
-                }           
+                }
                 personaggiInCarica = true;
                 StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
             }
@@ -293,18 +292,18 @@ public class ManagerIniziale : MonoBehaviour
     public void Precedente()
     {
         IndiceClasseSuccessivaPrecedente--;
-        while (!Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].giocabile)          
-           IndiceClasseSuccessivaPrecedente--;
+        while (!Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].giocabile)
+            IndiceClasseSuccessivaPrecedente--;
         VisualizzaValoriPersonaggio();
         indiceCambiato = true;
         DecisionePercorsoCambioClasse();
     }
 
     public void Sucessivo()
-    { 
+    {
         IndiceClasseSuccessivaPrecedente++;
         while (!Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].giocabile)
-            IndiceClasseSuccessivaPrecedente++;     
+            IndiceClasseSuccessivaPrecedente++;
         VisualizzaValoriPersonaggio();
         indiceCambiato = true;
         DecisionePercorsoCambioClasse();
@@ -346,7 +345,7 @@ public class ManagerIniziale : MonoBehaviour
     }
 
     private void VisualizzaValoriPersonaggio()
-    {      
+    {
         casellaTipo.text = Statici.databaseInizialeProprieta.classePersonaggio[IndiceClasseSuccessivaPrecedente].ToString();
         valoreVita.text = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita.ToString();
         valoreAttacco.text = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Attacco.ToString();
@@ -376,18 +375,18 @@ public class ManagerIniziale : MonoBehaviour
         elencoCartelleDropDown.options.Clear();
 
         for (int i = 0; i < cartelleLocali.Count; i++)
-        {            
+        {
             Tmp = new Dropdown.OptionData();
 
             Tmp.text = cartelleLocali[i];
-           
+
             if (cartelleLocali[i] == "PersonaggioDiProva")
             {
                 personaggioProvaEsiste = true;
                 continue;
             }
-       
-            elencoCartelleDropDown.options.Add(Tmp);           
+
+            elencoCartelleDropDown.options.Add(Tmp);
         }
         int numeroCartelleMinimo = 0;
         numeroCartelleMinimo = !personaggioProvaEsiste ? 0 : 1;

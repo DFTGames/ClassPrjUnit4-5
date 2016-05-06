@@ -3,12 +3,13 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class OggettiDaMarcare : MonoBehaviour {   
-    
-    public bool nascondiSeFuoriMappa = true;   
-   
-    private Image imageMarcatore;  
-    private Transform playerT;    
+public class OggettiDaMarcare : MonoBehaviour
+{
+
+    public bool nascondiSeFuoriMappa = true;
+
+    private Image imageMarcatore;
+    private Transform playerT;
     private Minimappa minimappa;
     private Vector2 nuovaPosizioneMarcatore;
     private bool bloccaOggetto;
@@ -40,11 +41,11 @@ public class OggettiDaMarcare : MonoBehaviour {
             return nuovaPosizioneMarcatore;
         }
         set
-        {                    
-          if (!BloccaOggetto)           
+        {
+            if (!BloccaOggetto)
                 nuovaPosizioneMarcatore = value;
-            else          
-              nuovaPosizioneMarcatore = Vector2.ClampMagnitude(value,minimappa.Massimo.magnitude);      
+            else
+                nuovaPosizioneMarcatore = Vector2.ClampMagnitude(value, minimappa.Massimo.magnitude);
         }
     }
 
@@ -75,9 +76,11 @@ public class OggettiDaMarcare : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
+        // if (SceneManager.GetActiveScene().buildIndex == 0)   PROVVISORIO
         if (SceneManager.GetActiveScene().buildIndex == 0)
-            return;     
+            return;
         minimappa = GameObject.Find("Minimappa").GetComponent<Minimappa>();
         switch (gameObject.layer)
         {
@@ -91,20 +94,20 @@ public class OggettiDaMarcare : MonoBehaviour {
                 classePlayer = Statici.PersonaggioPrincipaleT.GetComponent<DatiPersonaggio>().miaClasse;
                 spriteOggetto = minimappa.spriteAmico;
                 misuraSprite = minimappa.misuraSpriteAmico;
-                sonoUnEssereVivente = true;     
+                sonoUnEssereVivente = true;
                 break;
             default:
-                Debug.LogError("l'oggetto "+gameObject.name+" non appartiene ad un layer preso in considerazione dalla minimappa.");
+                Debug.LogError("l'oggetto " + gameObject.name + " non appartiene ad un layer preso in considerazione dalla minimappa.");
                 break;
-        }      
-        Marcatore = new GameObject("Marcatore");       
-        imageMarcatore= Marcatore.AddComponent<Image>();
+        }
+        Marcatore = new GameObject("Marcatore");
+        imageMarcatore = Marcatore.AddComponent<Image>();
         Marcatore.transform.SetParent(minimappa.transform);
         imageMarcatore.sprite = spriteOggetto;
         imageMarcatore.rectTransform.localPosition = Vector3.zero;
         imageMarcatore.rectTransform.localScale = Vector3.one;
-        imageMarcatore.rectTransform.sizeDelta = new Vector2(misuraSprite,misuraSprite);       
-        playerT = minimappa.PlayerT;         
+        imageMarcatore.rectTransform.sizeDelta = new Vector2(misuraSprite, misuraSprite);
+        playerT = minimappa.PlayerT;
     }
 
     private void CambiaSpritePerDiplomazia()
@@ -119,12 +122,14 @@ public class OggettiDaMarcare : MonoBehaviour {
             spriteOggetto = minimappa.spriteAmico;
             misuraSprite = minimappa.misuraSpriteAmico;
         }
-            imageMarcatore.sprite = spriteOggetto;
-        
+        imageMarcatore.sprite = spriteOggetto;
+
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
+        //  if (SceneManager.GetActiveScene().buildIndex == 0)  PROVVISORIO
         if (SceneManager.GetActiveScene().buildIndex == 0)
             return;
         NuovaPosizioneMarcatore = minimappa.CalcolaPosizioneMarcatore(transform.position); //imposto la posizione

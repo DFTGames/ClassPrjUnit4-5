@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(CapsuleCollider)),RequireComponent(typeof(Animator)), RequireComponent(typeof(Rigidbody)), RequireComponent(typeof(NavMeshAgent)), RequireComponent(typeof(EventoAudio))]
+[RequireComponent(typeof(CapsuleCollider)), RequireComponent(typeof(Animator)), RequireComponent(typeof(Rigidbody)), RequireComponent(typeof(NavMeshAgent)), RequireComponent(typeof(EventoAudio))]
 public class ControllerMaga : MonoBehaviour
 {
 
@@ -62,7 +62,7 @@ public class ControllerMaga : MonoBehaviour
     #endregion Variabili PRIVATE
 
     private void Start()
-    {        
+    {
         transform_m = GetComponent<Transform>();
 
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -83,7 +83,7 @@ public class ControllerMaga : MonoBehaviour
         rigidBody.isKinematic = true;
 
         ev_Audio = GetComponent<EventoAudio>();
-        if(ev_Audio == null)
+        if (ev_Audio == null)
             ev_Audio = gameObject.AddComponent<EventoAudio>();
 
         audioZona = GetComponent<AudioZona>();
@@ -110,14 +110,14 @@ public class ControllerMaga : MonoBehaviour
     }
 
     private void Update()
-    {        
+    {
         if (SceneManager.GetActiveScene().buildIndex == 0)
-        {           
+        {
             rigidBody.isKinematic = false;
             capsula.enabled = true;
             navMeshAgent.enabled = false;
             return;
-        }       
+        }
 
         if (IsPointAndClick)
         {
@@ -127,12 +127,12 @@ public class ControllerMaga : MonoBehaviour
                 capsula.enabled = false;
                 navMeshAgent.enabled = true;
             }
-            if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && !EventSystem.current.IsPointerOverGameObject() 
-                && !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco1") 
+            if ((Input.GetMouseButton(0) || Input.GetMouseButton(1)) && !EventSystem.current.IsPointerOverGameObject()
+                && !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco1")
                 && !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco2"))
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                if (Physics.Raycast(ray, out hit, distanzaMassimaClick,layerAlberi, QueryTriggerInteraction.Ignore))
+                if (Physics.Raycast(ray, out hit, distanzaMassimaClick, layerAlberi, QueryTriggerInteraction.Ignore))
                 {
                     posMouse = hit.point;
 
@@ -147,14 +147,14 @@ public class ControllerMaga : MonoBehaviour
                                 Attacco();
                             break;
                     }
-                }      
+                }
             }
             animatore.SetFloat("Forward", navMeshAgent.velocity.normalized.magnitude);
 
         }
         else // Not Point & Click
         {
-            if(rigidBody.isKinematic == true)
+            if (rigidBody.isKinematic == true)
             {
                 rigidBody.isKinematic = false;
                 capsula.enabled = true;
@@ -165,15 +165,15 @@ public class ControllerMaga : MonoBehaviour
             v = Input.GetAxis("Vertical");
 
             movimento = new Vector3(h, 0.0f, v);
-            rotazione = Mathf.Atan2(h, v)*Mathf.Rad2Deg;
+            rotazione = Mathf.Atan2(h, v) * Mathf.Rad2Deg;
             velocitaSpostamento = !Input.GetKey(KeyCode.LeftShift) && corsaPerDefault ||
                                   !corsaPerDefault && Input.GetKey(KeyCode.LeftShift) ? 1f : 0.5f;
-          
-            if (Input.GetButtonDown("Jump") && aTerra && !voglioSaltare &&!animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco1") &&
+
+            if (Input.GetButtonDown("Jump") && aTerra && !voglioSaltare && !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco1") &&
                 !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco2"))
                 voglioSaltare = true;
 
-            if(Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
                 Attacco();
             /* ACCOVACCIAMENTO
             if (!voglioSaltare && aTerra && Input.GetKey(KeyCode.C))
@@ -242,14 +242,14 @@ public class ControllerMaga : MonoBehaviour
             animatore.SetFloat("Jump", rigidBody.velocity.y);
     }
 
-    void Attacco ()
+    void Attacco()
     {
         if (!EventSystem.current.IsPointerOverGameObject() && !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco1") && !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco2"))
         {
-            if (Input.GetMouseButtonDown(0) && !voglioSaltare && aTerra )
+            if (Input.GetMouseButtonDown(0) && !voglioSaltare && aTerra)
                 animatore.SetTrigger("attacco1");
 
-            if (Input.GetMouseButtonDown(1) && !voglioSaltare && aTerra )
+            if (Input.GetMouseButtonDown(1) && !voglioSaltare && aTerra)
                 animatore.SetTrigger("attacco2");
         }
     }
@@ -266,18 +266,18 @@ public class ControllerMaga : MonoBehaviour
         //recuperare attaccobase del personaggio da DatiPersonaggio, e recuperare tutti i dati del nemico relativi alla sua difesa
         //calcolare il danno da effettuare in base a tutti i valori sopra citati(secondo una qualche equazione che li lega)
         //mandare un messaggio al metodo del nemico RiceviDanno passando come parametro la quantità di danno inflitta
-    }    
-    
+    }
+
     public void RiceviDanno(float quanto)
     {
-        DatiPersonaggio.Vita -= quanto;      
+        DatiPersonaggio.Vita -= quanto;
         if (DatiPersonaggio.Vita <= 0f)
-            switchVivoMorto.AttivaRagdoll();     
-         SalvaDatiVita();
+            switchVivoMorto.AttivaRagdoll();
+        SalvaDatiVita();
     }
     public void Resuscita(float quanto)
     {
-        DatiPersonaggio.Vita += quanto;       
+        DatiPersonaggio.Vita += quanto;
         switchVivoMorto.DisattivaRagdoll();
         SalvaDatiVita();
         Statici.PersonaggioPrincipaleT.position = GameObject.Find(Statici.datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
@@ -299,6 +299,6 @@ public class ControllerMaga : MonoBehaviour
         }
     }
 
-    
+
 
 }

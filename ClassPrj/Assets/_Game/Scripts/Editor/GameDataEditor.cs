@@ -10,13 +10,13 @@ namespace DFTGames.Tools.EditorTools
 
         public const int NON_ESISTE = -1;
         public GameData gameData;
-     //   public const string STR_PercorsoConfig = "PercorsoConfigurazione";
-     //   public const string STR_DatabaseDiGioco = "/dataBaseDiGioco.asset";
+        //   public const string STR_PercorsoConfig = "PercorsoConfigurazione";
+        //   public const string STR_DatabaseDiGioco = "/dataBaseDiGioco.asset";
 
         private Color OriginalBg = GUI.backgroundColor;
         private Color OriginalCont = GUI.contentColor;
         private Color OriginalColor = GUI.color;
-      
+
         private static bool preferenzeCaricate = false;
         private static string percorso;
         private Vector2 posizioneScroll;
@@ -94,7 +94,7 @@ namespace DFTGames.Tools.EditorTools
             }
         }
 
-        public static  GameData CreaDatabase()
+        public static GameData CreaDatabase()
         {
             string tmpStr = "Assets";
             GameData gameData = null;
@@ -129,7 +129,7 @@ namespace DFTGames.Tools.EditorTools
             GUIStyle stileEtichetta2 = new GUIStyle(GUI.skin.GetStyle("Label"));
             stileEtichetta2.alignment = TextAnchor.MiddleLeft;
             stileEtichetta2.fontStyle = FontStyle.Bold;
-            stileEtichetta2.fontSize = 11;           
+            stileEtichetta2.fontSize = 11;
             GUILayout.Label("Gestione Diplomazia", stileEtichetta);
             GUILayout.EndHorizontal();
             GUILayout.BeginVertical(EditorStyles.objectFieldThumb);
@@ -167,7 +167,7 @@ namespace DFTGames.Tools.EditorTools
                     Array tmpClassi = Enum.GetValues(typeof(classiPersonaggi));
                     for (int i = vecchio; i < tmpClassi.Length; i++)
                     {
-                        gameData.classiEssere[i] = tmpClassi.GetValue(i).ToString();                      
+                        gameData.classiEssere[i] = tmpClassi.GetValue(i).ToString();
                         for (int j = 0; j < tmpClassi.Length; j++)
                         {
                             gameData.matriceAmicizie[i].elementoAmicizia[j] = Amicizie.Neutro;
@@ -180,8 +180,8 @@ namespace DFTGames.Tools.EditorTools
 
             //codice necessario per l'aggiornamento dei dati in caso qualcosa venga modificato
             for (int i = 0; i < gameData.classiEssere.Length; i++)
-            {             
-                 EditorGUILayout.LabelField(gameData.classiEssere[gameData.classiEssere.Length - i-1], stileEtichetta2, GUILayout.Width(140));
+            {
+                EditorGUILayout.LabelField(gameData.classiEssere[gameData.classiEssere.Length - i - 1], stileEtichetta2, GUILayout.Width(140));
             }
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
@@ -192,7 +192,7 @@ namespace DFTGames.Tools.EditorTools
 
                 GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
                 EditorGUILayout.LabelField(gameData.classiEssere[i], stileEtichetta2, GUILayout.Width(140));
-     
+
                 for (int j = 0; j < (gameData.classiEssere.Length - i); j++)
                 {
                     //Qui recupera la texture da mettere al bottone che si sta mostrando
@@ -222,7 +222,7 @@ namespace DFTGames.Tools.EditorTools
                         numIcona++;
                         numIcona = numIcona <= 3 ? numIcona : 1;
                         gameData.matriceAmicizie[i].elementoAmicizia[j] = (Amicizie)numIcona;
-                      //  gameData.matriceAmicizie[j].elementoAmicizia[i] = (Amicizie)numIcona;
+                        //  gameData.matriceAmicizie[j].elementoAmicizia[i] = (Amicizie)numIcona;
                         EditorUtility.SetDirty(gameData);
                         AssetDatabase.SaveAssets();
                         //Debug.Log("cliccato bottone: " + i + "," + j + " - ValEnum: " + (Amicizie)numIcona);
@@ -232,7 +232,7 @@ namespace DFTGames.Tools.EditorTools
                 GUILayout.EndHorizontal();
             }
             GUILayout.EndVertical();
-           
+
         }
 
 
@@ -241,13 +241,13 @@ namespace DFTGames.Tools.EditorTools
             Array tmpClassi = Enum.GetValues(typeof(classiPersonaggi));
 
             for (int r = 0; r < tmpClassi.Length; r++)
-            {    
-                gameData.classiEssere[r] = tmpClassi.GetValue(r).ToString(); 
+            {
+                gameData.classiEssere[r] = tmpClassi.GetValue(r).ToString();
             }
             for (int r = 0; r < Enum.GetValues(typeof(classiPersonaggi)).Length; r++)
             {
                 for (int c = 0; c < Enum.GetValues(typeof(classiPersonaggi)).Length; c++)
-                {                  
+                {
                     gameData.matriceAmicizie[r].elementoAmicizia[c] = Amicizie.Neutro;
                 }
             }
