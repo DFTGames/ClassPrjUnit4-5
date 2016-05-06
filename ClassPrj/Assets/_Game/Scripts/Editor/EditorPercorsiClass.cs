@@ -36,9 +36,9 @@ namespace DFTGames.Tools.EditorTools
         private bool isDirty = false;
         private bool controlloPercorsiNulli = false;
         private bool controlloPersonaggiNulli = false;
-        private bool  sceneDaSalvare=false;
+        private bool sceneDaSalvare = false;
 
-      //  private bool cambiatoAlmenoUnaScena = false;  Bohh...non mi ricordo perche e' stato mess..riguardarsi la lezione
+        //  private bool cambiatoAlmenoUnaScena = false;  Bohh...non mi ricordo perche e' stato mess..riguardarsi la lezione
 
         [PreferenceItem("Percorsi")]
         private static void preferenzeDiGameGUI()
@@ -87,10 +87,10 @@ namespace DFTGames.Tools.EditorTools
             {
                 pathPercorsi = EditorPrefs.GetString(Statici.STR_PercorsoConfig3);
                 personaggi = AssetDatabase.LoadAssetAtPath<caratteristichePersonaggioV2>(pathPercorsi + Statici.STR_DatabaseDiGioco3);
-                
+
             }
 
-           // if (percorsi != null) cambiatoAlmenoUnaScena = false;   //NON MI RICORDO PERCHE L'HO MESSO...BOHH RIGUARDARSI LA LEZIONE
+            // if (percorsi != null) cambiatoAlmenoUnaScena = false;   //NON MI RICORDO PERCHE L'HO MESSO...BOHH RIGUARDARSI LA LEZIONE
 
         }
 
@@ -107,7 +107,7 @@ namespace DFTGames.Tools.EditorTools
                     EditorSceneManager.SaveScene(scenaCorrente);
             }
 
-          //  if (!cambiatoAlmenoUnaScena) return;   //NON MI RICORDO PERCHE L'HO MESSO...BOHH RIGUARDARSI LA LEZIONE
+            //  if (!cambiatoAlmenoUnaScena) return;   //NON MI RICORDO PERCHE L'HO MESSO...BOHH RIGUARDARSI LA LEZIONE
 
             var sceneName2 = Path.GetFileNameWithoutExtension(scenaCorrente.path);
 
@@ -121,13 +121,13 @@ namespace DFTGames.Tools.EditorTools
 
                     string tmpScene = "Assets/_Game/Scene/" + sceneName + ".unity";
                     UnityEngine.SceneManagement.Scene tmpscenee = EditorSceneManager.OpenScene(tmpScene, OpenSceneMode.Single);
-                    sceneDaSalvare=percorsi.ControlloIndexPercorsi();
+                    sceneDaSalvare = percorsi.ControlloIndexPercorsi();
                     if (sceneDaSalvare)
                     {
                         EditorSceneManager.MarkSceneDirty(tmpscenee);  //imposto Scena a dirty...
                         EditorSceneManager.SaveScene(tmpscenee);
                     }
-                  //  EditorSceneManager.CloseScene(tmpscenee, true);   TOLTO perche mi dava errore  (vedi lezione unita6 modulo 27)
+                    //  EditorSceneManager.CloseScene(tmpscenee, true);   TOLTO perche mi dava errore  (vedi lezione unita6 modulo 27)
                 }
             }
 
@@ -156,9 +156,9 @@ namespace DFTGames.Tools.EditorTools
             {
                 percorsi.EliminaClassiDoppie();
                 controlloPersonaggiNulli = false;
-              //  SalvaAsset();
+                //  SalvaAsset();
             }
-      
+
         }
 
         private void OnGUI()
@@ -333,7 +333,7 @@ namespace DFTGames.Tools.EditorTools
                     index = Array.IndexOf(personaggi.elencaClassiNonGiocabiliToEnumArray(), percorsi[i].classi[c]);
                     int index2 = index;
                     EditorGUILayout.LabelField(string.Empty, stileEtichetta2, GUILayout.Width(130));
- 
+
                     index = EditorGUILayout.Popup(index, personaggi.elencaClassiNonGiocabiliToString());
 
                     if ((c == percorsi[i].classi.Count - 1) && (GUILayout.Button(" + ", GUILayout.Width(30))))
@@ -348,8 +348,8 @@ namespace DFTGames.Tools.EditorTools
                     }
                     if (index != index2)   //se e' stato fatto modifica
                     {
-                        controlloPersonaggiNulli = true;                   
-                        percorsi[i].classi[c] = personaggi.elencaClassiNonGiocabiliToEnumArray()[index];       
+                        controlloPersonaggiNulli = true;
+                        percorsi[i].classi[c] = personaggi.elencaClassiNonGiocabiliToEnumArray()[index];
                         setDirtyPersonaggi = true; ;
                     }
                     GUILayout.EndHorizontal();
