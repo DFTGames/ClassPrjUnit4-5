@@ -15,8 +15,9 @@ MonoBehaviour:
   - magoAcqua
   - goblin
   - magoTerra
+  - indefinito
   matriceAmicizie:
-  - elementoAmicizia: 030000000300000003000000
-  - elementoAmicizia: 030000000100000001000000
-  - elementoAmicizia: 030000000100000001000000
-  indexPercorsi: 020000000300000001000000
+  - elementoAmicizia: 01000000030000000300000003000000
+  - elementoAmicizia: 03000000030000000100000000000000
+  - elementoAmicizia: 03000000030000000100000000000000
+  - elementoAmicizia: 01000000010000000100000001000000

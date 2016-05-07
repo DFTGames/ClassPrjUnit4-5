@@ -2,11 +2,12 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class Minimappa : MonoBehaviour {
-    
+public class Minimappa : MonoBehaviour
+{
+
     public Camera cameraMinimap;
-    public float distanzaCamera=130;
-    public RawImage rawImage;   
+    public float distanzaCamera = 130;
+    public RawImage rawImage;
     public Sprite spriteAmico;
     public float misuraSpriteAmico = 20f;
     public Sprite spriteNemico;
@@ -51,52 +52,53 @@ public class Minimappa : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {      
+    void Start()
+    {
         PlayerT = Statici.PersonaggioPrincipaleT;
         PlayerT.GetComponent<OggettiDaMarcare>().enabled = false;//poi quando facciamo il discorso del network diciamo se è il giocatore locale allora ci comportiamo di conseguenza.
         larghezzaMinimappa = rawImage.rectTransform.rect.width;
     }
 
     void Update()
-    {        
-        cameraMinimap.transform.position = new Vector3(PlayerT.transform.position.x, distanzaCamera, PlayerT.transform.position.z);     
-    
-    }
- 
-     public Vector2 CalcolaPosizioneMarcatore(Vector3 posizioneOggettoNelMondo)
-      {
-          distanzaCameraOggetto = posizioneOggettoNelMondo - cameraMinimap.transform.position;
-          distanzaPlayerOggetto =posizioneOggettoNelMondo - PlayerT.position;            
-          nuovaposizioneOggettoInMappa = new Vector2(distanzaPlayerOggetto.x, distanzaPlayerOggetto.z) * larghezzaMinimappa/distanzaCameraOggetto.magnitude;            
-          return nuovaposizioneOggettoInMappa;         
-      }
+    {
+        cameraMinimap.transform.position = new Vector3(PlayerT.transform.position.x, distanzaCamera, PlayerT.transform.position.z);
 
-      public void GestisciVisibilitaMarcatore(OggettiDaMarcare oggettoDaMarcare)
-      {
-          Vector2 distanzaFrecciaMarcatore = oggettoDaMarcare.Marcatore.transform.localPosition;//dovrei aggiungere: meno posizione della freccia ma la posizione della freccia in locale è sempre 0.     
-          Vector3 distanzaAttualePlayerOggetto = oggettoDaMarcare.gameObject.transform.position - PlayerT.position;              
-          scala = distanzaAttualePlayerOggetto.z / distanzaFrecciaMarcatore.y;           
-          if (distanzaAttualePlayerOggetto.magnitude > (larghezzaMinimappa * 0.5f * scala))
-          {
-              if (oggettoDaMarcare.nascondiSeFuoriMappa)
-                  oggettoDaMarcare.NascondiMarcatore();
-              else
-              {
-                  if (!distanzaMassimaLetta)
-                  {
-                      Massimo = distanzaFrecciaMarcatore;
-                      distanzaMassimaLetta = true;
-                  }
-                  oggettoDaMarcare.BloccaOggetto = true;
-              }        
-          }
-          else
-          {             
+    }
+
+    public Vector2 CalcolaPosizioneMarcatore(Vector3 posizioneOggettoNelMondo)
+    {
+        distanzaCameraOggetto = posizioneOggettoNelMondo - cameraMinimap.transform.position;
+        distanzaPlayerOggetto = posizioneOggettoNelMondo - PlayerT.position;
+        nuovaposizioneOggettoInMappa = new Vector2(distanzaPlayerOggetto.x, distanzaPlayerOggetto.z) * larghezzaMinimappa / distanzaCameraOggetto.magnitude;
+        return nuovaposizioneOggettoInMappa;
+    }
+
+    public void GestisciVisibilitaMarcatore(OggettiDaMarcare oggettoDaMarcare)
+    {
+        Vector2 distanzaFrecciaMarcatore = oggettoDaMarcare.Marcatore.transform.localPosition;//dovrei aggiungere: meno posizione della freccia ma la posizione della freccia in locale è sempre 0.     
+        Vector3 distanzaAttualePlayerOggetto = oggettoDaMarcare.gameObject.transform.position - PlayerT.position;
+        scala = distanzaAttualePlayerOggetto.z / distanzaFrecciaMarcatore.y;
+        if (distanzaAttualePlayerOggetto.magnitude > (larghezzaMinimappa * 0.5f * scala))
+        {
             if (oggettoDaMarcare.nascondiSeFuoriMappa)
-                  oggettoDaMarcare.VisualizzaMarcatore();
-              oggettoDaMarcare.BloccaOggetto = false;
-              distanzaMassimaLetta = false;
-          }
-      }
+                oggettoDaMarcare.NascondiMarcatore();
+            else
+            {
+                if (!distanzaMassimaLetta)
+                {
+                    Massimo = distanzaFrecciaMarcatore;
+                    distanzaMassimaLetta = true;
+                }
+                oggettoDaMarcare.BloccaOggetto = true;
+            }
+        }
+        else
+        {
+            if (oggettoDaMarcare.nascondiSeFuoriMappa)
+                oggettoDaMarcare.VisualizzaMarcatore();
+            oggettoDaMarcare.BloccaOggetto = false;
+            distanzaMassimaLetta = false;
+        }
+    }
 
 }

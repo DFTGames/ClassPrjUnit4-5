@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System;
 
 [System.Serializable]
-public class Percorsi : ScriptableObject , IEnumerable, IDisposable
+public class Percorsi : ScriptableObject, IEnumerable, IDisposable
 {
-   const int NON_ESISTE = -1;
+    const int NON_ESISTE = -1;
 
     [System.Serializable]
     public class Percorso : IDisposable
@@ -52,7 +52,7 @@ public class Percorsi : ScriptableObject , IEnumerable, IDisposable
 
     }
     public void Add(Percorso percorso)
-    {      
+    {
         Array.Resize<Percorso>(ref percorsi, percorsi.Length + 1);
         percorsi[percorsi.Length - 1] = percorso;
 
@@ -74,11 +74,11 @@ public class Percorsi : ScriptableObject , IEnumerable, IDisposable
     }
 
 
-    public void EliminaPercorsiVuoti() 
-    {                                      
-        if (percorsi.Length == 0) return;        
+    public void EliminaPercorsiVuoti()
+    {
+        if (percorsi.Length == 0) return;
 
-        for (int i=0; i< percorsi.Length; i++)
+        for (int i = 0; i < percorsi.Length; i++)
         {
             if (percorsi[i].nomePercorsi.Equals(Statici.tmpPercorsi))
             {
@@ -90,20 +90,20 @@ public class Percorsi : ScriptableObject , IEnumerable, IDisposable
 
     public void EliminaClassiDoppie()
     {
-        
+
         for (int i = 0; i < percorsi.Length; i++)
         {
             if (percorsi[i].classi.Count < 2) continue;
             else
                 percorsi[i].classi.Sort();
-                for (int c = 0; c < percorsi[i].classi.Count-1; c++)
-                {
+            for (int c = 0; c < percorsi[i].classi.Count - 1; c++)
+            {
                 if (percorsi[i].classi[c] == percorsi[i].classi[c + 1])
                 {
                     percorsi[i].classi.RemoveAt(c + 1);
-                    c = - 1;
-                        }               
-                }                  
+                    c = -1;
+                }
+            }
         }
     }
 
@@ -166,7 +166,7 @@ public class Percorsi : ScriptableObject , IEnumerable, IDisposable
             Debug.LogError("Capra2 !! Capra2 !! numero fuori valori amessi");
             return null;
         }
-       
+
         set   //NON USATO
         {
             if (idx >= 0 && idx < percorsi.Length)
@@ -175,7 +175,7 @@ public class Percorsi : ScriptableObject , IEnumerable, IDisposable
             }
             else Debug.LogError("Fesso!! numero fuori valori ammessi!!!");
         }
-        
+
     }
 
 
@@ -215,7 +215,7 @@ public class Percorsi : ScriptableObject , IEnumerable, IDisposable
 
     }
 
-    
+
     public List<int> elencaIdxPercorsi()
     {
         List<int> arrayPer = new List<int>();
@@ -225,14 +225,14 @@ public class Percorsi : ScriptableObject , IEnumerable, IDisposable
         return arrayPer;
 
     }
-    
+
 
     public List<int> trovaPercorsiDaPersonaggio(classiPersonaggi classe)
     {
         List<int> elenco = new List<int>();
 
 
-        for (int i = 0; i < Count; i++)  
+        for (int i = 0; i < Count; i++)
             for (int ii = 0; ii < percorsi[i].classi.Count; ii++)
             {
                 if (classe == percorsi[i].classi[ii]) elenco.Add(i);
@@ -246,7 +246,7 @@ public class Percorsi : ScriptableObject , IEnumerable, IDisposable
     {
         List<classiPersonaggi> elenco = new List<classiPersonaggi>();
 
-        for (int i = 0; i < Count; i++)   
+        for (int i = 0; i < Count; i++)
         {
             if (idx == i)
                 for (int ii = 0; ii < percorsi[i].classi.Count; ii++)
@@ -258,7 +258,7 @@ public class Percorsi : ScriptableObject , IEnumerable, IDisposable
 
     public bool ControlloIndexPercorsi()
     {
-        bool scenaDaSalvare = false; 
+        bool scenaDaSalvare = false;
         GameObject tmpObj = GameObject.Find("PadrePercorso");
 
         if (tmpObj != null)
@@ -266,7 +266,7 @@ public class Percorsi : ScriptableObject , IEnumerable, IDisposable
             {
                 Transform tmpPercorso = tmpObj.transform.GetChild(i);
                 GestorePercorso gp = tmpPercorso.GetComponent<GestorePercorso>();
-                if ((gp.IndexPercorso == NON_ESISTE) || (gp.IndexPercorso != NON_ESISTE && !elencaIdxPercorsi().Contains(gp.IndexPercorso)))  
+                if ((gp.IndexPercorso == NON_ESISTE) || (gp.IndexPercorso != NON_ESISTE && !elencaIdxPercorsi().Contains(gp.IndexPercorso)))
                 {
                     tmpPercorso.name = "PERCORSO ERRATO";
                     gp.IndexPercorso = NON_ESISTE;

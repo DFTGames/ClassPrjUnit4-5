@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
-{  
+{
     private static GameManager me;
     private Collider attuale = null;
     private string classeEssereSelezionato = string.Empty;
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
             Statici.padreGestore = tmpPdr.GetComponent<PadreGestore>();
         else
             Debug.LogError("Ma ci fai o ci sei ????..sei un cazzone....manca il padrePercorso");
-        Statici.assegnaAssetDatabase( );
+        Statici.assegnaAssetDatabase();
         if (Statici.nomePersonaggio.Equals(string.Empty))
             Statici.nomePersonaggio = "PersonaggioDiProva";
         Statici.datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
                     }
                 }
                 datiDiplomazia.Salva();
-            }         
+            }
             GameObject tmpObjP = Instantiate(Resources.Load(Statici.datiPersonaggio.Dati.nomeModello), GameObject.Find(Statici.datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
             Statici.PersonaggioPrincipaleT = tmpObjP.transform;
             RecuperaDizionariDiplomazia();
@@ -131,5 +131,5 @@ public class GameManager : MonoBehaviour
             oggettoDaMarcare.AmiciziaCambiata = true;
     }
 
-   
+
 }
