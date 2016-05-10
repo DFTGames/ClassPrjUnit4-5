@@ -247,6 +247,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 430498}
   - 114: {fileID: 11405482}
+  - 114: {fileID: 11494798}
   m_Layer: 0
   m_Name: GameManagerIniziale
   m_TagString: Untagged
@@ -317,6 +318,7 @@ GameObject:
   - 222: {fileID: 22202984}
   - 114: {fileID: 11414954}
   - 95: {fileID: 9505688}
+  - 225: {fileID: 22586802}
   m_Layer: 5
   m_Name: Carica
   m_TagString: Untagged
@@ -795,6 +797,7 @@ GameObject:
   - 222: {fileID: 22244838}
   - 114: {fileID: 11434720}
   - 95: {fileID: 9543044}
+  - 225: {fileID: 22578052}
   m_Layer: 5
   m_Name: Creazione Personaggio
   m_TagString: Untagged
@@ -1743,6 +1746,8 @@ MonoBehaviour:
   posizioneCameraCarica: {fileID: 0}
   altezzaCamera: 1
   ZOffSet: 4
+  canvasGroupCreazione: {fileID: 22578052}
+  canvasGroupCarica: {fileID: 22586802}
 --- !u!114 &11409536
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4509,6 +4514,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11494798
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 115900}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d7b484b9df9d0447b586e703094fe51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11495002
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6954,6 +6970,28 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -18, y: 0}
   m_Pivot: {x: 0, y: 1}
+--- !u!225 &22578052
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 150262}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!225 &22586802
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 122296}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
