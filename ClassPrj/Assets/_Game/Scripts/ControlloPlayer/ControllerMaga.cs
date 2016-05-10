@@ -97,7 +97,7 @@ public class ControllerMaga : MonoBehaviour
         IsPointAndClick = true;
         layerAlberi = ~layerAlberi;
         switchVivoMorto = GetComponent<SwitchVivoMorto>();
-        if (SceneManager.GetActiveScene().buildIndex == 0)
+        if (SceneManager.GetActiveScene().buildIndex <=2)
             return;
         DatiPersonaggio = GetComponent<DatiPersonaggio>();
         Statici.RegistraDatiPersonaggio(DatiPersonaggio);
@@ -111,7 +111,7 @@ public class ControllerMaga : MonoBehaviour
 
     private void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 0)
+        if (SceneManager.GetActiveScene().buildIndex <=2)
         {
             rigidBody.isKinematic = false;
             capsula.enabled = true;

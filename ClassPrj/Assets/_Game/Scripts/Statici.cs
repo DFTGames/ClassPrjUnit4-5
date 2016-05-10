@@ -24,6 +24,22 @@ public class Statici
     public static GameData databseInizialeAmicizie;
     public static string classeDiColuiCheVuoleCambiareAmicizia = string.Empty;//da verificare se servirà ancora o no
 
+
+
+    //inizio variabili per multigiocatore:
+    public static bool multigiocatoreOn = false;
+    public static Dictionary<int, GameObject> PlayersRemoti = new Dictionary<int, GameObject>();
+    public static GameObject playerLocaleGO;
+    public static DatiPersonaggio datiPersonaggioLocale;
+    public static int userLocaleId = 0;
+    public static int numeroPostoSpawn = -1;
+    public static string messaggio = "";
+    public static bool ownerUscito = false;
+    public static bool partenza = false;
+    public static bool finePartita = false;
+    //fine variabili multigiocatore
+
+
     public const string STR_PercorsoConfig = "PercorsoConfigurazione";
     public const string STR_DatabaseDiGioco = "/dataBaseDiGioco.asset";
 

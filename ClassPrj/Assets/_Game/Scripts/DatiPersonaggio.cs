@@ -16,6 +16,22 @@ public class DatiPersonaggio : MonoBehaviour {
     private float attacco;
     private float difesa;
     private string nome;
+    private bool sonoUtenteLocale = false;
+    private int utente;
+    private int indicePunteggio = 0;
+    public bool SonoUtenteLocale
+    {
+        get
+        {
+            return sonoUtenteLocale;
+        }
+
+        set
+        {
+            sonoUtenteLocale = value;
+        }
+    }
+
 
     public float Vita
     {
@@ -101,6 +117,18 @@ public class DatiPersonaggio : MonoBehaviour {
             attacco = value;
         }
     }
+    public int IndicePunteggio
+    {
+        get
+        {
+            return indicePunteggio;
+        }
+
+        set
+        {
+            indicePunteggio = value;
+        }
+    }
 
     private float CalcolaDifesaCorrente()
     {
@@ -173,6 +201,19 @@ public class DatiPersonaggio : MonoBehaviour {
             nome = value;
         }
     }
+    public int Utente
+    {
+        get
+        {
+            return utente;
+        }
+
+        set
+        {
+            utente = value;
+        }
+    }
+
 
     // Use this for initialization
     void Start () {     

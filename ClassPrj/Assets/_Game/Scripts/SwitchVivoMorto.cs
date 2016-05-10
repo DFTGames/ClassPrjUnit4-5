@@ -23,7 +23,7 @@ public class SwitchVivoMorto : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (SceneManager.GetActiveScene().buildIndex == 0)
+        if (SceneManager.GetActiveScene().buildIndex <=2)
             return;
         if (Input.GetKeyDown(KeyCode.F))
             controller.RiceviDanno(controller.DatiPersonaggio.VitaMassima);

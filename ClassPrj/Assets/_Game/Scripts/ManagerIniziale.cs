@@ -38,6 +38,8 @@ public class ManagerIniziale : MonoBehaviour
     public float altezzaCamera = 1f;
     [Range(-20f, 20f)]
     public float ZOffSet;
+    public CanvasGroup canvasGroupCreazione;
+    public CanvasGroup canvasGroupCarica;
 
     private Serializzabile<ClasseAudio> datiAudio;
     private static ManagerIniziale me;
@@ -183,12 +185,19 @@ public class ManagerIniziale : MonoBehaviour
 
     public void CaricaScenaDaCaricamento()
     {
+        canvasGroupCreazione.interactable = false;
+        canvasGroupCarica.interactable = false;
         Statici.sonoPassatoDallaScenaIniziale = true;
-        StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
+        if (!Statici.multigiocatoreOn)//SOLO SINGLEPLAYER 
+            StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
+        else//solo multiplayer
+            ScenaInizialeNetwork.VaiAlleStanze();
+      
     }
 
     public void CaricaPartitaDaCreazione()
     {
+       
         if (testoNome.text.Trim() == string.Empty)
             erroreCreazioneText.text = "Inserire un nome";
         else
@@ -198,6 +207,8 @@ public class ManagerIniziale : MonoBehaviour
                 erroreCreazioneText.text = "Esiste Gia Un Personaggio con questo nome";
             else
             {
+                canvasGroupCreazione.interactable = false;
+                canvasGroupCarica.interactable = false;
                 erroreCaricamento.text = string.Empty;
                 Statici.sonoPassatoDallaScenaIniziale = true;
                 Statici.nomePersonaggio = testoNome.text;
@@ -240,8 +251,10 @@ public class ManagerIniziale : MonoBehaviour
                     }
                     datiDiplomazia.Salva();
                 }
-                personaggiInCarica = true;
-                StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
+                if (!Statici.multigiocatoreOn)//SOLO SINGLEPLAYER
+                    StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
+                else//solo multiplayer
+                    ScenaInizialeNetwork.VaiAlleStanze();
             }
         }
     }
