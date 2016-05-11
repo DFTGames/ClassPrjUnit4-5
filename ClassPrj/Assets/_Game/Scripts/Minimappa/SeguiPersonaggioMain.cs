@@ -7,7 +7,10 @@ public class SeguiPersonaggioMain : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        playerT = Statici.PersonaggioPrincipaleT;        
+        if (!Statici.multigiocatoreOn)
+            playerT = Statici.PersonaggioPrincipaleT;
+        else
+            playerT = Statici.playerLocaleGO.transform;    
     }
 
     // Update is called once per frame

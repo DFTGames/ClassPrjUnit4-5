@@ -26,6 +26,7 @@ public class Statici
 
 
 
+
     //inizio variabili per multigiocatore:
     public static bool multigiocatoreOn = false;
     public static Dictionary<int, GameObject> PlayersRemoti = new Dictionary<int, GameObject>();
@@ -37,6 +38,8 @@ public class Statici
     public static bool ownerUscito = false;
     public static bool partenza = false;
     public static bool finePartita = false;
+    public static string posizioneInizialeMulti = string.Empty;
+    public static string nomeModello = string.Empty;
     //fine variabili multigiocatore
 
 
@@ -156,11 +159,30 @@ public class Statici
             registroDatiPersonaggi[tmpID].Attacco = Statici.datiPersonaggio.Dati.Attacco;
             registroDatiPersonaggi[tmpID].Difesa = Statici.datiPersonaggio.Dati.difesa;
             registroDatiPersonaggi[tmpID].Nome = Statici.datiPersonaggio.Dati.nomePersonaggio;
-            PersonaggioPrincipaleT.GetComponentInChildren<TextMesh>().text = registroDatiPersonaggi[tmpID].Nome;
+            if(!multigiocatoreOn)
+               PersonaggioPrincipaleT.GetComponentInChildren<TextMesh>().text = registroDatiPersonaggi[tmpID].Nome;
+            else
+                playerLocaleGO.GetComponentInChildren<TextMesh>().text= registroDatiPersonaggi[tmpID].Nome;
             GestoreCanvasAltreScene.AggiornaDati(datiStatistici);
             Statici.personaggio = datiStatistici;
             classeDiColuiCheVuoleCambiareAmicizia = datiStatistici.miaClasse.ToString();
         }
+    }
+    public static void provaErrore(Object oggetto)
+    {
+        if (oggetto == null)
+            Debug.Log("SONO NULLO");
+        else Debug.Log("Ecco valore del oggetto che mi hai passato  " + oggetto.ToString());
+
+
+    }
+    public static void provaErrore(string oggetto)
+    {
+        if (oggetto == null)
+            Debug.Log("SONO NULLO");
+        else Debug.Log("Ecco valore del oggetto che mi hai passato  " + oggetto);
+
+
     }
 
 }

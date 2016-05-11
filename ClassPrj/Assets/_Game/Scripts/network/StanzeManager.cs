@@ -38,7 +38,7 @@ public class StanzeManager : MonoBehaviour {
     private int utentiInStanza = 0;
     private CanvasGroup contenutoPartiteCanvasGroup;
     private short numeroMassimoUtentiInStanza = 4;
-    private short numeroMaxDecisoDaOwner = 2;
+    private short numeroMaxDecisoDaOwner = 1;
     private bool messaggioSuSchermoOwnerOn = false;
     private float tempo = 0f;
     private List<int> listaPronti = null;
@@ -330,7 +330,7 @@ public class StanzeManager : MonoBehaviour {
         sfs.AddEventListener(SFSEvent.EXTENSION_RESPONSE, OnExtensionResponse);
         sfs.AddEventListener(SFSEvent.PUBLIC_MESSAGE, OnPublicMessage);
 
-      
+        
         Statici.playerLocaleGO = Instantiate(Resources.Load(Statici.datiPersonaggio.Dati.nomeModello), startPoint.position, Quaternion.identity) as GameObject;
         Statici.playerLocaleGO.GetComponentInChildren<TextMesh>().text = Statici.nomePersonaggio;
 
@@ -416,6 +416,8 @@ public class StanzeManager : MonoBehaviour {
                 BottoneSgruppa();
                 break;
             case ("ready"):
+                Statici.nomeModello = Statici.datiPersonaggio.Dati.nomeModello;
+                Statici.posizioneInizialeMulti = "start";
                 CaricaScena();
                 break;
             case ("uR"):

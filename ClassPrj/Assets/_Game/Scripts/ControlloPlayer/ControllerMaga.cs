@@ -16,6 +16,7 @@ public class ControllerMaga : MonoBehaviour
 
     public bool corsaPerDefault = false;
     public bool IsPointAndClick;
+    public bool MovementDirty { get; set; }
 
     #endregion Variabili PUBLIC
 
@@ -63,6 +64,7 @@ public class ControllerMaga : MonoBehaviour
 
     private void Start()
     {
+        MovementDirty = false;
         transform_m = GetComponent<Transform>();
 
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -94,7 +96,7 @@ public class ControllerMaga : MonoBehaviour
         capsula = GetComponent<CapsuleCollider>();
         altezzaCapsula = capsula.height;
         capsulaCentro = new Vector3(0.0f, capsula.center.y, 0.0f);
-        IsPointAndClick = true;
+        IsPointAndClick = false;
         layerAlberi = ~layerAlberi;
         switchVivoMorto = GetComponent<SwitchVivoMorto>();
         if (SceneManager.GetActiveScene().buildIndex <=2)
@@ -175,6 +177,8 @@ public class ControllerMaga : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
                 Attacco();
+
+           
             /* ACCOVACCIAMENTO
             if (!voglioSaltare && aTerra && Input.GetKey(KeyCode.C))
              {
@@ -221,6 +225,10 @@ public class ControllerMaga : MonoBehaviour
             float cicloCamminata = Mathf.Repeat(animatore.GetCurrentAnimatorStateInfo(0).normalizedTime + cicloOffset, 1);
             jumpLeg = (cicloCamminata < 0.5f ? 1 : -1) * movimento.z;
         }
+
+        //xMultiplayer:
+        if (rigidBody.velocity.magnitude > 0)
+            MovementDirty = true;
         // */
         /*CONTROLLO ABBASSATO
         Ray ray = new Ray(transform_m.position + (Vector3.up * capsulaCentro.y), Vector3.up);

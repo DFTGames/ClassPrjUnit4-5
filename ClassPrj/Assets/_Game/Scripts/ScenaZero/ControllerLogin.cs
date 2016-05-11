@@ -24,6 +24,7 @@ public class ControllerLogin : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        Application.runInBackground = true;
         erroreText.text = string.Empty;
         
 	}
@@ -35,8 +36,7 @@ public class ControllerLogin : MonoBehaviour {
 	}
 
     public void BottoneLogin()
-    {
-        Application.runInBackground = true;
+    {        
         ManagerScenaZero.AttivaDisattivaCanvasGroupLogin(false);
         erroreText.text = "";
 

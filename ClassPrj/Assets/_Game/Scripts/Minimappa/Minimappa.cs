@@ -54,7 +54,10 @@ public class Minimappa : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        PlayerT = Statici.PersonaggioPrincipaleT;
+        if (!Statici.multigiocatoreOn)
+            PlayerT = Statici.PersonaggioPrincipaleT;
+        else
+            PlayerT = Statici.playerLocaleGO.transform;
         PlayerT.GetComponent<OggettiDaMarcare>().enabled = false;//poi quando facciamo il discorso del network diciamo se è il giocatore locale allora ci comportiamo di conseguenza.
         larghezzaMinimappa = rawImage.rectTransform.rect.width;
     }

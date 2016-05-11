@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
             Statici.nomePersonaggio = "PersonaggioDiProva";
         Statici.datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
         datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
+        if (Statici.multigiocatoreOn) return;
         if (Statici.sonoPassatoDallaScenaIniziale)
         {
             GameObject tmpObjP = Instantiate(Resources.Load(Statici.datiPersonaggio.Dati.nomeModello), GameObject.Find(Statici.datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
@@ -82,7 +83,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void RecuperaDizionariDiplomazia()
+    public void RecuperaDizionariDiplomazia()
     {
         Statici.dizionarioDiNemici.Clear();
         Statici.dizionarioDiIndifferenti.Clear();

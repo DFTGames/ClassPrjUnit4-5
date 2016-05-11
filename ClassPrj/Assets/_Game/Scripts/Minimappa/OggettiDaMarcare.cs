@@ -91,7 +91,10 @@ public class OggettiDaMarcare : MonoBehaviour
                 break;
             case (11):
                 miaClasse = gameObject.GetComponent<DatiPersonaggio>().miaClasse;
-                classePlayer = Statici.PersonaggioPrincipaleT.GetComponent<DatiPersonaggio>().miaClasse;
+                if(!Statici.multigiocatoreOn)
+                   classePlayer = Statici.PersonaggioPrincipaleT.GetComponent<DatiPersonaggio>().miaClasse;
+                else
+                    classePlayer=Statici.playerLocaleGO.GetComponent<DatiPersonaggio>().miaClasse;
                 spriteOggetto = minimappa.spriteAmico;
                 misuraSprite = minimappa.misuraSpriteAmico;
                 sonoUnEssereVivente = true;

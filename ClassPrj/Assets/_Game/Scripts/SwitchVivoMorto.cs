@@ -10,26 +10,42 @@ public class SwitchVivoMorto : MonoBehaviour {
     private ControllerMaga controller;
     private Animator animatore; 
     private Rigidbody[] rbFigli;
+    private ManagerNetwork managerNetwork;
 
 	// Use this for initialization
-	void Start () {       
+	void Start () {
+       
         controller = GetComponent<ControllerMaga>();       
         animatore = GetComponent<Animator>();    
         ColliderRagdoll = GetComponentsInChildren<Collider>();
         rbFigli= GetComponentsInChildren<Rigidbody>();
         DisattivaRagdoll();
-        
-	}
+        if (SceneManager.GetActiveScene().buildIndex <= 2)
+            return;
+        managerNetwork = GameObject.Find("ManagerNetwork").GetComponent<ManagerNetwork>();
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
         if (SceneManager.GetActiveScene().buildIndex <=2)
             return;
         if (Input.GetKeyDown(KeyCode.F))
-            controller.RiceviDanno(controller.DatiPersonaggio.VitaMassima);
+        {
+            if(!Statici.multigiocatoreOn)
+               controller.RiceviDanno(controller.DatiPersonaggio.VitaMassima);
+            else
+            {
+                if (Statici.datiPersonaggioLocale.SonoUtenteLocale)
+                    managerNetwork.NemicoColpito(Statici.userLocaleId, Statici.datiPersonaggioLocale.Vita, Statici.datiPersonaggioLocale.Vita, Statici.datiPersonaggioLocale.Vita);
+            }
+        }
         else
-            if (Input.GetKeyDown(KeyCode.G))       
-            controller.Resuscita(controller.DatiPersonaggio.VitaMassima);      
+            if (Input.GetKeyDown(KeyCode.G))
+        {
+            if (!Statici.multigiocatoreOn)
+                controller.Resuscita(controller.DatiPersonaggio.VitaMassima);
+        }      
         
            
 	}

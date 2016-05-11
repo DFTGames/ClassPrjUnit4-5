@@ -29,16 +29,24 @@ public class TopDowCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Target == null && GameObject.FindGameObjectWithTag("Player") != null)//+
-            Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
-        else if (Target != null)
+        if (!Statici.multigiocatoreOn)
         {
-            if (Input.GetKeyDown(KeyCode.C))          
-                ZOffSet *= (-1f);            
+            if (Target == null && GameObject.FindGameObjectWithTag("Player") != null)//+
+                Target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        }
+        else
+        {
+            if (Target == null && Statici.playerLocaleGO != null)//+
+                Target = Statici.playerLocaleGO.transform;
+        }
+        if (Target != null)
+        {
+            if (Input.GetKeyDown(KeyCode.C))
+                ZOffSet *= (-1f);
             Obiettivo = new Vector3(Target.position.x, Target.position.y + altezza, Target.position.z + ZOffSet);
             myTransform.position = Vector3.SmoothDamp(myTransform.position, Obiettivo, ref velocita, DampTime);
-            if (ZOffSet != 0f)          
-                myTransform.LookAt(Target.position);            
+            if (ZOffSet != 0f)
+                myTransform.LookAt(Target.position);
         }
     }
 }
