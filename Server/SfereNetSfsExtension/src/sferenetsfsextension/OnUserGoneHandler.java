@@ -36,10 +36,8 @@ public class OnUserGoneHandler extends BaseServerEventHandler{
         
         if(user==mondo.utenteOwner)     {    
              
-             
-          
            send("ownOut", new SFSObject(),room.getUserList());
-             trace("owner Uscito");
+            trace("owner Uscito");
         }
         if(mondo.dizionarioUtentiPlayer.get(user)!=null)  {  
             int numeroSpawnLibero=mondo.dizionarioUtentiPlayer.get(user).numeroSpawn;

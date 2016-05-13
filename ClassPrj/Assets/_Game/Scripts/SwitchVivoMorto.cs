@@ -14,13 +14,13 @@ public class SwitchVivoMorto : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-       
+        
         controller = GetComponent<ControllerMaga>();       
         animatore = GetComponent<Animator>();    
         ColliderRagdoll = GetComponentsInChildren<Collider>();
         rbFigli= GetComponentsInChildren<Rigidbody>();
         DisattivaRagdoll();
-        if (SceneManager.GetActiveScene().buildIndex <= 2)
+        if (!Statici.multigiocatoreOn ||  !Statici.inGioco)
             return;
         managerNetwork = GameObject.Find("ManagerNetwork").GetComponent<ManagerNetwork>();
 
@@ -28,23 +28,25 @@ public class SwitchVivoMorto : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (SceneManager.GetActiveScene().buildIndex <=2)
-            return;
+     
+            if (!Statici.inGioco)
+                return;
         if (Input.GetKeyDown(KeyCode.F))
         {
             if(!Statici.multigiocatoreOn)
                controller.RiceviDanno(controller.DatiPersonaggio.VitaMassima);
-            else
+          /*  else
             {
                 if (Statici.datiPersonaggioLocale.SonoUtenteLocale)
-                    managerNetwork.NemicoColpito(Statici.userLocaleId, Statici.datiPersonaggioLocale.Vita, Statici.datiPersonaggioLocale.Vita, Statici.datiPersonaggioLocale.Vita);
-            }
+                    managerNetwork.NemicoColpito(Statici.userLocaleId);
+            }*/
         }
         else
             if (Input.GetKeyDown(KeyCode.G))
         {
             if (!Statici.multigiocatoreOn)
                 controller.Resuscita(controller.DatiPersonaggio.VitaMassima);
+            
         }      
         
            
@@ -76,7 +78,8 @@ public class SwitchVivoMorto : MonoBehaviour {
         }
         controller.enabled = true;
         agente = GetComponent<NavMeshAgent>();
-        agente.enabled = true;     
+        if(agente!=null)
+           agente.enabled = true;     
         animatore.enabled = true; 
     }
 }

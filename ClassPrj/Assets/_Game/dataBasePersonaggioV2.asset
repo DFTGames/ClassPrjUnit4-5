@@ -29,12 +29,12 @@ MonoBehaviour:
     nomeF: Maga_M3D
     classe: 0
     giocabile: 1
-    Vita: 10
+    Vita: 20
     Livello: 0
     Mana: 10
     Xp: 0
-    Attacco: 10
-    difesa: 20
+    Attacco: 20
+    difesa: 19
   - nomeM: Mago_M3D2
     nomeF: Maga_M3D2
     classe: 2
@@ -43,8 +43,8 @@ MonoBehaviour:
     Livello: 0
     Mana: 10
     Xp: 0
-    Attacco: 10
-    difesa: 20
+    Attacco: 20
+    difesa: 19
   - nomeM: goblin
     nomeF: MagoBluM
     classe: 1

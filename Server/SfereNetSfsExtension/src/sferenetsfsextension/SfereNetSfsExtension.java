@@ -47,6 +47,7 @@ public class SfereNetSfsExtension extends SFSExtension{
         addRequestHandler("res", ResurrezioneHandler.class);
         addRequestHandler("del", DeleteAvatarHandler.class);     
         addRequestHandler("ready", ReadyHandler.class);
+        addRequestHandler("getTime", GetTimeHandler.class);
         
       
         
@@ -63,7 +64,7 @@ public class SfereNetSfsExtension extends SFSExtension{
     }
     
     
-    public void FinePartita(User user){
+     public void FinePartita(User user){
                
         Mondo mondo=this.world; 
           ISFSObject isfsoOut = new SFSObject();
@@ -89,5 +90,5 @@ public class SfereNetSfsExtension extends SFSExtension{
           send("datiUcc", objOut2,user.getLastJoinedRoom().getUserList());  
    }
    
-    
+  
 }

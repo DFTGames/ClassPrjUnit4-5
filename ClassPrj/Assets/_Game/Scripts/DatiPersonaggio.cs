@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class DatiPersonaggio : MonoBehaviour {
     public classiPersonaggi miaClasse;
 
+    private GestoreCanvasNetwork gestoreCanvas;
     private float vita;
     private float vitaMassima;
     private float manaMassimo;
@@ -43,6 +44,7 @@ public class DatiPersonaggio : MonoBehaviour {
         set
         {        
             vita= Mathf.Clamp(value, 0, vitaMassima);
+           
         }
     }
 
@@ -214,13 +216,8 @@ public class DatiPersonaggio : MonoBehaviour {
         }
     }
 
+   
 
-    // Use this for initialization
-    void Start () {     
-     
-      
-      
-    }
 
   
 }

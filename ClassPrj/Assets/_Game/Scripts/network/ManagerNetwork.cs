@@ -2,62 +2,67 @@
 using Sfs2X.Core;
 using Sfs2X.Entities;
 using Sfs2X.Entities.Data;
-using Sfs2X.Entities.Variables;
 using Sfs2X.Requests;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System;
 using UnityEngine.UI;
 
 public class ManagerNetwork : MonoBehaviour
-{ 
-    public Text messaggio;
+{
     public Text punteggi;
-    public Button sgruppaButton; 
     public Text[] punteggiGiocatori;
+    public Button sgruppaButton;
 
     private static ManagerNetwork me;
     private ControllerMaga controllerPlayer;
-   
-   
-    
-    private SmartFox sfs;
-    private GestoreCanvas gestoreCanvas;
-    private float tempo = 5f;
-    private string nomeScenaSuccessiva = string.Empty;
+
     private GameManager gameManager;
- 
+    private GestoreCanvasNetwork gestoreCanvasNetwork;
+    private Minimappa minimappa;
+    private string nomeScenaSuccessiva = string.Empty;
+    private SmartFox sfs;
+    private float tempo = 5f;
+
+    public static void AggiornaPunteggi(int indicePunteggio, string nome, int numeroUccisioni)
+    {
+        me.punteggiGiocatori[indicePunteggio].text = nome + ": " + numeroUccisioni.ToString();
+    }
 
     public static void CambiaScenaPortale(string nomeScena)
     {
-       
         me.sfs.Send(new ExtensionRequest("del", new SFSObject(), me.sfs.LastJoinedRoom));
         me.nomeScenaSuccessiva = nomeScena;
     }
-  
 
-    public void ModificaRaggioRemoto(float distanzaRaggio)
+    /// <summary>
+    /// Se il player locale vuole uscire da una stanza di gioco
+    /// chiede di unirsi alla lobby e abilita la ui delle partite.
+    /// </summary>
+    public void BottoneSgruppa()
     {
-        ISFSObject sfsObjOut = new SFSObject();
-        sfsObjOut.PutFloat("dr", distanzaRaggio);
-        sfs.Send(new ExtensionRequest("raggio", sfsObjOut,sfs.LastJoinedRoom));
-    }
-
-    public void NemicoColpito(int utenteColpito, float mioAttacco, float suaDifesa,float suaVita)
-    {
-        ISFSObject sfsObjOut = new SFSObject();
-        sfsObjOut.PutInt("uco", utenteColpito);
-        sfsObjOut.PutFloat("mat", mioAttacco);
-        sfsObjOut.PutFloat("sdif", suaDifesa);
-        sfsObjOut.PutFloat("vita", suaVita);
-        sfs.Send(new ExtensionRequest("danno", sfsObjOut,sfs.LastJoinedRoom));
+        sfs.Send(new JoinRoomRequest("The Lobby"));
     }
 
     public void Disconnect()
     {
         sfs.Disconnect();
+    }
+
+    public void ModificaRaggioRemoto(float distanzaRaggio)
+    {
+        ISFSObject sfsObjOut = new SFSObject();
+        sfsObjOut.PutFloat("dr", distanzaRaggio);
+        sfs.Send(new ExtensionRequest("raggio", sfsObjOut, sfs.LastJoinedRoom));
+    }
+
+    public void NemicoColpito(int utenteColpito)
+    {
+        ISFSObject sfsObjOut = new SFSObject();
+        sfsObjOut.PutInt("uco", utenteColpito);
+
+        sfs.Send(new ExtensionRequest("danno", sfsObjOut, me.sfs.LastJoinedRoom));
     }
 
     public void OnObjectMessage(BaseEvent evt)
@@ -77,18 +82,54 @@ public class ManagerNetwork : MonoBehaviour
         }
     }
 
-    internal void Resuscita()
-    {     
-        SFSObject objOut = new SFSObject();
-        objOut.PutFloat("vitaM", Statici.datiPersonaggioLocale.VitaMassima);
-        sfs.Send(new ExtensionRequest("res",objOut,sfs.LastJoinedRoom));
+    internal void InviaChat(string text)
+    {
+        sfs.Send(new PublicMessageRequest(text));
     }
 
-   /* internal void SparaPallottola()
+    internal void Resuscita()
     {
-        sfs.Send(new PublicMessageRequest("spara")); 
+        SFSObject objOut = new SFSObject();
+        objOut.PutFloat("vitaM", Statici.datiPersonaggioLocale.VitaMassima);
+        sfs.Send(new ExtensionRequest("res", objOut, sfs.LastJoinedRoom));
+    }
 
-    }*/
+    /* internal void SparaPallottola()
+     {
+         sfs.Send(new PublicMessageRequest("spara"));
+     }*/
+
+    private IEnumerator FinePartita()
+    {
+        yield return new WaitForSeconds(5f);
+        BottoneSgruppa();
+    }
+
+    private void InviaTransformLocali()
+    {
+        ISFSObject objOut = new SFSObject();
+        objOut.PutFloat("x", Statici.playerLocaleGO.transform.position.x);
+        objOut.PutFloat("y", Statici.playerLocaleGO.transform.position.y);
+        objOut.PutFloat("z", Statici.playerLocaleGO.transform.position.z);
+        objOut.PutFloat("rot", Statici.playerLocaleGO.transform.rotation.eulerAngles.y);
+        sfs.Send(new ExtensionRequest("regT", objOut, sfs.LastJoinedRoom));
+        controllerPlayer.MovementDirty = false;
+    }
+
+    private void InvioDatiPlayerLocale(int userId)
+    {
+        SFSObject objOut = new SFSObject();
+        // objOut.PutUtfString("model", Statici.classePersonaggio);
+        //objOut.PutUtfString("nome", Statici.nomePersonaggio);
+        objOut.PutFloat("x", Statici.playerLocaleGO.transform.position.x);
+        objOut.PutFloat("y", Statici.playerLocaleGO.transform.position.y);
+        objOut.PutFloat("z", Statici.playerLocaleGO.transform.position.z);
+        objOut.PutFloat("rot", Statici.playerLocaleGO.transform.rotation.eulerAngles.y);
+        objOut.PutInt("usIn", userId);
+        objOut.PutUtfString("scena", SceneManager.GetActiveScene().name);
+        // objOut.PutFloat("vita", Statici.datiPersonaggioLocale.Vita);
+        sfs.Send(new ExtensionRequest("respawn", objOut, sfs.LastJoinedRoom));
+    }
 
     private void OnApplicationQuit()
     {
@@ -104,74 +145,123 @@ public class ManagerNetwork : MonoBehaviour
 
     private void OnExtensionResponse(BaseEvent evt)
     {
-      
-     
         ISFSObject sfsObjIn = (SFSObject)evt.Params["params"];
         string cmd = (string)evt.Params["cmd"];
         switch (cmd)
-        {   
-
+        {
             case ("respawn"):
-           
+
                 int utente = sfsObjIn.GetInt("ut");
                 string nomeScenaAttualeAvatar = sfsObjIn.GetUtfString("scena");
-               // int numeroPostoSpawn = sfsObjIn.GetInt("nSpawn");
-               // int numeroUccisioni = sfsObjIn.GetInt("nUcc");
-                if ( nomeScenaAttualeAvatar != SceneManager.GetActiveScene().name)
+                string classe = sfsObjIn.GetUtfString("classe");
+                // int numeroPostoSpawn = sfsObjIn.GetInt("nSpawn");
+                // int numeroUccisioni = sfsObjIn.GetInt("nUcc");
+                if (nomeScenaAttualeAvatar != SceneManager.GetActiveScene().name)
                     return;
-               if (Statici.datiPersonaggioLocale.Utente == utente)
-                {                  
-                 /* Statici.datiPersonaggioLocale.IndicePunteggio = numeroPostoSpawn;
-                  Statici.datiPersonaggioLocale.NumeroUccisioniInStanza = numeroUccisioni;*/                  
+                string modello = sfsObjIn.GetUtfString("model");
+                string nome = sfsObjIn.GetUtfString("nome");
+                float vitaIniziale = sfsObjIn.GetFloat("vita");
+                float vitaMax = sfsObjIn.GetFloat("vitaM");
+                float mana = sfsObjIn.GetFloat("mana");
+                float manaMax = sfsObjIn.GetFloat("manaM");
+                float xp = sfsObjIn.GetFloat("xp");
+                float xpMax = sfsObjIn.GetFloat("xpM");
+                float attacco = sfsObjIn.GetFloat("att");
+                float difesa = sfsObjIn.GetFloat("dif");
+                int livello = sfsObjIn.GetInt("liv");
+                bool giocabile = sfsObjIn.GetBool("gioc");
+
+                Vector3 posizioneIniziale = new Vector3(0, 1, 0);
+                posizioneIniziale.x = sfsObjIn.GetFloat("x");
+                posizioneIniziale.y = sfsObjIn.GetFloat("y");
+                posizioneIniziale.z = sfsObjIn.GetFloat("z");
+                float rotazioneIniziale = sfsObjIn.GetFloat("rot");
+
+                if (sfs.MySelf.Id == utente)
+                {
+                    Statici.datiPersonaggioLocale.VitaMassima = vitaMax;
+                    Statici.datiPersonaggioLocale.Vita = vitaIniziale;
+                    Statici.datiPersonaggioLocale.ManaMassimo = manaMax;
+                    Statici.datiPersonaggioLocale.Mana = mana;
+                    Statici.datiPersonaggioLocale.XpMassimo = xpMax;
+                    Statici.datiPersonaggioLocale.Xp = xp;
+                    Statici.datiPersonaggioLocale.Attacco = attacco;
+                    Statici.datiPersonaggioLocale.Difesa = difesa;
+                    Statici.datiPersonaggioLocale.Livello = livello;
+                    Statici.datiPersonaggioLocale.Giocabile = giocabile;
+                    gestoreCanvasNetwork.VisualizzaDatiPlayerLocale(Statici.nomePersonaggio, Statici.datiPersonaggioLocale.Vita.ToString());
+                    GestoreCanvasAltreScene.AggiornaDati(Statici.datiPersonaggioLocale);
+
                     return;
                 }
-               
-                string modello = sfsObjIn.GetUtfString("model");
-                    string nome = sfsObjIn.GetUtfString("nome");
-                    float vitaIniziale = sfsObjIn.GetFloat("vita");
-                    Vector3 posizioneIniziale = new Vector3(0, 1, 0);
-                    posizioneIniziale.x = sfsObjIn.GetFloat("x");
-                    posizioneIniziale.y = sfsObjIn.GetFloat("y");
-                    posizioneIniziale.z = sfsObjIn.GetFloat("z");
-                    float rotazioneIniziale = sfsObjIn.GetFloat("rot");
                 if (!Statici.PlayersRemoti.ContainsKey(utente))
                 {
-                    SpawnRemotePlayer(utente, modello, vitaIniziale, nome, posizioneIniziale, Quaternion.Euler(0, rotazioneIniziale, 0));        
+                    GameObject remotePlayer = Instantiate(Resources.Load(modello)) as GameObject;
+                    remotePlayer.GetComponent<ControllerMaga>().enabled = false;
+                    DatiPersonaggio datiPersonaggioRemoto = remotePlayer.GetComponent<DatiPersonaggio>();
+                    datiPersonaggioRemoto.SonoUtenteLocale = false;
+                    datiPersonaggioRemoto.VitaMassima = vitaMax;
+                    datiPersonaggioRemoto.Vita = vitaIniziale;
+                    datiPersonaggioRemoto.ManaMassimo = manaMax;
+                    datiPersonaggioRemoto.Mana = mana;
+                    datiPersonaggioRemoto.XpMassimo = xpMax;
+                    datiPersonaggioRemoto.Xp = xp;
+                    datiPersonaggioRemoto.Attacco = attacco;
+                    datiPersonaggioRemoto.Difesa = difesa;
+                    datiPersonaggioRemoto.Livello = livello;
+                    datiPersonaggioRemoto.Giocabile = giocabile;
+                    datiPersonaggioRemoto.Nome = nome;
+                    remotePlayer.AddComponent<InterpolazioneRemota>();
+                    remotePlayer.GetComponent<InterpolazioneRemota>().SetTransform(posizioneIniziale, Quaternion.Euler(0, rotazioneIniziale, 0), false);
+                    remotePlayer.GetComponentInChildren<TextMesh>().text = nome;
+                    datiPersonaggioRemoto.Utente = utente;
+
+                    if (!Statici.PlayersRemoti.ContainsKey(utente))
+                        Statici.PlayersRemoti.Add(utente, remotePlayer);
+
+                    Statici.partenza = true;
                     InvioDatiPlayerLocale(utente);//invio i miei dati solo all'utente specificato
-                   
                 }
-                  
-              
+
                 break;
-             case ("datiUcc"):
+
+            case ("datiUcc"):
                 int numeroPostoSpawn = sfsObjIn.GetInt("nSpawn");
-                int numeroUccisioni = sfsObjIn.GetInt("nUcc");                
+                int numeroUccisioni = sfsObjIn.GetInt("nUcc");
                 string nomeUtente = sfsObjIn.GetUtfString("nome");
                 AggiornaPunteggi(numeroPostoSpawn, nomeUtente, numeroUccisioni);
-                
-                    break;
+
+                break;
+
             case ("regT"):
                 int user = sfsObjIn.GetInt("u");
-                if (Statici.datiPersonaggioLocale.Utente==user)              
+                if (Statici.datiPersonaggioLocale.Utente == user)
                     return;
-                
+
                 Vector3 pos = new Vector3(0, 1, 0);
                 pos.x = sfsObjIn.GetFloat("x");
                 pos.y = sfsObjIn.GetFloat("y");
                 pos.z = sfsObjIn.GetFloat("z");
                 float rotazione = sfsObjIn.GetFloat("rot");
-                if(Statici.PlayersRemoti.ContainsKey(user))
-                     Statici.PlayersRemoti[user].GetComponent<InterpolazioneRemota>().SetTransform(new Vector3(pos.x, pos.y, pos.z), Quaternion.Euler(0, rotazione, 0),true);                
+                if (Statici.PlayersRemoti.ContainsKey(user))
+                    Statici.PlayersRemoti[user].GetComponent<InterpolazioneRemota>().SetTransform(new Vector3(pos.x, pos.y, pos.z), Quaternion.Euler(0, rotazione, 0), true);
                 break;
+
             case ("danno"):
                 int utenteColpitoId = sfsObjIn.GetInt("uci");
-                float vita = sfsObjIn.GetFloat("vita");           
-                int utenteCheHaInflittoDannoId = sfsObjIn.GetInt("userI");               
+                float vita = sfsObjIn.GetFloat("vita");
+                int utenteCheHaInflittoDannoId = sfsObjIn.GetInt("userI");
                 if (Statici.datiPersonaggioLocale.Utente == utenteColpitoId)
                 {
                     Statici.datiPersonaggioLocale.Vita = vita;
-                    gestoreCanvas.VitaDaVisualizzare = Statici.datiPersonaggioLocale.Vita.ToString();
-                    gestoreCanvas.VisualizzaChiTiAttacca(Statici.PlayersRemoti[utenteCheHaInflittoDannoId].GetComponentInChildren<TextMesh>().text);
+                    gestoreCanvasNetwork.VisualizzaDatiPlayerLocale(Statici.nomePersonaggio, Statici.datiPersonaggioLocale.Vita.ToString());
+                    gestoreCanvasNetwork.VisualizzaChiTiAttacca(Statici.PlayersRemoti[utenteCheHaInflittoDannoId].GetComponentInChildren<TextMesh>().text);
+                    GestoreCanvasAltreScene.AggiornaDati(Statici.datiPersonaggioLocale);
+                    if (Statici.datiPersonaggioLocale.Vita<=0f)
+                    {
+                        Statici.playerLocaleGO.GetComponent<SwitchVivoMorto>().AttivaRagdoll();
+                        gestoreCanvasNetwork.PannelloMorteOn();
+                    }
                 }
                 else
                 {
@@ -179,147 +269,143 @@ public class ManagerNetwork : MonoBehaviour
                     {
                         DatiPersonaggio datiPersonaggioColpito = Statici.PlayersRemoti[utenteColpitoId].GetComponent<DatiPersonaggio>();
                         datiPersonaggioColpito.Vita = vita;
-                        gestoreCanvas.VitaDaVisualizzareNemico = datiPersonaggioColpito.Vita.ToString();
+                        if (datiPersonaggioColpito.Vita<=0f)
+                            Statici.PlayersRemoti[utenteColpitoId].GetComponent<SwitchVivoMorto>().AttivaRagdoll();
                     }
                 }
-        
+
                 break;
-          /*  case ("raggio"):
-                int utenteCheInviaRaggio = sfsObjIn.GetInt("ur");
-                float distanzaRaggio = sfsObjIn.GetFloat("r");
-                if (Statici.datiPersonaggioLocale.Utente == utenteCheInviaRaggio)
-                {
-                    Statici.playerLocaleGO.transform.FindChild("Raggio").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
-                    Statici.playerLocaleGO.transform.FindChild("Raggio1").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
-                    Statici.playerLocaleGO.transform.FindChild("Raggio2").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
-                }
-                else
-                {
-                    if (Statici.PlayersRemoti.ContainsKey(utenteCheInviaRaggio))
-                    {
-                        Statici.PlayersRemoti[utenteCheInviaRaggio].transform.FindChild("Raggio").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
-                        Statici.PlayersRemoti[utenteCheInviaRaggio].transform.FindChild("Raggio1").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
-                        Statici.PlayersRemoti[utenteCheInviaRaggio].transform.FindChild("Raggio2").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
-                    }
-                }
-                break;*/
+            /*  case ("raggio"):
+                  int utenteCheInviaRaggio = sfsObjIn.GetInt("ur");
+                  float distanzaRaggio = sfsObjIn.GetFloat("r");
+                  if (Statici.datiPersonaggioLocale.Utente == utenteCheInviaRaggio)
+                  {
+                      Statici.playerLocaleGO.transform.FindChild("Raggio").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
+                      Statici.playerLocaleGO.transform.FindChild("Raggio1").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
+                      Statici.playerLocaleGO.transform.FindChild("Raggio2").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
+                  }
+                  else
+                  {
+                      if (Statici.PlayersRemoti.ContainsKey(utenteCheInviaRaggio))
+                      {
+                          Statici.PlayersRemoti[utenteCheInviaRaggio].transform.FindChild("Raggio").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
+                          Statici.PlayersRemoti[utenteCheInviaRaggio].transform.FindChild("Raggio1").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
+                          Statici.PlayersRemoti[utenteCheInviaRaggio].transform.FindChild("Raggio2").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
+                      }
+                  }
+                  break;*/
             case ("res"):
                 int uId = sfsObjIn.GetInt("u");
                 float vitaResurrezione = sfsObjIn.GetFloat("vita");
                 if (Statici.datiPersonaggioLocale.Utente != uId)
                 {
                     DatiPersonaggio datiPersonaggioRemoto = Statici.PlayersRemoti[uId].GetComponent<DatiPersonaggio>();
-                    datiPersonaggioRemoto.Vita=vitaResurrezione;
-                    gestoreCanvas.VitaDaVisualizzareNemico = datiPersonaggioRemoto.Vita.ToString();
+                    datiPersonaggioRemoto.Vita = vitaResurrezione;
+                    Statici.PlayersRemoti[uId].GetComponent<SwitchVivoMorto>().DisattivaRagdoll();
                 }
                 else
                 {
-                    Statici.datiPersonaggioLocale.Vita=vitaResurrezione;
-                    gestoreCanvas.VitaDaVisualizzare = Statici.datiPersonaggioLocale.Vita.ToString();
+                    Statici.datiPersonaggioLocale.Vita = vitaResurrezione;
+                    gestoreCanvasNetwork.VisualizzaDatiPlayerLocale(Statici.nomePersonaggio, Statici.datiPersonaggioLocale.Vita.ToString());
+                    Statici.playerLocaleGO.GetComponent<SwitchVivoMorto>().DisattivaRagdoll();
+                    GestoreCanvasAltreScene.AggiornaDati(Statici.datiPersonaggioLocale);
                 }
                 break;
+
             case ("del"):
                 int userIdDaDeletare = sfsObjIn.GetInt("ud");
                 if (Statici.datiPersonaggioLocale.Utente == userIdDaDeletare)
                 {
-                    Statici.partenza = false;                  
+                    Statici.partenza = false;
                     Statici.PlayersRemoti.Clear();
                     Destroy(Statici.playerLocaleGO);
-                    Statici.playerLocaleGO = null;                    
+                    Statici.playerLocaleGO = null;
                     sfs.RemoveAllEventListeners();
                     SceneManager.LoadScene(nomeScenaSuccessiva);
-                    
+
                     return;
                 }
                 if (Statici.PlayersRemoti.ContainsKey(userIdDaDeletare))
                 {
-                    Destroy(Statici.PlayersRemoti[userIdDaDeletare]);                    
+                    minimappa.DistruggiMarcatore(userIdDaDeletare);
+                    Destroy(Statici.PlayersRemoti[userIdDaDeletare]);
                     Statici.PlayersRemoti.Remove(userIdDaDeletare);
-                    
-                                 
-                }            
+                }
                 break;
-            case ("ownOut"):               
-                Statici.messaggio= "La partita è stata eliminata perchè l'owner è uscito.";
+
+            case ("ownOut"):
+                Statici.messaggio = "La partita è stata eliminata perchè l'owner è uscito.";
                 Statici.ownerUscito = true;
-                BottoneSgruppa();             
+                BottoneSgruppa();
                 break;
+
             case ("fine"):
                 Statici.finePartita = true;
                 sgruppaButton.interactable = false;
                 int numeroUccisioniWinner = sfsObjIn.GetInt("nWin");
                 int idWinner = sfsObjIn.GetInt("win");
                 string nomeWinner = sfsObjIn.GetUtfString("nomeW");
+                punteggi.gameObject.SetActive(true);
                 if (idWinner != -1)
                 {
-                    if (Statici.datiPersonaggioLocale.Utente == idWinner)                    
+                    if (Statici.datiPersonaggioLocale.Utente == idWinner)
                         punteggi.text = "Hai vinto!!! Punteggio: " + numeroUccisioniWinner;
-                    else                    
-                        punteggi.text = nomeWinner + " ha vinto!!! Con un punteggio di: " + numeroUccisioniWinner;                    
+                    else
+                        punteggi.text = nomeWinner + " ha vinto!!! Con un punteggio di: " + numeroUccisioniWinner;
                 }
                 else
                     punteggi.text = "Nessun vincitore";
                 StartCoroutine(FinePartita());
                 break;
+
             default:
                 break;
         }
-        
-        
-    }
-
-    private IEnumerator FinePartita()
-    {
-        yield return new WaitForSeconds(5f);
-        BottoneSgruppa();
-    }
-
-
-
-    /// <summary>
-    /// Se il player locale vuole uscire da una stanza di gioco
-    /// chiede di unirsi alla lobby e abilita la ui delle partite.
-    /// </summary>
-    public void BottoneSgruppa()
-    {
-        
-        sfs.Send(new JoinRoomRequest("The Lobby"));
-        
-    }
-
-    internal void InviaChat(string text)
-    {
-        sfs.Send(new PublicMessageRequest(text));
     }
 
     private void OnPublicMessage(BaseEvent evt)
     {
-        User sender = (User)evt.Params["sender"];
-        string msg = (string)evt.Params["message"];
-        switch (msg)
+        /*  User sender = (User)evt.Params["sender"];
+          string msg = (string)evt.Params["message"];
+
+          string mittente = (sender.IsItMe) ? "Tu" : Statici.PlayersRemoti[sender.Id].GetComponentInChildren<TextMesh>().text;
+          gestoreCanvas.ScriviMessaggioChat(mittente, msg);
+          */
+    }
+
+    private void OnRoomJoin(BaseEvent evt)
+    {
+        Room room = (Room)evt.Params["room"];
+
+        if (!room.IsGame)
         {
-         
-          /*  case ("spara"):
-                if (sender.Id != Statici.datiPersonaggioLocale.Utente)
-                    Statici.PlayersRemoti[sender.Id].GetComponent<Pallottola>().Spara();
-                else
-                    Statici.playerLocaleGO.GetComponent<Pallottola>().Spara();
-                break;*/
-            default:                
-                string mittente=(sender.IsItMe)?"Tu": Statici.PlayersRemoti[sender.Id].GetComponentInChildren<TextMesh>().text;
-                gestoreCanvas.ScriviMessaggioChat(mittente, msg);
-                break;
+            if (Statici.playerLocaleGO != null)
+            {
+                Destroy(Statici.playerLocaleGO);
+                Statici.playerLocaleGO = null;
+            }
+            if (Statici.PlayersRemoti.Count != 0)
+            {
+                foreach (KeyValuePair<int, GameObject> playerRemoto in Statici.PlayersRemoti)
+                {
+                    Destroy(playerRemoto.Value);
+                }
+                Statici.PlayersRemoti.Clear();
+            }
+            sgruppaButton.interactable = false;
+            Statici.numeroPostoSpawn = -1;
+            sfs.RemoveAllEventListeners();
+            SceneManager.LoadScene("ScenaStanze");
         }
     }
 
     private void OnUserEnterRoom(BaseEvent evt)
     {
-     /*   Room room = (Room)evt.Params["room"];
-        User user = (User)evt.Params["user"];
-        if (room.IsGame && user != sfs.MySelf)
-            //InvioDatiPlayerLocale(user.Id);
-            InvioDatiPlayerLocale(-1);*/
-
+        /*   Room room = (Room)evt.Params["room"];
+           User user = (User)evt.Params["user"];
+           if (room.IsGame && user != sfs.MySelf)
+               //InvioDatiPlayerLocale(user.Id);
+               InvioDatiPlayerLocale(-1);*/
     }
 
     private void OnUserExitRoom(BaseEvent evt)
@@ -338,9 +424,10 @@ public class ManagerNetwork : MonoBehaviour
     private void RemoveRemotePlayer(SFSUser user)
     {
         if (user == sfs.MySelf) return;
-       
+
         if (Statici.PlayersRemoti.ContainsKey(user.Id))
         {
+            minimappa.DistruggiMarcatore(user.Id);
             Destroy(Statici.PlayersRemoti[user.Id]);
             Statici.PlayersRemoti.Remove(user.Id);
         }
@@ -348,144 +435,57 @@ public class ManagerNetwork : MonoBehaviour
 
     private void SpawnaPlayerLocale()
     {
-      
-        Statici.playerLocaleGO = Instantiate(Resources.Load(Statici.nomeModello), GameObject.Find(Statici.posizioneInizialeMulti+Statici.numeroPostoSpawn.ToString()).transform.position, Quaternion.identity) as GameObject;       
-        gameManager.RecuperaDizionariDiplomazia();
-        Statici.playerLocaleGO.GetComponentInChildren<TextMesh>().text = Statici.nomePersonaggio;        
+        Statici.playerLocaleGO = Instantiate(Resources.Load(Statici.nomeModello), GameObject.Find(Statici.posizioneInizialeMulti + Statici.numeroPostoSpawn.ToString()).transform.position, Quaternion.identity) as GameObject;
+
+        Statici.playerLocaleGO.GetComponent<ControllerMaga>().enabled = true;
+        Statici.playerLocaleGO.GetComponentInChildren<TextMesh>().text = Statici.nomePersonaggio;
         Statici.datiPersonaggioLocale = Statici.playerLocaleGO.GetComponent<DatiPersonaggio>();
         Statici.datiPersonaggioLocale.Nome = Statici.nomePersonaggio;
         Statici.datiPersonaggioLocale.Utente = Statici.userLocaleId;
         Statici.datiPersonaggioLocale.SonoUtenteLocale = true;
-       // Statici.datiPersonaggioLocale.ScenaAttuale = SceneManager.GetActiveScene().name;     
-        gestoreCanvas.NomeDaVisualizzare = Statici.nomePersonaggio;
-        gestoreCanvas.VitaDaVisualizzare = Statici.datiPersonaggioLocale.Vita.ToString();
-        Statici.playerLocaleGO.GetComponent<ControllerMaga>().enabled = true;
-        //Statici.playerLocaleGO.GetComponent<Pallottola>().enabled = true;
         controllerPlayer = Statici.playerLocaleGO.GetComponent<ControllerMaga>();
-      
+
         InvioDatiPlayerLocale(-1);//avviso tutti quelli nella mia scena
-       
-    }
-   
- 
-
-    private void InvioDatiPlayerLocale(int userId)
-    {
-        SFSObject objOut = new SFSObject();
-       // objOut.PutUtfString("model", Statici.classePersonaggio);
-        //objOut.PutUtfString("nome", Statici.nomePersonaggio);
-        objOut.PutFloat("x", Statici.playerLocaleGO.transform.position.x);
-        objOut.PutFloat("y", Statici.playerLocaleGO.transform.position.y);
-        objOut.PutFloat("z", Statici.playerLocaleGO.transform.position.z);
-        objOut.PutFloat("rot", Statici.playerLocaleGO.transform.rotation.eulerAngles.y);
-        objOut.PutInt("usIn", userId);
-        objOut.PutUtfString("scena", SceneManager.GetActiveScene().name);
-        // objOut.PutFloat("vita", Statici.datiPersonaggioLocale.Vita);
-        sfs.Send(new ExtensionRequest("respawn", objOut, sfs.LastJoinedRoom));
-       
-    }
-
-   private void SpawnRemotePlayer(int user, string modello,float vitaIniziale, string nomeP,Vector3 posizione,Quaternion rotazione)
-    {
-        GameObject remotePlayer = Instantiate(Resources.Load(modello)) as GameObject;        
-        remotePlayer.GetComponent<ControllerMaga>().enabled = false;
-       // remotePlayer.GetComponent<Pallottola>().enabled = true;
-        DatiPersonaggio datiPersonaggioRemoto = remotePlayer.GetComponent<DatiPersonaggio>();
-        datiPersonaggioRemoto.SonoUtenteLocale = false;
-        datiPersonaggioRemoto.Vita = vitaIniziale;
-       // datiPersonaggioRemoto.ScenaAttuale = SceneManager.GetActiveScene().name;
-        datiPersonaggioRemoto.Nome = nomeP;
-        remotePlayer.AddComponent<InterpolazioneRemota>();
-        remotePlayer.GetComponent<InterpolazioneRemota>().SetTransform(posizione, rotazione, false);
-        remotePlayer.GetComponentInChildren<TextMesh>().text = nomeP;
-        datiPersonaggioRemoto.Utente = user;
-        if(!Statici.PlayersRemoti.ContainsKey(user))
-           Statici.PlayersRemoti.Add(user, remotePlayer);
-      /*  datiPersonaggioRemoto.IndicePunteggio = numeroPostoSpawn;
-        datiPersonaggioRemoto.NumeroUccisioniInStanza = numeroUccisioni;   */     
-        
-        Statici.partenza = true;
     }
 
     // Use this for initialization
     private void Start()
     {
-        Statici.provaErrore(Statici.nomeModello);
+        if (!Statici.multigiocatoreOn)
+            return;
+
         Application.runInBackground = true;
+        punteggi.text = "";
+        punteggi.gameObject.SetActive(false);
+
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        gestoreCanvas = GameObject.Find("ManagerCanvasMultiplayer").GetComponent<GestoreCanvas>();
-         me = this;
-       
+        gestoreCanvasNetwork = GameObject.Find("ManagerCanvasMultiplayer").GetComponent<GestoreCanvasNetwork>();
+        me = this;
+        minimappa = GameObject.Find("Minimappa").GetComponent<Minimappa>();
         if (!SmartFoxConnection.NonNulla)
         {
-            SceneManager.LoadScene("ScenaConnessione");
+            SceneManager.LoadScene("ScenaZero");
             return;
         }
         sfs = SmartFoxConnection.Connection;
         sfs.ThreadSafeMode = true;
         sfs.AddEventListener(SFSEvent.OBJECT_MESSAGE, OnObjectMessage);
-        sfs.AddEventListener(SFSEvent.CONNECTION_LOST, OnConnectionLost);       
+        sfs.AddEventListener(SFSEvent.CONNECTION_LOST, OnConnectionLost);
         sfs.AddEventListener(SFSEvent.USER_EXIT_ROOM, OnUserExitRoom);
         sfs.AddEventListener(SFSEvent.USER_ENTER_ROOM, OnUserEnterRoom);
         sfs.AddEventListener(SFSEvent.EXTENSION_RESPONSE, OnExtensionResponse);
         sfs.AddEventListener(SFSEvent.PUBLIC_MESSAGE, OnPublicMessage);
         sfs.AddEventListener(SFSEvent.ROOM_JOIN, OnRoomJoin);
-      
-        
+
         SpawnaPlayerLocale();
-        
     }
 
-    private void OnRoomJoin(BaseEvent evt)
-    {
-      
-        Room room = (Room)evt.Params["room"];
-        
-        if(!room.IsGame)
-        {
-            if (Statici.playerLocaleGO != null)
-            {
-                Destroy(Statici.playerLocaleGO);
-                Statici.playerLocaleGO = null;
-            }
-            if (Statici.PlayersRemoti.Count != 0)
-            {
-                foreach (KeyValuePair<int, GameObject> playerRemoto in Statici.PlayersRemoti)
-                {
-                    Destroy(playerRemoto.Value);
-
-                }
-                Statici.PlayersRemoti.Clear();
-            }
-            sgruppaButton.interactable = false;
-            Statici.numeroPostoSpawn = -1;                
-            sfs.RemoveAllEventListeners();
-            SceneManager.LoadScene("ScenaStanze");
-        }
-    }
-
-    public static void AggiornaPunteggi(int indicePunteggio, string nome, int numeroUccisioni)
-    {
-        me.punteggiGiocatori[indicePunteggio].text = nome + ": " + numeroUccisioni.ToString();
-    }
     // Update is called once per frame
     private void Update()
     {
         if (sfs != null)
             sfs.ProcessEvents();
-       if (Statici.playerLocaleGO != null && controllerPlayer != null && controllerPlayer.MovementDirty && Statici.partenza)                   
-                InviaTransformLocali();
-      
-    }
-
-    private void InviaTransformLocali()
-    {
-        ISFSObject objOut = new SFSObject();
-        objOut.PutFloat("x", Statici.playerLocaleGO.transform.position.x);
-        objOut.PutFloat("y", Statici.playerLocaleGO.transform.position.y);
-        objOut.PutFloat("z", Statici.playerLocaleGO.transform.position.z);
-        objOut.PutFloat("rot", Statici.playerLocaleGO.transform.rotation.eulerAngles.y);
-        sfs.Send(new ExtensionRequest("regT", objOut, sfs.LastJoinedRoom));
-        controllerPlayer.MovementDirty = false;
+        if (Statici.playerLocaleGO != null && controllerPlayer != null && controllerPlayer.MovementDirty && Statici.partenza)
+            InviaTransformLocali();
     }
 }

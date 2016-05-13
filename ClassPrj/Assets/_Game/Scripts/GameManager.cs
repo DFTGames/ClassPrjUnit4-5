@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         me = this;
+        Statici.inGioco = true;
     }
 
     private void Start()
@@ -28,14 +29,17 @@ public class GameManager : MonoBehaviour
         else
             Debug.LogError("Ma ci fai o ci sei ????..sei un cazzone....manca il padrePercorso");
         Statici.assegnaAssetDatabase();
+    
         if (Statici.nomePersonaggio.Equals(string.Empty))
             Statici.nomePersonaggio = "PersonaggioDiProva";
         Statici.datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
         datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
+       
         if (Statici.multigiocatoreOn) return;
         if (Statici.sonoPassatoDallaScenaIniziale)
         {
             GameObject tmpObjP = Instantiate(Resources.Load(Statici.datiPersonaggio.Dati.nomeModello), GameObject.Find(Statici.datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
+           
             Statici.PersonaggioPrincipaleT = tmpObjP.transform;
             RecuperaDizionariDiplomazia();
         }
@@ -83,6 +87,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    
+
     public void RecuperaDizionariDiplomazia()
     {
         Statici.dizionarioDiNemici.Clear();
@@ -91,6 +97,7 @@ public class GameManager : MonoBehaviour
         List<classiPersonaggi> tmpNemici = null;
         List<classiPersonaggi> tmpAmici = null;
         List<classiPersonaggi> tmpIndifferenti = null;
+  
         for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
         {
             tmpNemici = new List<classiPersonaggi>();
@@ -119,6 +126,7 @@ public class GameManager : MonoBehaviour
                         break;
                 }
             }
+            
             if (!Statici.dizionarioDiNemici.ContainsKey((classiPersonaggi)i))
                 Statici.dizionarioDiNemici.Add((classiPersonaggi)i, tmpNemici);
             if (!Statici.dizionarioDiAmici.ContainsKey((classiPersonaggi)i))
@@ -129,7 +137,8 @@ public class GameManager : MonoBehaviour
         if (vistaGoblin != null)
             vistaGoblin.AmiciziaCambiata = true;
         if (oggettoDaMarcare != null)
-            oggettoDaMarcare.AmiciziaCambiata = true;
+            oggettoDaMarcare.ControllaAmicizia = true;
+        Statici.diplomaziaAggiornata = true;
     }
 
 

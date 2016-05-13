@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 public enum ProprietaPersonaggio
 {
-   
+
     CharacterM,
     CharacterF,
     Classe,
     Giocabile,
     Vita,
     Livello,
-    Mana,  
+    Mana,
     Xp,
     Attacco,
     Difesa
@@ -19,7 +19,6 @@ public enum ProprietaPersonaggio
 
 public enum classiPersonaggi
 {
-    indefinito = -1,
     magoAcqua,
     goblin,
     magoTerra
@@ -88,8 +87,8 @@ public class caratteristichePersonaggioV2 : ScriptableObject
 [System.Serializable]
 public class ClasseValorPersonaggioV2
 {
-    
-    public string nomeM="nessun nome";
+
+    public string nomeM = "nessun nome";
     public string nomeF = "nessun nome";
     public classiPersonaggi classe = classiPersonaggi.magoAcqua;
     public bool giocabile = false;

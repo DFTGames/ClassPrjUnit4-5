@@ -107,6 +107,7 @@ public class ManagerIniziale : MonoBehaviour
 
     private void Start()
     {
+        Statici.inGioco = false;
         me = this;
         CambiaAlphaPannelloSfondo();
         nomeScenaText.gameObject.SetActive(false);
@@ -234,11 +235,13 @@ public class ManagerIniziale : MonoBehaviour
                     datiPersonaggio.Salva();
                 }
                 datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
+             
                 if (datiDiplomazia.Dati.tipoEssere[0] == null)
                 {
                     for (int i = 0; i < Statici.databseInizialeAmicizie.classiEssere.Length; i++)
                     {
                         datiDiplomazia.Dati.tipoEssere[i] = Statici.databseInizialeAmicizie.classiEssere[i];
+                   
                     }
                     for (int i = 0; i < Statici.databseInizialeAmicizie.classiEssere.Length; i++)
                     {
@@ -247,10 +250,12 @@ public class ManagerIniziale : MonoBehaviour
                         for (int j = 0; j < Statici.databseInizialeAmicizie.classiEssere.Length; j++)
                         {
                             datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] = Statici.databseInizialeAmicizie.matriceAmicizie[i].elementoAmicizia[j];
+                        
                         }
                     }
                     datiDiplomazia.Salva();
                 }
+              
                 if (!Statici.multigiocatoreOn)//SOLO SINGLEPLAYER
                     StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
                 else//solo multiplayer

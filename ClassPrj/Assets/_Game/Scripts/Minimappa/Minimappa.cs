@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Minimappa : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Minimappa : MonoBehaviour
     public float misuraSpriteNemico = 20f;
     public Sprite spritePortale;
     public float misuraSpritePortale = 30f;
+    public List<DatiMarcatoreMulti> listaUserIdMarcati = new List<DatiMarcatoreMulti>();
 
     private Vector3 distanzaCameraOggetto;
     private Vector3 distanzaPlayerOggetto;
@@ -58,7 +60,7 @@ public class Minimappa : MonoBehaviour
             PlayerT = Statici.PersonaggioPrincipaleT;
         else
             PlayerT = Statici.playerLocaleGO.transform;
-        PlayerT.GetComponent<OggettiDaMarcare>().enabled = false;//poi quando facciamo il discorso del network diciamo se è il giocatore locale allora ci comportiamo di conseguenza.
+        PlayerT.GetComponent<OggettiDaMarcare>().enabled = false;
         larghezzaMinimappa = rawImage.rectTransform.rect.width;
     }
 
@@ -102,6 +104,23 @@ public class Minimappa : MonoBehaviour
             oggettoDaMarcare.BloccaOggetto = false;
             distanzaMassimaLetta = false;
         }
+    }
+
+    /// <summary>
+    /// caso multiplayer: se un utente esce dalla scena devo distruggere il suo marcatore.
+    /// </summary>
+    /// <param name="userID"></param>
+    public void DistruggiMarcatore(int userID)
+    {
+        for(int i = 0; i < listaUserIdMarcati.Count; i++)
+        {
+            if(listaUserIdMarcati[i].idUtente==userID)
+            {
+                Destroy(listaUserIdMarcati[i].gameObject);
+                listaUserIdMarcati.RemoveAt(i);
+            }
+        }
+
     }
 
 }

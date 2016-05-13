@@ -16,28 +16,42 @@ import java.util.Hashtable;
 public class Player {
     
     Transform t;
-    float vita=10;
+    float vita;
+    float vitaMax;            
     String modello;
     String nome;
-    String scena;
-    //String nomeSpawnPoint="";
+    String classe;
+    String scena; 
     boolean vivo=true;
     int numeroUccisioni=0;
     int numeroSpawn=0;
     boolean postoAssegnato=false;
     boolean pronto=false;
+    float mana;
+    float manaMax;
+    float attacco;
+    float difesa;
+    boolean giocabile=false;
+    float xp;
+    float xpMax;
+    int livello=0;
      
-            
-    public float RiceviDanno(float vitaAttuale,float danno){               
-        vitaAttuale-=danno;        
-        return vitaAttuale;
-    }    
-    
-    public float RiceviVita(float vitaAttuale,float vitaAggiuntiva){
+    //l'ho usato per risorgere passandogli la vita massima ma questo metodo si può usare anche nel caso si beva una pozione:
+    public float RiceviVita(float vitaAttuale,float vitaAggiuntiva, float vitaMassima){
         vitaAttuale+=vitaAggiuntiva;
+        vitaAttuale=Clamp(vitaAttuale, 0, vitaMassima);
         return vitaAttuale;
-    }
+    }  
     
-   
+    public float RiceviDanno(float vitaAttuale,float danno,float vitaMassima){               
+        vitaAttuale-=danno;  
+        vitaAttuale=Clamp(vitaAttuale, 0, vitaMassima);
+        return vitaAttuale;
+    }   
     
+      public float Clamp(float valore, float minimo, float massimo){
+        return Math.max(minimo, Math.min(massimo, valore));
+   }
+    
+ 
 }

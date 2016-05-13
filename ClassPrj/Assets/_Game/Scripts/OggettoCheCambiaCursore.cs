@@ -19,7 +19,8 @@ public class OggettoCheCambiaCursore : MonoBehaviour
 
     private void OnMouseExit()
     {
-        if (SceneManager.GetActiveScene().buildIndex <=2)
+       
+        if (!Statici.inGioco)
             return;
         Cursore.CambiaCursore(0, 0);
         if (luceSelezioneGO != null)
@@ -28,16 +29,17 @@ public class OggettoCheCambiaCursore : MonoBehaviour
 
     private void OnMouseOver()
     {
-        if (SceneManager.GetActiveScene().buildIndex <=2)
+        if (!Statici.inGioco)
             return;
         Cursore.CambiaCursore(gameObject.layer, miaClasse);
         if (luceSelezioneGO != null)
             luceSelezioneGO.SetActive(true);
     }
+  
 
     private void Start()
     {
-        if (SceneManager.GetActiveScene().buildIndex <=2)
+        if (!Statici.inGioco)
             return;
         datiPersonaggio = GetComponent<DatiPersonaggio>();
         if (datiPersonaggio != null)
@@ -46,4 +48,5 @@ public class OggettoCheCambiaCursore : MonoBehaviour
             luceSelezioneGO = transform.FindChild("luceSelezione").gameObject;
         }
     }
+   
 }

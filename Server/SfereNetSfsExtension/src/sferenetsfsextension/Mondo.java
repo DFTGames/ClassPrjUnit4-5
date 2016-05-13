@@ -43,6 +43,7 @@ public class Mondo {
        this.extension = extension;   
     }
 
+  
     public User GetWin(Room room){
         
         for(int i=0;i<room.getUserList().size();i++){
@@ -56,6 +57,8 @@ public class Mondo {
         
         return userWinner;
     }
+    
+   
     
         public void RiempiSpawn(int numeroMassimo){
             for(int i=0;i<numeroMassimo;i++){

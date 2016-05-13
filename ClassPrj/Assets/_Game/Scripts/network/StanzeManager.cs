@@ -33,7 +33,7 @@ public class StanzeManager : MonoBehaviour {
     private const string EXTENSION_CLASS = "sferenetsfsextension.SfereNetSfsExtension";
     private const string EXTENSION_ID = "sfere";
     private static StanzeManager me; 
-    private Dictionary<int, GameObject> dizionarioGOVisualizzati = new Dictionary<int, GameObject>();  
+    private Dictionary<int, GameObject> dizionarioStanzeDiGioco = new Dictionary<int, GameObject>();  
     private SmartFox sfs;
     private int utentiInStanza = 0;
     private CanvasGroup contenutoPartiteCanvasGroup;
@@ -111,10 +111,10 @@ public class StanzeManager : MonoBehaviour {
     public void OnRoomRemoved(BaseEvent evt)
     {
         Room room = (Room)evt.Params["room"];
-        if (dizionarioGOVisualizzati.ContainsKey(room.Id))
+        if (dizionarioStanzeDiGioco.ContainsKey(room.Id))
         {
-            Destroy(dizionarioGOVisualizzati[room.Id]);
-            dizionarioGOVisualizzati.Remove(room.Id);
+            Destroy(dizionarioStanzeDiGioco[room.Id]);
+            dizionarioStanzeDiGioco.Remove(room.Id);
             PopolaListaPartite();
         }
 
@@ -141,9 +141,9 @@ public class StanzeManager : MonoBehaviour {
     }
 
     private void OnConnectionLost(BaseEvent evt)
-    {
+    {   //stampare errore, aspettare tot secondi e poi caricare scena.
         Statici.nomePersonaggio = string.Empty;
-        ResettaErrore();
+        ResettaErrore();       
         BloccaSbloccaCanvas(true);
         sfs.RemoveAllEventListeners();
         SceneManager.LoadScene("ScenaZero");
@@ -224,9 +224,21 @@ public class StanzeManager : MonoBehaviour {
     /// <param name="userId"></param>
     private void InvioDatiPlayerLocale(int userId)
     {
+        //passare tutti i dati e non solo questi
         SFSObject objOut = new SFSObject();
         objOut.PutUtfString("model", Statici.datiPersonaggio.Dati.nomeModello);
         objOut.PutUtfString("nome", Statici.datiPersonaggio.Dati.nomePersonaggio);
+        objOut.PutUtfString("classe", Statici.datiPersonaggio.Dati.classe);
+        objOut.PutBool("gioc", true);
+        objOut.PutInt("liv", Statici.datiPersonaggio.Dati.Livello);
+        objOut.PutFloat("mana", Statici.datiPersonaggio.Dati.Mana);
+        objOut.PutFloat("manaM", Statici.datiPersonaggio.Dati.ManaMassimo);
+        objOut.PutFloat("exp", Statici.datiPersonaggio.Dati.Xp);
+        objOut.PutFloat("expM", Statici.datiPersonaggio.Dati.XPMassimo);
+        objOut.PutFloat("vita", Statici.datiPersonaggio.Dati.Vita);
+        objOut.PutFloat("vitaM", Statici.datiPersonaggio.Dati.VitaMassima);
+        objOut.PutFloat("att", Statici.datiPersonaggio.Dati.Attacco);
+        objOut.PutFloat("dif", Statici.datiPersonaggio.Dati.difesa);
         objOut.PutUtfString("scena", SceneManager.GetActiveScene().name);
         objOut.PutInt("usIn", userId);
         sfs.Send(new ExtensionRequest("spawnMe", objOut, sfs.LastJoinedRoom));
@@ -252,7 +264,7 @@ public class StanzeManager : MonoBehaviour {
     }
 
     private void PopolaListaPartite()
-    {
+    {//sostituire i dizionari fare un getcomponentin children nel contenitore delle partite così mi recupero l'id dal gamelistitem
         List<Room> rooms = sfs.RoomManager.GetRoomList();
 
         for (int i = 0; i < rooms.Count; i++)
@@ -262,18 +274,18 @@ public class StanzeManager : MonoBehaviour {
 
             if (!rooms[i].IsGame || rooms[i].IsHidden || rooms[i].IsPasswordProtected)
                 continue;
-            else if (dizionarioGOVisualizzati.ContainsKey(rooms[i].Id) && rooms[i].UserCount < rooms[i].MaxUsers)
+            else if (dizionarioStanzeDiGioco.ContainsKey(rooms[i].Id) && rooms[i].UserCount < rooms[i].MaxUsers)
 
-                nuovoGOPartita = dizionarioGOVisualizzati[roomId];
+                nuovoGOPartita = dizionarioStanzeDiGioco[roomId];
             else if (rooms[i].UserCount < rooms[i].MaxUsers && !rooms[i].GetVariable("gameStarted").GetBoolValue())
             {
                 nuovoGOPartita = Instantiate(bottonePartita) as GameObject;
-                dizionarioGOVisualizzati.Add(roomId, nuovoGOPartita);
+                dizionarioStanzeDiGioco.Add(roomId, nuovoGOPartita);
             }
-            else if (dizionarioGOVisualizzati.ContainsKey(rooms[i].Id) && rooms[i].UserCount == rooms[i].MaxUsers)
+            else if (dizionarioStanzeDiGioco.ContainsKey(rooms[i].Id) && rooms[i].UserCount == rooms[i].MaxUsers)
             {
-                Destroy(dizionarioGOVisualizzati[rooms[i].Id]);
-                dizionarioGOVisualizzati.Remove(rooms[i].Id);
+                Destroy(dizionarioStanzeDiGioco[rooms[i].Id]);
+                dizionarioStanzeDiGioco.Remove(rooms[i].Id);
             }
             if (nuovoGOPartita != null)
             {
@@ -301,11 +313,12 @@ public class StanzeManager : MonoBehaviour {
     // Use this for initialization
     private void Start()
     {
+        Statici.inGioco = false;
         canvasGroupChat.interactable = true;
         canvasGroup.interactable = true;
         Statici.datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);    
         Statici.finePartita = false;
-        sliderUserMax.minValue = 2;
+        sliderUserMax.minValue = 1;
         sliderUserMax.maxValue = numeroMassimoUtentiInStanza;
         contenutoPartiteCanvasGroup = ContenutoListaPartite.GetComponent<CanvasGroup>();
         BloccaSbloccaCanvas(true);
@@ -340,27 +353,25 @@ public class StanzeManager : MonoBehaviour {
     public void InviaMessaggioChat()
     {
         string messaggioChat = inputChat.text;       
-        if (messaggioChat == string.Empty)
+        if (messaggioChat.Trim() == string.Empty)
             return;
         inputChat.text = string.Empty;
-        sfs.Send(new PublicMessageRequest(messaggioChat));
-          
+        SFSObject objOut = new SFSObject();
+        objOut.PutUtfString("nome",Statici.nomePersonaggio);
+        sfs.Send(new PublicMessageRequest(messaggioChat,objOut));
+        canvasGroupChat.interactable = false;
     }
     private void OnPublicMessage(BaseEvent evt)
     {
         User sender = (User)evt.Params["sender"];
-        string msg = (string)evt.Params["message"];      
+        SFSObject objIn = (SFSObject)evt.Params["data"];
+        string msg = (string)evt.Params["message"];          
+        string mittente = (sender.IsItMe) ? "Tu" : objIn.GetUtfString("nome");
+        string coloreSender = (mittente == "Tu") ? "<color=#FF3333>" : "<color=#6600FF>";
+        contenutoChat.text += coloreSender + "<b>" + mittente + " : " + "</b>" + "</color>" + " <color=#0000FF>" + msg + "</color>" + "\n";
+        canvasGroupChat.interactable = true;                
 
-        switch (msg)
-        {
-            default:
-                string mittente = (sender.IsItMe) ? "Tu" : sender.Name;
-                string coloreSender = (mittente == "Tu") ? "<color=#FF3333>" : "<color=#6600FF>";
-                contenutoChat.text += coloreSender + "<b>" + mittente + " : " + "</b>" + "</color>" + " <color=#0000FF>" + msg + "</color>" + "\n";
-                canvasGroupChat.interactable = true;                
-
-                break;
-        }
+         
     }
     /// <summary>
     /// Se il client riceve il comando:
@@ -443,7 +454,7 @@ public class StanzeManager : MonoBehaviour {
         GameObject remotePlayer = Instantiate(Resources.Load(modello), posizione, rotazione) as GameObject;
         remotePlayer.GetComponentInChildren<TextMesh>().text = nomeP;
         DatiPersonaggio datiPersonaggioRemoto = remotePlayer.GetComponent<DatiPersonaggio>();
-        datiPersonaggioRemoto.Utente = user;
+        datiPersonaggioRemoto.Utente = user;        
         datiPersonaggioRemoto.IndicePunteggio = numeroSpawn;
         Statici.PlayersRemoti.Add(user, remotePlayer);
         if (listaPronti.Contains(user))

@@ -38,16 +38,27 @@ public class RespawnHandler extends BaseClientRequestHandler{
         
         List<User> listaUtentiInScena=mondo.GetUtentiInScena(user.getLastJoinedRoom(), mondo.dizionarioUtentiPlayer.get(user).scena);
         
-        
+        trace("l'utente"+user.getName()+"vita:"+mondo.dizionarioUtentiPlayer.get(user).vita);
         ISFSObject objOut=new SFSObject();
         objOut.putUtfString("model", mondo.dizionarioUtentiPlayer.get(user).modello);
         objOut.putUtfString("nome", mondo.dizionarioUtentiPlayer.get(user).nome);
+         objOut.putUtfString("classe", mondo.dizionarioUtentiPlayer.get(user).classe);
         objOut.putFloat("vita",  mondo.dizionarioUtentiPlayer.get(user).vita);
+        objOut.putFloat("vitaM",  mondo.dizionarioUtentiPlayer.get(user).vitaMax);
+        objOut.putFloat("mana",  mondo.dizionarioUtentiPlayer.get(user).mana);
+        objOut.putFloat("manaM",  mondo.dizionarioUtentiPlayer.get(user).manaMax);
+        objOut.putFloat("xp",  mondo.dizionarioUtentiPlayer.get(user).xp);
+        objOut.putFloat("xpM",  mondo.dizionarioUtentiPlayer.get(user).xpMax);
+        objOut.putFloat("att",  mondo.dizionarioUtentiPlayer.get(user).attacco);
+        objOut.putFloat("dif",  mondo.dizionarioUtentiPlayer.get(user).difesa);
+        objOut.putInt("liv",  mondo.dizionarioUtentiPlayer.get(user).livello);  
+        objOut.putBool("gioc", mondo.dizionarioUtentiPlayer.get(user).giocabile);
         objOut.putFloat("x",  mondo.dizionarioUtentiPlayer.get(user).t.x);
         objOut.putFloat("y",  mondo.dizionarioUtentiPlayer.get(user).t.y);
         objOut.putFloat("z",  mondo.dizionarioUtentiPlayer.get(user).t.z);
         objOut.putFloat("rot",  mondo.dizionarioUtentiPlayer.get(user).t.rot);
         objOut.putUtfString("scena", mondo.dizionarioUtentiPlayer.get(user).scena);
+       
        // objOut.putInt("nUcc", mondo.dizionarioUtentiPlayer.get(user).numeroUccisioni);
         objOut.putInt("ut", user.getId());
         //objOut.putInt("nSpawn", mondo.dizionarioUtentiPlayer.get(user).numeroSpawn);

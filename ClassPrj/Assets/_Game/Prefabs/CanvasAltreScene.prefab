@@ -678,23 +678,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!1 &164662
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
-  m_Component:
-  - 224: {fileID: 22493074}
-  - 222: {fileID: 22297692}
-  - 114: {fileID: 11414184}
-  m_Layer: 5
-  m_Name: Messaggio
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &170498
 GameObject:
   m_ObjectHideFlags: 1
@@ -1298,14 +1281,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b53bc22be2387174cb1bfeb6a8bf3784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  messaggio: {fileID: 11414184}
   punteggi: {fileID: 11446094}
-  sgruppaButton: {fileID: 11415300}
   punteggiGiocatori:
   - {fileID: 11435120}
   - {fileID: 11462352}
   - {fileID: 11404528}
   - {fileID: 11468394}
+  sgruppaButton: {fileID: 11415300}
 --- !u!114 &11406840
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1467,39 +1449,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 'Nome:'
---- !u!114 &11414184
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 164662}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
-    m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 10
-    m_MaxSize: 90
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: Messaggio
 --- !u!114 &11415300
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1969,6 +1918,7 @@ MonoBehaviour:
   misuraSpriteNemico: 20
   spritePortale: {fileID: 21300000, guid: 386879030d946ad489432a14c4676320, type: 3}
   misuraSpritePortale: 30
+  listaUserIdMarcati: []
 --- !u!114 &11435120
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2054,13 +2004,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bf4594e3d2429f45a89bcb8b30bd9dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvaMultiGO: {fileID: 186364}
   chiAttaccaText: {fileID: 11489782}
   pannelloMorto: {fileID: 112046}
   vitaNemicoText: {fileID: 11495412}
   vitaNomeText: {fileID: 11420740}
-  canvasGroup: {fileID: 0}
-  inputChat: {fileID: 0}
-  contenutoChat: {fileID: 0}
 --- !u!114 &11438930
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3088,7 +3036,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: vita e id nemico
+  m_Text: nome e vita user selezionato
 --- !u!114 &11496170
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3429,12 +3377,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 198208}
---- !u!222 &22297692
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 164662}
 --- !u!222 &22298520
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -3820,7 +3762,6 @@ RectTransform:
   - {fileID: 22434368}
   - {fileID: 22448350}
   - {fileID: 22476980}
-  - {fileID: 22493074}
   m_Father: {fileID: 22403810}
   m_RootOrder: 5
   m_AnchorMin: {x: 0, y: 0}
@@ -4603,24 +4544,6 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!224 &22493074
-RectTransform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 164662}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children: []
-  m_Father: {fileID: 22436034}
-  m_RootOrder: 11
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 212}
-  m_SizeDelta: {x: 0, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22493466
 RectTransform:
