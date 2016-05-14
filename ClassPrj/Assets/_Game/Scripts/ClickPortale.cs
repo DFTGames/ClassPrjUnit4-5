@@ -13,7 +13,10 @@ public class ClickPortale : MonoBehaviour {
     
         destinazione = gameObject.GetComponentInParent<TriggerPortale>().destinazione;
         particelle = GetComponent<ParticleSystem>();
-        playerT = Statici.PersonaggioPrincipaleT;
+        if (!Statici.multigiocatoreOn)
+            playerT = Statici.PersonaggioPrincipaleT;
+        else
+            playerT = Statici.playerLocaleGO.transform;
     }
 
   
@@ -26,11 +29,20 @@ public class ClickPortale : MonoBehaviour {
 
         if (distanza.magnitude < 5f)
         {
-            GestoreCanvasAltreScene.nomeProssimaScena = destinazione;        
-            Statici.datiPersonaggio.Dati.posizioneCheckPoint = transform.parent.name + "RitornoPortale";
-            Statici.datiPersonaggio.Dati.nomeScena = destinazione;
-            Statici.datiPersonaggio.Salva();
-            StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica(destinazione));
+            if (!Statici.multigiocatoreOn)
+            {
+                GestoreCanvasAltreScene.nomeProssimaScena = destinazione;
+                Statici.datiPersonaggio.Dati.posizioneCheckPoint = transform.parent.name + "RitornoPortale";
+                Statici.datiPersonaggio.Dati.nomeScena = destinazione;
+                Statici.datiPersonaggio.Salva();
+                StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica(destinazione));
+            }
+            else
+            {
+                GestoreCanvasAltreScene.nomeProssimaScena = destinazione;
+                Statici.posizioneInizialeMulti = transform.parent.name + "RitornoPortale";
+                ManagerNetwork.CambiaScenaPortale(destinazione);
+            }
         }
      
     }

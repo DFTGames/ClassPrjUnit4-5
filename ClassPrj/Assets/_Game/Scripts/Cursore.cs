@@ -13,6 +13,7 @@ public class Cursore : MonoBehaviour
     private static Cursore me;
     private int cursorSizeX = 32;
     private int cursorSizeY = 32;
+    private classiPersonaggi classePlayer;
 
     // private RaycastHit hit;
     private bool ignoraTrigger = false;
@@ -35,11 +36,18 @@ public class Cursore : MonoBehaviour
                 break;
 
             case (11)://layer EssereVivente: l'immagine può essere un fumetto se si è amici o una spadina se si è nemici.
-
-                if (Statici.dizionarioDiNemici[Statici.personaggio.miaClasse].Contains(miaClasse))
-                    me.immagineCursore = me.immagineCombattere;
+                if (!Statici.multigiocatoreOn)
+                {
+                    if (Statici.dizionarioDiNemici[Statici.personaggio.miaClasse].Contains(miaClasse))
+                        me.immagineCursore = me.immagineCombattere;
+                    else
+                        me.immagineCursore = me.immagineParlare;
+                }
                 else
-                    me.immagineCursore = me.immagineParlare;
+                {      //immagine combattere perchè nel death match sono tutti contro tutti, e comunque le amicizie in multiplayer dovrebbero eventualmente essere decise dal server.
+                        me.immagineCursore = me.immagineCombattere;
+
+                }
                 break;
 
             default://altri layer : l'immagine è quella di default cioè una freccia dorata.
@@ -58,5 +66,6 @@ public class Cursore : MonoBehaviour
         me = this;
         Cursor.visible = true;
         immagineCursore = immagineNormale;
+        
     }
 }

@@ -19,7 +19,11 @@ public class OggettiDaMarcare : MonoBehaviour
     private classiPersonaggi classePlayer;
     private bool sonoUnEssereVivente = false;
     private float misuraSprite = 20f;
-    private bool amiciziaCambiata = true;
+    private bool controllaAmicizia = true;
+    private bool valoreInizializzato = false;
+    private bool giocabile = false;
+    private DatiPersonaggio datiPersonaggio;
+    private bool spriteDiplomaziaMulti = false;
 
     public bool BloccaOggetto
     {
@@ -62,24 +66,23 @@ public class OggettiDaMarcare : MonoBehaviour
         }
     }
 
-    public bool AmiciziaCambiata
+    public bool ControllaAmicizia
     {
         get
         {
-            return amiciziaCambiata;
+            return controllaAmicizia;
         }
 
         set
         {
-            amiciziaCambiata = value;
+            controllaAmicizia = value;
         }
     }
 
     // Use this for initialization
     void Start()
     {
-        // if (SceneManager.GetActiveScene().buildIndex == 0)   PROVVISORIO
-        if (SceneManager.GetActiveScene().buildIndex <=2)
+        if (!Statici.inGioco)
             return;
         minimappa = GameObject.Find("Minimappa").GetComponent<Minimappa>();
         switch (gameObject.layer)
@@ -90,29 +93,58 @@ public class OggettiDaMarcare : MonoBehaviour
                 sonoUnEssereVivente = false;
                 break;
             case (11):
-                miaClasse = gameObject.GetComponent<DatiPersonaggio>().miaClasse;
-                classePlayer = Statici.PersonaggioPrincipaleT.GetComponent<DatiPersonaggio>().miaClasse;
-                spriteOggetto = minimappa.spriteAmico;
-                misuraSprite = minimappa.misuraSpriteAmico;
+                datiPersonaggio = gameObject.GetComponent<DatiPersonaggio>();
+                miaClasse = datiPersonaggio.miaClasse;
+                giocabile = datiPersonaggio.Giocabile;
+                if (!Statici.multigiocatoreOn)
+                {
+                    classePlayer = Statici.PersonaggioPrincipaleT.GetComponent<DatiPersonaggio>().miaClasse;
+                    spriteOggetto = minimappa.spriteAmico;
+                    misuraSprite = minimappa.misuraSpriteAmico;
+                }
+                else
+                {
+                    //per ora messi tutti nemici perchè se sono multiplayer le amicizie vanno decise sul server mentre i non giocabili non li visualizzo.      
+                    if (giocabile)
+                    {
+                        spriteOggetto = minimappa.spriteNemico;
+                        misuraSprite = minimappa.misuraSpriteNemico;
+                    }
+                    else
+                        return;//se è multiplayer e non giocabile disattivo il personaggio AI per cui non deve vedersi il suo marcatore.
+
+                }
                 sonoUnEssereVivente = true;
+
                 break;
             default:
                 Debug.LogError("l'oggetto " + gameObject.name + " non appartiene ad un layer preso in considerazione dalla minimappa.");
                 break;
         }
+
         Marcatore = new GameObject("Marcatore");
         imageMarcatore = Marcatore.AddComponent<Image>();
+        if (Statici.multigiocatoreOn && giocabile)
+        {
+            DatiMarcatoreMulti datiMarcatoreMultiutente = Marcatore.AddComponent<DatiMarcatoreMulti>();
+            datiMarcatoreMultiutente.idUtente = datiPersonaggio.Utente;
+            minimappa.listaUserIdMarcati.Add(datiMarcatoreMultiutente);
+        }
+
         Marcatore.transform.SetParent(minimappa.transform);
         imageMarcatore.sprite = spriteOggetto;
         imageMarcatore.rectTransform.localPosition = Vector3.zero;
         imageMarcatore.rectTransform.localScale = Vector3.one;
         imageMarcatore.rectTransform.sizeDelta = new Vector2(misuraSprite, misuraSprite);
         playerT = minimappa.PlayerT;
+
+
     }
 
     private void CambiaSpritePerDiplomazia()
     {
-        if (Statici.dizionarioDiNemici[miaClasse].Contains(classePlayer))
+
+        if (Statici.dizionarioDiNemici[classePlayer].Contains(miaClasse))
         {
             spriteOggetto = minimappa.spriteNemico;
             misuraSprite = minimappa.misuraSpriteNemico;
@@ -124,21 +156,22 @@ public class OggettiDaMarcare : MonoBehaviour
         }
         imageMarcatore.sprite = spriteOggetto;
 
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //  if (SceneManager.GetActiveScene().buildIndex == 0)  PROVVISORIO
-        if (SceneManager.GetActiveScene().buildIndex <=2)
+        if (!Statici.inGioco)
             return;
+
         NuovaPosizioneMarcatore = minimappa.CalcolaPosizioneMarcatore(transform.position); //imposto la posizione
         imageMarcatore.rectTransform.localPosition = NuovaPosizioneMarcatore;//assegno la posizione.       
         minimappa.GestisciVisibilitaMarcatore(this); //Gestisco La visibilità o l'invisibilità del marcatore
-        if (sonoUnEssereVivente && AmiciziaCambiata)
+        if (!Statici.multigiocatoreOn && sonoUnEssereVivente && ControllaAmicizia)
         {
             CambiaSpritePerDiplomazia();
-            AmiciziaCambiata = false;
+            //ControllaAmicizia = false;
         }
     }
     public bool Visibile()
@@ -153,4 +186,6 @@ public class OggettiDaMarcare : MonoBehaviour
     {
         imageMarcatore.gameObject.SetActive(true);
     }
+
+
 }

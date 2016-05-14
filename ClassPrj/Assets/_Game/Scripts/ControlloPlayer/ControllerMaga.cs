@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -16,6 +17,8 @@ public class ControllerMaga : MonoBehaviour
 
     public bool corsaPerDefault = false;
     public bool IsPointAndClick;
+    public bool MovementDirty { get; set; }
+
 
     #endregion Variabili PUBLIC
 
@@ -46,6 +49,8 @@ public class ControllerMaga : MonoBehaviour
     private bool Destinazione = false;
     private DatiPersonaggio datiPersonaggio;
     private SwitchVivoMorto switchVivoMorto;
+    private ManagerNetwork managerNetwork;
+    private GestoreCanvasNetwork gestoreCanvas;
 
     public DatiPersonaggio DatiPersonaggio
     {
@@ -63,6 +68,7 @@ public class ControllerMaga : MonoBehaviour
 
     private void Start()
     {
+        MovementDirty = false;
         transform_m = GetComponent<Transform>();
 
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -96,22 +102,32 @@ public class ControllerMaga : MonoBehaviour
         capsulaCentro = new Vector3(0.0f, capsula.center.y, 0.0f);
         IsPointAndClick = true;
         layerAlberi = ~layerAlberi;
-        switchVivoMorto = GetComponent<SwitchVivoMorto>();
-        if (SceneManager.GetActiveScene().buildIndex <=2)
-            return;
+        switchVivoMorto = GetComponent<SwitchVivoMorto>();   
+            if (!Statici.inGioco)
+                return;
         DatiPersonaggio = GetComponent<DatiPersonaggio>();
-        Statici.RegistraDatiPersonaggio(DatiPersonaggio);
-        //se all'inizio della partita si ritrova a 0 di vita, gli do 1 di vita così non nasce morto.
-        if (DatiPersonaggio.Vita <= 0f)
+
+        if (!Statici.multigiocatoreOn)
         {
-            DatiPersonaggio.Vita = 1f;
-            SalvaDatiVita();
+            Statici.RegistraDatiPersonaggio(DatiPersonaggio);
+            //se all'inizio della partita si ritrova a 0 di vita, gli do 1 di vita così non nasce morto.
+            if (DatiPersonaggio.Vita <= 0f)
+            {
+                DatiPersonaggio.Vita = 1f;
+                SalvaDatiVita();
+            }
+        }
+        else
+        {
+
+            managerNetwork = GameObject.Find("ManagerNetwork").GetComponent<ManagerNetwork>();
+            gestoreCanvas = GameObject.Find("ManagerCanvasMultiplayer").GetComponent<GestoreCanvasNetwork>();
         }
     }
 
     private void Update()
     {
-        if (SceneManager.GetActiveScene().buildIndex <=2)
+        if (!Statici.inGioco || (Statici.multigiocatoreOn && !DatiPersonaggio.SonoUtenteLocale))
         {
             rigidBody.isKinematic = false;
             capsula.enabled = true;
@@ -143,7 +159,7 @@ public class ControllerMaga : MonoBehaviour
                                 navMeshAgent.SetDestination(posMouse);
                             break;
                         case 11:
-                            if (hit.collider.CompareTag("goblin"))
+                            if(hit.collider.transform!=gameObject.transform) //se non sono io                          
                                 Attacco();
                             break;
                     }
@@ -175,6 +191,8 @@ public class ControllerMaga : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
                 Attacco();
+
+
             /* ACCOVACCIAMENTO
             if (!voglioSaltare && aTerra && Input.GetKey(KeyCode.C))
              {
@@ -220,6 +238,13 @@ public class ControllerMaga : MonoBehaviour
             rigidBody.velocity = new Vector3(rigidBody.velocity.x, forzaSalto, rigidBody.velocity.z);
             float cicloCamminata = Mathf.Repeat(animatore.GetCurrentAnimatorStateInfo(0).normalizedTime + cicloOffset, 1);
             jumpLeg = (cicloCamminata < 0.5f ? 1 : -1) * movimento.z;
+        }
+
+        //xMultiplayer:
+        if (Statici.multigiocatoreOn && Statici.inGioco)
+        {
+            if (rigidBody.velocity.magnitude > 0 || navMeshAgent.velocity.magnitude > 0)
+                MovementDirty = true;
         }
         // */
         /*CONTROLLO ABBASSATO
@@ -299,6 +324,23 @@ public class ControllerMaga : MonoBehaviour
         }
     }
 
+    /*
+      void OnMouseDown()
+      {
+          if (!Statici.multigiocatoreOn || (Statici.multigiocatoreOn && DatiPersonaggio.SonoUtenteLocale))
+              return;
+          managerNetwork.NemicoColpito(DatiPersonaggio.Utente);
+          gestoreCanvas.ResettaScrittaNemicoAttaccato(true);
+          gestoreCanvas.UserDaVisualizzareNemico = DatiPersonaggio.Utente;
+          gestoreCanvas.VitaDaVisualizzareNemico = DatiPersonaggio.Vita.ToString();
 
+      }
+      void OnMouseExit()
+      {
+         
+            if(Statici.inGioco)
+              gestoreCanvas.ResettaScrittaNemicoAttaccato(false);
+      }*/
 
+   
 }

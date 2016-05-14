@@ -16,21 +16,21 @@ import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
  */
 public class ResurrezioneHandler extends BaseClientRequestHandler {
 
+    
     @Override
     public void handleClientRequest(User user, ISFSObject isfso) {
-       float vitaAggiuntiva=isfso.getFloat("vitaM");
-      SfereNetSfsExtension ext = (SfereNetSfsExtension) this.getParentExtension();
-        Mondo mondo=ext.world; 
-  
-      Player player=mondo.dizionarioUtentiPlayer.get(user);
-       float vitaAttuale=mondo.dizionarioUtentiPlayer.get(user).vita;
-       
-       vitaAttuale=player.RiceviVita(vitaAttuale, vitaAggiuntiva);
-       mondo.dizionarioUtentiPlayer.get(user).vita=vitaAttuale;
-       ISFSObject objOut=new SFSObject();
-       objOut.putFloat("vita", vitaAttuale);
-       objOut.putInt("u", user.getId());
-       send("res",objOut,user.getLastJoinedRoom().getUserList());
+    float vitaAggiuntiva=isfso.getFloat("vitaM");
+     
+    SfereNetSfsExtension ext = (SfereNetSfsExtension) this.getParentExtension();
+    Mondo mondo=ext.world; 
+    
+    Player player=mondo.dizionarioUtentiPlayer.get(user); 
+    float vitaAttuale=player.RiceviVita(player.vita, vitaAggiuntiva,player.vitaMax);
+    mondo.dizionarioUtentiPlayer.get(user).vita=vitaAttuale;//salvo la vita attuale dopo averla aggiunta.
+    ISFSObject objOut=new SFSObject();
+    objOut.putFloat("vita", vitaAttuale);
+    objOut.putInt("u", user.getId());
+    send("res",objOut,mondo.GetUtentiInScena(user.getLastJoinedRoom(), mondo.dizionarioUtentiPlayer.get(user).scena));
     }
     
 }

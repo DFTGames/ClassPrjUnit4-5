@@ -202,7 +202,11 @@ public class FSM : MonoBehaviour
     }
 
     private void Start()
-    {        
+    {
+        //per ora in caso multiplayer disattiviamo tutti i personaggi AI: poi si vede
+        if (Statici.multigiocatoreOn)
+            gameObject.SetActive(false);
+
         miaTransform = GetComponent<Transform>();
         agente = GetComponent<NavMeshAgent>();
         animatore = GetComponent<Animator>();

@@ -17,6 +17,7 @@ public class GestoreCanvasAltreScene : MonoBehaviour
     public static string nomeProssimaScena=string.Empty;
     public Image cursoreImage;
     public GameObject pannelloTest;
+   
 
     private static GestoreCanvasAltreScene me;
     private bool fatto = false;

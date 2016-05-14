@@ -24,16 +24,8 @@ public class SpawnMeHandler extends BaseClientRequestHandler{
   
     
     @Override
-    public void handleClientRequest(User user, ISFSObject isfso) {
+    public void handleClientRequest(User user, ISFSObject isfso) {       
        
-       
-        String modello=isfso.getUtfString("model");
-        String nome=isfso.getUtfString("nome");
-     /*   float x=isfso.getFloat("x");
-        float y=isfso.getFloat("y");
-        float z=isfso.getFloat("z");
-        float rotazione=isfso.getFloat("rot");
-        float vita=isfso.getFloat("vita");*/
         int userDaAvvisare=isfso.getInt("usIn");
         String scena=isfso.getUtfString("scena");
         
@@ -43,10 +35,20 @@ public class SpawnMeHandler extends BaseClientRequestHandler{
         Mondo mondo=ext.world; 
         Player player=new Player();
        // player.t=new Transform(x, y, z, rotazione);
-        player.vita=10;
-        player.modello=modello;
-        player.nome=nome;
-        player.scena=scena;
+        player.vita=isfso.getFloat("vita");
+        player.vitaMax=isfso.getFloat("vitaM");
+        player.modello=isfso.getUtfString("model");
+        player.nome=isfso.getUtfString("nome");
+        player.classe=isfso.getUtfString("classe");
+        player.scena=isfso.getUtfString("scena");
+        player.attacco=isfso.getFloat("att");
+        player.difesa=isfso.getFloat("dif");
+        player.mana=isfso.getFloat("mana");
+        player.manaMax=isfso.getFloat("manaM");
+        player.livello=isfso.getInt("liv");
+        player.xp=isfso.getFloat("exp");
+        player.xpMax=isfso.getFloat("expM");
+        player.giocabile=isfso.getBool("gioc");
         player.vivo=true;
         player.numeroUccisioni=0;        
         

@@ -31,11 +31,12 @@ public class TransformPlayer extends BaseClientRequestHandler{
        float rotazione=isfso.getFloat("rot");      
         Player player=new Player();        
         player.t=new Transform(x, y, z, rotazione);
+        
          SfereNetSfsExtension ext = (SfereNetSfsExtension) this.getParentExtension();
         Mondo mondo=ext.world; 
       
         mondo.dizionarioUtentiPlayer.get(user).t=player.t;
-       
+     
         ISFSObject objOut=new SFSObject();
         objOut.putFloat("x", mondo.dizionarioUtentiPlayer.get(user).t.x);
         objOut.putFloat("y", mondo.dizionarioUtentiPlayer.get(user).t.y);

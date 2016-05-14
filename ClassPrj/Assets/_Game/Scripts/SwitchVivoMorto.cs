@@ -10,26 +10,44 @@ public class SwitchVivoMorto : MonoBehaviour {
     private ControllerMaga controller;
     private Animator animatore; 
     private Rigidbody[] rbFigli;
+    private ManagerNetwork managerNetwork;
 
 	// Use this for initialization
-	void Start () {       
+	void Start () {
+        
         controller = GetComponent<ControllerMaga>();       
         animatore = GetComponent<Animator>();    
         ColliderRagdoll = GetComponentsInChildren<Collider>();
         rbFigli= GetComponentsInChildren<Rigidbody>();
         DisattivaRagdoll();
-        
-	}
+        if (!Statici.multigiocatoreOn ||  !Statici.inGioco)
+            return;
+        managerNetwork = GameObject.Find("ManagerNetwork").GetComponent<ManagerNetwork>();
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
-        if (SceneManager.GetActiveScene().buildIndex <=2)
-            return;
+     
+            if (!Statici.inGioco)
+                return;
         if (Input.GetKeyDown(KeyCode.F))
-            controller.RiceviDanno(controller.DatiPersonaggio.VitaMassima);
+        {
+            if(!Statici.multigiocatoreOn)
+               controller.RiceviDanno(controller.DatiPersonaggio.VitaMassima);
+          /*  else
+            {
+                if (Statici.datiPersonaggioLocale.SonoUtenteLocale)
+                    managerNetwork.NemicoColpito(Statici.userLocaleId);
+            }*/
+        }
         else
-            if (Input.GetKeyDown(KeyCode.G))       
-            controller.Resuscita(controller.DatiPersonaggio.VitaMassima);      
+            if (Input.GetKeyDown(KeyCode.G))
+        {
+            if (!Statici.multigiocatoreOn)
+                controller.Resuscita(controller.DatiPersonaggio.VitaMassima);
+            
+        }      
         
            
 	}
@@ -60,7 +78,8 @@ public class SwitchVivoMorto : MonoBehaviour {
         }
         controller.enabled = true;
         agente = GetComponent<NavMeshAgent>();
-        agente.enabled = true;     
+        if(agente!=null)
+           agente.enabled = true;     
         animatore.enabled = true; 
     }
 }

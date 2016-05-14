@@ -23,6 +23,8 @@ public class Statici
     public static Percorsi databaseInizialePercorsi;
     public static GameData databseInizialeAmicizie;
     public static string classeDiColuiCheVuoleCambiareAmicizia = string.Empty;//da verificare se servirà ancora o no
+    public static bool inGioco = false;//usera al posto di buildindex
+
 
 
 
@@ -37,6 +39,9 @@ public class Statici
     public static bool ownerUscito = false;
     public static bool partenza = false;
     public static bool finePartita = false;
+    public static string posizioneInizialeMulti = string.Empty;
+    public static string nomeModello = string.Empty;
+    public static bool diplomaziaAggiornata = false;
     //fine variabili multigiocatore
 
 
@@ -120,8 +125,9 @@ public class Statici
     /// <param name="datiPersonaggioDaRegistrare"></param>
     public static void RegistraDatiPersonaggio(DatiPersonaggio datiPersonaggioDaRegistrare)
     {
-        registroDatiPersonaggi.Add(datiPersonaggioDaRegistrare.GetInstanceID(), datiPersonaggioDaRegistrare);
+        registroDatiPersonaggi.Add(datiPersonaggioDaRegistrare.GetInstanceID(), datiPersonaggioDaRegistrare);        
         RecuperaDati(datiPersonaggioDaRegistrare);
+       
     }
     /// <summary>
     /// recupera i dati del personaggio(giocatore o AI) e li assegna
@@ -146,22 +152,35 @@ public class Statici
         }
         else
         {  //se è giocabile recupero i dati dal file serializzato
-            registroDatiPersonaggi[tmpID].VitaMassima = Statici.datiPersonaggio.Dati.VitaMassima;
-            registroDatiPersonaggi[tmpID].Vita = Statici.datiPersonaggio.Dati.Vita;
-            registroDatiPersonaggi[tmpID].ManaMassimo = Statici.datiPersonaggio.Dati.ManaMassimo;
-            registroDatiPersonaggi[tmpID].Mana = Statici.datiPersonaggio.Dati.Mana;
-            registroDatiPersonaggi[tmpID].Livello = Statici.datiPersonaggio.Dati.Livello;
-            registroDatiPersonaggi[tmpID].XpMassimo = Statici.datiPersonaggio.Dati.XPMassimo;
-            registroDatiPersonaggi[tmpID].Xp = Statici.datiPersonaggio.Dati.Xp;
-            registroDatiPersonaggi[tmpID].Attacco = Statici.datiPersonaggio.Dati.Attacco;
-            registroDatiPersonaggi[tmpID].Difesa = Statici.datiPersonaggio.Dati.difesa;
-            registroDatiPersonaggi[tmpID].Nome = Statici.datiPersonaggio.Dati.nomePersonaggio;
-            PersonaggioPrincipaleT.GetComponentInChildren<TextMesh>().text = registroDatiPersonaggi[tmpID].Nome;
-            GestoreCanvasAltreScene.AggiornaDati(datiStatistici);
+            
+                registroDatiPersonaggi[tmpID].VitaMassima = Statici.datiPersonaggio.Dati.VitaMassima;
+                registroDatiPersonaggi[tmpID].Vita = Statici.datiPersonaggio.Dati.Vita;
+                registroDatiPersonaggi[tmpID].ManaMassimo = Statici.datiPersonaggio.Dati.ManaMassimo;
+                registroDatiPersonaggi[tmpID].Mana = Statici.datiPersonaggio.Dati.Mana;
+                registroDatiPersonaggi[tmpID].Livello = Statici.datiPersonaggio.Dati.Livello;
+                registroDatiPersonaggi[tmpID].XpMassimo = Statici.datiPersonaggio.Dati.XPMassimo;
+                registroDatiPersonaggi[tmpID].Xp = Statici.datiPersonaggio.Dati.Xp;
+                registroDatiPersonaggi[tmpID].Attacco = Statici.datiPersonaggio.Dati.Attacco;
+                registroDatiPersonaggi[tmpID].Difesa = Statici.datiPersonaggio.Dati.difesa;
+                registroDatiPersonaggi[tmpID].Nome = Statici.datiPersonaggio.Dati.nomePersonaggio;
+                PersonaggioPrincipaleT.GetComponentInChildren<TextMesh>().text = registroDatiPersonaggi[tmpID].Nome;
+
+                GestoreCanvasAltreScene.AggiornaDati(datiStatistici);
+            
             Statici.personaggio = datiStatistici;
             classeDiColuiCheVuoleCambiareAmicizia = datiStatistici.miaClasse.ToString();
         }
+        
     }
+    public static void provaErrore(object oggetto)
+    {
+        if (oggetto == null)
+            Debug.Log("SONO NULLO");
+        else Debug.Log("Ecco valore del oggetto che mi hai passato  " + oggetto.ToString());
+
+
+    }
+  
 
 }
 

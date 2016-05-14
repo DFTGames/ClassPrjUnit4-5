@@ -13,6 +13,7 @@ public class ManagerScenaZero : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        Statici.inGioco = false;
         me = this;
         AttivaDisattivaCanvasGroupScelta(true);
         AttivaDisattivaCanvasGroupLogin(false);
