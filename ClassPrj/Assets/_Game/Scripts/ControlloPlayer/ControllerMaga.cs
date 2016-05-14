@@ -100,7 +100,7 @@ public class ControllerMaga : MonoBehaviour
         capsula = GetComponent<CapsuleCollider>();
         altezzaCapsula = capsula.height;
         capsulaCentro = new Vector3(0.0f, capsula.center.y, 0.0f);
-        IsPointAndClick = false;
+        IsPointAndClick = true;
         layerAlberi = ~layerAlberi;
         switchVivoMorto = GetComponent<SwitchVivoMorto>();   
             if (!Statici.inGioco)
@@ -127,7 +127,7 @@ public class ControllerMaga : MonoBehaviour
 
     private void Update()
     {
-        if (!Statici.inGioco)
+        if (!Statici.inGioco || (Statici.multigiocatoreOn && !DatiPersonaggio.SonoUtenteLocale))
         {
             rigidBody.isKinematic = false;
             capsula.enabled = true;
@@ -135,14 +135,6 @@ public class ControllerMaga : MonoBehaviour
             return;
         }
 
-
-        if (Statici.multigiocatoreOn && !DatiPersonaggio.SonoUtenteLocale)
-        {
-            rigidBody.isKinematic = false;
-            capsula.enabled = true;
-            navMeshAgent.enabled = false;
-            return;
-        }
         if (IsPointAndClick)
         {
             if (navMeshAgent.enabled == false)
@@ -167,7 +159,7 @@ public class ControllerMaga : MonoBehaviour
                                 navMeshAgent.SetDestination(posMouse);
                             break;
                         case 11:
-                            if (hit.collider.CompareTag("goblin"))
+                            if(hit.collider.transform!=gameObject.transform) //se non sono io                          
                                 Attacco();
                             break;
                     }

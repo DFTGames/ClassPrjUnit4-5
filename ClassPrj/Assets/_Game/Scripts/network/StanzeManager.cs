@@ -318,7 +318,7 @@ public class StanzeManager : MonoBehaviour {
         canvasGroup.interactable = true;
         Statici.datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);    
         Statici.finePartita = false;
-        sliderUserMax.minValue = 1;
+        sliderUserMax.minValue = 2;
         sliderUserMax.maxValue = numeroMassimoUtentiInStanza;
         contenutoPartiteCanvasGroup = ContenutoListaPartite.GetComponent<CanvasGroup>();
         BloccaSbloccaCanvas(true);

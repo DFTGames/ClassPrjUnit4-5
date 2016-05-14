@@ -8,9 +8,10 @@ public class GestoreCanvasNetwork : MonoBehaviour
     public GameObject pannelloMorto;
     public Text vitaNemicoText;
     public Text vitaNomeText;
-    /* public CanvasGroup canvasGroup;
-     public InputField inputChat;
-     public Text contenutoChat;*/   
+    public CanvasGroup canvasGroup;
+    public InputField inputChat;
+    public Text contenutoChat;
+    public Animator animatoreChat; 
 
     //  private static GestoreCanvas me;
     private bool miStannoAttaccando = false;
@@ -69,7 +70,7 @@ public class GestoreCanvasNetwork : MonoBehaviour
         pannelloMorto.SetActive(false);
         ResettaScrittaChiAttacca(false);
         ResettaScrittaNemicoAttaccato(false);
-        // AttivaDisattivaInputChat(true);
+        AttivaDisattivaInputChat(true);
         managerNet = GameObject.Find("ManagerNetwork").GetComponent<ManagerNetwork>();
     }
 
@@ -88,17 +89,22 @@ public class GestoreCanvasNetwork : MonoBehaviour
         }
     }
 
-    /*  public void AttivaDisattivaInputChat(bool attiva)
+    public void ApriChiudiChat()
+    {
+        animatoreChat.SetTrigger("chatOnOff");
+    }
+
+      public void AttivaDisattivaInputChat(bool attiva)
       {
           canvasGroup.interactable = attiva;
       }
 
       public void InviaMessaggioChat()
       {
-          if (inputChat.text != string.Empty)
+          if (inputChat.text.Trim() != string.Empty)
           {
               AttivaDisattivaInputChat(false);
-
+              
               managerNet.InviaChat(inputChat.text);
               inputChat.text = string.Empty;
           }
@@ -108,5 +114,5 @@ public class GestoreCanvasNetwork : MonoBehaviour
       {
           contenutoChat.text += "<color=#FF3333>" + "<b>" + mittente + " : "+ "</b>"+ "</color>"  +" <color=#0000FF>"+messaggio+"</color>"+ "\n";
           AttivaDisattivaInputChat(true);
-      }*/
+      }
 }

@@ -83,8 +83,10 @@ public class ManagerNetwork : MonoBehaviour
     }
 
     internal void InviaChat(string text)
-    {
-        sfs.Send(new PublicMessageRequest(text));
+    {        
+        SFSObject objOut = new SFSObject();
+        objOut.PutUtfString("nome", Statici.nomePersonaggio);
+        sfs.Send(new PublicMessageRequest(text,objOut));
     }
 
     internal void Resuscita()
@@ -93,11 +95,6 @@ public class ManagerNetwork : MonoBehaviour
         objOut.PutFloat("vitaM", Statici.datiPersonaggioLocale.VitaMassima);
         sfs.Send(new ExtensionRequest("res", objOut, sfs.LastJoinedRoom));
     }
-
-    /* internal void SparaPallottola()
-     {
-         sfs.Send(new PublicMessageRequest("spara"));
-     }*/
 
     private IEnumerator FinePartita()
     {
@@ -365,12 +362,11 @@ public class ManagerNetwork : MonoBehaviour
 
     private void OnPublicMessage(BaseEvent evt)
     {
-        /*  User sender = (User)evt.Params["sender"];
+          User sender = (User)evt.Params["sender"];
           string msg = (string)evt.Params["message"];
-
-          string mittente = (sender.IsItMe) ? "Tu" : Statici.PlayersRemoti[sender.Id].GetComponentInChildren<TextMesh>().text;
-          gestoreCanvas.ScriviMessaggioChat(mittente, msg);
-          */
+          SFSObject onjIn = (SFSObject)evt.Params["data"];
+          string mittente = (sender.IsItMe) ? "Tu" : onjIn.GetUtfString("nome");
+          gestoreCanvasNetwork.ScriviMessaggioChat(mittente, msg);        
     }
 
     private void OnRoomJoin(BaseEvent evt)
