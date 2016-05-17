@@ -28,7 +28,7 @@ MonoBehaviour:
   - {fileID: 11445916}
   - {fileID: 11472508}
   MasterBankRef: {fileID: 11409300}
-  stringsBankWriteTime: 635938512109004922
+  stringsBankWriteTime: 635942534653924457
   cacheVersion: 1
 --- !u!114 &11403558
 MonoBehaviour:
@@ -60,6 +60,21 @@ MonoBehaviour:
   Min: 0
   Max: 100
   Default: 100
+--- !u!114 &11409170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CriticalDamage
+  Min: 0
+  Max: 100
+  Default: 0
 --- !u!114 &11409300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,12 +87,27 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   Path: ./..\FMOD\ClassPrj\Build\Desktop\Bank_SFX.bank
-  lastModified: 635938512108994921
+  lastModified: 635942534653504433
   LoadResult: 0
   FileSizes:
   - Name: Desktop
     Value: 3375680
   Exists: 1
+--- !u!114 &11412274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Oceano
+  Min: 0
+  Max: 1
+  Default: 0
 --- !u!114 &11412546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,7 +135,7 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   Path: ./..\FMOD\ClassPrj\Build\Desktop\Bank_BGM.bank
-  lastModified: 635938512108534578
+  lastModified: 635942534653144412
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -156,6 +186,36 @@ MonoBehaviour:
   Min: 0
   Max: 3
   Default: 0
+--- !u!114 &11424372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: FMODStudioCache
+  m_EditorClassIdentifier: 
+  Name: Attack
+  Min: 0
+  Max: 3
+  Default: 0
+--- !u!114 &11425532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Death
+  Min: 0
+  Max: 100
+  Default: 100
 --- !u!114 &11425670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,6 +226,21 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
   m_Name: FMODStudioCache
+  m_EditorClassIdentifier: 
+  Name: CampFire
+  Min: 0
+  Max: 1
+  Default: 0
+--- !u!114 &11429038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
   m_EditorClassIdentifier: 
   Name: CampFire
   Min: 0
@@ -226,7 +301,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11403558}
+  - {fileID: 11425532}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11436690
@@ -248,7 +323,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11445330}
+  - {fileID: 11429038}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11437036
@@ -270,7 +345,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11412546}
+  - {fileID: 11409170}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11441278
@@ -292,7 +367,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11462128}
+  - {fileID: 11412274}
   MinDistance: 0
   MaxDistance: 10
 --- !u!114 &11444322
@@ -392,7 +467,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11416004}
+  - {fileID: 11424372}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11459596

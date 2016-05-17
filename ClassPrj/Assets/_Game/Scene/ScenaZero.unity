@@ -1127,7 +1127,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa246ee5b1f42564c9fb41fbcb8f4a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  host: 127.0.0.1
+  localhost: 127.0.0.1
+  remoteHost: 40.68.126.217
+  tipoHost: 1
   port: 9933
   zona: BasicExamples
   erroreText: {fileID: 579993535}

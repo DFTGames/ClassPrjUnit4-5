@@ -525,6 +525,7 @@ GameObject:
   m_Component:
   - 224: {fileID: 22476980}
   - 114: {fileID: 11405580}
+  - 114: {fileID: 11406820}
   m_Layer: 5
   m_Name: ManagerNetwork
   m_TagString: Untagged
@@ -1592,6 +1593,17 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11406820
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 128070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d82fc201991953f4fa274bd80b0e5d18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11406840
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3565,7 +3577,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11431274}
   m_HandleRect: {fileID: 22457604}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

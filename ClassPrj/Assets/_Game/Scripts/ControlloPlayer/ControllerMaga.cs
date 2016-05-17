@@ -17,7 +17,7 @@ public class ControllerMaga : MonoBehaviour
 
     public bool corsaPerDefault = false;
     public bool IsPointAndClick;
-    public bool MovementDirty { get; set; }
+    //public bool MovementDirty { get; set; }  TOLTO BY LUCA
 
 
     #endregion Variabili PUBLIC
@@ -64,11 +64,31 @@ public class ControllerMaga : MonoBehaviour
             datiPersonaggio = value;
         }
     }
+
+    public Rigidbody RigidBody
+    {
+        get
+        {
+            return rigidBody;
+        }
+
+   
+    }
+
+    public NavMeshAgent NavMeshAgent
+    {
+        get
+        {
+            return navMeshAgent;
+        }
+
+    
+    }
     #endregion Variabili PRIVATE
 
     private void Start()
     {
-        MovementDirty = false;
+       // MovementDirty = false; TOLTO BY LUCA
         transform_m = GetComponent<Transform>();
 
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -241,11 +261,13 @@ public class ControllerMaga : MonoBehaviour
         }
 
         //xMultiplayer:
+        /* TOLTO BYE LUCA
         if (Statici.multigiocatoreOn && Statici.inGioco)
         {
             if (rigidBody.velocity.magnitude > 0 || navMeshAgent.velocity.magnitude > 0)
                 MovementDirty = true;
         }
+        /*
         // */
         /*CONTROLLO ABBASSATO
         Ray ray = new Ray(transform_m.position + (Vector3.up * capsulaCentro.y), Vector3.up);

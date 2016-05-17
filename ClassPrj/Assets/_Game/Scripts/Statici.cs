@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Mono.Data.Sqlite;
+using System;
 //using UnityEditor;
 
 public class Statici
@@ -31,6 +32,7 @@ public class Statici
     //inizio variabili per multigiocatore:
     public static bool multigiocatoreOn = false;
     public static Dictionary<int, GameObject> PlayersRemoti = new Dictionary<int, GameObject>();
+    public static Dictionary<int, NetworkPlayer> PlayerTransform = new Dictionary<int, NetworkPlayer>(); //AGGIUNTO DA LUCA
     public static GameObject playerLocaleGO;
     public static DatiPersonaggio datiPersonaggioLocale;
     public static int userLocaleId = 0;
@@ -172,16 +174,44 @@ public class Statici
         }
         
     }
+
+    internal static void AggiungiDizionarioNetwork(int utente,GameObject player,bool locale)
+    {
+
+        if (!PlayersRemoti.ContainsKey(utente))
+        {
+            if (!locale) PlayersRemoti.Add(utente, player);
+
+            NetworkPlayer loc = player.AddComponent<NetworkPlayer>();
+            loc.playerLocale = locale;
+            loc.User = utente;
+            PlayerTransform.Add(utente, loc);
+            player.AddComponent<NetworkTransformInterpolation>();  //AGGIUNTO interpolazione
+        }
+    }
+
+    internal static void RimuoviDizionarioUtenteNetwork(int utente)
+    {
+        if (PlayerTransform.ContainsKey(utente))
+        {
+            PlayerTransform.Remove(utente);
+            PlayersRemoti.Remove(utente);
+        }
+    }
+
+    internal static void RimuoviDizionarioAllNetwork()
+    {
+        PlayersRemoti.Clear();
+        PlayerTransform.Clear();
+    }
+
     public static void provaErrore(object oggetto)
     {
         if (oggetto == null)
             Debug.Log("SONO NULLO");
         else Debug.Log("Ecco valore del oggetto che mi hai passato  " + oggetto.ToString());
 
-
     }
-  
-
 }
 
 
