@@ -1129,7 +1129,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   localhost: 127.0.0.1
   remoteHost: 40.68.126.217
-  tipoHost: 1
+  tipoHost: 0
   port: 9933
   zona: BasicExamples
   erroreText: {fileID: 579993535}

@@ -38,8 +38,8 @@ public class ManagerNetwork : MonoBehaviour
     }
 
     public static void TimeSyncRequest()
-    {
-        me.sfs.Send(new ExtensionRequest("getTime", new SFSObject(), me.sfs.LastJoinedRoom));
+    {   if (!Statici.inGioco) return;
+            me.sfs.Send(new ExtensionRequest("getTime", new SFSObject(), me.sfs.LastJoinedRoom));
     }
 
 
@@ -134,6 +134,29 @@ public class ManagerNetwork : MonoBehaviour
       //  me.controllerPlayer.MovementDirty = false;
     }
    
+    public static void InviaAnimazioneControllerTast(int userId, float forward, float turn,bool onGround , float jump , float jumpLeg,bool attacco1,bool attacco2)
+    {
+        SFSObject objOut = new SFSObject();
+        objOut.PutFloat("f", forward);
+        objOut.PutFloat("t", turn);
+        objOut.PutBool("o", onGround);
+        objOut.PutFloat("j", jump);
+        objOut.PutFloat("jL", jumpLeg);
+        objOut.PutBool("a1", attacco1);
+        objOut.PutBool("a2", attacco2);
+        me.sfs.Send(new ExtensionRequest("SanT", objOut,me. sfs.LastJoinedRoom));
+
+    }
+    public static void InviaAnimazioneControllerClick(int userId, float forward, bool attacco1, bool attacco2)
+    {
+        SFSObject objOut = new SFSObject();
+        objOut.PutFloat("f", forward);
+        objOut.PutBool("a1", attacco1);
+        objOut.PutBool("a2", attacco2);
+        me.sfs.Send(new ExtensionRequest("SanC", objOut, me.sfs.LastJoinedRoom));
+
+    }
+
     private void InvioDatiPlayerLocale(int userId)
     {
         SFSObject objOut = new SFSObject();
@@ -200,7 +223,6 @@ public class ManagerNetwork : MonoBehaviour
                 rotazioneIniziale.x= sfsObjIn.GetFloat("rx");
                 rotazioneIniziale.y= sfsObjIn.GetFloat("ry");
                 rotazioneIniziale.z= sfsObjIn.GetFloat("rz");
-              //  float rotazioneIniziale = sfsObjIn.GetFloat("rot");
 
                 if (sfs.MySelf.Id == utente)
                 {
@@ -222,7 +244,9 @@ public class ManagerNetwork : MonoBehaviour
                 if (!Statici.PlayersRemoti.ContainsKey(utente))
                 {
                     GameObject remotePlayer = Instantiate(Resources.Load(modello),posizioneIniziale, Quaternion.Euler(rotazioneIniziale.x, rotazioneIniziale.y, rotazioneIniziale.z)) as GameObject; 
-                    remotePlayer.GetComponent<ControllerMaga>().enabled = false;
+                    remotePlayer.GetComponent<ControllerMaga>().enabled = false;  //???
+                    Statici.aggiungiComponenteAnimazione(remotePlayer,false);  //AGGIUNTO PER LE ANIMAZIONI
+                   
                     DatiPersonaggio datiPersonaggioRemoto = remotePlayer.GetComponent<DatiPersonaggio>();
                     datiPersonaggioRemoto.SonoUtenteLocale = false;
                     datiPersonaggioRemoto.VitaMassima = vitaMax;
@@ -253,21 +277,6 @@ public class ManagerNetwork : MonoBehaviour
 
                 break;
 
-            /*
-        case ("regT"):
-            int user = sfsObjIn.GetInt("u");
-            if (Statici.datiPersonaggioLocale.Utente == user)
-                return;
-
-            Vector3 pos = new Vector3(0, 1, 0);
-            pos.x = sfsObjIn.GetFloat("x");
-            pos.y = sfsObjIn.GetFloat("y");
-            pos.z = sfsObjIn.GetFloat("z");
-            float rotazione = sfsObjIn.GetFloat("rot");
-            if (Statici.PlayersRemoti.ContainsKey(user))
-                Statici.PlayersRemoti[user].GetComponent<InterpolazioneRemota>().SetTransform(new Vector3(pos.x, pos.y, pos.z), Quaternion.Euler(0, rotazione, 0), true);
-            break;
-            */
             case ("regT"):   //MODIFCA BY LUCA
                 int user = sfsObjIn.GetInt("u");
                 if (Statici.datiPersonaggioLocale.Utente == user)
@@ -281,13 +290,27 @@ public class ManagerNetwork : MonoBehaviour
                 rot.x = sfsObjIn.GetFloat("rx");
                 rot.y = sfsObjIn.GetFloat("ry");
                 rot.z = sfsObjIn.GetFloat("rz");
-              //  float rotazione = sfsObjIn.GetFloat("rot");
 
                 NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(pos, rot);
                
                 if (Statici.PlayerTransform.ContainsKey(user))
                 Statici.PlayerTransform[user].ricevitransform(net, user);
 
+                break;
+            case ("anT"):
+                int user1 = sfsObjIn.GetInt("id");
+
+                if (Statici.datiPersonaggioLocale.Utente != user1 && Statici.PlayersRemoti.ContainsKey(user1))                                 
+                        Statici.PlayersRemoti[user1].GetComponent<AnimSyncronRiceiver>().eseguiAnimazioniRemoteT(sfsObjIn);                
+                    return;
+
+                break;
+            case ("anC"):
+                int user2 = sfsObjIn.GetInt("id");
+            
+                if (Statici.datiPersonaggioLocale.Utente != user2 && Statici.PlayersRemoti.ContainsKey(user2))  
+                    Statici.PlayersRemoti[user2].GetComponent<AnimSyncronRiceiver>().eseguiAnimazioniRemoteC(sfsObjIn);
+                return;
                 break;
             case ("danno"):
                 int utenteColpitoId = sfsObjIn.GetInt("uci");
@@ -317,25 +340,7 @@ public class ManagerNetwork : MonoBehaviour
                 }
 
                 break;
-            /*  case ("raggio"):
-                  int utenteCheInviaRaggio = sfsObjIn.GetInt("ur");
-                  float distanzaRaggio = sfsObjIn.GetFloat("r");
-                  if (Statici.datiPersonaggioLocale.Utente == utenteCheInviaRaggio)
-                  {
-                      Statici.playerLocaleGO.transform.FindChild("Raggio").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
-                      Statici.playerLocaleGO.transform.FindChild("Raggio1").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
-                      Statici.playerLocaleGO.transform.FindChild("Raggio2").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
-                  }
-                  else
-                  {
-                      if (Statici.PlayersRemoti.ContainsKey(utenteCheInviaRaggio))
-                      {
-                          Statici.PlayersRemoti[utenteCheInviaRaggio].transform.FindChild("Raggio").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
-                          Statici.PlayersRemoti[utenteCheInviaRaggio].transform.FindChild("Raggio1").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
-                          Statici.PlayersRemoti[utenteCheInviaRaggio].transform.FindChild("Raggio2").GetComponentInChildren<Raggio>().Distanza = distanzaRaggio;
-                      }
-                  }
-                  break;*/
+ 
             case ("res"):
                 int uId = sfsObjIn.GetInt("u");
                 float vitaResurrezione = sfsObjIn.GetFloat("vita");
@@ -489,8 +494,8 @@ public class ManagerNetwork : MonoBehaviour
 
     private void SpawnaPlayerLocale()
     {
-        Statici.playerLocaleGO = Instantiate(Resources.Load(Statici.nomeModello), GameObject.Find(Statici.posizioneInizialeMulti + Statici.numeroPostoSpawn.ToString()).transform.position, Quaternion.identity) as GameObject;
-        Statici.playerLocaleGO.GetComponent<ControllerMaga>().enabled = true;
+        Statici.playerLocaleGO = Instantiate(Resources.Load(Statici.nomeModello), GameObject.Find(Statici.posizioneInizialeMulti + Statici.numeroPostoSpawn.ToString()).transform.position, Quaternion.identity) as GameObject;      
+        Statici.aggiungiComponenteAnimazione(Statici.playerLocaleGO,true);  //AGGIUNTO PER LE ANIMAZIONI
         Statici.playerLocaleGO.GetComponentInChildren<TextMesh>().text = Statici.nomePersonaggio;
         Statici.datiPersonaggioLocale = Statici.playerLocaleGO.GetComponent<DatiPersonaggio>();
         Statici.datiPersonaggioLocale.Nome = Statici.nomePersonaggio;

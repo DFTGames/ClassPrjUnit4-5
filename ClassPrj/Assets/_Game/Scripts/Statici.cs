@@ -185,9 +185,12 @@ public class Statici
             NetworkPlayer loc = player.AddComponent<NetworkPlayer>();
             loc.playerLocale = locale;
             loc.User = utente;
+            
             PlayerTransform.Add(utente, loc);
-            player.AddComponent<NetworkTransformInterpolation>();  //AGGIUNTO interpolazione
+            player.AddComponent<NetworkTransformInterpolation>();  //AGGIUNTO interpolazione   
         }
+    //   foreach (var item in PlayersRemoti)
+      //      provaErrore("elemento ", item.Key);
     }
 
     internal static void RimuoviDizionarioUtenteNetwork(int utente)
@@ -201,15 +204,30 @@ public class Statici
 
     internal static void RimuoviDizionarioAllNetwork()
     {
-        PlayersRemoti.Clear();
+        PlayersRemoti.Clear();//elimino gli oggetti da dentro dizionario...ma gli oggetti devono essere messi a nullo
         PlayerTransform.Clear();
     }
 
-    public static void provaErrore(object oggetto)
+    public static void aggiungiComponenteAnimazione(GameObject obj,bool locale)
+    {
+        if (obj == null) return;
+
+        if (!locale && obj.GetComponent<AnimSyncronRiceiver>() == null)
+            obj.AddComponent<AnimSyncronRiceiver>();
+
+        if (locale && obj.GetComponent<AnimSyncronizeSender>() == null)
+        {
+            AnimSyncronizeSender tmp= obj.AddComponent<AnimSyncronizeSender>();
+            ControllerMaga t = obj.GetComponent<ControllerMaga>();
+            t.SyncAnimS = tmp;
+            tmp.Controller = t;
+        }
+    }
+    public static void provaErrore(string scriviNomeVariabile,object oggetto)
     {
         if (oggetto == null)
-            Debug.Log("SONO NULLO");
-        else Debug.Log("Ecco valore del oggetto che mi hai passato  " + oggetto.ToString());
+            Debug.Log("$Debug.Automatico : L'oggetto **" + scriviNomeVariabile + " **che mi hai passato e' : NULLO  " );
+        else Debug.Log("$Debug.Automatico : Ecco valore del oggetto **" + scriviNomeVariabile + " **che mi hai passato :  " + oggetto.ToString() );
 
     }
 }

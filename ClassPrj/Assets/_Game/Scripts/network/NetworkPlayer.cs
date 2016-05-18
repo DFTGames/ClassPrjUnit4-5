@@ -3,7 +3,6 @@ using System.Collections;
 
 public class NetworkPlayer : MonoBehaviour {
 
- 
     private int user=-2; //inizializzato alla cazzum...(e' fuori dal intervallo che verra usato)
     public bool playerLocale { get; set; }  
     private float tempoInvioTransorm = 0.1f;
