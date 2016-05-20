@@ -17,8 +17,6 @@ public class ControllerMaga : MonoBehaviour
 
     public bool corsaPerDefault = false;
     public bool IsPointAndClick;
-    public bool MovementDirty { get; set; }
-
 
     #endregion Variabili PUBLIC
 
@@ -52,6 +50,10 @@ public class ControllerMaga : MonoBehaviour
     private ManagerNetwork managerNetwork;
     private GestoreCanvasNetwork gestoreCanvas;
 
+    //AGGIUNTO PER MULTIPLAYER
+    private AnimSyncronizeSender syncAnimS = null;
+    private bool at1, at2 = false;
+    //
     public DatiPersonaggio DatiPersonaggio
     {
         get
@@ -64,11 +66,43 @@ public class ControllerMaga : MonoBehaviour
             datiPersonaggio = value;
         }
     }
+
+    public Rigidbody RigidBody
+    {
+        get
+        {
+            return rigidBody;
+        }
+
+
+    }
+
+    public NavMeshAgent NavMeshAgent
+    {
+        get
+        {
+            return navMeshAgent;
+        }
+
+
+    }
+
+    public AnimSyncronizeSender SyncAnimS
+    {
+        get
+        {
+            return syncAnimS;
+        }
+
+        set
+        {
+            syncAnimS = value;
+        }
+    }
     #endregion Variabili PRIVATE
 
     private void Start()
     {
-        MovementDirty = false;
         transform_m = GetComponent<Transform>();
 
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -102,9 +136,9 @@ public class ControllerMaga : MonoBehaviour
         capsulaCentro = new Vector3(0.0f, capsula.center.y, 0.0f);
         IsPointAndClick = true;
         layerAlberi = ~layerAlberi;
-        switchVivoMorto = GetComponent<SwitchVivoMorto>();   
-            if (!Statici.inGioco)
-                return;
+        switchVivoMorto = GetComponent<SwitchVivoMorto>();
+        if (!Statici.inGioco)
+            return;
         DatiPersonaggio = GetComponent<DatiPersonaggio>();
 
         if (!Statici.multigiocatoreOn)
@@ -123,10 +157,13 @@ public class ControllerMaga : MonoBehaviour
             managerNetwork = GameObject.Find("ManagerNetwork").GetComponent<ManagerNetwork>();
             gestoreCanvas = GameObject.Find("ManagerCanvasMultiplayer").GetComponent<GestoreCanvasNetwork>();
         }
+
     }
 
     private void Update()
     {
+
+        //AGGIUNTA MULTIPLAYER
         if (!Statici.inGioco || (Statici.multigiocatoreOn && !DatiPersonaggio.SonoUtenteLocale))
         {
             rigidBody.isKinematic = false;
@@ -134,7 +171,7 @@ public class ControllerMaga : MonoBehaviour
             navMeshAgent.enabled = false;
             return;
         }
-
+        //
         if (IsPointAndClick)
         {
             if (navMeshAgent.enabled == false)
@@ -159,14 +196,15 @@ public class ControllerMaga : MonoBehaviour
                                 navMeshAgent.SetDestination(posMouse);
                             break;
                         case 11:
-                            if(hit.collider.transform!=gameObject.transform) //se non sono io                          
+                            if (hit.collider.transform != gameObject.transform) //se non sono io                          
                                 Attacco();
                             break;
                     }
                 }
             }
             animatore.SetFloat("Forward", navMeshAgent.velocity.normalized.magnitude);
-
+            //AGGIUNTA MULTIPLAYER
+            //  if (Statici.multigiocatoreOn && syncAnimS!=null) syncAnimS.forward = navMeshAgent.velocity.normalized.magnitude;
         }
         else // Not Point & Click
         {
@@ -240,13 +278,7 @@ public class ControllerMaga : MonoBehaviour
             jumpLeg = (cicloCamminata < 0.5f ? 1 : -1) * movimento.z;
         }
 
-        //xMultiplayer:
-        if (Statici.multigiocatoreOn && Statici.inGioco)
-        {
-            if (rigidBody.velocity.magnitude > 0 || navMeshAgent.velocity.magnitude > 0)
-                MovementDirty = true;
-        }
-        // */
+
         /*CONTROLLO ABBASSATO
         Ray ray = new Ray(transform_m.position + (Vector3.up * capsulaCentro.y), Vector3.up);
 
@@ -265,6 +297,27 @@ public class ControllerMaga : MonoBehaviour
         //animatore.SetBool("Crouch", abbassato);
         if (!aTerra && !IsPointAndClick)
             animatore.SetFloat("Jump", rigidBody.velocity.y);
+
+        //AGGIUNTA MULTIPLAYER
+        if (Statici.multigiocatoreOn && syncAnimS != null)
+        {
+            if (!IsPointAndClick)//DA CONTROLLARE IL NON PUNTA E CLICCA...
+                syncAnimS.Forward = movimento.z * velocitaSpostamento;
+            else
+                syncAnimS.Forward = navMeshAgent.velocity.normalized.magnitude;
+
+            syncAnimS.Turn = rotazione;
+            syncAnimS.OnGround = aTerra;
+            syncAnimS.Jump = rigidBody.velocity.y;
+            syncAnimS.JumpLeg = jumpLeg;
+            syncAnimS.Attacco1 = at1;
+            syncAnimS.Attacco2 = at2;
+
+            syncAnimS.controlloDirty();
+            at1 = false;  //essendo trigger dopo essere passato a syncANims lo riporto a false
+            at2 = false;   //essendo trigger dopo essere passato a syncANims lo riporto a false
+        }
+
     }
 
     void Attacco()
@@ -272,10 +325,16 @@ public class ControllerMaga : MonoBehaviour
         if (!EventSystem.current.IsPointerOverGameObject() && !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco1") && !animatore.GetCurrentAnimatorStateInfo(0).IsName("Attacco2"))
         {
             if (Input.GetMouseButtonDown(0) && !voglioSaltare && aTerra)
+            {
                 animatore.SetTrigger("attacco1");
+                at1 = true;
+            }
 
             if (Input.GetMouseButtonDown(1) && !voglioSaltare && aTerra)
+            {
                 animatore.SetTrigger("attacco2");
+                at2 = true;
+            }
         }
     }
 
@@ -342,5 +401,5 @@ public class ControllerMaga : MonoBehaviour
               gestoreCanvas.ResettaScrittaNemicoAttaccato(false);
       }*/
 
-   
+
 }

@@ -9,24 +9,41 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.SceneManagement;
 
+public enum scegliHost
+{
+    localhost,
+    remotehost
+}
+
 public class ControllerLogin : MonoBehaviour {
 
-    public string host = "127.0.0.1";
+    public string localhost = "127.0.0.1";
+    public string remoteHost = "40.68.126.217";
+    public scegliHost tipoHost = scegliHost.remotehost;
     public int port = 9933;
     public string zona = "BasicExamples";
     public Text erroreText;
     public InputField casellaNome;
-   
 
     private SmartFox sfs;
-   
+    private string host;
 
 
     // Use this for initialization
     void Start () {
         Application.runInBackground = true;
         erroreText.text = string.Empty;
-        
+        switch (tipoHost)
+        {
+            case scegliHost.localhost:
+                host = localhost;
+                break;
+            case scegliHost.remotehost:
+                host = remoteHost;
+                break;
+            default:
+                break;
+        }     
 	}
 	
 	// Update is called once per frame
