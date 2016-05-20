@@ -138,7 +138,7 @@ public class AnimSyncronizeSender : MonoBehaviour {
                 Pforward = forward;
                 Pattacco1 = attacco1;
                 Pattacco2 = attacco2;
-                ManagerNetwork.InviaAnimazioneControllerClick(user, forward, attacco1, attacco2);
+                ManagerNetwork.InviaAnimazioneControllerClick(forward, attacco1, attacco2);
             }
 
         }
@@ -151,7 +151,7 @@ public class AnimSyncronizeSender : MonoBehaviour {
             PjumpLeg = jumpLeg;
             Pattacco1 = attacco1;
             Pattacco2 = attacco2;  
-            ManagerNetwork.InviaAnimazioneControllerTast(user, forward, turn, onGround, jump, jumpLeg,attacco1,attacco2);
+            ManagerNetwork.InviaAnimazioneControllerTast(forward, turn, onGround, jump, jumpLeg,attacco1,attacco2);
         }       
     }
 }

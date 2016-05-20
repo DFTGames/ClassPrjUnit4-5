@@ -11,7 +11,7 @@ import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
 import java.util.Dictionary;
 import java.util.Hashtable;
-import javafx.scene.transform.Transform;
+//import javafx.scene.transform.Transform;
 
 /**
  *

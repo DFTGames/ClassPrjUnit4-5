@@ -12,7 +12,7 @@ import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
 import java.util.Date;
 import java.util.List;
 
-/**
+/*
  * Animazione tramite tastiera
  * @author Luca
  */

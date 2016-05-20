@@ -134,7 +134,7 @@ public class ManagerNetwork : MonoBehaviour
       //  me.controllerPlayer.MovementDirty = false;
     }
    
-    public static void InviaAnimazioneControllerTast(int userId, float forward, float turn,bool onGround , float jump , float jumpLeg,bool attacco1,bool attacco2)
+    public static void InviaAnimazioneControllerTast( float forward, float turn,bool onGround , float jump , float jumpLeg,bool attacco1,bool attacco2)
     {
         SFSObject objOut = new SFSObject();
         objOut.PutFloat("f", forward);
@@ -147,7 +147,7 @@ public class ManagerNetwork : MonoBehaviour
         me.sfs.Send(new ExtensionRequest("SanT", objOut,me. sfs.LastJoinedRoom));
 
     }
-    public static void InviaAnimazioneControllerClick(int userId, float forward, bool attacco1, bool attacco2)
+    public static void InviaAnimazioneControllerClick(float forward, bool attacco1, bool attacco2)
     {
         SFSObject objOut = new SFSObject();
         objOut.PutFloat("f", forward);
