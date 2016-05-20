@@ -109,18 +109,7 @@ public class ManagerNetwork : MonoBehaviour
         BottoneSgruppa();
     }
 
-    /*
-    private void InviaTransformLocali()
-    {
-        ISFSObject objOut = new SFSObject();
-        objOut.PutFloat("x", Statici.playerLocaleGO.transform.position.x);
-        objOut.PutFloat("y", Statici.playerLocaleGO.transform.position.y);
-        objOut.PutFloat("z", Statici.playerLocaleGO.transform.position.z);
-        objOut.PutFloat("rot", Statici.playerLocaleGO.transform.rotation.eulerAngles.y);
-        sfs.Send(new ExtensionRequest("regT", objOut, sfs.LastJoinedRoom));
-        controllerPlayer.MovementDirty = false;
-    }
-    */
+ 
     public static void  InviaTransformLocali(NetworkTransform ne)  //MODIFICA BY LUCA
     {
         ISFSObject objOut = new SFSObject();
@@ -147,7 +136,7 @@ public class ManagerNetwork : MonoBehaviour
         me.sfs.Send(new ExtensionRequest("SanT", objOut,me. sfs.LastJoinedRoom));
 
     }
-    public static void InviaAnimazioneControllerClick(float forward, bool attacco1, bool attacco2)
+    public static void InviaAnimazioneControllerClick( float forward, bool attacco1, bool attacco2)
     {
         SFSObject objOut = new SFSObject();
         objOut.PutFloat("f", forward);

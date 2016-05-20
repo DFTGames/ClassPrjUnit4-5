@@ -23,20 +23,8 @@ public class AnimSyncronizeSender : MonoBehaviour {
      bool Pattacco2;
     
     private int user = Statici.userLocaleId;
-    private ControllerMaga controller;
+    public ControllerMaga controller {get; set; }
 
-    public ControllerMaga Controller
-    {
-        get
-        {
-            return controller;
-        }
-
-        set
-        {
-            controller = value;
-        }
-    }
 
     public float Forward
     {

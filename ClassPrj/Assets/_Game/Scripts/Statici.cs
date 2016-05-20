@@ -212,15 +212,19 @@ public class Statici
     {
         if (obj == null) return;
 
+        ControllerMaga t = obj.GetComponent<ControllerMaga>();
+
         if (!locale && obj.GetComponent<AnimSyncronRiceiver>() == null)
-            obj.AddComponent<AnimSyncronRiceiver>();
+        {
+            AnimSyncronRiceiver tmp=obj.AddComponent<AnimSyncronRiceiver>();
+            tmp.controller = t;
+        }
 
         if (locale && obj.GetComponent<AnimSyncronizeSender>() == null)
         {
-            AnimSyncronizeSender tmp= obj.AddComponent<AnimSyncronizeSender>();
-            ControllerMaga t = obj.GetComponent<ControllerMaga>();
+            AnimSyncronizeSender tmp= obj.AddComponent<AnimSyncronizeSender>();       
             t.SyncAnimS = tmp;
-            tmp.Controller = t;
+            tmp.controller = t;
         }
     }
     public static void provaErrore(string scriviNomeVariabile,object oggetto)
