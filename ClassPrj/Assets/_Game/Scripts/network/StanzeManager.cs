@@ -137,7 +137,6 @@ public class StanzeManager : MonoBehaviour {
     {
         ResettaEventListner();
 
-        //  Statici.RimuoviDizionarioAllNetwork();
         Statici.playerRemotiGestore.Clear();
         SceneManager.LoadScene("Isola");
     }
@@ -187,17 +186,13 @@ public class StanzeManager : MonoBehaviour {
                 Statici.numeroPostoSpawn = -1;
                 Statici.datiPersonaggioLocale = null;
             }
-            // if (Statici.PlayersRemoti.Count != 0)
             if (Statici.playerRemotiGestore.Count != 0)
             {
-                // foreach (KeyValuePair<int, GameObject> playerRemoto in Statici.PlayersRemoti)
                 foreach (KeyValuePair<int, InfoPlayer> playerRemoto in Statici.playerRemotiGestore)
                 {
-                    //  Destroy(playerRemoto.Value);
                     Destroy(playerRemoto.Value.gameObject);
                 }
 
-                //  Statici.RimuoviDizionarioAllNetwork();
                 Statici.playerRemotiGestore.Clear();
             }             
         }
@@ -351,7 +346,6 @@ public class StanzeManager : MonoBehaviour {
 
 
          Statici.playerLocaleGO = Instantiate(Resources.Load(Statici.datiPersonaggio.Dati.nomeModello), startPoint.position, Quaternion.identity) as GameObject;
-        //aggiunto by LUCA
         NetworkPlayer netPlayer=Statici.playerLocaleGO.AddComponent<NetworkPlayer>();
         netPlayer.playerLocale = true;
         //
@@ -416,9 +410,9 @@ public class StanzeManager : MonoBehaviour {
                     Vector3 posizioneIniziale = GameObject.Find("Postazione" + Statici.numeroPostoSpawn.ToString()).transform.position;
                     Statici.playerLocaleGO.transform.position = posizioneIniziale;
                     Statici.playerLocaleGO.GetComponentInChildren<TextMesh>().text = Statici.nomePersonaggio;
-                    //AGGIUNTO BY LUCA                 
+                
                     Statici.playerLocaleGO.GetComponent<NetworkPlayer>().User = utente;
-                    //FINE
+
                     Statici.datiPersonaggioLocale = Statici.playerLocaleGO.GetComponent<DatiPersonaggio>();
                     Statici.datiPersonaggioLocale.IndicePunteggio = numeroSpawn;
                     Statici.datiPersonaggioLocale.Utente = Statici.userLocaleId;
@@ -426,7 +420,6 @@ public class StanzeManager : MonoBehaviour {
                     buttonReady.interactable = true;
                     return;
                 }
-                //   if (!Statici.PlayersRemoti.ContainsKey(utente))
                 if (!Statici.playerRemotiGestore.ContainsKey(utente))
                 {
                     string modello = sfsObjIn.GetUtfString("model");
@@ -452,7 +445,6 @@ public class StanzeManager : MonoBehaviour {
                 if (utentePronto == sfs.MySelf.Id)
                     Statici.playerLocaleGO.GetComponentInChildren<TextMesh>().color = Color.green;
                 else
-                    // Statici.PlayersRemoti[utentePronto].GetComponentInChildren<TextMesh>().color = Color.green;
                     Statici.playerRemotiGestore[utentePronto].textmesh.color = Color.green;
 
                 break;
@@ -470,21 +462,13 @@ public class StanzeManager : MonoBehaviour {
     {
         GameObject remotePlayer = Instantiate(Resources.Load(modello), posizione, rotazione) as GameObject;
         Statici.aggiungiComponenteAnimazione(remotePlayer,false); //AGGIUNTO COMPONENTE ANIMAZIONI
-      //  remotePlayer.GetComponentInChildren<TextMesh>().text = nomeP;
-      //  DatiPersonaggio datiPersonaggioRemoto = remotePlayer.GetComponent<DatiPersonaggio>();
-       // datiPersonaggioRemoto.Utente = user;        
-       // datiPersonaggioRemoto.IndicePunteggio = numeroSpawn;
-        //   Statici.AggiungiDizionarioNetwork(user, remotePlayer,false);
+
         Statici.playerRemotiGestore.Add(user, remotePlayer);    
 
         if (listaPronti.Contains(user))
-            //  Statici.PlayersRemoti[user].GetComponentInChildren<TextMesh>().color = Color.green;
             Statici.playerRemotiGestore[user].textmesh.color = Color.green;
         Statici.playerRemotiGestore[user].textmesh.text = nomeP;
 
-        //  DatiPersonaggio datiPersonaggioRemoto = Statici.playerRemotiGestore[user].datiPersonaggio;
-        // datiPersonaggioRemoto.Utente = user;
-        // datiPersonaggioRemoto.IndicePunteggio = numeroSpawn;
         Statici.playerRemotiGestore[user].datiPersonaggio.Utente = user;
         Statici.playerRemotiGestore[user].datiPersonaggio.IndicePunteggio = numeroSpawn;
     }
@@ -512,11 +496,8 @@ public class StanzeManager : MonoBehaviour {
         Room room = (Room)evt.Params["room"];
         if (!room.IsGame || user == sfs.MySelf)
             return;
-        //  if (Statici.PlayersRemoti.ContainsKey(user.Id))
         if (Statici.playerRemotiGestore.ContainsKey(user.Id))
         {
-            // Destroy(Statici.PlayersRemoti[user.Id]);
-            // Statici.RimuoviDizionarioUtenteNetwork(user.Id);
             Destroy(Statici.playerRemotiGestore[user.Id].gameObject);
             Statici.playerRemotiGestore.Remove(user.Id);
             if (listaPronti.Contains(user.Id))

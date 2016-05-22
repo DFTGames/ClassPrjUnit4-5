@@ -31,9 +31,6 @@ public class Statici
 
     //inizio variabili per multigiocatore:
     public static bool multigiocatoreOn = false;
-    //queste andrebbero create solo se multiplayer= on...chiedere a pino come fare..
-   // public static Dictionary<int, GameObject> PlayersRemoti = new Dictionary<int, GameObject>();
-   // public static Dictionary<int, NetworkPlayer> PlayerTransform = new Dictionary<int, NetworkPlayer>(); //AGGIUNTO DA LUCA
     public static GestoreInfoClassi playerRemotiGestore=new GestoreInfoClassi();
     public static GameObject playerLocaleGO;
     public static DatiPersonaggio datiPersonaggioLocale;
@@ -177,41 +174,7 @@ public class Statici
         
     }
 
-    /*
-    internal static void AggiungiDizionarioNetwork(int utente,GameObject player,bool locale)
-    {
-      
 
-        if (!PlayersRemoti.ContainsKey(utente))
-        {
-            if (!locale) PlayersRemoti.Add(utente, player);
-
-            NetworkPlayer loc = player.AddComponent<NetworkPlayer>();
-            loc.playerLocale = locale;
-            loc.User = utente;
-            
-            PlayerTransform.Add(utente, loc);
-            player.AddComponent<NetworkTransformInterpolation>();  //AGGIUNTO interpolazione   
-        }
-    //   foreach (var item in PlayersRemoti)
-      //      provaErrore("elemento ", item.Key);
-    }
-    
-    internal static void RimuoviDizionarioUtenteNetwork(int utente)
-    {
-        if (PlayerTransform.ContainsKey(utente))
-        {
-            PlayerTransform.Remove(utente);
-            PlayersRemoti.Remove(utente);
-        }
-    }
-
-    internal static void RimuoviDizionarioAllNetwork()
-    {
-        PlayersRemoti.Clear();//elimino gli oggetti da dentro dizionario...ma gli oggetti devono essere messi a nullo
-        PlayerTransform.Clear();
-    }
-    */
     public static void aggiungiComponenteAnimazione(GameObject obj,bool locale)
     {
         if (obj == null) return;
