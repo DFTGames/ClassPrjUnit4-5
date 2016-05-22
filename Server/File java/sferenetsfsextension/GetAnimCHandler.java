@@ -12,7 +12,7 @@ import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
 import java.util.Date;
 import java.util.List;
 
-/**
+/*
  * Animazione tramite click
  * @author Luca
  */
@@ -28,6 +28,7 @@ public class GetAnimCHandler extends BaseClientRequestHandler{
                 obj.putBool("a1",isfso.getBool("a1"));
                 obj.putBool("a2",isfso.getBool("a2"));
                 obj.putInt("id",user.getId());
+                ext.trace(isfso.getBool("a1"),isfso.getBool("a1"));
 		this.send("anC", obj, listaUtentiInScena);   
                        
     }

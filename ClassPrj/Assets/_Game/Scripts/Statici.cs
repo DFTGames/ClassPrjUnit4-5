@@ -31,8 +31,10 @@ public class Statici
 
     //inizio variabili per multigiocatore:
     public static bool multigiocatoreOn = false;
-    public static Dictionary<int, GameObject> PlayersRemoti = new Dictionary<int, GameObject>();
-    public static Dictionary<int, NetworkPlayer> PlayerTransform = new Dictionary<int, NetworkPlayer>(); //AGGIUNTO DA LUCA
+    //queste andrebbero create solo se multiplayer= on...chiedere a pino come fare..
+   // public static Dictionary<int, GameObject> PlayersRemoti = new Dictionary<int, GameObject>();
+   // public static Dictionary<int, NetworkPlayer> PlayerTransform = new Dictionary<int, NetworkPlayer>(); //AGGIUNTO DA LUCA
+    public static GestoreInfoClassi playerRemotiGestore=new GestoreInfoClassi();
     public static GameObject playerLocaleGO;
     public static DatiPersonaggio datiPersonaggioLocale;
     public static int userLocaleId = 0;
@@ -175,8 +177,10 @@ public class Statici
         
     }
 
+    /*
     internal static void AggiungiDizionarioNetwork(int utente,GameObject player,bool locale)
     {
+      
 
         if (!PlayersRemoti.ContainsKey(utente))
         {
@@ -192,7 +196,7 @@ public class Statici
     //   foreach (var item in PlayersRemoti)
       //      provaErrore("elemento ", item.Key);
     }
-
+    
     internal static void RimuoviDizionarioUtenteNetwork(int utente)
     {
         if (PlayerTransform.ContainsKey(utente))
@@ -207,20 +211,24 @@ public class Statici
         PlayersRemoti.Clear();//elimino gli oggetti da dentro dizionario...ma gli oggetti devono essere messi a nullo
         PlayerTransform.Clear();
     }
-
+    */
     public static void aggiungiComponenteAnimazione(GameObject obj,bool locale)
     {
         if (obj == null) return;
 
+        ControllerMaga t = obj.GetComponent<ControllerMaga>();
+
         if (!locale && obj.GetComponent<AnimSyncronRiceiver>() == null)
-            obj.AddComponent<AnimSyncronRiceiver>();
+        {
+            AnimSyncronRiceiver tmp=obj.AddComponent<AnimSyncronRiceiver>();
+            tmp.controller = t;
+        }
 
         if (locale && obj.GetComponent<AnimSyncronizeSender>() == null)
         {
-            AnimSyncronizeSender tmp= obj.AddComponent<AnimSyncronizeSender>();
-            ControllerMaga t = obj.GetComponent<ControllerMaga>();
+            AnimSyncronizeSender tmp= obj.AddComponent<AnimSyncronizeSender>();       
             t.SyncAnimS = tmp;
-            tmp.Controller = t;
+            tmp.controller = t;
         }
     }
     public static void provaErrore(string scriviNomeVariabile,object oggetto)
