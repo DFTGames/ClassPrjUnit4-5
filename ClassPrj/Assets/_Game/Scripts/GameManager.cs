@@ -99,44 +99,13 @@ public class GameManager : MonoBehaviour
         List<classiPersonaggi> tmpIndifferenti = null;
 
 
-        /*
         for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
         {
             tmpNemici = new List<classiPersonaggi>();
             tmpIndifferenti = new List<classiPersonaggi>();
-            tmpAmici = new List<classiPersonaggi>();
-            for (int j = 0; j < datiDiplomazia.Dati.tipoEssere.Length; j++)
-            {
-                switch (datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j])
-                {
-                    case Amicizie.Neutro:
-                        if (!tmpIndifferenti.Contains((classiPersonaggi)j))
-                            tmpIndifferenti.Add((classiPersonaggi)j);                      
-                        break;
-
-                    case Amicizie.Alleato:
-                        if (!tmpAmici.Contains((classiPersonaggi)j))
-                            tmpAmici.Add((classiPersonaggi)j);
-                        break;
-
-                    case Amicizie.Nemico:
-                        if (!tmpNemici.Contains((classiPersonaggi)j))
-                            tmpNemici.Add((classiPersonaggi)j);
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-            */
-
-        for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
-        {
-            tmpNemici = new List<classiPersonaggi>();
-            tmpIndifferenti = new List<classiPersonaggi>();
-            tmpAmici = new List<classiPersonaggi>();
-            for (int j = 0; j < datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia.Length; j++)
-            {
+            tmpAmici = new List<classiPersonaggi>();        
+                for (int j = 0; j < datiDiplomazia.Dati.tipoEssere.Length; j++) 
+                {        
                 switch (datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j])
                 {
                     case Amicizie.Neutro:

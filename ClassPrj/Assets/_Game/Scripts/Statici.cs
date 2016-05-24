@@ -25,7 +25,7 @@ public class Statici
     public static GameData databseInizialeAmicizie;
     public static string classeDiColuiCheVuoleCambiareAmicizia = string.Empty;//da verificare se servirà ancora o no
     public static bool inGioco = false;//usera al posto di buildindex
-
+    public static bool IsPointAndClick = true;
 
 
 
@@ -43,6 +43,9 @@ public class Statici
     public static string posizioneInizialeMulti = string.Empty;
     public static string nomeModello = string.Empty;
     public static bool diplomaziaAggiornata = false;
+    public static float tempoInvioTransform = 0.1f;
+    public static float tempoInvioAnimazione = 0.1f;
+    public static NetworkTransformInterpolation.InterpolationMode inter = NetworkTransformInterpolation.InterpolationMode.INTERPOLATION;
     //fine variabili multigiocatore
 
 
@@ -191,7 +194,7 @@ public class Statici
         {
             AnimSyncronizeSender tmp= obj.AddComponent<AnimSyncronizeSender>();       
             t.SyncAnimS = tmp;
-            tmp.controller = t;
+         //   tmp.controller = t;
         }
     }
     public static void provaErrore(string scriviNomeVariabile,object oggetto)

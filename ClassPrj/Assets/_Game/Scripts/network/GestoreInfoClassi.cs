@@ -32,7 +32,7 @@ public class GestoreInfoClassi : Dictionary<int, InfoPlayer>, IDisposable
         InfoPlayer info = new InfoPlayer();
         info.gameObject = gameObj;     
         info.networkPlayer = AddNetworkPlayer(info);
-        info.controllerPlayer = info.gameObject.GetComponent<ControllerMaga>();
+       // info.controllerPlayer = info.gameObject.GetComponent<ControllerMaga>();
         info.datiPersonaggio = info.gameObject.GetComponent<DatiPersonaggio>(); ;
         info.switchVivoMorto = info.gameObject.GetComponent<SwitchVivoMorto>();
         info.textmesh =  info.gameObject.GetComponentInChildren<TextMesh>();

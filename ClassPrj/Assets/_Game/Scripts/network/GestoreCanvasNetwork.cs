@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class GestoreCanvasNetwork : MonoBehaviour
 {
+    private static GestoreCanvasNetwork me;
     public GameObject canvaMultiGO;
     public Text chiAttaccaText;
     public GameObject pannelloMorto;
@@ -17,6 +18,7 @@ public class GestoreCanvasNetwork : MonoBehaviour
     private bool miStannoAttaccando = false;
     private float tempo = 0f;
     private ManagerNetwork managerNet;
+
 
     public void PannelloMorteOff()
     {
@@ -66,7 +68,7 @@ public class GestoreCanvasNetwork : MonoBehaviour
             canvaMultiGO.SetActive(false);
             return;
         }
-        // me = this;
+         me = this;
         pannelloMorto.SetActive(false);
         ResettaScrittaChiAttacca(false);
         ResettaScrittaNemicoAttaccato(false);

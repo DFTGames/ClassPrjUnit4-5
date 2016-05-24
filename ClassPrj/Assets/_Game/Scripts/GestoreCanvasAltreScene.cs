@@ -17,7 +17,8 @@ public class GestoreCanvasAltreScene : MonoBehaviour
     public static string nomeProssimaScena=string.Empty;
     public Image cursoreImage;
     public GameObject pannelloTest;
-   
+    public GameObject abilitaPannelloProveNetwork;
+
 
     private static GestoreCanvasAltreScene me;
     private bool fatto = false;
@@ -28,6 +29,7 @@ public class GestoreCanvasAltreScene : MonoBehaviour
     private void Awake()
     {
         me = this;
+       
     }
   
     public static void AggiornaDati(DatiPersonaggio datiPersonaggio)
@@ -51,13 +53,19 @@ public class GestoreCanvasAltreScene : MonoBehaviour
     }
 
     public void Update()
-    {      
+    {
         if (Input.GetKeyDown(KeyCode.F12))
         {
+          //  Debug.Log("son qua " + pannelloTest.activeInHierarchy);
+         
             if (pannelloTest.activeInHierarchy)
                 pannelloTest.SetActive(false);
             else
+             
                 pannelloTest.SetActive(true);
+            if (Statici.multigiocatoreOn) abilitaPannelloProveNetwork.SetActive(true);
+            else abilitaPannelloProveNetwork.SetActive(false);
+
         }
     }
 

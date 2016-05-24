@@ -5,7 +5,7 @@ public class NetworkPlayer : MonoBehaviour {
 
     private int user=-2; //inizializzato alla cazzum...(e' fuori dal intervallo che verra usato)
     public bool playerLocale { get; set; }  
-    private float tempoInvioTransorm = 0.1f;
+   // private float tempoInvioTransorm = 0.1f;
     private float timeCorrente;
     private bool movimentoDirty;
     private ControllerMaga controller;
@@ -43,7 +43,7 @@ public class NetworkPlayer : MonoBehaviour {
 
      if (!movimentoDirty) return;
 
-        if (Time.time + tempoInvioTransorm>timeCorrente)  
+        if (Time.time + Statici.tempoInvioTransform>timeCorrente)  
         {
             NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(transform.position, transform.rotation.eulerAngles);
             ManagerNetwork.InviaTransformLocali(net);
@@ -58,7 +58,7 @@ public class NetworkPlayer : MonoBehaviour {
     {
         if (playerLocale || user != netUser) return;
 
-      if (inter == null)
+      if (inter == null )
         {
             transform.position = net.position;
             transform.rotation = Quaternion.Euler(net.rotation.x, net.rotation.y, net.rotation.z);

@@ -22,22 +22,23 @@ public class AnimSyncronRiceiver : MonoBehaviour
     }
 
     void Update()
-    { 
-            anim.SetFloat("Forward", forward);
-            if (attacco1) anim.SetBool("attacco1", attacco1);
-            if (attacco2) anim.SetBool("attacco2", attacco2);
-            attacco1 = false; attacco2 = false;
+    {
+        anim.SetFloat("Forward", forward);
+        if (attacco1) anim.SetTrigger("attacco1");   //CHIEDERE A PINO SE E' CORRETTO METTERLO QUA o in UN METODO
+        if (attacco2) anim.SetTrigger("attacco2");
+        attacco1 = false; attacco2 = false; 
 
-        if (!(controller.IsPointAndClick))
+        if (!(Statici.IsPointAndClick))
         {
             anim.SetFloat("turn", turn);
             anim.SetBool("onGround", onGround);
             anim.SetFloat("jump", jump);
             anim.SetFloat("jumpLeg", jumpLeg);
         }
-       //**************************************
-
+        //**************************************
     }
+
+    
     public void eseguiAnimazioniRemoteT(ISFSObject sfsObjIn)  //esegue animazioni remote Tastiera
     {
         forward=sfsObjIn.GetFloat("f");
@@ -48,6 +49,7 @@ public class AnimSyncronRiceiver : MonoBehaviour
         attacco1=sfsObjIn.GetBool("a1");
         attacco2=sfsObjIn.GetBool("a2");
 
+    
     }
 
     public void eseguiAnimazioniRemoteC(ISFSObject sfsObjIn)  //esegue animazioni remote Punta e clicca
@@ -55,6 +57,7 @@ public class AnimSyncronRiceiver : MonoBehaviour
         forward = sfsObjIn.GetFloat("f");
         attacco1 = sfsObjIn.GetBool("a1");
         attacco2 = sfsObjIn.GetBool("a2");
+
 
     }
 }

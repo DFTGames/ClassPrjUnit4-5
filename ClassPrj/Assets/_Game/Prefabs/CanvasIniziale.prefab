@@ -1748,6 +1748,7 @@ MonoBehaviour:
   ZOffSet: 4
   canvasGroupCreazione: {fileID: 22578052}
   canvasGroupCarica: {fileID: 22586802}
+  sliderSFX: {fileID: 0}
 --- !u!114 &11409536
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -68,8 +68,8 @@ public class ManagerIniziale : MonoBehaviour
     private float alpha;
     private List<string> cartelleLocali = new List<string>();
     private int contatoreGiocabili = 0;
-
-
+    public static GestoreAudio audioSingleton;
+ 
     FMOD.Studio.Bus SFXBus;
     FMOD.Studio.Bus EnviromentBus;
 
@@ -104,6 +104,22 @@ public class ManagerIniziale : MonoBehaviour
         datiAudio.Salva();
     }
 
+
+
+    /*
+    public static void cambiaSfx_(float p )  //fatto per richiamarlo dentro al PannelloProve (dato che mettendo statico il metodo non riuscivo )
+    {
+        me.sliderSFX(p);
+
+    }
+    public static void cambiaAmbiente(float p)  //vedi sopra..
+    {
+        me.cambiaAmbiente(p);
+    }
+    */
+
+
+    
 
     private void Start()
     {
@@ -154,7 +170,8 @@ public class ManagerIniziale : MonoBehaviour
         volumiAmbiente.value = datiAudio.Dati.volEnvironment;
         volumiSFX.value = datiAudio.Dati.volSFX;
 
-    }
+
+}
 
     public void NuovaPartita()
     {
