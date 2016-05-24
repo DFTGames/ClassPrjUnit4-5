@@ -193,7 +193,8 @@ namespace DFTGames.Tools.EditorTools
                 GUILayout.BeginHorizontal(EditorStyles.objectFieldThumb);
                 EditorGUILayout.LabelField(gameData.classiEssere[i], stileEtichetta2, GUILayout.Width(140));
 
-                for (int j = 0; j < (gameData.classiEssere.Length - i); j++)
+                //  for (int j = 0; j < (gameData.classiEssere.Length - i); j++)
+                for (int j = gameData.classiEssere.Length - 1; j >= 0; j--)
                 {
                     //Qui recupera la texture da mettere al bottone che si sta mostrando
                     Texture tmp = new Texture();
@@ -212,20 +213,25 @@ namespace DFTGames.Tools.EditorTools
                             tmp = icon3;
                             break;
                     }
+
                     //qui mostra il bottone con la texture recuperata in base al valore dell'Enum della matriceAmicizie
                     //Qui se clicchiamo il bottone deve assegnare un icona differente in base all'indice "di click"
-                    if (GUILayout.Button(new GUIContent(tmp), GUIStyle.none, GUILayout.Width(140), GUILayout.Height(80)))
+                    if (i <= j)
                     {
-                        //valore dell'Enum usato come indice per l'icona
-                        int numIcona = (int)gameData.matriceAmicizie[i].elementoAmicizia[j];
-                        //Debug.Log("Letto da matrice: " + gameData.matriceAmicizie[i].elementoAmicizia[j] + " = a " + numIcona);
-                        numIcona++;
-                        numIcona = numIcona <= 3 ? numIcona : 1;
-                        gameData.matriceAmicizie[i].elementoAmicizia[j] = (Amicizie)numIcona;
-                        //  gameData.matriceAmicizie[j].elementoAmicizia[i] = (Amicizie)numIcona;
-                        EditorUtility.SetDirty(gameData);
-                        AssetDatabase.SaveAssets();
-                        //Debug.Log("cliccato bottone: " + i + "," + j + " - ValEnum: " + (Amicizie)numIcona);
+                        if (GUILayout.Button(new GUIContent(tmp), GUIStyle.none, GUILayout.Width(140), GUILayout.Height(80)))
+                        {
+                            //valore dell'Enum usato come indice per l'icona
+                            int numIcona = (int)gameData.matriceAmicizie[i].elementoAmicizia[j];
+                            //Debug.Log("Letto da matrice: " + gameData.matriceAmicizie[i].elementoAmicizia[j] + " = a " + numIcona);
+
+                            numIcona++;
+                            numIcona = numIcona <= 3 ? numIcona : 1;
+                            gameData.matriceAmicizie[i].elementoAmicizia[j] = (Amicizie)numIcona;
+                            gameData.matriceAmicizie[j].elementoAmicizia[i] = (Amicizie)numIcona;
+                            EditorUtility.SetDirty(gameData);
+                            AssetDatabase.SaveAssets();
+                            //Debug.Log("cliccato bottone: " + i + "," + j + " - ValEnum: " + (Amicizie)numIcona);
+                        }
                     }
                 }
 
@@ -234,8 +240,6 @@ namespace DFTGames.Tools.EditorTools
             GUILayout.EndVertical();
 
         }
-
-
         private static void resettaParametri(GameData gameData)
         {
             Array tmpClassi = Enum.GetValues(typeof(classiPersonaggi));

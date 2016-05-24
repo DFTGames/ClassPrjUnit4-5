@@ -16,7 +16,7 @@ public class ControllerMaga : MonoBehaviour
     public float distanzaMassimaClick = 20f;
 
     public bool corsaPerDefault = false;
-    public bool IsPointAndClick;
+    //public bool IsPointAndClick;
 
     #endregion Variabili PUBLIC
 
@@ -134,7 +134,7 @@ public class ControllerMaga : MonoBehaviour
         capsula = GetComponent<CapsuleCollider>();
         altezzaCapsula = capsula.height;
         capsulaCentro = new Vector3(0.0f, capsula.center.y, 0.0f);
-        IsPointAndClick = true;
+        //IsPointAndClick = true;
         layerAlberi = ~layerAlberi;
         switchVivoMorto = GetComponent<SwitchVivoMorto>();
         if (!Statici.inGioco)
@@ -172,7 +172,7 @@ public class ControllerMaga : MonoBehaviour
             return;
         }
         //
-        if (IsPointAndClick)
+        if (Statici.IsPointAndClick)
         {
             if (navMeshAgent.enabled == false)
             {
@@ -262,7 +262,7 @@ public class ControllerMaga : MonoBehaviour
         if (Physics.Raycast(transform_m.position + (Vector3.up * 0.1f), Vector3.down, out hit, distanzaDaTerra))
         {
             aTerra = true;
-            animatore.applyRootMotion = !IsPointAndClick;
+            animatore.applyRootMotion = !Statici.IsPointAndClick;
         }
         else
         {
@@ -295,13 +295,13 @@ public class ControllerMaga : MonoBehaviour
         animatore.SetFloat("Turn", rotazione);
         animatore.SetFloat("JumpLeg", jumpLeg);
         //animatore.SetBool("Crouch", abbassato);
-        if (!aTerra && !IsPointAndClick)
+        if (!aTerra && !Statici.IsPointAndClick)
             animatore.SetFloat("Jump", rigidBody.velocity.y);
 
         //AGGIUNTA MULTIPLAYER
         if (Statici.multigiocatoreOn && syncAnimS != null)
         {
-            if (!IsPointAndClick)//DA CONTROLLARE IL NON PUNTA E CLICCA...
+            if (!Statici.IsPointAndClick)//DA CONTROLLARE IL NON PUNTA E CLICCA...
                 syncAnimS.Forward = movimento.z * velocitaSpostamento;
             else
                 syncAnimS.Forward = navMeshAgent.velocity.normalized.magnitude;

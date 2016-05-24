@@ -11,8 +11,8 @@ public class NetworkTransformInterpolation : MonoBehaviour
 		INTERPOLATION,
 		EXTRAPOLATION
 	}
-	
-	public InterpolationMode mode = InterpolationMode.INTERPOLATION;
+
+    public InterpolationMode mode = Statici.inter;    //InterpolationMode.INTERPOLATION; //cambiato da Luca
 	
 	private double interpolationBackTime = 200; 
 	
@@ -53,7 +53,7 @@ public class NetworkTransformInterpolation : MonoBehaviour
 		// Check integrity, lowest numbered state in the buffer is newest and so on
 		for (int i=0; i<statesCount-1; i++) {
 			if (bufferedStates[i].timeStamp < bufferedStates[i+1].timeStamp) {
-				Debug.Log("State inconsistent");
+			      	Debug.Log("State inconsistent");  //riordonarli..
 			}
 		}
 	}

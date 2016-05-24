@@ -23,7 +23,8 @@ public class AnimSyncronizeSender : MonoBehaviour {
      bool Pattacco2;
     
     private int user = Statici.userLocaleId;
-    public ControllerMaga controller {get; set; }
+    private float timeLastSending = 0.0f;
+    //  public ControllerMaga controller {get; set; }
 
 
     public float Forward
@@ -119,27 +120,33 @@ public class AnimSyncronizeSender : MonoBehaviour {
 
     public void controlloDirty()
     {
-        if (controller.IsPointAndClick)
+        if (timeLastSending >= Statici.tempoInvioAnimazione)   
         {
-            if ((forward != Pforward) || (attacco1 != Pattacco1) || (attacco2 != Pattacco2))
+            timeLastSending = 0;
+
+            if (Statici.IsPointAndClick)
+            {
+                if ((forward != Pforward) || (attacco1 != Pattacco1) || (attacco2 != Pattacco2))
+                {
+                    Pforward = forward;
+                    Pattacco1 = attacco1;
+                    Pattacco2 = attacco2;
+                    ManagerNetwork.InviaAnimazioneControllerClick(forward, attacco1, attacco2);
+                }
+
+            }
+            else if ((forward != Pforward) || (turn != Pturn) || (onGround != PonGround) || (jump != Pjump) || (jumpLeg != PjumpLeg) || (attacco1 != Pattacco1) || (attacco2 != Pattacco2))
             {
                 Pforward = forward;
+                Pturn = turn;
+                PonGround = onGround;
+                Pjump = jump;
+                PjumpLeg = jumpLeg;
                 Pattacco1 = attacco1;
                 Pattacco2 = attacco2;
-                ManagerNetwork.InviaAnimazioneControllerClick(forward, attacco1, attacco2);
+                ManagerNetwork.InviaAnimazioneControllerTast(forward, turn, onGround, jump, jumpLeg, attacco1, attacco2);
             }
-
         }
-        else if ((forward != Pforward) || (turn != Pturn) || (onGround != PonGround) || (jump != Pjump) || (jumpLeg != PjumpLeg) || (attacco1!=Pattacco1)|| (attacco2 != Pattacco2))
-        {
-            Pforward = forward;
-            Pturn = turn;
-            PonGround = onGround;
-            Pjump = jump;
-            PjumpLeg = jumpLeg;
-            Pattacco1 = attacco1;
-            Pattacco2 = attacco2;  
-            ManagerNetwork.InviaAnimazioneControllerTast(forward, turn, onGround, jump, jumpLeg,attacco1,attacco2);
-        }       
+        timeLastSending += Time.deltaTime;
     }
 }

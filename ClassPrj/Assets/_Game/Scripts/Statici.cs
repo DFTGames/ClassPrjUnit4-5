@@ -25,15 +25,12 @@ public class Statici
     public static GameData databseInizialeAmicizie;
     public static string classeDiColuiCheVuoleCambiareAmicizia = string.Empty;//da verificare se servirà ancora o no
     public static bool inGioco = false;//usera al posto di buildindex
-
+    public static bool IsPointAndClick = true;
 
 
 
     //inizio variabili per multigiocatore:
     public static bool multigiocatoreOn = false;
-    //queste andrebbero create solo se multiplayer= on...chiedere a pino come fare..
-   // public static Dictionary<int, GameObject> PlayersRemoti = new Dictionary<int, GameObject>();
-   // public static Dictionary<int, NetworkPlayer> PlayerTransform = new Dictionary<int, NetworkPlayer>(); //AGGIUNTO DA LUCA
     public static GestoreInfoClassi playerRemotiGestore=new GestoreInfoClassi();
     public static GameObject playerLocaleGO;
     public static DatiPersonaggio datiPersonaggioLocale;
@@ -46,6 +43,9 @@ public class Statici
     public static string posizioneInizialeMulti = string.Empty;
     public static string nomeModello = string.Empty;
     public static bool diplomaziaAggiornata = false;
+    public static float tempoInvioTransform = 0.1f;
+    public static float tempoInvioAnimazione = 0.1f;
+    public static NetworkTransformInterpolation.InterpolationMode inter = NetworkTransformInterpolation.InterpolationMode.INTERPOLATION;
     //fine variabili multigiocatore
 
 
@@ -177,41 +177,7 @@ public class Statici
         
     }
 
-    /*
-    internal static void AggiungiDizionarioNetwork(int utente,GameObject player,bool locale)
-    {
-      
 
-        if (!PlayersRemoti.ContainsKey(utente))
-        {
-            if (!locale) PlayersRemoti.Add(utente, player);
-
-            NetworkPlayer loc = player.AddComponent<NetworkPlayer>();
-            loc.playerLocale = locale;
-            loc.User = utente;
-            
-            PlayerTransform.Add(utente, loc);
-            player.AddComponent<NetworkTransformInterpolation>();  //AGGIUNTO interpolazione   
-        }
-    //   foreach (var item in PlayersRemoti)
-      //      provaErrore("elemento ", item.Key);
-    }
-    
-    internal static void RimuoviDizionarioUtenteNetwork(int utente)
-    {
-        if (PlayerTransform.ContainsKey(utente))
-        {
-            PlayerTransform.Remove(utente);
-            PlayersRemoti.Remove(utente);
-        }
-    }
-
-    internal static void RimuoviDizionarioAllNetwork()
-    {
-        PlayersRemoti.Clear();//elimino gli oggetti da dentro dizionario...ma gli oggetti devono essere messi a nullo
-        PlayerTransform.Clear();
-    }
-    */
     public static void aggiungiComponenteAnimazione(GameObject obj,bool locale)
     {
         if (obj == null) return;
@@ -228,7 +194,7 @@ public class Statici
         {
             AnimSyncronizeSender tmp= obj.AddComponent<AnimSyncronizeSender>();       
             t.SyncAnimS = tmp;
-            tmp.controller = t;
+         //   tmp.controller = t;
         }
     }
     public static void provaErrore(string scriviNomeVariabile,object oggetto)
