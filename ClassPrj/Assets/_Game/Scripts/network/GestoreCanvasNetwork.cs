@@ -3,22 +3,43 @@ using UnityEngine.UI;
 
 public class GestoreCanvasNetwork : MonoBehaviour
 {
-    private static GestoreCanvasNetwork me;
+    public Animator animatoreChat;
     public GameObject canvaMultiGO;
+    public CanvasGroup canvasGroup;
     public Text chiAttaccaText;
+    public Text contenutoChat;
+    public InputField inputChat;
     public GameObject pannelloMorto;
     public Text vitaNemicoText;
     public Text vitaNomeText;
-    public CanvasGroup canvasGroup;
-    public InputField inputChat;
-    public Text contenutoChat;
-    public Animator animatoreChat; 
+    private static GestoreCanvasNetwork me;
+    private ManagerNetwork managerNet;
 
     //  private static GestoreCanvas me;
     private bool miStannoAttaccando = false;
-    private float tempo = 0f;
-    private ManagerNetwork managerNet;
 
+    private float tempo = 0f;
+
+    public void ApriChiudiChat()
+    {
+        animatoreChat.SetTrigger("chatOnOff");
+    }
+
+    public void AttivaDisattivaInputChat(bool attiva)
+    {
+        canvasGroup.interactable = attiva;
+    }
+
+    public void InviaMessaggioChat()
+    {
+        if (inputChat.text.Trim() != string.Empty)
+        {
+            AttivaDisattivaInputChat(false);
+
+            managerNet.InviaChat(inputChat.text);
+            inputChat.text = string.Empty;
+        }
+    }
 
     public void PannelloMorteOff()
     {
@@ -41,6 +62,12 @@ public class GestoreCanvasNetwork : MonoBehaviour
         vitaNemicoText.gameObject.SetActive(attiva);
     }
 
+    public void ScriviMessaggioChat(string mittente, string messaggio)
+    {
+        contenutoChat.text += "<color=#FF3333>" + "<b>" + mittente + " : " + "</b>" + "</color>" + " <color=#0000FF>" + messaggio + "</color>" + "\n";
+        AttivaDisattivaInputChat(true);
+    }
+
     public void VisualizzaChiTiAttacca(string nomeAttaccante)
     {
         tempo = 0f;
@@ -57,18 +84,24 @@ public class GestoreCanvasNetwork : MonoBehaviour
     public void VisualizzaDatiUserSelezionato(string nome, float vita)
     {
         ResettaScrittaNemicoAttaccato(true);
-        vitaNemicoText.text ="Nome :" + nome + ": Vita: " + vita;
+        vitaNemicoText.text = "Nome :" + nome + ": Vita: " + vita;
+    }
+
+    public void VisualizzaNascondiCanvasMultiplayer(bool attiva)
+    {
+        canvaMultiGO.SetActive(attiva);
     }
 
     // Use this for initialization
     private void Start()
     {
+        me = this;
         if (!Statici.multigiocatoreOn)
         {
-            canvaMultiGO.SetActive(false);
+            VisualizzaNascondiCanvasMultiplayer(false);
             return;
         }
-         me = this;
+
         pannelloMorto.SetActive(false);
         ResettaScrittaChiAttacca(false);
         ResettaScrittaNemicoAttaccato(false);
@@ -90,31 +123,4 @@ public class GestoreCanvasNetwork : MonoBehaviour
             }
         }
     }
-
-    public void ApriChiudiChat()
-    {
-        animatoreChat.SetTrigger("chatOnOff");
-    }
-
-      public void AttivaDisattivaInputChat(bool attiva)
-      {
-          canvasGroup.interactable = attiva;
-      }
-
-      public void InviaMessaggioChat()
-      {
-          if (inputChat.text.Trim() != string.Empty)
-          {
-              AttivaDisattivaInputChat(false);
-              
-              managerNet.InviaChat(inputChat.text);
-              inputChat.text = string.Empty;
-          }
-      }
-
-      public  void ScriviMessaggioChat(string mittente, string messaggio)
-      {
-          contenutoChat.text += "<color=#FF3333>" + "<b>" + mittente + " : "+ "</b>"+ "</color>"  +" <color=#0000FF>"+messaggio+"</color>"+ "\n";
-          AttivaDisattivaInputChat(true);
-      }
 }

@@ -1,44 +1,28 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 public class Minimappa : MonoBehaviour
 {
-
     public Camera cameraMinimap;
     public float distanzaCamera = 130;
+    public List<DatiMarcatoreMulti> listaUserIdMarcati = new List<DatiMarcatoreMulti>();
+    public float misuraSpriteAmico = 20f;
+    public float misuraSpriteNemico = 20f;
+    public float misuraSpritePortale = 30f;
     public RawImage rawImage;
     public Sprite spriteAmico;
-    public float misuraSpriteAmico = 20f;
     public Sprite spriteNemico;
-    public float misuraSpriteNemico = 20f;
     public Sprite spritePortale;
-    public float misuraSpritePortale = 30f;
-    public List<DatiMarcatoreMulti> listaUserIdMarcati = new List<DatiMarcatoreMulti>();
-
     private Vector3 distanzaCameraOggetto;
-    private Vector3 distanzaPlayerOggetto;
-    private Vector2 nuovaposizioneOggettoInMappa;
-    private OggettiDaMarcare oggettoDaMarcare;
-    private float scala;
     private bool distanzaMassimaLetta = false;
-    private Transform playerT;
+    private Vector3 distanzaPlayerOggetto;
     private float larghezzaMinimappa;
     private Vector2 massimo;
-
-    public Transform PlayerT
-    {
-        get
-        {
-            return playerT;
-        }
-
-        set
-        {
-            playerT = value;
-        }
-    }
+    private Vector2 nuovaposizioneOggettoInMappa;
+    private OggettiDaMarcare oggettoDaMarcare;
+    private Transform playerT;
+    private float scala;
 
     public Vector2 Massimo
     {
@@ -53,21 +37,17 @@ public class Minimappa : MonoBehaviour
         }
     }
 
-    // Use this for initialization
-    void Start()
+    public Transform PlayerT
     {
-        if (!Statici.multigiocatoreOn)
-            PlayerT = Statici.PersonaggioPrincipaleT;
-        else
-            PlayerT = Statici.playerLocaleGO.transform;
-        PlayerT.GetComponent<OggettiDaMarcare>().enabled = false;
-        larghezzaMinimappa = rawImage.rectTransform.rect.width;
-    }
+        get
+        {
+            return playerT;
+        }
 
-    void Update()
-    {
-        cameraMinimap.transform.position = new Vector3(PlayerT.transform.position.x, distanzaCamera, PlayerT.transform.position.z);
-
+        set
+        {
+            playerT = value;
+        }
     }
 
     public Vector2 CalcolaPosizioneMarcatore(Vector3 posizioneOggettoNelMondo)
@@ -78,9 +58,25 @@ public class Minimappa : MonoBehaviour
         return nuovaposizioneOggettoInMappa;
     }
 
+    /// <summary>
+    /// caso multiplayer: se un utente esce dalla scena devo distruggere il suo marcatore.
+    /// </summary>
+    /// <param name="userID"></param>
+    public void DistruggiMarcatore(int userID)
+    {
+        for (int i = 0; i < listaUserIdMarcati.Count; i++)
+        {
+            if (listaUserIdMarcati[i].idUtente == userID)
+            {
+                Destroy(listaUserIdMarcati[i].gameObject);
+                listaUserIdMarcati.RemoveAt(i);
+            }
+        }
+    }
+
     public void GestisciVisibilitaMarcatore(OggettiDaMarcare oggettoDaMarcare)
     {
-        Vector2 distanzaFrecciaMarcatore = oggettoDaMarcare.Marcatore.transform.localPosition;//dovrei aggiungere: meno posizione della freccia ma la posizione della freccia in locale è sempre 0.     
+        Vector2 distanzaFrecciaMarcatore = oggettoDaMarcare.Marcatore.transform.localPosition;//dovrei aggiungere: meno posizione della freccia ma la posizione della freccia in locale è sempre 0.
         Vector3 distanzaAttualePlayerOggetto = oggettoDaMarcare.gameObject.transform.position - PlayerT.position;
         scala = distanzaAttualePlayerOggetto.z / distanzaFrecciaMarcatore.y;
         if (distanzaAttualePlayerOggetto.magnitude > (larghezzaMinimappa * 0.5f * scala))
@@ -106,21 +102,21 @@ public class Minimappa : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// caso multiplayer: se un utente esce dalla scena devo distruggere il suo marcatore.
-    /// </summary>
-    /// <param name="userID"></param>
-    public void DistruggiMarcatore(int userID)
+    // Use this for initialization
+    private void Start()
     {
-        for(int i = 0; i < listaUserIdMarcati.Count; i++)
-        {
-            if(listaUserIdMarcati[i].idUtente==userID)
-            {
-                Destroy(listaUserIdMarcati[i].gameObject);
-                listaUserIdMarcati.RemoveAt(i);
-            }
-        }
-
+        if (!Statici.multigiocatoreOn)
+            PlayerT = Statici.PersonaggioPrincipaleT;
+        else
+            PlayerT = Statici.playerLocaleGO.transform;
+        PlayerT.GetComponent<OggettiDaMarcare>().enabled = false;
+        larghezzaMinimappa = rawImage.rectTransform.rect.width;
     }
 
+    private void Update()
+    {
+        if (PlayerT == null)
+            return;
+        cameraMinimap.transform.position = new Vector3(PlayerT.transform.position.x, distanzaCamera, PlayerT.transform.position.z);
+    }
 }

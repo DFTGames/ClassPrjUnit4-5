@@ -1,27 +1,48 @@
 ﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class ManagerScenaZero : MonoBehaviour {
-
+public class ManagerScenaZero : MonoBehaviour
+{
+    public Animator animatoreLogin;
+    public Animator animatoreScelta;
+    public CanvasGroup canvasGroupLogin;
+    public CanvasGroup canvasGroupScelta;
+    public GameObject immagineCaricamento;
+    public Text scrittaCaricamento;
     private static ManagerScenaZero me;
 
-    public Animator animatoreScelta;
-    public Animator animatoreLogin;
-    public CanvasGroup canvasGroupScelta;
-    public CanvasGroup canvasGroupLogin;
+    public static GameObject ImmagineCaricamento
+    {
+        get
+        {
+            return me.immagineCaricamento;
+        }
 
-	// Use this for initialization
-	void Start () {
-        Statici.inGioco = false;
-        me = this;
-        AttivaDisattivaCanvasGroupScelta(true);
-        AttivaDisattivaCanvasGroupLogin(false);
-	}
+        set
+        {
+            me.immagineCaricamento = value;
+        }
+    }
 
+    public static Text ScrittaCaricamento
+    {
+        get
+        {
+            return me.scrittaCaricamento;
+        }
 
-	
-	public void BottoneMultiplayer()
+        set
+        {
+            me.scrittaCaricamento = value;
+        }
+    }
+
+    public static void AttivaDisattivaCanvasGroupLogin(bool abilita)
+    {
+        me.canvasGroupLogin.interactable = abilita;
+    }
+
+    public void BottoneMultiplayer()
     {
         animatoreScelta.SetTrigger("cambiaStato");
         animatoreLogin.SetTrigger("cambiaStato");
@@ -29,22 +50,28 @@ public class ManagerScenaZero : MonoBehaviour {
         AttivaDisattivaCanvasGroupScelta(false);
         AttivaDisattivaCanvasGroupLogin(true);
     }
+
     public void BottoneSinglePlayer()
     {
         AttivaDisattivaCanvasGroupLogin(false);
         AttivaDisattivaCanvasGroupScelta(false);
         Statici.multigiocatoreOn = false;
-        SceneManager.LoadScene("Scena Iniziale");        
+        StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("Scena Iniziale", "Titolo gioco o qualsiasi altra cosa vogliamo scriverci.", ImmagineCaricamento, ScrittaCaricamento));
     }
 
     private void AttivaDisattivaCanvasGroupScelta(bool abilita)
     {
-        canvasGroupScelta.interactable = abilita;       
+        canvasGroupScelta.interactable = abilita;
     }
 
-    public static void AttivaDisattivaCanvasGroupLogin(bool abilita)
+    // Use this for initialization
+    private void Start()
     {
-        me.canvasGroupLogin.interactable = abilita;
-
+        Statici.inGioco = false;
+        me = this;
+        AttivaDisattivaCanvasGroupScelta(true);
+        AttivaDisattivaCanvasGroupLogin(false);
+        ImmagineCaricamento = immagineCaricamento;
+        ScrittaCaricamento = scrittaCaricamento;
     }
 }

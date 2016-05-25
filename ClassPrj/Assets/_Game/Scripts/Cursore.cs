@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-
 public class Cursore : MonoBehaviour
 {
     public Texture2D immagineCombattere;
@@ -11,15 +10,15 @@ public class Cursore : MonoBehaviour
     public Texture2D immagineToccare;
 
     private static Cursore me;
+    private classiPersonaggi classePlayer;
     private int cursorSizeX = 32;
     private int cursorSizeY = 32;
-    private classiPersonaggi classePlayer;
 
     // private RaycastHit hit;
     private bool ignoraTrigger = false;
 
     /// <summary>
-    /// Questo metodo serve per cambiare l'immagine del cursore. 
+    /// Questo metodo serve per cambiare l'immagine del cursore.
     /// </summary>
     /// <param name="numeroLayer"></param>
     /// <param name="miaClasse"></param>
@@ -45,8 +44,7 @@ public class Cursore : MonoBehaviour
                 }
                 else
                 {      //immagine combattere perchè nel death match sono tutti contro tutti, e comunque le amicizie in multiplayer dovrebbero eventualmente essere decise dal server.
-                        me.immagineCursore = me.immagineCombattere;
-
+                    me.immagineCursore = me.immagineCombattere;
                 }
                 break;
 
@@ -66,6 +64,5 @@ public class Cursore : MonoBehaviour
         me = this;
         Cursor.visible = true;
         immagineCursore = immagineNormale;
-        
     }
 }
