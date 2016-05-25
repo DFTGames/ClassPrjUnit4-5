@@ -1,70 +1,100 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using Mono.Data.Sqlite;
 using System.Collections.Generic;
 using System.IO;
-using Mono.Data.Sqlite;
-using System;
+using UnityEngine;
+
 //using UnityEditor;
 
 public class Statici
 {
-    public const string NomeFilePersonaggio = "Personaggio.dat";
-    public const string nomeFileDiplomazia = "diplomazia.dat";
     public const string NomeFileAudio = "Audio.dat";
-    public static string nomePersonaggio = string.Empty;
-    public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiNemici = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
+    public const string nomeFileDiplomazia = "diplomazia.dat";
+    public const string NomeFilePersonaggio = "Personaggio.dat";
+    public const string STR_DatabaseDiGioco = "/dataBaseDiGioco.asset";
+    public const string STR_DatabaseDiGioco2 = "/dataBasePercorso.asset";
+    public const string STR_DatabaseDiGioco3 = "/dataBasePersonaggioV2.asset";
+    public const string STR_PercorsoConfig = "PercorsoConfigurazione";
+
+    //fine variabili multigiocatore
+    public const string STR_PercorsoConfig2 = "PercorsoConfigurazione";
+
+    //Path memorizzazione del Percorso
+    public const string STR_PercorsoConfig3 = "PercorsoConfigurazione";
+
+    public const string tmpPercorsi = "nome Percorso";
+    public static string classeDiColuiCheVuoleCambiareAmicizia = string.Empty;
+    public static Percorsi databaseInizialePercorsi;
+    public static caratteristichePersonaggioV2 databaseInizialeProprieta;
+    public static GameData databseInizialeAmicizie;
+    public static Serializzabile<ValoriPersonaggioS> datiPersonaggio;
+    public static DatiPersonaggio datiPersonaggioLocale;
+    public static bool diplomaziaAggiornata = false;
     public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiAmici = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
     public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiIndifferenti = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
-    public static Transform PersonaggioPrincipaleT;
-    public static PadreGestore padreGestore;
-    public static DatiPersonaggio personaggio;
-    public static Serializzabile<ValoriPersonaggioS> datiPersonaggio;
-    public static Dictionary<int, DatiPersonaggio> registroDatiPersonaggi = new Dictionary<int, DatiPersonaggio>();
-    public static caratteristichePersonaggioV2 databaseInizialeProprieta;
-    public static Percorsi databaseInizialePercorsi;
-    public static GameData databseInizialeAmicizie;
-    public static string classeDiColuiCheVuoleCambiareAmicizia = string.Empty;//da verificare se servirà ancora o no
-    public static bool inGioco = false;//usera al posto di buildindex
+    public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiNemici = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
+    public static bool finePartita = false;
+
+    //da verificare se servirà ancora o no
+    public static bool inGioco = false;
+
+    public static NetworkTransformInterpolation.InterpolationMode inter = NetworkTransformInterpolation.InterpolationMode.INTERPOLATION;
+
+    //usera al posto di buildindex
     public static bool IsPointAndClick = true;
 
-
+    public static string messaggio = "";
 
     //inizio variabili per multigiocatore:
     public static bool multigiocatoreOn = false;
-    public static GestoreInfoClassi playerRemotiGestore=new GestoreInfoClassi();
-    public static GameObject playerLocaleGO;
-    public static DatiPersonaggio datiPersonaggioLocale;
-    public static int userLocaleId = 0;
-    public static int numeroPostoSpawn = -1;
-    public static string messaggio = "";
-    public static bool ownerUscito = false;
-    public static bool partenza = false;
-    public static bool finePartita = false;
-    public static string posizioneInizialeMulti = string.Empty;
+
     public static string nomeModello = string.Empty;
-    public static bool diplomaziaAggiornata = false;
-    public static float tempoInvioTransform = 0.1f;
-    public static float tempoInvioAnimazione = 0.1f;
-    public static NetworkTransformInterpolation.InterpolationMode inter = NetworkTransformInterpolation.InterpolationMode.INTERPOLATION;
-    //fine variabili multigiocatore
-
-
-    public const string STR_PercorsoConfig = "PercorsoConfigurazione";
-    public const string STR_DatabaseDiGioco = "/dataBaseDiGioco.asset";
-
-    public const string STR_PercorsoConfig2 = "PercorsoConfigurazione";  //Path memorizzazione del Percorso
-    public const string STR_DatabaseDiGioco2 = "/dataBasePercorso.asset";
-
-    public const string STR_PercorsoConfig3 = "PercorsoConfigurazione";
-    public const string STR_DatabaseDiGioco3 = "/dataBasePersonaggioV2.asset";
-
+    public static string nomePersonaggio = string.Empty;
+    public static int numeroPostoSpawn = -1;
+    public static bool ownerUscito = false;
+    public static PadreGestore padreGestore;
+    public static bool partenza = false;
+    public static DatiPersonaggio personaggio;
+    public static Transform PersonaggioPrincipaleT;
+    public static GameObject playerLocaleGO;
+    public static GestoreInfoClassi playerRemotiGestore = new GestoreInfoClassi();
+    public static string posizioneInizialeMulti = string.Empty;
+    public static Dictionary<int, DatiPersonaggio> registroDatiPersonaggi = new Dictionary<int, DatiPersonaggio>();
     public static bool sonoPassatoDallaScenaIniziale = false;
+    public static float tempoInvioAnimazione = 0.1f;
+    public static float tempoInvioTransform = 0.1f;
+    public static int userLocaleId = 0;
+    private static SqliteConnection conn;
+    private static string destinazione = Application.persistentDataPath + "/dbgioco.db";
+    private static string origine = Application.streamingAssetsPath + "/dbgioco.db";
 
-    public const string tmpPercorsi = "nome Percorso";
+    public static void aggiungiComponenteAnimazione(GameObject obj, bool locale)
+    {
+        if (obj == null) return;
 
-    static string origine = Application.streamingAssetsPath + "/dbgioco.db";
-    static string destinazione = Application.persistentDataPath + "/dbgioco.db";
-    static SqliteConnection conn;
+        ControllerMaga t = obj.GetComponent<ControllerMaga>();
+
+        if (!locale && obj.GetComponent<AnimSyncronRiceiver>() == null)
+        {
+            AnimSyncronRiceiver tmp = obj.AddComponent<AnimSyncronRiceiver>();
+            tmp.controller = t;
+        }
+
+        if (locale && obj.GetComponent<AnimSyncronizeSender>() == null)
+        {
+            AnimSyncronizeSender tmp = obj.AddComponent<AnimSyncronizeSender>();
+            t.SyncAnimS = tmp;
+            //   tmp.controller = t;
+        }
+    }
+
+    public static void assegnaAssetDatabase()
+    {
+        DataBase.Inizializza();
+        databseInizialeAmicizie = DataBase.GiveMeAmicizie();
+        databaseInizialeProprieta = DataBase.GiveMeProprieta();
+        databaseInizialePercorsi = DataBase.GiveMePercorsi();
+    }
+
     public static void CopiaIlDB(bool sovrascrivi = false)
     {
         if (!File.Exists(destinazione) || sovrascrivi)
@@ -82,57 +112,13 @@ public class Statici
         conn.Close();
     }
 
-    private static void Conn_StateChange(object sender, System.Data.StateChangeEventArgs e)
+    public static void provaErrore(string scriviNomeVariabile, object oggetto)
     {
-        if (e.CurrentState == System.Data.ConnectionState.Open)
-        {
-            Debug.Log("Aperta!");
-        }
-        else if (e.CurrentState == System.Data.ConnectionState.Closed)
-        {
-            Debug.Log("Chiusa!");
-        }
+        if (oggetto == null)
+            Debug.Log("$Debug.Automatico : L'oggetto **" + scriviNomeVariabile + " **che mi hai passato e' : NULLO  ");
+        else Debug.Log("$Debug.Automatico : Ecco valore del oggetto **" + scriviNomeVariabile + " **che mi hai passato :  " + oggetto.ToString());
     }
 
-
-    /// <summary>
-    /// Lo script metodo charlie e serializza percorsi sono due metodi statici perchè vengono richiamati
-    /// in due script cioè manager iniziale e gamemanager.
-    /// Per evitare di avere due metodi identici dentro entrambi gli script li ho spostati qui e resi statici
-    /// in modo che siano scritti una volta sola e richiamati dove si vuole.
-    /// </summary>
-    /// <param name="databseInizialeAmicizie"></param>
-    /// <param name="databaseInizialeProprieta"></param>
-    /// <summary>
-    /// Lo script metodo assegnaAssetDatabase e serializza percorsi sono due metodi statici perchè vengono richiamati
-    /// in due script cioè manager iniziale e gamemanager.
-    /// Per evitare di avere due metodi identici dentro entrambi gli script li ho spostati qui e resi statici
-    /// in modo che siano scritti una volta sola e richiamati dove si vuole.
-    /// </summary>
-    /// <param name="databseInizialeAmicizie"></param>
-    /// <param name="databaseInizialeProprieta"></param>
-
-
-    public static void assegnaAssetDatabase()  
-    {
-         DataBase.Inizializza();       
-        databseInizialeAmicizie = DataBase.GiveMeAmicizie();
-        databaseInizialeProprieta = DataBase.GiveMeProprieta();
-        databaseInizialePercorsi = DataBase.GiveMePercorsi();
-
-    }
-
-
-    /// <summary>
-    /// salva in un dizionario il personaggio e le sue caratteristiche (vita, livello ecc)
-    /// </summary>
-    /// <param name="datiPersonaggioDaRegistrare"></param>
-    public static void RegistraDatiPersonaggio(DatiPersonaggio datiPersonaggioDaRegistrare)
-    {
-        registroDatiPersonaggi.Add(datiPersonaggioDaRegistrare.GetInstanceID(), datiPersonaggioDaRegistrare);        
-        RecuperaDati(datiPersonaggioDaRegistrare);
-       
-    }
     /// <summary>
     /// recupera i dati del personaggio(giocatore o AI) e li assegna
     /// </summary>
@@ -156,57 +142,60 @@ public class Statici
         }
         else
         {  //se è giocabile recupero i dati dal file serializzato
-            
-                registroDatiPersonaggi[tmpID].VitaMassima = Statici.datiPersonaggio.Dati.VitaMassima;
-                registroDatiPersonaggi[tmpID].Vita = Statici.datiPersonaggio.Dati.Vita;
-                registroDatiPersonaggi[tmpID].ManaMassimo = Statici.datiPersonaggio.Dati.ManaMassimo;
-                registroDatiPersonaggi[tmpID].Mana = Statici.datiPersonaggio.Dati.Mana;
-                registroDatiPersonaggi[tmpID].Livello = Statici.datiPersonaggio.Dati.Livello;
-                registroDatiPersonaggi[tmpID].XpMassimo = Statici.datiPersonaggio.Dati.XPMassimo;
-                registroDatiPersonaggi[tmpID].Xp = Statici.datiPersonaggio.Dati.Xp;
-                registroDatiPersonaggi[tmpID].Attacco = Statici.datiPersonaggio.Dati.Attacco;
-                registroDatiPersonaggi[tmpID].Difesa = Statici.datiPersonaggio.Dati.difesa;
-                registroDatiPersonaggi[tmpID].Nome = Statici.datiPersonaggio.Dati.nomePersonaggio;
-                PersonaggioPrincipaleT.GetComponentInChildren<TextMesh>().text = registroDatiPersonaggi[tmpID].Nome;
+            registroDatiPersonaggi[tmpID].VitaMassima = Statici.datiPersonaggio.Dati.VitaMassima;
+            registroDatiPersonaggi[tmpID].Vita = Statici.datiPersonaggio.Dati.Vita;
+            registroDatiPersonaggi[tmpID].ManaMassimo = Statici.datiPersonaggio.Dati.ManaMassimo;
+            registroDatiPersonaggi[tmpID].Mana = Statici.datiPersonaggio.Dati.Mana;
+            registroDatiPersonaggi[tmpID].Livello = Statici.datiPersonaggio.Dati.Livello;
+            registroDatiPersonaggi[tmpID].XpMassimo = Statici.datiPersonaggio.Dati.XPMassimo;
+            registroDatiPersonaggi[tmpID].Xp = Statici.datiPersonaggio.Dati.Xp;
+            registroDatiPersonaggi[tmpID].Attacco = Statici.datiPersonaggio.Dati.Attacco;
+            registroDatiPersonaggi[tmpID].Difesa = Statici.datiPersonaggio.Dati.difesa;
+            registroDatiPersonaggi[tmpID].Nome = Statici.datiPersonaggio.Dati.nomePersonaggio;
+            PersonaggioPrincipaleT.GetComponentInChildren<TextMesh>().text = registroDatiPersonaggi[tmpID].Nome;
 
-                GestoreCanvasAltreScene.AggiornaDati(datiStatistici);
-            
+            GestoreCanvasAltreScene.AggiornaDati(datiStatistici);
+
             Statici.personaggio = datiStatistici;
             classeDiColuiCheVuoleCambiareAmicizia = datiStatistici.miaClasse.ToString();
         }
-        
     }
 
-
-    public static void aggiungiComponenteAnimazione(GameObject obj,bool locale)
+    /// <summary>
+    /// Lo script metodo charlie e serializza percorsi sono due metodi statici perchè vengono richiamati
+    /// in due script cioè manager iniziale e gamemanager.
+    /// Per evitare di avere due metodi identici dentro entrambi gli script li ho spostati qui e resi statici
+    /// in modo che siano scritti una volta sola e richiamati dove si vuole.
+    /// </summary>
+    /// <param name="databseInizialeAmicizie"></param>
+    /// <param name="databaseInizialeProprieta"></param>
+    /// <summary>
+    /// Lo script metodo assegnaAssetDatabase e serializza percorsi sono due metodi statici perchè vengono richiamati
+    /// in due script cioè manager iniziale e gamemanager.
+    /// Per evitare di avere due metodi identici dentro entrambi gli script li ho spostati qui e resi statici
+    /// in modo che siano scritti una volta sola e richiamati dove si vuole.
+    /// </summary>
+    /// <param name="databseInizialeAmicizie"></param>
+    /// <param name="databaseInizialeProprieta"></param>
+    /// <summary>
+    /// salva in un dizionario il personaggio e le sue caratteristiche (vita, livello ecc)
+    /// </summary>
+    /// <param name="datiPersonaggioDaRegistrare"></param>
+    public static void RegistraDatiPersonaggio(DatiPersonaggio datiPersonaggioDaRegistrare)
     {
-        if (obj == null) return;
-
-        ControllerMaga t = obj.GetComponent<ControllerMaga>();
-
-        if (!locale && obj.GetComponent<AnimSyncronRiceiver>() == null)
-        {
-            AnimSyncronRiceiver tmp=obj.AddComponent<AnimSyncronRiceiver>();
-            tmp.controller = t;
-        }
-
-        if (locale && obj.GetComponent<AnimSyncronizeSender>() == null)
-        {
-            AnimSyncronizeSender tmp= obj.AddComponent<AnimSyncronizeSender>();       
-            t.SyncAnimS = tmp;
-         //   tmp.controller = t;
-        }
+        registroDatiPersonaggi.Add(datiPersonaggioDaRegistrare.GetInstanceID(), datiPersonaggioDaRegistrare);
+        RecuperaDati(datiPersonaggioDaRegistrare);
     }
-    public static void provaErrore(string scriviNomeVariabile,object oggetto)
-    {
-        if (oggetto == null)
-            Debug.Log("$Debug.Automatico : L'oggetto **" + scriviNomeVariabile + " **che mi hai passato e' : NULLO  " );
-        else Debug.Log("$Debug.Automatico : Ecco valore del oggetto **" + scriviNomeVariabile + " **che mi hai passato :  " + oggetto.ToString() );
 
+    private static void Conn_StateChange(object sender, System.Data.StateChangeEventArgs e)
+    {
+        if (e.CurrentState == System.Data.ConnectionState.Open)
+        {
+            Debug.Log("Aperta!");
+        }
+        else if (e.CurrentState == System.Data.ConnectionState.Closed)
+        {
+            Debug.Log("Chiusa!");
+        }
     }
 }
-
-
-
-
-

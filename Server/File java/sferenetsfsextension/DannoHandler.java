@@ -57,7 +57,7 @@ public class DannoHandler extends BaseClientRequestHandler{
        
          send("danno", isfsoOut,mondo.GetUtentiInScena(user.getLastJoinedRoom(), mondo.dizionarioUtentiPlayer.get(user).scena));
       
-         ext.ComunicaPunteggiAiGiocatori(user);        
+         ext.ComunicaPunteggiAiGiocatori(user, mondo.TUTTI_QUELLI_IN_STANZA);      
         
         
     }

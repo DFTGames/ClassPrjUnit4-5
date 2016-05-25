@@ -5,6 +5,7 @@
  */
 package sferenetsfsextension;
 
+import com.smartfoxserver.v2.entities.Room;
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
@@ -29,7 +30,7 @@ public class RespawnHandler extends BaseClientRequestHandler{
         float ry=isfso.getFloat("ry");
         float rz=isfso.getFloat("rz");
 
-        int userDaAvvisare=isfso.getInt("usIn");
+       
         String scena=isfso.getUtfString("scena");
         SfereNetSfsExtension ext = (SfereNetSfsExtension) this.getParentExtension();         
         Mondo mondo=ext.world; 
@@ -38,41 +39,51 @@ public class RespawnHandler extends BaseClientRequestHandler{
         
         mondo.dizionarioUtentiPlayer.get(user).t=player.t;
         mondo.dizionarioUtentiPlayer.get(user).scena=scena;
+        Room stanza=user.getLastJoinedRoom();
         
-        List<User> listaUtentiInScena=mondo.GetUtentiInScena(user.getLastJoinedRoom(), mondo.dizionarioUtentiPlayer.get(user).scena);
+        List<User> listaUtentiInScena=mondo.GetUtentiInScena(stanza, mondo.dizionarioUtentiPlayer.get(user).scena);  
         
-        trace("l'utente"+user.getName()+"vita:"+mondo.dizionarioUtentiPlayer.get(user).vita);
-        ISFSObject objOut=new SFSObject();
-        objOut.putUtfString("model", mondo.dizionarioUtentiPlayer.get(user).modello);
-        objOut.putUtfString("nome", mondo.dizionarioUtentiPlayer.get(user).nome);
-         objOut.putUtfString("classe", mondo.dizionarioUtentiPlayer.get(user).classe);
-        objOut.putFloat("vita",  mondo.dizionarioUtentiPlayer.get(user).vita);
-        objOut.putFloat("vitaM",  mondo.dizionarioUtentiPlayer.get(user).vitaMax);
-        objOut.putFloat("mana",  mondo.dizionarioUtentiPlayer.get(user).mana);
-        objOut.putFloat("manaM",  mondo.dizionarioUtentiPlayer.get(user).manaMax);
-        objOut.putFloat("xp",  mondo.dizionarioUtentiPlayer.get(user).xp);
-        objOut.putFloat("xpM",  mondo.dizionarioUtentiPlayer.get(user).xpMax);
-        objOut.putFloat("att",  mondo.dizionarioUtentiPlayer.get(user).attacco);
-        objOut.putFloat("dif",  mondo.dizionarioUtentiPlayer.get(user).difesa);
-        objOut.putInt("liv",  mondo.dizionarioUtentiPlayer.get(user).livello);  
-        objOut.putBool("gioc", mondo.dizionarioUtentiPlayer.get(user).giocabile);
-        objOut.putFloat("x",  mondo.dizionarioUtentiPlayer.get(user).t.x);
-        objOut.putFloat("y",  mondo.dizionarioUtentiPlayer.get(user).t.y);
-        objOut.putFloat("z",  mondo.dizionarioUtentiPlayer.get(user).t.z);
-         objOut.putFloat("rx",  mondo.dizionarioUtentiPlayer.get(user).t.rx);
-        objOut.putFloat("ry",  mondo.dizionarioUtentiPlayer.get(user).t.ry);
-        objOut.putFloat("rz",  mondo.dizionarioUtentiPlayer.get(user).t.rz);
-        objOut.putUtfString("scena", mondo.dizionarioUtentiPlayer.get(user).scena);
+       //raccolgo le informazioni degli utenti in scena e li invio. 
+       //se le informazioni riguardano l'utente appena entrato le invio a tutti quelli in scena
+       //se invece riguardano quelli già presenti in scena li mando solo all'utente appena entrato perchè gli altri già le conoscono.
+        for(int i=0;i<listaUtentiInScena.size();i++){
+             ISFSObject objOut=new SFSObject();
+            User utenteDiCuiMiServonoInfo=listaUtentiInScena.get(i);
+            objOut.putUtfString("model", mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).modello);
+            objOut.putUtfString("nome", mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).nome);
+             objOut.putUtfString("classe", mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).classe);
+            objOut.putFloat("vita",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).vita);
+            objOut.putFloat("vitaM",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).vitaMax);
+            objOut.putFloat("mana",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).mana);
+            objOut.putFloat("manaM",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).manaMax);
+            objOut.putFloat("xp",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).xp);
+            objOut.putFloat("xpM",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).xpMax);
+            objOut.putFloat("att",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).attacco);
+            objOut.putFloat("dif",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).difesa);
+            objOut.putInt("liv",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).livello);  
+            objOut.putBool("gioc", mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).giocabile);
+             objOut.putFloat("x",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).t.x);
+             objOut.putFloat("y",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).t.y);
+             objOut.putFloat("z",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).t.z);
+             objOut.putFloat("rx",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).t.rx);
+             objOut.putFloat("ry",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).t.ry);
+             objOut.putFloat("rz",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).t.rz);
+            objOut.putUtfString("scena", mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).scena);
+            objOut.putInt("ut", utenteDiCuiMiServonoInfo.getId());
+            if(utenteDiCuiMiServonoInfo==user)//se le informazioni riguardano l'utente che è entrato appena in scena le mando a tutti quelli in scena
+                send("respawn", objOut,listaUtentiInScena);
+            else//se le informazioni riguardano gli altri già in scena le mando solo all'utente che è entrato in scena da poco perchè gli altri le sanno già
+                send("respawn", objOut,user);  
+        }    
+        
+       //comunico a quello che è appena entrato in scena il punteggio di tutti quelli in stanza:
+       for(int i=0;i<stanza.getUserList().size();i++){
+           User utenteDiCuiMiServePunteggio=stanza.getUserList().get(i);
+           ext.ComunicaPunteggiAiGiocatori(utenteDiCuiMiServePunteggio,user.getId());
+       }
+      
        
-       // objOut.putInt("nUcc", mondo.dizionarioUtentiPlayer.get(user).numeroUccisioni);
-        objOut.putInt("ut", user.getId());
-        //objOut.putInt("nSpawn", mondo.dizionarioUtentiPlayer.get(user).numeroSpawn);
-        if(userDaAvvisare==-1)//avviso tutti quelli dentro la stanza
-          send("respawn", objOut,listaUtentiInScena);
-        else//avviso solo quello specificato cioè quello appena entrato
-          send("respawn", objOut,user.getLastJoinedRoom().getUserById(userDaAvvisare));  
-        
-       ext.ComunicaPunteggiAiGiocatori(user);
+       
     }
     
 }

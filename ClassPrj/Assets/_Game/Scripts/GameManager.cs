@@ -13,7 +13,64 @@ public class GameManager : MonoBehaviour
     private Collider precedente = null;
     private Vista vistaGoblin;
 
+    public void RecuperaDizionariDiplomazia()
+    {
+        Statici.dizionarioDiNemici.Clear();
+        Statici.dizionarioDiIndifferenti.Clear();
+        Statici.dizionarioDiAmici.Clear();
+        List<classiPersonaggi> tmpNemici = null;
+        List<classiPersonaggi> tmpAmici = null;
+        List<classiPersonaggi> tmpIndifferenti = null;
 
+        for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
+        {
+            tmpNemici = new List<classiPersonaggi>();
+            tmpIndifferenti = new List<classiPersonaggi>();
+            tmpAmici = new List<classiPersonaggi>();
+            for (int j = 0; j < datiDiplomazia.Dati.tipoEssere.Length; j++)
+            {
+                switch (datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j])
+                {
+                    case Amicizie.Neutro:
+                        if (!tmpIndifferenti.Contains((classiPersonaggi)j))
+                            tmpIndifferenti.Add((classiPersonaggi)j);
+                        break;
+
+                    case Amicizie.Alleato:
+                        if (!tmpAmici.Contains((classiPersonaggi)j))
+                            tmpAmici.Add((classiPersonaggi)j);
+                        break;
+
+                    case Amicizie.Nemico:
+                        if (!tmpNemici.Contains((classiPersonaggi)j))
+                            tmpNemici.Add((classiPersonaggi)j);
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            if (!Statici.dizionarioDiNemici.ContainsKey((classiPersonaggi)i))
+                Statici.dizionarioDiNemici.Add((classiPersonaggi)i, tmpNemici);
+            if (!Statici.dizionarioDiAmici.ContainsKey((classiPersonaggi)i))
+                Statici.dizionarioDiAmici.Add((classiPersonaggi)i, tmpAmici);
+            if (!Statici.dizionarioDiIndifferenti.ContainsKey((classiPersonaggi)i))
+                Statici.dizionarioDiIndifferenti.Add((classiPersonaggi)i, tmpIndifferenti);
+
+            /*
+            foreach (KeyValuePair<classiPersonaggi, List<classiPersonaggi>> pair in Statici.dizionarioDiNemici)
+            {
+                Debug.Log("chiave  " + pair.Key + "valore   " + pair.Value[0]);
+            }
+            */
+        }
+        if (vistaGoblin != null)
+            vistaGoblin.AmiciziaCambiata = true;
+        if (oggettoDaMarcare != null)
+            oggettoDaMarcare.ControllaAmicizia = true;
+        Statici.diplomaziaAggiornata = true;
+    }
 
     private void Awake()
     {
@@ -29,7 +86,7 @@ public class GameManager : MonoBehaviour
         else
             Debug.LogError("Ma ci fai o ci sei ????..sei un cazzone....manca il padrePercorso");
         Statici.assegnaAssetDatabase();
-    
+
         if (Statici.nomePersonaggio.Equals(string.Empty))
             Statici.nomePersonaggio = "PersonaggioDiProva";
         Statici.datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
@@ -39,7 +96,7 @@ public class GameManager : MonoBehaviour
         if (Statici.sonoPassatoDallaScenaIniziale)
         {
             GameObject tmpObjP = Instantiate(Resources.Load(Statici.datiPersonaggio.Dati.nomeModello), GameObject.Find(Statici.datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
-           
+
             Statici.PersonaggioPrincipaleT = tmpObjP.transform;
             RecuperaDizionariDiplomazia();
         }
@@ -86,71 +143,4 @@ public class GameManager : MonoBehaviour
             Statici.sonoPassatoDallaScenaIniziale = true;
         }
     }
-
-    
-
-    public void RecuperaDizionariDiplomazia()
-    {
-        Statici.dizionarioDiNemici.Clear();
-        Statici.dizionarioDiIndifferenti.Clear();
-        Statici.dizionarioDiAmici.Clear();
-        List<classiPersonaggi> tmpNemici = null;
-        List<classiPersonaggi> tmpAmici = null;
-        List<classiPersonaggi> tmpIndifferenti = null;
-
-
-        for (int i = 0; i < datiDiplomazia.Dati.tipoEssere.Length; i++)
-        {
-            tmpNemici = new List<classiPersonaggi>();
-            tmpIndifferenti = new List<classiPersonaggi>();
-            tmpAmici = new List<classiPersonaggi>();        
-                for (int j = 0; j < datiDiplomazia.Dati.tipoEssere.Length; j++) 
-                {        
-                switch (datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j])
-                {
-                    case Amicizie.Neutro:
-                        if (!tmpIndifferenti.Contains((classiPersonaggi)j))
-                            tmpIndifferenti.Add((classiPersonaggi)j);
-                        break;
-
-                    case Amicizie.Alleato:
-                        if (!tmpAmici.Contains((classiPersonaggi)j))
-                            tmpAmici.Add((classiPersonaggi)j);
-                        break;
-
-                    case Amicizie.Nemico:
-                        if (!tmpNemici.Contains((classiPersonaggi)j))
-                            tmpNemici.Add((classiPersonaggi)j);
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-
-
-            if (!Statici.dizionarioDiNemici.ContainsKey((classiPersonaggi)i))
-                Statici.dizionarioDiNemici.Add((classiPersonaggi)i, tmpNemici);
-            if (!Statici.dizionarioDiAmici.ContainsKey((classiPersonaggi)i))
-                Statici.dizionarioDiAmici.Add((classiPersonaggi)i, tmpAmici);
-            if (!Statici.dizionarioDiIndifferenti.ContainsKey((classiPersonaggi)i))
-                Statici.dizionarioDiIndifferenti.Add((classiPersonaggi)i, tmpIndifferenti);
-
-            /*
-            foreach (KeyValuePair<classiPersonaggi, List<classiPersonaggi>> pair in Statici.dizionarioDiNemici)
-            {
-                Debug.Log("chiave  " + pair.Key + "valore   " + pair.Value[0]);
-            }
-            */
-
-     
-        }
-        if (vistaGoblin != null)
-            vistaGoblin.AmiciziaCambiata = true;
-        if (oggettoDaMarcare != null)
-            oggettoDaMarcare.ControllaAmicizia = true;
-        Statici.diplomaziaAggiornata = true;
-    }
-
-
 }

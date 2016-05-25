@@ -31,10 +31,9 @@ public class Mondo {
     public List<Integer> listaSpawnPointLiberi=new ArrayList<Integer>();
     public User userWinner;
     public int numeroMaxUccisioni=0;
-    public List<Integer> listaUtentiPronti=new ArrayList<Integer>();
-   
-  
+    public List<Integer> listaUtentiPronti=new ArrayList<Integer>(); 
     public int numeroUtentiPronti=0;
+    public final int TUTTI_QUELLI_IN_STANZA=-1;
    
    
  

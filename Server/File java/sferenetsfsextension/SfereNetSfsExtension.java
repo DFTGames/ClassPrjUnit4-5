@@ -79,13 +79,17 @@ public class SfereNetSfsExtension extends SFSExtension{
          send("fine", isfsoOut,user.getLastJoinedRoom().getUserList());
     }
  
-     public void ComunicaPunteggiAiGiocatori(User user){
-          Mondo mondo=this.world; 
-       ISFSObject objOut2=new SFSObject();       
-         objOut2.putInt("nUcc", mondo.dizionarioUtentiPlayer.get(user).numeroUccisioni);
-         objOut2.putInt("nSpawn", mondo.dizionarioUtentiPlayer.get(user).numeroSpawn);
-         objOut2.putUtfString("nome", mondo.dizionarioUtentiPlayer.get(user).nome);
-          send("datiUcc", objOut2,user.getLastJoinedRoom().getUserList());  
+     public void ComunicaPunteggiAiGiocatori(User utenteP, int userDaAvvisareId){
+         Mondo mondo=this.world; 
+         ISFSObject objOut2=new SFSObject();           
+             
+         objOut2.putInt("nUcc", mondo.dizionarioUtentiPlayer.get(utenteP).numeroUccisioni);        
+         objOut2.putInt("nSpawn", mondo.dizionarioUtentiPlayer.get(utenteP).numeroSpawn);
+         objOut2.putUtfString("nome", mondo.dizionarioUtentiPlayer.get(utenteP).nome);
+         if(userDaAvvisareId==mondo.TUTTI_QUELLI_IN_STANZA)//se faccio danno comunico il nuovo punteggio a tutti
+          send("datiUcc", objOut2,utenteP.getLastJoinedRoom().getUserList()); 
+         else//se invece entro in scena viene comunicato solo a me stesso il punteggio di ogni utente in stanza
+            send("datiUcc", objOut2,utenteP.getLastJoinedRoom().getUserById(userDaAvvisareId));          
    }
    
   

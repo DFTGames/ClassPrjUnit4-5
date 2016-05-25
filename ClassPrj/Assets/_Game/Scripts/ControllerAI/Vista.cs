@@ -2,26 +2,26 @@
 using UnityEngine;
 
 public class Vista : MonoBehaviour
-{   
+{
     public List<Transform> listaNemiciDentroNonVisti;
     public List<Transform> listaNemiciVisti;
 
-    private RaycastHit hit;
     private float alphaGradMezzi;
-    private Vector3 vettoreDaTransformAObiettivo;
-    private float angoloTraForwardEObiettivo;
-    private float prodottoScalare;
-    private float prodottoMagnitudini;
-    private FSM mioCervello;
-    private List<string> Nemici = null;   
-    private List<Transform> tmpDaELiminare;
-    private bool amicizieCambiate = false;
-    private float conta = 0f;
-    private TipoArma tmpTipoArmaPrecedente;
-    private bool armaCambiata = false;
-    private DatiPersonaggio datiPersonaggio;
-    private DatiPersonaggio datiAltroPersonaggio;
     private bool amiciziaCambiata = false;
+    private bool amicizieCambiate = false;
+    private float angoloTraForwardEObiettivo;
+    private bool armaCambiata = false;
+    private float conta = 0f;
+    private DatiPersonaggio datiAltroPersonaggio;
+    private DatiPersonaggio datiPersonaggio;
+    private RaycastHit hit;
+    private FSM mioCervello;
+    private List<string> Nemici = null;
+    private float prodottoMagnitudini;
+    private float prodottoScalare;
+    private List<Transform> tmpDaELiminare;
+    private TipoArma tmpTipoArmaPrecedente;
+    private Vector3 vettoreDaTransformAObiettivo;
 
     public bool AmiciziaCambiata
     {
@@ -36,22 +36,19 @@ public class Vista : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void CalcolaAngolo(List<Transform> daTrattare, int i)
     {
-        listaNemiciDentroNonVisti = new List<Transform>();
-        mioCervello = GetComponent<FSM>();
-        mioCervello.ObiettivoNemico = null;
-        alphaGradMezzi = (mioCervello.alphaGrad) * 0.5f;
-        tmpDaELiminare = new List<Transform>();
-        datiPersonaggio = GetComponent<DatiPersonaggio>();
-
+        vettoreDaTransformAObiettivo = (daTrattare[i].position - transform.position).normalized;
+        prodottoScalare = Vector3.Dot(vettoreDaTransformAObiettivo, transform.forward);
+        prodottoMagnitudini = vettoreDaTransformAObiettivo.magnitude * transform.forward.magnitude;
+        angoloTraForwardEObiettivo = Mathf.Acos((prodottoScalare / prodottoMagnitudini)) * Mathf.Rad2Deg;
     }
 
     private void OnTriggerEnter(Collider coll)
     {
         datiAltroPersonaggio = coll.GetComponent<DatiPersonaggio>();
         if (datiAltroPersonaggio != null)
-        {     
+        {
             if (Statici.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
                 listaNemiciDentroNonVisti.Add(coll.transform);
         }
@@ -81,8 +78,17 @@ public class Vista : MonoBehaviour
                     listaNemiciDentroNonVisti.Remove(coll.transform);
                 AmiciziaCambiata = false;
             }
-            
-        }    
+        }
+    }
+
+    private void Start()
+    {
+        listaNemiciDentroNonVisti = new List<Transform>();
+        mioCervello = GetComponent<FSM>();
+        mioCervello.ObiettivoNemico = null;
+        alphaGradMezzi = (mioCervello.alphaGrad) * 0.5f;
+        tmpDaELiminare = new List<Transform>();
+        datiPersonaggio = GetComponent<DatiPersonaggio>();
     }
 
     private void Update()
@@ -195,18 +201,18 @@ public class Vista : MonoBehaviour
 
             if (!armaCambiata && inAttacco)
             {
-                mioCervello.inZonaAttacco = true;               
+                mioCervello.inZonaAttacco = true;
                 conta = 0f;
             }
             else if (armaCambiata || !inAttacco)
             {
-                mioCervello.inZonaAttacco = false;               
+                mioCervello.inZonaAttacco = false;
                 conta += Time.deltaTime;
                 armaCambiata = false;
             }
 
-            if ((!listaNemiciVisti.Contains(mioCervello.ObiettivoNemico) && 
-                !mioCervello.inZonaAttacco && Mathf.Approximately(conta, 2f)) || 
+            if ((!listaNemiciVisti.Contains(mioCervello.ObiettivoNemico) &&
+                !mioCervello.inZonaAttacco && Mathf.Approximately(conta, 2f)) ||
                 (!listaNemiciVisti.Contains(mioCervello.ObiettivoNemico) &&
                 !listaNemiciDentroNonVisti.Contains(mioCervello.ObiettivoNemico)))
                 mioCervello.ObiettivoNemico = null;
@@ -216,13 +222,5 @@ public class Vista : MonoBehaviour
             else
                 mioCervello.ObiettivoInVista = false;
         }
-    }
-
-    private void CalcolaAngolo(List<Transform> daTrattare, int i)
-    {
-        vettoreDaTransformAObiettivo = (daTrattare[i].position - transform.position).normalized;
-        prodottoScalare = Vector3.Dot(vettoreDaTransformAObiettivo, transform.forward);
-        prodottoMagnitudini = vettoreDaTransformAObiettivo.magnitude * transform.forward.magnitude;
-        angoloTraForwardEObiettivo = Mathf.Acos((prodottoScalare / prodottoMagnitudini)) * Mathf.Rad2Deg;
     }
 }

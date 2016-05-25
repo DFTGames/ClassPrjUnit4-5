@@ -1,77 +1,76 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ManagerIniziale : MonoBehaviour
 {
+    public static GestoreAudio audioSingleton;
+
+    [Range(0f, 20f)]
+    public float altezzaCamera = 1f;
 
     public Animator animatoreMainMenu;
-    public Animator animatoreMenuCreazione;
     public Animator animatoreMenuCarica;
-    public Animator animatoreMultiplayer;
-    public Button bottoneCaricaDaMainManu;
-    public Button bottoneCaricaDaCaricamento;
-    public Button bottoneEliminaPartita;
-    public Slider volumiSFX;
-    public Slider volumiAmbiente;
-    public Text casellaTipo;
-    public Text valoreVita;
-    public Text valoreAttacco;
-    public Text valoreDifesa;
-    public Text testoNome;
-    public Text erroreCreazioneText;
-    public Text erroreCaricamento;
-    public Text vitaCaricamento;
+    public Animator animatoreMenuCreazione;
     public Text attaccoCaricamento;
+    public Button bottoneCaricaDaCaricamento;
+    public Button bottoneCaricaDaMainManu;
+    public Button bottoneEliminaPartita;
+    public CanvasGroup canvasGroupCarica;
+    public CanvasGroup canvasGroupCreazione;
+    public Text casellaTipo;
     public Text difesaCaricamento;
     public Dropdown elencoCartelleDropDown;
     public Dropdown elencoSessiDropDown;
-    public Image pannelloImmagineSfondo;
+    public Text erroreCaricamento;
+    public Text erroreCreazioneText;
     public Text nomeScenaText;
-    public Transform posizionePersonaggioCarica;
+    public Image pannelloImmagineSfondo;
     public Transform posizioneCameraCarica;
-    [Range(0f, 20f)]
-    public float altezzaCamera = 1f;
+    public Transform posizionePersonaggioCarica;
+    public Text testoNome;
+    public Text valoreAttacco;
+    public Text valoreDifesa;
+    public Text valoreVita;
+    public Text vitaCaricamento;
+    public Slider volumiAmbiente;
+    public Slider volumiSFX;
+
     [Range(-20f, 20f)]
     public float ZOffSet;
-    public CanvasGroup canvasGroupCreazione;
-    public CanvasGroup canvasGroupCarica;
 
-    private Serializzabile<ClasseAudio> datiAudio;
     private static ManagerIniziale me;
-    private int indiceClasseSuccessivaPrecedente = 0;
-    private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
-    private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
-    private string scena = string.Empty;
-    private GameObject tmpGODaEliminareSeSelezioniAltroGO = null;
-    private GameObject tmpGOPrecedente = null;
-    private Dictionary<string, Transform> dizionarioPosizioniPrecedenti = new Dictionary<string, Transform>();
-    private bool nuovaPartita = false;
-    private bool caricaPartita = false;
-    private bool personaggiInCarica = false;
-    private bool personaggioProvaEsiste = false;
-    private Vector3 targetT;
-    private Vector3 velocita = Vector3.zero;
-    private Vector3 posizioneCamera;
-    private Transform cameraT;
-    private Dictionary<string, GameObject> dizionarioCollegamentoNomiConModelli = new Dictionary<string, GameObject>();
-    private float fromValue;
-    private Vector3[] percorso;
-    private Vector3 obiettivoDaInquadrare;
-    private bool indiceCambiato = false; //mi serve per capire se sono passato da una classe ad un'altra
-    private float zeta;
-    private float ics;
     private float alpha;
+    private Transform cameraT;
+    private bool caricaPartita = false;
     private List<string> cartelleLocali = new List<string>();
     private int contatoreGiocabili = 0;
-    public static GestoreAudio audioSingleton;
- 
-    FMOD.Studio.Bus SFXBus;
-    FMOD.Studio.Bus EnviromentBus;
+    private Serializzabile<ClasseAudio> datiAudio;
+    private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
+    private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
+    private Dictionary<string, GameObject> dizionarioCollegamentoNomiConModelli = new Dictionary<string, GameObject>();
+    private Dictionary<string, Transform> dizionarioPosizioniPrecedenti = new Dictionary<string, Transform>();
+    private FMOD.Studio.Bus EnviromentBus;
+    private float fromValue;
+    private float ics;
+    private bool indiceCambiato = false;
+    private int indiceClasseSuccessivaPrecedente = 0;
+    private bool nuovaPartita = false;
+    private Vector3 obiettivoDaInquadrare;
+    private Vector3[] percorso;
+    private bool personaggiInCarica = false;
+    private bool personaggioProvaEsiste = false;
+    private Vector3 posizioneCamera;
+    private string scena = string.Empty;
+    private FMOD.Studio.Bus SFXBus;
+    private Vector3 targetT;
+    private GameObject tmpGODaEliminareSeSelezioniAltroGO = null;
+    private GameObject tmpGOPrecedente = null;
+    private Vector3 velocita = Vector3.zero;
+
+    //mi serve per capire se sono passato da una classe ad un'altra
+    private float zeta;
 
     public int IndiceClasseSuccessivaPrecedente
     {
@@ -91,12 +90,63 @@ public class ManagerIniziale : MonoBehaviour
         }
     }
 
-    public void cambiaSfx(float p)
+    public Text NomeScenaText
     {
-        SFXBus.setFaderLevel(p);
-        datiAudio.Dati.volSFX = p;
-        datiAudio.Salva();
+        get
+        {
+            return nomeScenaText;
+        }
+
+        set
+        {
+            nomeScenaText = value;
+        }
     }
+
+    public Image PannelloImmagineSfondo
+    {
+        get
+        {
+            return pannelloImmagineSfondo;
+        }
+
+        set
+        {
+            pannelloImmagineSfondo = value;
+        }
+    }
+
+    public static void CaricaScena(string nomeScena, string scrittaCaricamento)
+    {
+        me.animatoreMenuCarica.gameObject.SetActive(false);
+        me.animatoreMenuCreazione.gameObject.SetActive(false);
+        me.animatoreMainMenu.gameObject.SetActive(false);
+        me.NomeScenaText.gameObject.SetActive(true);
+        me.PannelloImmagineSfondo.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        me.StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica(nomeScena, scrittaCaricamento, me.PannelloImmagineSfondo.gameObject, me.NomeScenaText));
+    }
+
+    public void AnnullaDaCaricamento()
+    {
+        if (tmpGOPrecedente != null)
+        {
+            tmpGOPrecedente.transform.position = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].position;
+            tmpGOPrecedente.transform.rotation = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].rotation;
+        }
+        animatoreMenuCarica.SetBool("Torna", false);
+        animatoreMainMenu.SetBool("Via", false);
+        caricaPartita = false;
+        CambiaAlphaPannelloSfondo();
+    }
+
+    public void AnnullaDaCreazione()
+    {
+        animatoreMenuCreazione.SetBool("Torna", false);
+        animatoreMainMenu.SetBool("Via", false);
+        nuovaPartita = false;
+        CambiaAlphaPannelloSfondo();
+    }
+
     public void cambiaAmbiente(float p)
     {
         EnviromentBus.setFaderLevel(p);
@@ -104,13 +154,17 @@ public class ManagerIniziale : MonoBehaviour
         datiAudio.Salva();
     }
 
-
+    public void cambiaSfx(float p)
+    {
+        SFXBus.setFaderLevel(p);
+        datiAudio.Dati.volSFX = p;
+        datiAudio.Salva();
+    }
 
     /*
     public static void cambiaSfx_(float p )  //fatto per richiamarlo dentro al PannelloProve (dato che mettendo statico il metodo non riuscivo )
     {
         me.sliderSFX(p);
-
     }
     public static void cambiaAmbiente(float p)  //vedi sopra..
     {
@@ -118,76 +172,17 @@ public class ManagerIniziale : MonoBehaviour
     }
     */
 
-
-    
-
-    private void Start()
+    public void CancellaPartita()
     {
-        Statici.inGioco = false;
-        me = this;
-        CambiaAlphaPannelloSfondo();
-        nomeScenaText.gameObject.SetActive(false);
-        Statici.assegnaAssetDatabase();
-        cameraT = Camera.main.transform;
-        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-        for (int i = 0; i < Statici.databaseInizialeProprieta.matriceProprieta.Count; i++)
+        if (Directory.Exists(Path.Combine
+            (Application.persistentDataPath, Statici.nomePersonaggio)))
         {
-            if (!Statici.databaseInizialeProprieta.matriceProprieta[i].giocabile)
-                continue;
-            string tmpNomeModelloM = Statici.databaseInizialeProprieta.matriceProprieta[i].nomeM;
-            string tmpNomeModelloF = Statici.databaseInizialeProprieta.matriceProprieta[i].nomeF;
-            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloM, Instantiate(Resources.Load(tmpNomeModelloM), GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneM").position, new Quaternion(0f, 180f, 0f, 0f)) as GameObject);
-            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloF, Instantiate(Resources.Load(tmpNomeModelloF), GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneF").position, Quaternion.identity) as GameObject);
-            dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloM].name, GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneM"));
-            dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloF].name, GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneF"));
-            contatoreGiocabili += 1;
+            cartelleLocali.Remove(Statici.nomePersonaggio);
+            Directory.Delete(Path.Combine
+            (Application.persistentDataPath, Statici.nomePersonaggio), true);
+            RecuperaElencoCartelle();
         }
-        Statici.CopiaIlDB();
-        DirectoryInfo dI = new DirectoryInfo(Application.persistentDataPath);
-        DirectoryInfo[] dirs = dI.GetDirectories();
-        for (int i = 0; i < dirs.Length; i++)
-        {
-            cartelleLocali.Add(dirs[i].Name);
-        }
-
-        SFXBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
-        EnviromentBus = FMODUnity.RuntimeManager.GetBus("bus:/Environment");
-
-        datiAudio = new Serializzabile<ClasseAudio>(Statici.NomeFileAudio, true);
-        if (!datiAudio.Dati.inizializzato)
-        {
-            SFXBus.getFaderLevel(out datiAudio.Dati.volSFX);
-            EnviromentBus.getFaderLevel(out datiAudio.Dati.volEnvironment);
-            datiAudio.Dati.inizializzato = true;
-            datiAudio.Salva();
-        }
-        else
-        {
-            SFXBus.setFaderLevel(datiAudio.Dati.volSFX);
-            EnviromentBus.setFaderLevel(datiAudio.Dati.volEnvironment);
-        }
-
-        volumiAmbiente.value = datiAudio.Dati.volEnvironment;
-        volumiSFX.value = datiAudio.Dati.volSFX;
-
-
-}
-
-    public void NuovaPartita()
-    {
-        animatoreMenuCreazione.SetBool("Torna", true);
-        animatoreMainMenu.SetBool("Via", true);
-        nuovaPartita = true;
-        erroreCreazioneText.text = string.Empty;
-        VisualizzaValoriPersonaggio();
-        CambiaAlphaPannelloSfondo();
-        ObiettivoDaInquadrareXZ();
-        cameraT.position = new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta);
-        iTween.LookTo(cameraT.gameObject, iTween.Hash("looktarget", obiettivoDaInquadrare, "time", 0f, "axis", "y", "easetype", iTween.EaseType.linear));
-
     }
-
-
 
     public void CaricaPartita()
     {
@@ -201,21 +196,8 @@ public class ManagerIniziale : MonoBehaviour
         cameraT.rotation = posizioneCameraCarica.rotation;
     }
 
-    public void CaricaScenaDaCaricamento()
-    {
-        canvasGroupCreazione.interactable = false;
-        canvasGroupCarica.interactable = false;
-        Statici.sonoPassatoDallaScenaIniziale = true;
-        if (!Statici.multigiocatoreOn)//SOLO SINGLEPLAYER 
-            StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
-        else//solo multiplayer
-            ScenaInizialeNetwork.VaiAlleStanze();
-      
-    }
-
     public void CaricaPartitaDaCreazione()
     {
-       
         if (testoNome.text.Trim() == string.Empty)
             erroreCreazioneText.text = "Inserire un nome";
         else
@@ -252,13 +234,12 @@ public class ManagerIniziale : MonoBehaviour
                     datiPersonaggio.Salva();
                 }
                 datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
-             
+
                 if (datiDiplomazia.Dati.tipoEssere[0] == null)
                 {
                     for (int i = 0; i < Statici.databseInizialeAmicizie.classiEssere.Length; i++)
                     {
                         datiDiplomazia.Dati.tipoEssere[i] = Statici.databseInizialeAmicizie.classiEssere[i];
-                   
                     }
                     for (int i = 0; i < Statici.databseInizialeAmicizie.classiEssere.Length; i++)
                     {
@@ -267,61 +248,54 @@ public class ManagerIniziale : MonoBehaviour
                         for (int j = 0; j < Statici.databseInizialeAmicizie.classiEssere.Length; j++)
                         {
                             datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] = Statici.databseInizialeAmicizie.matriceAmicizie[i].elementoAmicizia[j];
-                        
                         }
                     }
                     datiDiplomazia.Salva();
                 }
-              
+
                 if (!Statici.multigiocatoreOn)//SOLO SINGLEPLAYER
-                    StartCoroutine(ScenaInCaricamento(datiPersonaggio.Dati.nomeScena));
+                    CaricaScena(datiPersonaggio.Dati.nomeScena, datiPersonaggio.Dati.nomeScena);
                 else//solo multiplayer
                     ScenaInizialeNetwork.VaiAlleStanze();
             }
         }
     }
 
-    public void AnnullaDaCreazione()
+    public void CaricaScenaDaCaricamento()
     {
-        animatoreMenuCreazione.SetBool("Torna", false);
-        animatoreMainMenu.SetBool("Via", false);
-        nuovaPartita = false;
-        CambiaAlphaPannelloSfondo();
+        canvasGroupCreazione.interactable = false;
+        canvasGroupCarica.interactable = false;
+        Statici.sonoPassatoDallaScenaIniziale = true;
+        if (!Statici.multigiocatoreOn)//SOLO SINGLEPLAYER
+            CaricaScena(datiPersonaggio.Dati.nomeScena, datiPersonaggio.Dati.nomeScena);
+        else//solo multiplayer
+            ScenaInizialeNetwork.VaiAlleStanze();
     }
 
-    public void AnnullaDaNetwork()
+    public void DecisionePercorsoCambioSesso()
     {
-        animatoreMultiplayer.SetBool("Torna", false);
-        animatoreMainMenu.SetBool("Via", false);
-        nuovaPartita = false;
-        CambiaAlphaPannelloSfondo();
+        ObiettivoDaInquadrareXZ();
+        percorso = new Vector3[] { cameraT.position, new Vector3(ics, obiettivoDaInquadrare.y + altezzaCamera, zeta),
+            new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta) };
+        InquadraPersonaggioInNuovaPartita();
     }
 
-
-    public void AnnullaDaCaricamento()
+    public void NuovaPartita()
     {
-        if (tmpGOPrecedente != null)
-        {
-            tmpGOPrecedente.transform.position = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].position;
-            tmpGOPrecedente.transform.rotation = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].rotation;
-        }
-        animatoreMenuCarica.SetBool("Torna", false);
-        animatoreMainMenu.SetBool("Via", false);
-        caricaPartita = false;
+        animatoreMenuCreazione.SetBool("Torna", true);
+        animatoreMainMenu.SetBool("Via", true);
+        nuovaPartita = true;
+        erroreCreazioneText.text = string.Empty;
+        VisualizzaValoriPersonaggio();
         CambiaAlphaPannelloSfondo();
-    }
-
-    private void CambiaAlphaPannelloSfondo()
-    {
-        fromValue = (!nuovaPartita && !caricaPartita) ? 0f : 1f;
-        alpha = (!nuovaPartita && !caricaPartita) ? 1f : 0f;
-        iTween.ValueTo(pannelloImmagineSfondo.gameObject, iTween.Hash("from", fromValue, "to", alpha, "time", 5f, "delay", 0.1f, "easetype",
-             iTween.EaseType.easeOutCirc, "onupdatetarget", gameObject, "onupdate", "OnTweenUpdate", "onupdateparams", fromValue));
+        ObiettivoDaInquadrareXZ();
+        cameraT.position = new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta);
+        iTween.LookTo(cameraT.gameObject, iTween.Hash("looktarget", obiettivoDaInquadrare, "time", 0f, "axis", "y", "easetype", iTween.EaseType.linear));
     }
 
     public void OnTweenUpdate(float newValue)
     {
-        pannelloImmagineSfondo.color = new Color(1f, 1f, 1f, newValue);
+        PannelloImmagineSfondo.color = new Color(1f, 1f, 1f, newValue);
     }
 
     public void Precedente()
@@ -334,72 +308,36 @@ public class ManagerIniziale : MonoBehaviour
         DecisionePercorsoCambioClasse();
     }
 
-    public void Sucessivo()
+    public void RecuperaDatiGiocatore()
     {
-        IndiceClasseSuccessivaPrecedente++;
-        while (!Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].giocabile)
-            IndiceClasseSuccessivaPrecedente++;
-        VisualizzaValoriPersonaggio();
-        indiceCambiato = true;
-        DecisionePercorsoCambioClasse();
-    }
-
-    private void ObiettivoDaInquadrareXZ()
-    {
-        obiettivoDaInquadrare = (elencoSessiDropDown.value == 0) ?
-           dizionarioCollegamentoNomiConModelli[Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM].transform.position :
-           dizionarioCollegamentoNomiConModelli[Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF].transform.position;
-        zeta = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.z - ZOffSet) : obiettivoDaInquadrare.z + ZOffSet;
-        ics = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.x + 5) : (obiettivoDaInquadrare.x - 5);
-    }
-
-    private void DecisionePercorsoCambioClasse()
-    {
-        ObiettivoDaInquadrareXZ();
-        percorso = new Vector3[] { cameraT.position, new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta) };
-        InquadraPersonaggioInNuovaPartita();
-    }
-
-    public void DecisionePercorsoCambioSesso()
-    {
-        ObiettivoDaInquadrareXZ();
-        percorso = new Vector3[] { cameraT.position, new Vector3(ics, obiettivoDaInquadrare.y + altezzaCamera, zeta),
-            new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta) };
-        InquadraPersonaggioInNuovaPartita();
-    }
-
-    private void InquadraPersonaggioInNuovaPartita()
-    {
-        iTween.MoveTo(cameraT.gameObject, iTween.Hash("path", percorso, "time", 2f, "looktarget", obiettivoDaInquadrare,
-            "looktime", 0f, "axis", "y", "easetype", iTween.EaseType.linear, "oncompletetarget", gameObject, "oncomplete", "ResettaIndiceCambiato"));
-    }
-
-    private void ResettaIndiceCambiato()
-    {
-        indiceCambiato = false;
-    }
-
-    private void VisualizzaValoriPersonaggio()
-    {
-        casellaTipo.text = Statici.databaseInizialeProprieta.classePersonaggio[IndiceClasseSuccessivaPrecedente].ToString();
-        valoreVita.text = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita.ToString();
-        valoreAttacco.text = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Attacco.ToString();
-        valoreDifesa.text = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].difesa.ToString();
-    }
-
-    private IEnumerator ScenaInCaricamento(string nomeScena)
-    {
-        AsyncOperation asynCaricamentoScena = SceneManager.LoadSceneAsync(nomeScena);
-        if (!asynCaricamentoScena.isDone && pannelloImmagineSfondo.color.a != 1f)
+        if (elencoCartelleDropDown.options.Count <= 0) return;
+        if (nuovaPartita) return;
+        Statici.nomePersonaggio = elencoCartelleDropDown.options[elencoCartelleDropDown.value].text;
+        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
+        vitaCaricamento.text = datiPersonaggio.Dati.Vita.ToString();
+        attaccoCaricamento.text = datiPersonaggio.Dati.Attacco.ToString();
+        difesaCaricamento.text = datiPersonaggio.Dati.difesa.ToString();
+        if (tmpGOPrecedente != null)
         {
-            animatoreMenuCarica.gameObject.SetActive(false);
-            animatoreMenuCreazione.gameObject.SetActive(false);
-            animatoreMainMenu.gameObject.SetActive(false);
-            nomeScenaText.gameObject.SetActive(true);
-            nomeScenaText.text = "Loading... " + datiPersonaggio.Dati.nomeScena;
-            pannelloImmagineSfondo.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+            tmpGOPrecedente.transform.position = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].position;
+            tmpGOPrecedente.transform.rotation = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].rotation;
         }
-        yield return null;
+        if (datiPersonaggio == null) return;
+        if (!dizionarioCollegamentoNomiConModelli.ContainsKey(datiPersonaggio.Dati.nomeModello))
+        {
+            erroreCaricamento.text = "Errore..Questo personaggio non e' più valido";
+            bottoneCaricaDaCaricamento.interactable = false;
+            return;
+        }
+        else
+        {
+            erroreCaricamento.text = "";
+            bottoneCaricaDaCaricamento.interactable = true;
+        }
+        GameObject tmOj = dizionarioCollegamentoNomiConModelli[datiPersonaggio.Dati.nomeModello];
+        tmOj.transform.position = posizionePersonaggioCarica.position;
+        tmOj.transform.rotation = posizionePersonaggioCarica.rotation;
+        tmpGOPrecedente = tmOj;
     }
 
     public void RecuperaElencoCartelle()
@@ -453,47 +391,108 @@ public class ManagerIniziale : MonoBehaviour
         }
     }
 
-    public void RecuperaDatiGiocatore()
+    public void Sucessivo()
     {
-        if (elencoCartelleDropDown.options.Count <= 0) return;
-        if (nuovaPartita) return;
-        Statici.nomePersonaggio = elencoCartelleDropDown.options[elencoCartelleDropDown.value].text;
+        IndiceClasseSuccessivaPrecedente++;
+        while (!Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].giocabile)
+            IndiceClasseSuccessivaPrecedente++;
+        VisualizzaValoriPersonaggio();
+        indiceCambiato = true;
+        DecisionePercorsoCambioClasse();
+    }
+
+    private void CambiaAlphaPannelloSfondo()
+    {
+        fromValue = (!nuovaPartita && !caricaPartita) ? 0f : 1f;
+        alpha = (!nuovaPartita && !caricaPartita) ? 1f : 0f;
+        iTween.ValueTo(PannelloImmagineSfondo.gameObject, iTween.Hash("from", fromValue, "to", alpha, "time", 5f, "delay", 0.1f, "easetype",
+             iTween.EaseType.easeOutCirc, "onupdatetarget", gameObject, "onupdate", "OnTweenUpdate", "onupdateparams", fromValue));
+    }
+
+    private void DecisionePercorsoCambioClasse()
+    {
+        ObiettivoDaInquadrareXZ();
+        percorso = new Vector3[] { cameraT.position, new Vector3(obiettivoDaInquadrare.x, obiettivoDaInquadrare.y + altezzaCamera, zeta) };
+        InquadraPersonaggioInNuovaPartita();
+    }
+
+    private void InquadraPersonaggioInNuovaPartita()
+    {
+        iTween.MoveTo(cameraT.gameObject, iTween.Hash("path", percorso, "time", 2f, "looktarget", obiettivoDaInquadrare,
+            "looktime", 0f, "axis", "y", "easetype", iTween.EaseType.linear, "oncompletetarget", gameObject, "oncomplete", "ResettaIndiceCambiato"));
+    }
+
+    private void ObiettivoDaInquadrareXZ()
+    {
+        obiettivoDaInquadrare = (elencoSessiDropDown.value == 0) ?
+           dizionarioCollegamentoNomiConModelli[Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM].transform.position :
+           dizionarioCollegamentoNomiConModelli[Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF].transform.position;
+        zeta = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.z - ZOffSet) : obiettivoDaInquadrare.z + ZOffSet;
+        ics = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.x + 5) : (obiettivoDaInquadrare.x - 5);
+    }
+
+    private void ResettaIndiceCambiato()
+    {
+        indiceCambiato = false;
+    }
+
+    private void Start()
+    {
+        Statici.inGioco = false;
+        me = this;
+        CambiaAlphaPannelloSfondo();
+        NomeScenaText.gameObject.SetActive(false);
+        Statici.assegnaAssetDatabase();
+        PannelloImmagineSfondo = pannelloImmagineSfondo;
+        NomeScenaText = nomeScenaText;
+        cameraT = Camera.main.transform;
         datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-        vitaCaricamento.text = datiPersonaggio.Dati.Vita.ToString();
-        attaccoCaricamento.text = datiPersonaggio.Dati.Attacco.ToString();
-        difesaCaricamento.text = datiPersonaggio.Dati.difesa.ToString();
-        if (tmpGOPrecedente != null)
+        for (int i = 0; i < Statici.databaseInizialeProprieta.matriceProprieta.Count; i++)
         {
-            tmpGOPrecedente.transform.position = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].position;
-            tmpGOPrecedente.transform.rotation = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].rotation;
+            if (!Statici.databaseInizialeProprieta.matriceProprieta[i].giocabile)
+                continue;
+            string tmpNomeModelloM = Statici.databaseInizialeProprieta.matriceProprieta[i].nomeM;
+            string tmpNomeModelloF = Statici.databaseInizialeProprieta.matriceProprieta[i].nomeF;
+            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloM, Instantiate(Resources.Load(tmpNomeModelloM), GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneM").position, new Quaternion(0f, 180f, 0f, 0f)) as GameObject);
+            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloF, Instantiate(Resources.Load(tmpNomeModelloF), GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneF").position, Quaternion.identity) as GameObject);
+            dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloM].name, GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneM"));
+            dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloF].name, GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneF"));
+            contatoreGiocabili += 1;
         }
-        if (datiPersonaggio == null) return;
-        if (!dizionarioCollegamentoNomiConModelli.ContainsKey(datiPersonaggio.Dati.nomeModello))
+        Statici.CopiaIlDB();
+        DirectoryInfo dI = new DirectoryInfo(Application.persistentDataPath);
+        DirectoryInfo[] dirs = dI.GetDirectories();
+        for (int i = 0; i < dirs.Length; i++)
         {
-            erroreCaricamento.text = "Errore..Questo personaggio non e' più valido";
-            bottoneCaricaDaCaricamento.interactable = false;
-            return;
+            cartelleLocali.Add(dirs[i].Name);
+        }
+
+        SFXBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
+        EnviromentBus = FMODUnity.RuntimeManager.GetBus("bus:/Environment");
+
+        datiAudio = new Serializzabile<ClasseAudio>(Statici.NomeFileAudio, true);
+        if (!datiAudio.Dati.inizializzato)
+        {
+            SFXBus.getFaderLevel(out datiAudio.Dati.volSFX);
+            EnviromentBus.getFaderLevel(out datiAudio.Dati.volEnvironment);
+            datiAudio.Dati.inizializzato = true;
+            datiAudio.Salva();
         }
         else
         {
-            erroreCaricamento.text = "";
-            bottoneCaricaDaCaricamento.interactable = true;
+            SFXBus.setFaderLevel(datiAudio.Dati.volSFX);
+            EnviromentBus.setFaderLevel(datiAudio.Dati.volEnvironment);
         }
-        GameObject tmOj = dizionarioCollegamentoNomiConModelli[datiPersonaggio.Dati.nomeModello];
-        tmOj.transform.position = posizionePersonaggioCarica.position;
-        tmOj.transform.rotation = posizionePersonaggioCarica.rotation;
-        tmpGOPrecedente = tmOj;
+
+        volumiAmbiente.value = datiAudio.Dati.volEnvironment;
+        volumiSFX.value = datiAudio.Dati.volSFX;
     }
 
-    public void CancellaPartita()
+    private void VisualizzaValoriPersonaggio()
     {
-        if (Directory.Exists(Path.Combine
-            (Application.persistentDataPath, Statici.nomePersonaggio)))
-        {
-            cartelleLocali.Remove(Statici.nomePersonaggio);
-            Directory.Delete(Path.Combine
-            (Application.persistentDataPath, Statici.nomePersonaggio), true);
-            RecuperaElencoCartelle();
-        }
+        casellaTipo.text = Statici.databaseInizialeProprieta.classePersonaggio[IndiceClasseSuccessivaPrecedente].ToString();
+        valoreVita.text = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita.ToString();
+        valoreAttacco.text = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Attacco.ToString();
+        valoreDifesa.text = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].difesa.ToString();
     }
 }
