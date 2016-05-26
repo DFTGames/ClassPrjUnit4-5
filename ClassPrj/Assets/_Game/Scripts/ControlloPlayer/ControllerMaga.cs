@@ -26,7 +26,6 @@ public class ControllerMaga : MonoBehaviour
     private bool abbassato;
     private float altezzaCapsula;
     private Animator animatore;
-    private bool at1, at2 = false;
     private bool aTerra;
     private AudioZona audioZona;
     private CapsuleCollider capsula;
@@ -48,15 +47,21 @@ public class ControllerMaga : MonoBehaviour
     private Rigidbody rigidBody;
     private bool rimaniBasso;
     private SwitchVivoMorto switchVivoMorto;
+    
+    private float forward;
+    private bool attacco1=false;
+    private bool attacco2 =false;
+    private float jump;
 
-    //AGGIUNTO PER MULTIPLAYER
-    private AnimSyncronizeSender syncAnimS = null;
 
     private Transform transform_m;
     private float velocitaSpostamento;
     private bool voglioSaltare = false;
 
+    //Classe Network
+    private NetworkPlayer net;
     //
+
     public DatiPersonaggio DatiPersonaggio
     {
         get
@@ -86,18 +91,19 @@ public class ControllerMaga : MonoBehaviour
         }
     }
 
-    public AnimSyncronizeSender SyncAnimS
+    public NetworkPlayer Net
     {
         get
         {
-            return syncAnimS;
+            return net;
         }
 
         set
         {
-            syncAnimS = value;
+            net = value;
         }
     }
+
 
     #endregion Variabili PRIVATE
 
@@ -147,13 +153,13 @@ public class ControllerMaga : MonoBehaviour
             if (Input.GetMouseButtonDown(0) && !voglioSaltare && aTerra)
             {
                 animatore.SetTrigger("attacco1");
-                at1 = true;
+                attacco1 = true;
             }
 
             if (Input.GetMouseButtonDown(1) && !voglioSaltare && aTerra)
             {
                 animatore.SetTrigger("attacco2");
-                at2 = true;
+                attacco2 = true;
             }
         }
     }
@@ -194,34 +200,33 @@ public class ControllerMaga : MonoBehaviour
             rimaniBasso = false;
          */
         /* ANIMATORE */
+
+        if (!Statici.IsPointAndClick)
+        {
+            animatore.SetFloat("Forward", movimento.z * velocitaSpostamento);
+            forward = movimento.z * velocitaSpostamento;
+        }
+
         animatore.SetBool("OnGround", aTerra);
-        animatore.SetFloat("Forward", movimento.z * velocitaSpostamento);
+        animatore.SetFloat("Forward", forward);
         animatore.SetFloat("Turn", rotazione);
         animatore.SetFloat("JumpLeg", jumpLeg);
+
+
         //animatore.SetBool("Crouch", abbassato);
         if (!aTerra && !Statici.IsPointAndClick)
-            animatore.SetFloat("Jump", rigidBody.velocity.y);
-
-        //AGGIUNTA MULTIPLAYER
-        if (Statici.multigiocatoreOn && syncAnimS != null)
         {
-            if (!Statici.IsPointAndClick)//DA CONTROLLARE IL NON PUNTA E CLICCA...
-                syncAnimS.Forward = movimento.z * velocitaSpostamento;
-            else
-                syncAnimS.Forward = navMeshAgent.velocity.normalized.magnitude;
+            jump = rigidBody.velocity.y;
+            animatore.SetFloat("Jump", jump);
+        }
 
-            syncAnimS.Turn = rotazione;
-            syncAnimS.OnGround = aTerra;
-            syncAnimS.Jump = rigidBody.velocity.y;
-            syncAnimS.JumpLeg = jumpLeg;
-            syncAnimS.Attacco1 = at1;
-            syncAnimS.Attacco2 = at2;
-
-            syncAnimS.controlloDirty();
-            at1 = false;  //essendo trigger dopo essere passato a syncANims lo riporto a false
-            at2 = false;   //essendo trigger dopo essere passato a syncANims lo riporto a false
+        if (Statici.multigiocatoreOn && net != null)
+        {
+            net.alimentaAnimazione(forward, rotazione, aTerra, jump, jumpLeg, attacco1, attacco2);
         }
     }
+
+   
 
     private void SalvaDatiVita()
     {
@@ -329,7 +334,8 @@ public class ControllerMaga : MonoBehaviour
                     }
                 }
             }
-            animatore.SetFloat("Forward", navMeshAgent.velocity.normalized.magnitude);
+            forward = navMeshAgent.velocity.normalized.magnitude;
+            animatore.SetFloat("Forward", forward);
             //AGGIUNTA MULTIPLAYER
             //  if (Statici.multigiocatoreOn && syncAnimS!=null) syncAnimS.forward = navMeshAgent.velocity.normalized.magnitude;
         }

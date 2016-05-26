@@ -445,7 +445,6 @@ public class StanzeManager : MonoBehaviour
     private void SpawnRemotePlayer(int user, string modello, string nomeP, int numeroSpawn, Vector3 posizione, Quaternion rotazione)
     {
         GameObject remotePlayer = Instantiate(Resources.Load(modello), posizione, rotazione) as GameObject;
-        Statici.aggiungiComponenteAnimazione(remotePlayer, false); //AGGIUNTO COMPONENTE ANIMAZIONI
 
         Statici.playerRemotiGestore.Add(user, remotePlayer);
 
@@ -493,11 +492,8 @@ public class StanzeManager : MonoBehaviour
         Statici.playerLocaleGO = Instantiate(Resources.Load(Statici.datiPersonaggio.Dati.nomeModello), startPoint.position, Quaternion.identity) as GameObject;
         NetworkPlayer netPlayer = Statici.playerLocaleGO.AddComponent<NetworkPlayer>();
         netPlayer.playerLocale = true;
-        //
-        Statici.aggiungiComponenteAnimazione(Statici.playerLocaleGO, true);  //AGGIUNTO componente animazione
-
+      
         Statici.playerLocaleGO.GetComponentInChildren<TextMesh>().text = Statici.nomePersonaggio;
-
         PopolaListaPartite();
     }
 

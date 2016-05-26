@@ -48,8 +48,7 @@ public class SfereNetSfsExtension extends SFSExtension{
         addRequestHandler("del", DeleteAvatarHandler.class);     
         addRequestHandler("ready", ReadyHandler.class);
         addRequestHandler("getTime", GetTimeHandler.class);
-        addRequestHandler("SanT", GetAnimTHandler.class);
-        addRequestHandler("SanC", GetAnimCHandler.class);
+
         
       
         
