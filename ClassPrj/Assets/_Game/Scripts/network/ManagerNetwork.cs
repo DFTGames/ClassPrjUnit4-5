@@ -37,6 +37,7 @@ public class ManagerNetwork : MonoBehaviour
         me.nomeScenaSuccessiva = nomeScena;
     }
 
+    /*
     public static void InviaAnimazioneControllerClick(float forward, bool attacco1, bool attacco2)
     {
         SFSObject objOut = new SFSObject();
@@ -58,16 +59,17 @@ public class ManagerNetwork : MonoBehaviour
         objOut.PutBool("a2", attacco2);
         me.sfs.Send(new ExtensionRequest("SanT", objOut, me.sfs.LastJoinedRoom));
     }
-
-    public static void InviaTransformLocali(NetworkTransform ne)  //MODIFICA BY LUCA
+    */
+    public static void InviaTransformAnimazioniLocali(NetworkTransform ne)  //MODIFICA BY LUCA
     {
         ISFSObject objOut = new SFSObject();
         objOut.PutFloat("x", ne.position.x);
         objOut.PutFloat("y", ne.position.y);
         objOut.PutFloat("z", ne.position.z);
-        objOut.PutFloat("rx", ne.rotation.x);
-        objOut.PutFloat("ry", ne.rotation.y);
-        objOut.PutFloat("rz", ne.rotation.z);
+        objOut.PutFloat("ry", ne.rotation);
+        objOut.PutFloat("forw", ne.forward);
+        objOut.PutBool("a1", ne.attacco1);
+        objOut.PutBool("a2", ne.attacco2);
         me.sfs.Send(new ExtensionRequest("regT", objOut, me.sfs.LastJoinedRoom));
         //  me.controllerPlayer.MovementDirty = false;
     }
@@ -208,9 +210,7 @@ public class ManagerNetwork : MonoBehaviour
                 posizioneIniziale.z = sfsObjIn.GetFloat("z");
 
                 Vector3 rotazioneIniziale = new Vector3(0, 0, 0);
-                rotazioneIniziale.x = sfsObjIn.GetFloat("rx");
                 rotazioneIniziale.y = sfsObjIn.GetFloat("ry");
-                rotazioneIniziale.z = sfsObjIn.GetFloat("rz");
 
                 if (sfs.MySelf.Id == utente)
                 {
@@ -233,7 +233,6 @@ public class ManagerNetwork : MonoBehaviour
                 {
                     GameObject remotePlayer = Instantiate(Resources.Load(modello), posizioneIniziale, Quaternion.Euler(rotazioneIniziale.x, rotazioneIniziale.y, rotazioneIniziale.z)) as GameObject;
                     remotePlayer.GetComponent<ControllerMaga>().enabled = false;  //???  DA SISTEMARE!!!!
-                    Statici.aggiungiComponenteAnimazione(remotePlayer, false);  //AGGIUNTO PER LE ANIMAZIONI
 
                     DatiPersonaggio datiPersonaggioRemoto = remotePlayer.GetComponent<DatiPersonaggio>();
                     datiPersonaggioRemoto.SonoUtenteLocale = false;
@@ -277,30 +276,15 @@ public class ManagerNetwork : MonoBehaviour
                 pos.x = sfsObjIn.GetFloat("x");
                 pos.y = sfsObjIn.GetFloat("y");
                 pos.z = sfsObjIn.GetFloat("z");
-                Vector3 rot = new Vector3(0, 0, 0);
-                rot.x = sfsObjIn.GetFloat("rx");
-                rot.y = sfsObjIn.GetFloat("ry");
-                rot.z = sfsObjIn.GetFloat("rz");
-
-                NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(pos, rot);
+                float rot = sfsObjIn.GetFloat("ry");
+                float forw= sfsObjIn.GetFloat("forw");
+                bool at1 = sfsObjIn.GetBool("a1");
+                bool at2 = sfsObjIn.GetBool("a2");
+                NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(pos, rot,forw,at1,at2);
 
                 if (Statici.playerRemotiGestore.ContainsKey(user))
                     Statici.playerRemotiGestore[user].networkPlayer.ricevitransform(net, user);
 
-                break;
-
-            case ("anT"):
-                int user1 = sfsObjIn.GetInt("id");
-
-                if (Statici.datiPersonaggioLocale.Utente != user1 && Statici.playerRemotiGestore.ContainsKey(user1))
-                    Statici.playerRemotiGestore[user1].animSyncRiceveir.eseguiAnimazioniRemoteC(sfsObjIn);
-
-                break;
-
-            case ("anC"):
-                int user2 = sfsObjIn.GetInt("id");
-                if (Statici.datiPersonaggioLocale.Utente != user2 && Statici.playerRemotiGestore.ContainsKey(user2))
-                    Statici.playerRemotiGestore[user2].animSyncRiceveir.eseguiAnimazioniRemoteC(sfsObjIn);
                 break;
 
             case ("danno"):
@@ -482,7 +466,6 @@ public class ManagerNetwork : MonoBehaviour
     private void SpawnaPlayerLocale()
     {
         Statici.playerLocaleGO = Instantiate(Resources.Load(Statici.nomeModello), GameObject.Find(Statici.posizioneInizialeMulti + Statici.numeroPostoSpawn.ToString()).transform.position, Quaternion.identity) as GameObject;
-        Statici.aggiungiComponenteAnimazione(Statici.playerLocaleGO, true);  //AGGIUNTO PER LE ANIMAZIONI
         Statici.playerLocaleGO.GetComponentInChildren<TextMesh>().text = Statici.nomePersonaggio;
         Statici.datiPersonaggioLocale = Statici.playerLocaleGO.GetComponent<DatiPersonaggio>();
         Statici.datiPersonaggioLocale.Nome = Statici.nomePersonaggio;

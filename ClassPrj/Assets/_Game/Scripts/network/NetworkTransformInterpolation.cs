@@ -20,7 +20,7 @@ public class NetworkTransformInterpolation : MonoBehaviour
 	private float extrapolationForwardTime = 1000; // Can make this depend on ping if needed
 		
 	private bool running = false;
-	
+    private Animator anim;
 	// We store twenty states with "playback" information
 	NetworkTransform[] bufferedStates = new NetworkTransform[20];
 	// Keep track of what slots are used
@@ -31,9 +31,9 @@ public class NetworkTransformInterpolation : MonoBehaviour
 		running = true;
 	}
 	
-	public void ReceivedTransform(NetworkTransform ntransform) {
+	public void ReceivedTransform(NetworkTransform ntransform,Animator ani) {
 		if (!running) return;
-		
+        anim = ani;
 		// When receiving, buffer the information
 		// Receive latest state information
 	//	Vector3 pos = ntransform.position;
@@ -96,7 +96,9 @@ public class NetworkTransformInterpolation : MonoBehaviour
 					
 					// if t=0 => lhs is used directly
 					transform.position = Vector3.Lerp(lhs.position, rhs.position, t);
-					transform.rotation = Quaternion.Slerp(Quaternion.Euler(lhs.rotation), Quaternion.Euler(rhs.rotation), t);
+
+                    transform.rotation = Quaternion.Slerp(Quaternion.Euler(0,lhs.rotation,0), Quaternion.Euler(0,rhs.rotation,0), t);
+
 					return;
 				}
 			}
@@ -111,7 +113,7 @@ public class NetworkTransformInterpolation : MonoBehaviour
 				
 				if (Mathf.Approximately(distance, 0) || Mathf.Approximately(timeDif, 0)) {
 					transform.position = bufferedStates[0].position;
-					transform.rotation = Quaternion.Euler(bufferedStates[0].rotation); 
+					transform.rotation = Quaternion.Euler(0,bufferedStates[0].rotation,0); 
 					return;
 				}
 						
@@ -126,7 +128,7 @@ public class NetworkTransformInterpolation : MonoBehaviour
 			}
 					
 			// No extrapolation for the rotation
-			transform.rotation = Quaternion.Euler(bufferedStates[0].rotation);
+			transform.rotation = Quaternion.Euler(0,bufferedStates[0].rotation,0);
 		}
 	}
 

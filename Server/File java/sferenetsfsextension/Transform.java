@@ -13,18 +13,15 @@ public class Transform {
     float x;
     float y;
     float z;
-    float rx;
     float ry;
-    float rz;
+
  
-    public Transform(float x, float y, float z, float rx, float ry, float rz) {
+    public Transform(float x, float y, float z,  float ry) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 
-		this.rx = rx;
 		this.ry = ry;
-		this.rz = rz;
                 
 		
 	}

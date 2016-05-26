@@ -28,12 +28,12 @@ public class TransformPlayer extends BaseClientRequestHandler{
         float x=isfso.getFloat("x");
        float y=isfso.getFloat("y");
        float z=isfso.getFloat("z");
-       float rx=isfso.getFloat("rx");
        float ry=isfso.getFloat("ry");
-       float rz=isfso.getFloat("rz");
-   
+       float forw=isfso.getFloat("forw");
+        boolean a1=isfso.getBool("a1");
+        boolean a2=isfso.getBool("a2");
         Player player=new Player();        
-        player.t=new Transform(x, y, z, rx,ry,rz);
+        player.t=new Transform(x, y, z, ry);
         
          SfereNetSfsExtension ext = (SfereNetSfsExtension) this.getParentExtension();
         Mondo mondo=ext.world; 
@@ -43,14 +43,18 @@ public class TransformPlayer extends BaseClientRequestHandler{
         ISFSObject objOut=new SFSObject();
         objOut.putFloat("x", mondo.dizionarioUtentiPlayer.get(user).t.x);
         objOut.putFloat("y", mondo.dizionarioUtentiPlayer.get(user).t.y);
-        objOut.putFloat("z", mondo.dizionarioUtentiPlayer.get(user).t.z);
-        objOut.putFloat("rx", mondo.dizionarioUtentiPlayer.get(user).t.rx);   
-         objOut.putFloat("ry", mondo.dizionarioUtentiPlayer.get(user).t.ry);  
-          objOut.putFloat("rz", mondo.dizionarioUtentiPlayer.get(user).t.rz);  
+        objOut.putFloat("z", mondo.dizionarioUtentiPlayer.get(user).t.z); 
+        objOut.putFloat("ry", mondo.dizionarioUtentiPlayer.get(user).t.ry);  
+        objOut.putFloat("forw",forw); 
+        objOut.putBool("a1",a1); 
+        objOut.putBool("a1",a2); 
+  
         objOut.putInt("u", user.getId());        
        //  send("regT", objOut ,user.getLastJoinedRoom().getUserList());}
         send("regT", objOut ,mondo.GetUtentiInScena(user.getLastJoinedRoom(), mondo.dizionarioUtentiPlayer.get(user).scena));
     }
+
+  
     
     
 }

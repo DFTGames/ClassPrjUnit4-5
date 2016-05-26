@@ -69,7 +69,7 @@ public class GestoreCanvasAltreScene : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F12))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             //  Debug.Log("son qua " + pannelloTest.activeInHierarchy);
 
