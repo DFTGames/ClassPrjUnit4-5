@@ -60,6 +60,7 @@ public class ManagerNetwork : MonoBehaviour
         me.sfs.Send(new ExtensionRequest("SanT", objOut, me.sfs.LastJoinedRoom));
     }
     */
+
     public static void InviaTransformAnimazioniLocali(NetworkTransform ne)  //MODIFICA BY LUCA
     {
         ISFSObject objOut = new SFSObject();
@@ -68,10 +69,11 @@ public class ManagerNetwork : MonoBehaviour
         objOut.PutFloat("z", ne.position.z);
         objOut.PutFloat("ry", ne.rotation);
         objOut.PutFloat("forw", ne.forward);
-        objOut.PutBool("a1", ne.attacco1);
-        objOut.PutBool("a2", ne.attacco2);
+        objOut.PutByte("a1", ne.attacchi);
+
         me.sfs.Send(new ExtensionRequest("regT", objOut, me.sfs.LastJoinedRoom));
         //  me.controllerPlayer.MovementDirty = false;
+    
     }
 
     public static void TimeSyncRequest()
@@ -158,11 +160,13 @@ public class ManagerNetwork : MonoBehaviour
         objOut.PutFloat("x", Statici.playerLocaleGO.transform.position.x);
         objOut.PutFloat("y", Statici.playerLocaleGO.transform.position.y);
         objOut.PutFloat("z", Statici.playerLocaleGO.transform.position.z);
-        objOut.PutFloat("rx", Statici.playerLocaleGO.transform.rotation.eulerAngles.x);
         objOut.PutFloat("ry", Statici.playerLocaleGO.transform.rotation.eulerAngles.y);
-        objOut.PutFloat("rz", Statici.playerLocaleGO.transform.rotation.eulerAngles.z);
+        objOut.PutFloat("forw", 0);
+        objOut.PutBool("a1", false);
+        objOut.PutBool("a2", false);
         objOut.PutUtfString("scena", SceneManager.GetActiveScene().name);
         sfs.Send(new ExtensionRequest("respawn", objOut, sfs.LastJoinedRoom));
+ 
     }
 
     private void OnApplicationQuit()
@@ -278,9 +282,10 @@ public class ManagerNetwork : MonoBehaviour
                 pos.z = sfsObjIn.GetFloat("z");
                 float rot = sfsObjIn.GetFloat("ry");
                 float forw= sfsObjIn.GetFloat("forw");
-                bool at1 = sfsObjIn.GetBool("a1");
-                bool at2 = sfsObjIn.GetBool("a2");
-                NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(pos, rot,forw,at1,at2);
+                double time = Convert.ToDouble(sfsObjIn.GetLong("time"));
+                byte at1 = sfsObjIn.GetByte("a1");
+
+                NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(pos, rot,forw,at1,time);
 
                 if (Statici.playerRemotiGestore.ContainsKey(user))
                     Statici.playerRemotiGestore[user].networkPlayer.ricevitransform(net, user);
@@ -474,6 +479,7 @@ public class ManagerNetwork : MonoBehaviour
         controllerPlayer = Statici.playerLocaleGO.GetComponent<ControllerMaga>();
 
         NetworkPlayer loc = Statici.playerLocaleGO.AddComponent<NetworkPlayer>();
+        controllerPlayer.Net = loc;
         loc.playerLocale = true;
         loc.User = Statici.userLocaleId;
 

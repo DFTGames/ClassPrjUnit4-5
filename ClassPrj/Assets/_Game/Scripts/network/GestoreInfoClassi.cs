@@ -43,13 +43,14 @@ public class GestoreInfoClassi : Dictionary<int, InfoPlayer>, IDisposable
     private NetworkPlayer AddNetworkPlayer(InfoPlayer info)
     {
         NetworkPlayer nt = info.gameObject.GetComponent<NetworkPlayer>();
-        if (nt == null)
-        {
+        if (nt == null)       
             nt = info.gameObject.AddComponent<NetworkPlayer>();
-            info.gameObject.GetComponent<ControllerMaga>().Net = nt;
-        }
-        if (info.gameObject.GetComponent<NetworkTransformInterpolation>()== null)
-             info.gameObject.AddComponent<NetworkTransformInterpolation>();
+
+        NetworkTransformInterpolation tmpInt = info.gameObject.GetComponent<NetworkTransformInterpolation>();
+        if (tmpInt== null)
+            tmpInt= info.gameObject.AddComponent<NetworkTransformInterpolation>();
+        nt.Inter = tmpInt;
+        tmpInt.StartReceiving();
         return nt;
     }
 

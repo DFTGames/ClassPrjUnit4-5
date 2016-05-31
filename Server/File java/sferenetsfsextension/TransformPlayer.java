@@ -10,6 +10,7 @@ import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Dictionary;
 import java.util.Hashtable;
 import java.util.List;
@@ -30,8 +31,7 @@ public class TransformPlayer extends BaseClientRequestHandler{
        float z=isfso.getFloat("z");
        float ry=isfso.getFloat("ry");
        float forw=isfso.getFloat("forw");
-        boolean a1=isfso.getBool("a1");
-        boolean a2=isfso.getBool("a2");
+        byte a1=isfso.getByte("a1");
         Player player=new Player();        
         player.t=new Transform(x, y, z, ry);
         
@@ -46,8 +46,9 @@ public class TransformPlayer extends BaseClientRequestHandler{
         objOut.putFloat("z", mondo.dizionarioUtentiPlayer.get(user).t.z); 
         objOut.putFloat("ry", mondo.dizionarioUtentiPlayer.get(user).t.ry);  
         objOut.putFloat("forw",forw); 
-        objOut.putBool("a1",a1); 
-        objOut.putBool("a1",a2); 
+        objOut.putLong("time",new Date().getTime());  //viene aggiunto il time nel InviO transform
+        objOut.putByte("a1",a1); 
+ 
   
         objOut.putInt("u", user.getId());        
        //  send("regT", objOut ,user.getLastJoinedRoom().getUserList());}

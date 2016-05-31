@@ -86,9 +86,15 @@ public class ControllerLogin : MonoBehaviour
     private void OnRoomJoin(BaseEvent evt)
     {
         ResettaListnerAbilitaUI(false);
-        StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("Scena Iniziale", "Titolo gioco o qualsiasi altra cosa vogliamo scriverci.", ManagerScenaZero.ImmagineCaricamento, ManagerScenaZero.ScrittaCaricamento));
+        StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("Scena Iniziale", GiveMeText(), ManagerScenaZero.ImmagineCaricamento, ManagerScenaZero.ScrittaCaricamento));
     }
 
+    string GiveMeText()
+    {
+        string[] testo = { "DFTStudent......Dove finisce la realta..e inizia L'incubo...", "Loggati come ti pare..basta che non scrivi Nomi alla cazzum","....Benvenuto nella terra dei Cachi  ", "......Lasciate Ogni speranza o Voi Che Entrate","....Hai mai Pensato di fare un corso Accelerato Di java???","...Se non riuscite ad attaccare...sappiate che e' colpa di Piero","...Il Miglior gestore di Percorsi mai Implementato in un gioco ","....Occhio che ninfea ha disseminato Trappole Lungo Il percorso","...Pino..eddai,fai una partita pure tu", "..mentre aspetti...Stringi forte i denti con la lingua in mezzo", "...Hai vinto un biglietto per Pinolandia...","....(insert coin per continuare)","...Mai mangiato la pizza ai frutti di bosco? ","..Se trovi il principe con i capelli fucsia....ritira Coupon per una ceretta Gratis da Piero (Rif Piero p.c.)"};
+        int g = Random.Range(0, (testo.Length));   //usato testo.Lenght anziche Lenght-1 perche negli interi occorre incrementarlo di uno (vedi lezione in cui ne ha parlato)
+        return testo[g];
+    }
     private void OnRoomJoinError(BaseEvent evt)
     {
         ManagerScenaZero.AttivaDisattivaCanvasGroupLogin(true);

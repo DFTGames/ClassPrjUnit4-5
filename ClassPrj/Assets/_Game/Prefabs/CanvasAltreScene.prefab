@@ -3827,7 +3827,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sliderTempoTransform: {fileID: 11411650}
-  sliderTempoAnimation: {fileID: 0}
   suonoAmbiente: {fileID: 11423962}
   suonoSFX: {fileID: 11431252}
   isPointClick: {fileID: 11437388}
@@ -4329,6 +4328,8 @@ MonoBehaviour:
     - m_Text: INTERPOLAZIONE
       m_Image: {fileID: 0}
     - m_Text: EXTRAPOLAZIONE
+      m_Image: {fileID: 0}
+    - m_Text: NESSUNA
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:

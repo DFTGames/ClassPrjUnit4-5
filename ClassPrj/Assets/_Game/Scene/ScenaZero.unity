@@ -1181,10 +1181,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6257b49d3c3adf44d8e3d48c19cc485e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animatoreScelta: {fileID: 679835089}
   animatoreLogin: {fileID: 1189346337}
-  canvasGroupScelta: {fileID: 974158777}
+  animatoreScelta: {fileID: 679835089}
   canvasGroupLogin: {fileID: 1453610835}
+  canvasGroupScelta: {fileID: 974158777}
   immagineCaricamento: {fileID: 688750535}
   scrittaCaricamento: {fileID: 1867120147}
 --- !u!114 &1337588425
@@ -1198,13 +1198,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa246ee5b1f42564c9fb41fbcb8f4a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  localhost: 127.0.0.1
-  remoteHost: 40.68.126.217
-  tipoHost: 1
-  port: 9933
-  zona: BasicExamples
-  erroreText: {fileID: 579993535}
   casellaNome: {fileID: 388341505}
+  erroreText: {fileID: 579993535}
+  localhost: 127.0.0.1
+  port: 9933
+  remoteHost: 40.68.126.217
+  tipoHost: 0
+  zona: BasicExamples
 --- !u!1 &1453610833
 GameObject:
   m_ObjectHideFlags: 0

@@ -464,7 +464,7 @@ public class StanzeManager : MonoBehaviour
         canvasGroup.interactable = true;
         Statici.datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
         Statici.finePartita = false;
-        sliderUserMax.minValue = 1;
+        sliderUserMax.minValue = 2;
         sliderUserMax.maxValue = numeroMassimoUtentiInStanza;
         contenutoPartiteCanvasGroup = ContenutoListaPartite.GetComponent<CanvasGroup>();
         BloccaSbloccaCanvas(true);
@@ -492,7 +492,8 @@ public class StanzeManager : MonoBehaviour
         Statici.playerLocaleGO = Instantiate(Resources.Load(Statici.datiPersonaggio.Dati.nomeModello), startPoint.position, Quaternion.identity) as GameObject;
         NetworkPlayer netPlayer = Statici.playerLocaleGO.AddComponent<NetworkPlayer>();
         netPlayer.playerLocale = true;
-      
+        Statici.playerLocaleGO.GetComponent<ControllerMaga>().Net = netPlayer;
+
         Statici.playerLocaleGO.GetComponentInChildren<TextMesh>().text = Statici.nomePersonaggio;
         PopolaListaPartite();
     }

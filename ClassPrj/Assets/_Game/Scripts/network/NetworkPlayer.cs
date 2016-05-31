@@ -1,115 +1,116 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class NetworkPlayer : MonoBehaviour {
+public class NetworkPlayer : MonoBehaviour
+{
 
-    private int user=-2; //inizializzato alla cazzum...(e' fuori dal intervallo che verra usato)
-    public bool playerLocale { get; set; }  
-   // private float tempoInvioTransorm = 0.1f;
+    private int user = -2; //inizializzato alla cazzum...(e' fuori dal intervallo che verra usato)
+    public bool playerLocale { get; set; }
+    // private float tempoInvioTransorm = 0.1f;
     private float timeCorrente;
+    private float timeAfterStop;
     private bool movimentoDirty;
-    private bool animazioneDirty;
+
     private Animator anim;
     private ControllerMaga controller;
     private NetworkTransformInterpolation inter;
 
-    //animazione
-    float forward;
-    float turn;
-    bool onGround;
-    float jump;
-    float jumpLeg;
-    bool attacco1;
-    bool attacco2;
-    //fine animazioni
 
     private byte attacchi;
 
     public int User
-    { 
+    {
         set
         {
             user = value;
         }
     }
 
-
-
-    void Awake()
+    public NetworkTransformInterpolation Inter
     {
-        inter = GetComponent<NetworkTransformInterpolation>();
-        if (inter != null)
+        set
         {
-            inter.StartReceiving();
+            inter = value;
         }
     }
-        void Start () {
+
+    void Start()
+    {
 
         controller = GetComponent<ControllerMaga>();
         if (controller != null) anim = controller.GetComponent<Animator>();
-        timeCorrente = Time.time;        
+        timeCorrente = Time.time;
     }
 
-    public void alimentaAnimazione(float forw,float tur,bool onGr,float jum,float jumL,bool att1,bool att2)
-    {
-        forw=forward;
-        tur= turn;
-        onGr=onGround;
-        jum=jump;
-        jumL=jumpLeg;
-        att1=attacco1;
-        att2=attacco2;
 
-        if (forw > 0) animazioneDirty = true;   //PER ORA CONTROLLO SOLO PUNTA E CLICCKA IL FORWARD....SUCESSIVAMENTE VEDO UN PO PER IL CONTROLLO CON TASTIERA..E GLI AALTRI PARAMETRI
-    }
-	void Update () { //QUA DENTRO C'E LA LOGICA PER I PLAYER LOCALI
-      
 
-        if (!playerLocale || !Statici.partenza) return;
+    void Update()
+    { //QUA DENTRO C'E LA LOGICA PER I PLAYER LOCALI
+
+        if (!playerLocale || !Statici.partenza) return; //Statici.partenza controllar
+
+        attacchi = 0;
+        if (controller.Attacco1) attacchi = 1;
+        if (controller.Attacco2) attacchi = 2;
+
+        if (attacchi > 0) movimentoDirty = true;
+        /*//METODO RIPORTATO DAL CONTROLLER MAGA.....PER RICORDARMI COME L'AVEVO FATTO...
+
+        if (Statici.multigiocatoreOn && net != null)
+        {
+            net.alimentaAnimazione(forward, rotazione, aTerra, jump, jumpLeg, attacco1, attacco2);
+        }
+        attacco1 = false;
+        attacco2 = false;
+    */
 
         if (Statici.multigiocatoreOn && Statici.inGioco)
         {
-            if ((controller.RigidBody.velocity.magnitude > 0 || controller.NavMeshAgent.velocity.magnitude > 0) && animazioneDirty)
-                movimentoDirty = true;                            
+            if ((controller.NavMeshAgent.velocity.magnitude > 0))
+            {
+                movimentoDirty = true;
+                timeAfterStop = Time.time;
+            }
         }
 
+        if (!movimentoDirty) return;
 
-
-     if (!movimentoDirty) return;
-
-        if (Time.time + Statici.tempoInvioTransform>timeCorrente)
+        if ((timeCorrente + Statici.tempoInvioTransform) < Time.time)
         {
-            NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(transform.position, transform.rotation.eulerAngles.y,forward,attacco1,attacco2);
+         //   Debug.Log("sto inviando " + "MOVIMENTO dIRTY " + movimentoDirty);
+            NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(transform.position, transform.rotation.eulerAngles.y, controller.Forward, attacchi, 0);  //nel invio messo time a zero in quanto non lo uso (esempuio del shooter che lo manda sul server ma non viene usato)
             ManagerNetwork.InviaTransformAnimazioniLocali(net);
-            StartCoroutine(AspettaTempo());   //mi aspetta tot tempo per fare in modo che mi prenda con sicurezza anche l'arresto..considerando che siamo in UDP..e non tutti i pacchetti arrivano(vedere lezione 11 modulo 7)
+            attacchi = 0;  //azzero l'attacco
             timeCorrente = Time.time;
+            if ((timeAfterStop + 0.5f) < Time.time) movimentoDirty = false;  //mi aspetta tot tempo per fare in modo che mi prenda con sicurezza anche l'arresto..considerando che siamo in UDP..e non tutti i pacchetti arrivano(vedere lezione 11 modulo 7)
         }
 
     }
 
-    private IEnumerator AspettaTempo()
-    {
-        yield return new WaitForSeconds(0.5f);
-        movimentoDirty = false;
-    }
+
 
     //QUESTO METODO E' PER I PLAYER REMOTI
-    public  void ricevitransform(NetworkTransform net, int netUser)
+    public void ricevitransform(NetworkTransform net, int netUser)
     {
         if (playerLocale || user != netUser) return;
 
-      if (inter == null )
+        if (inter != null && Statici.inter != NetworkTransformInterpolation.InterpolationMode.NESSUNA)
+        {
+            inter.ReceivedTransform(net, anim);
+            Debug.Log("non sono nullo " + " Inter  " + Statici.inter);
+        }
+        else
         {
             transform.position = net.position;
-            transform.rotation = Quaternion.Euler(0, net.rotation,0);
-            anim.SetFloat("Forward", net.forward);
-            if (net.attacco1) anim.SetTrigger("attacco1");
-            if (net.attacco2) anim.SetTrigger("attacco2");
+            transform.rotation = Quaternion.Euler(0, net.rotation, 0);
+            anim.SetFloat("Forward", net.forward);       
+            Debug.Log(" sono nullo " + " Inter  " + Statici.inter);
+            Debug.Log("Net position" + net.position + "transform position " + transform.position);
         }
-       else
-        {
-         inter.ReceivedTransform(net,anim);
-        }
+
+        if (net.attacchi == 1) anim.SetTrigger("attacco1");
+        else if (net.attacchi == 2) anim.SetTrigger("attacco2");
+
     }
-    
+
 }

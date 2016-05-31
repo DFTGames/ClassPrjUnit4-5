@@ -47,10 +47,10 @@ public class ControllerMaga : MonoBehaviour
     private Rigidbody rigidBody;
     private bool rimaniBasso;
     private SwitchVivoMorto switchVivoMorto;
-    
+
     private float forward;
-    private bool attacco1=false;
-    private bool attacco2 =false;
+    private bool attacco1 = false;
+    private bool attacco2 = false;
     private float jump;
 
 
@@ -102,6 +102,36 @@ public class ControllerMaga : MonoBehaviour
         {
             net = value;
         }
+    }
+
+    public float Forward
+    {
+        get
+        {
+            return forward;
+        }
+
+
+    }
+
+    public bool Attacco1
+    {
+        get
+        {
+            return attacco1;
+        }
+
+
+    }
+
+    public bool Attacco2
+    {
+        get
+        {
+            return attacco2;
+        }
+
+
     }
 
 
@@ -166,10 +196,16 @@ public class ControllerMaga : MonoBehaviour
 
     private void FixedUpdate()
     {
+        /*
+        if ((Statici.multigiocatoreOn && !DatiPersonaggio.SonoUtenteLocale))   //AGGIUNTO DA LUCA
+            { 
+            return;
+        }
+        */
         aTerra = false;
         RaycastHit hit;
 
-        Debug.DrawLine(transform_m.position + (Vector3.up * 0.1f), transform_m.position + (Vector3.down * 0.1f), Color.blue);
+        //  Debug.DrawLine(transform_m.position + (Vector3.up * 0.1f), transform_m.position + (Vector3.down * 0.1f), Color.blue);
         if (Physics.Raycast(transform_m.position + (Vector3.up * 0.1f), Vector3.down, out hit, distanzaDaTerra))
         {
             aTerra = true;
@@ -220,13 +256,9 @@ public class ControllerMaga : MonoBehaviour
             animatore.SetFloat("Jump", jump);
         }
 
-        if (Statici.multigiocatoreOn && net != null)
-        {
-            net.alimentaAnimazione(forward, rotazione, aTerra, jump, jumpLeg, attacco1, attacco2);
-        }
     }
 
-   
+
 
     private void SalvaDatiVita()
     {
@@ -294,6 +326,8 @@ public class ControllerMaga : MonoBehaviour
 
     private void Update()
     {
+        attacco1 = false;
+        attacco2 = false;
         //AGGIUNTA MULTIPLAYER
         if (!Statici.inGioco || (Statici.multigiocatoreOn && !DatiPersonaggio.SonoUtenteLocale))
         {
@@ -335,9 +369,10 @@ public class ControllerMaga : MonoBehaviour
                 }
             }
             forward = navMeshAgent.velocity.normalized.magnitude;
-            animatore.SetFloat("Forward", forward);
-            //AGGIUNTA MULTIPLAYER
-            //  if (Statici.multigiocatoreOn && syncAnimS!=null) syncAnimS.forward = navMeshAgent.velocity.normalized.magnitude;
+
+
+            //       animatore.SetFloat("Forward", forward);   TOLTO DA LUCA...va anche sensa..e' una ripetizione.
+
         }
         else // Not Point & Click
         {
@@ -382,6 +417,7 @@ public class ControllerMaga : MonoBehaviour
              }
              */
         }
+
     }
 
     /*
