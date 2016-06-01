@@ -67,25 +67,22 @@ public class NetworkTransformInterpolation : MonoBehaviour
 		UpdateValues();
 		double currentTime = TimeManager.Instance.NetworkTime;// Debug.Log("currentTime" + currentTime);
 		double interpolationTime = currentTime - interpolationBackTime;
-        //     Debug.Log("interpolation time " + interpolationTime);
-        //   Debug.Log("CurrentTime " + currentTime);
-        // Debug.Log("interpolationBackTime " + interpolationBackTime);
-        //     Debug.Log("buffer  " + bufferedStates[0].timeStamp);
+
         // We have a window of interpolationBackTime where we basically play 
         // By having interpolationBackTime the average ping, you will usually use interpolation.
         // And only if no more data arrives we will use extrapolation
 
-        anim.SetFloat("Forward", 0);
+
 
         // Use interpolation
         // Check if latest state exceeds interpolation time, if this is the case then
         // it is too old and extrapolation should be used
         if (mode == InterpolationMode.INTERPOLATION && bufferedStates[0].timeStamp > interpolationTime) {
-          //  Debug.Log("INTERPLOATION 0");
+
             for (int i=0;i < statesCount; i++) {
 				// Find the state which matches the interpolation time (time+0.1) or use last state
 				if (bufferedStates[i].timeStamp <= interpolationTime || i == statesCount-1) {
-           //         Debug.Log("INTERPLOATION 1");
+ 
                     // The state one slot newer (<100ms) than the best playback state
                     NetworkTransform rhs = bufferedStates[Mathf.Max( i-1, 0 )];
 					// The best playback state (closest to 100 ms old (default time))
@@ -104,7 +101,7 @@ public class NetworkTransformInterpolation : MonoBehaviour
 					transform.position = Vector3.Lerp(lhs.position, rhs.position, t);          
                     transform.rotation = Quaternion.Slerp(Quaternion.Euler(0,lhs.rotation,0), Quaternion.Euler(0,rhs.rotation,0), t);
                     float lerpAnim = Mathf.Lerp(lhs.forward, rhs.forward, t);  
-                    anim.SetFloat("Forward", lerpAnim);  
+                    anim.SetFloat("Forward", lerpAnim);
 
                     return;
 				}
@@ -115,8 +112,8 @@ public class NetworkTransformInterpolation : MonoBehaviour
 			float extrapolationLength = Convert.ToSingle(currentTime - bufferedStates[0].timeStamp)/1000.0f;
 			if (mode == InterpolationMode.EXTRAPOLATION && extrapolationLength < extrapolationForwardTime && statesCount>1) {
                 Debug.Log("extrapolation");
-				Vector3 dif = bufferedStates[0].position - bufferedStates[1].position;
-				float distance = Vector3.Distance(bufferedStates[0].position, bufferedStates[1].position);
+				Vector3 dif = bufferedStates[0].position - bufferedStates[1].position;               
+                float distance = Vector3.Distance(bufferedStates[0].position, bufferedStates[1].position);
 				float timeDif = Convert.ToSingle(bufferedStates[0].timeStamp - bufferedStates[1].timeStamp)/1000.0f;
 				
 				if (Mathf.Approximately(distance, 0) || Mathf.Approximately(timeDif, 0)) {
@@ -130,16 +127,18 @@ public class NetworkTransformInterpolation : MonoBehaviour
 				
 				dif = dif.normalized;
 				Vector3 expectedPosition = bufferedStates[0].position + dif * extrapolationLength * speed;
-				transform.position = Vector3.Lerp(transform.position, expectedPosition, Time.deltaTime*speed); 
-                //DA FARE
+				transform.position = Vector3.Lerp(transform.position, expectedPosition, Time.deltaTime*speed);
+
+                float lerpAnim = Mathf.Lerp(anim.GetFloat("Forward"), bufferedStates[0].forward, Time.deltaTime * speed);
+                // non penso sia corretto..ma non mi veniva in mente nient'altro..su come estrapolare una animazione di una transform da proiettare nel futuro
+                anim.SetFloat("Forward", lerpAnim);
 			}
 			else {
 				transform.position = bufferedStates[0].position;
                anim.SetFloat("Forward", bufferedStates[0].forward);
             }
-					
-			// No extrapolation for the rotation
-			transform.rotation = Quaternion.Euler(0,bufferedStates[0].rotation,0);
+            // No extrapolation for the rotation
+            transform.rotation = Quaternion.Euler(0,bufferedStates[0].rotation,0);
 		}
 	}
 

@@ -26,6 +26,7 @@ public class TransformPlayer extends BaseClientRequestHandler{
     @Override
     public void handleClientRequest(User user, ISFSObject isfso) {
      
+            trace("sono nel 1");    
         float x=isfso.getFloat("x");
        float y=isfso.getFloat("y");
        float z=isfso.getFloat("z");
@@ -38,6 +39,8 @@ public class TransformPlayer extends BaseClientRequestHandler{
          SfereNetSfsExtension ext = (SfereNetSfsExtension) this.getParentExtension();
         Mondo mondo=ext.world; 
       
+        if(mondo.dizionarioUtentiPlayer.get(user)==null) return;
+             
         mondo.dizionarioUtentiPlayer.get(user).t=player.t;
      
         ISFSObject objOut=new SFSObject();
@@ -50,9 +53,10 @@ public class TransformPlayer extends BaseClientRequestHandler{
         objOut.putByte("a1",a1); 
  
   
-        objOut.putInt("u", user.getId());        
+        objOut.putInt("u", user.getId()); 
+        trace("sono nel 2");
        //  send("regT", objOut ,user.getLastJoinedRoom().getUserList());}
-        send("regT", objOut ,mondo.GetUtentiInScena(user.getLastJoinedRoom(), mondo.dizionarioUtentiPlayer.get(user).scena));
+        send("regT", objOut ,mondo.GetUtentiInScena(user.getLastJoinedRoom(), mondo.dizionarioUtentiPlayer.get(user).scena),true);
     }
 
   

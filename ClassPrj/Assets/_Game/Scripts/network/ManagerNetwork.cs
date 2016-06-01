@@ -37,29 +37,6 @@ public class ManagerNetwork : MonoBehaviour
         me.nomeScenaSuccessiva = nomeScena;
     }
 
-    /*
-    public static void InviaAnimazioneControllerClick(float forward, bool attacco1, bool attacco2)
-    {
-        SFSObject objOut = new SFSObject();
-        objOut.PutFloat("f", forward);
-        objOut.PutBool("a1", attacco1);
-        objOut.PutBool("a2", attacco2);
-        me.sfs.Send(new ExtensionRequest("SanC", objOut, me.sfs.LastJoinedRoom));
-    }
-
-    public static void InviaAnimazioneControllerTast(float forward, float turn, bool onGround, float jump, float jumpLeg, bool attacco1, bool attacco2)
-    {
-        SFSObject objOut = new SFSObject();
-        objOut.PutFloat("f", forward);
-        objOut.PutFloat("t", turn);
-        objOut.PutBool("o", onGround);
-        objOut.PutFloat("j", jump);
-        objOut.PutFloat("jL", jumpLeg);
-        objOut.PutBool("a1", attacco1);
-        objOut.PutBool("a2", attacco2);
-        me.sfs.Send(new ExtensionRequest("SanT", objOut, me.sfs.LastJoinedRoom));
-    }
-    */
 
     public static void InviaTransformAnimazioniLocali(NetworkTransform ne)  //MODIFICA BY LUCA
     {
@@ -70,10 +47,10 @@ public class ManagerNetwork : MonoBehaviour
         objOut.PutFloat("ry", ne.rotation);
         objOut.PutFloat("forw", ne.forward);
         objOut.PutByte("a1", ne.attacchi);
-
-        me.sfs.Send(new ExtensionRequest("regT", objOut, me.sfs.LastJoinedRoom));
+        Debug.Log("sono invio ");
+        me.sfs.Send(new ExtensionRequest("regT", objOut, me.sfs.LastJoinedRoom, true));
         //  me.controllerPlayer.MovementDirty = false;
-    
+
     }
 
     public static void TimeSyncRequest()
@@ -161,9 +138,7 @@ public class ManagerNetwork : MonoBehaviour
         objOut.PutFloat("y", Statici.playerLocaleGO.transform.position.y);
         objOut.PutFloat("z", Statici.playerLocaleGO.transform.position.z);
         objOut.PutFloat("ry", Statici.playerLocaleGO.transform.rotation.eulerAngles.y);
-        objOut.PutFloat("forw", 0);
-        objOut.PutBool("a1", false);
-        objOut.PutBool("a2", false);
+
         objOut.PutUtfString("scena", SceneManager.GetActiveScene().name);
         sfs.Send(new ExtensionRequest("respawn", objOut, sfs.LastJoinedRoom));
  
@@ -230,7 +205,7 @@ public class ManagerNetwork : MonoBehaviour
                     Statici.datiPersonaggioLocale.Giocabile = giocabile;
                     gestoreCanvasNetwork.VisualizzaDatiPlayerLocale(Statici.nomePersonaggio, Statici.datiPersonaggioLocale.Vita.ToString());
                     GestoreCanvasAltreScene.AggiornaDati(Statici.datiPersonaggioLocale);
-
+                    Statici.partenza = true;
                     return;
                 }
                 if (!Statici.playerRemotiGestore.ContainsKey(utente))
@@ -258,7 +233,7 @@ public class ManagerNetwork : MonoBehaviour
                     Statici.playerRemotiGestore[utente].networkPlayer.User = utente;
 
                     Statici.playerRemotiGestore[utente].textmesh.text = nome;
-                    Statici.partenza = true;
+                  //  Statici.partenza = true;
                 }
 
                 break;
@@ -284,7 +259,7 @@ public class ManagerNetwork : MonoBehaviour
                 float forw= sfsObjIn.GetFloat("forw");
                 double time = Convert.ToDouble(sfsObjIn.GetLong("time"));
                 byte at1 = sfsObjIn.GetByte("a1");
-
+                Debug.Log("Sono in ricezione ");
                 NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(pos, rot,forw,at1,time);
 
                 if (Statici.playerRemotiGestore.ContainsKey(user))

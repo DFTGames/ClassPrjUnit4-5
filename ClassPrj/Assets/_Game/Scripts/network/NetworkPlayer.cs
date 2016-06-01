@@ -47,8 +47,8 @@ public class NetworkPlayer : MonoBehaviour
     void Update()
     { //QUA DENTRO C'E LA LOGICA PER I PLAYER LOCALI
 
-        if (!playerLocale || !Statici.partenza) return; //Statici.partenza controllar
-
+          if (!playerLocale || (playerLocale && !Statici.partenza)) return; //Statici.partenza controllar
+      
         attacchi = 0;
         if (controller.Attacco1) attacchi = 1;
         if (controller.Attacco2) attacchi = 2;

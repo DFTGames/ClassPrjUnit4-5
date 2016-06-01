@@ -17,7 +17,8 @@ public class ControllerLogin : MonoBehaviour
     public InputField casellaNome;
     public Text erroreText;
     public string localhost = "127.0.0.1";
-    public int port = 9933;
+    public int TcpPort = 9933;
+    public int UdpPort = 9933;
     public string remoteHost = "40.68.126.217";
     public scegliHost tipoHost = scegliHost.remotehost;
     public string zona = "BasicExamples";
@@ -30,8 +31,10 @@ public class ControllerLogin : MonoBehaviour
         erroreText.text = "";
 
         ConfigData cfg = new ConfigData();
-        cfg.Host = host;
-        cfg.Port = port;
+        cfg.Host = host; //tcp 
+        cfg.Port = TcpPort;  //tcp 
+        cfg.UdpHost = host;  //udp
+        cfg.UdpPort = UdpPort;  //udp
         cfg.Zone = zona;
 
         sfs = new SmartFox();
@@ -43,6 +46,7 @@ public class ControllerLogin : MonoBehaviour
         sfs.AddEventListener(SFSEvent.LOGIN_ERROR, OnLoginError);
         sfs.AddEventListener(SFSEvent.ROOM_JOIN, OnRoomJoin);
         sfs.AddEventListener(SFSEvent.ROOM_JOIN_ERROR, OnRoomJoinError);
+        sfs.AddEventListener(SFSEvent.UDP_INIT, OnUdpInit); 
 
         sfs.Connect(cfg);
     }
@@ -69,11 +73,35 @@ public class ControllerLogin : MonoBehaviour
             erroreText.text = "Connessione persa :" + ragione;
     }
 
+    private void OnUdpInit(BaseEvent evt)
+    {
+        // Remove SFS2X listeners
+
+       
+        if ((bool)evt.Params["success"])
+        {
+            // Set invert mouse Y option
+            //   OptionsManager.InvertMouseY = invertMouseToggle.isOn;
+            Debug.Log(" Udp funkia ");
+            // Load lobby scene
+            //    Application.LoadLevel("Lobby");
+        }
+        else
+        {
+            // Disconnect
+            sfs.Disconnect();
+            Debug.Log(" Udp non funkia ");
+            // Show error message
+            //  errorText.text = "UDP initialization failed: " + (string)evt.Params["errorMessage"];
+        }
+    }
     private void OnLogin(BaseEvent evt)
     {
         User user = (User)evt.Params["user"];
         Statici.userLocaleId = user.Id;
-        sfs.Send(new JoinRoomRequest("The Lobby"));
+        //  sfs.InitUDP(host,UdpPort);
+        sfs.InitUDP();
+         sfs.Send(new JoinRoomRequest("The Lobby"));
     }
 
     private void OnLoginError(BaseEvent evt)
