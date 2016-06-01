@@ -19,7 +19,7 @@ public class ControllerLogin : MonoBehaviour
     public string localhost = "127.0.0.1";
     public int TcpPort = 9933;
     public int UdpPort = 9933;
-    public string remoteHost = "40.68.126.217";
+    public string remoteHost = "40.118.64.248"; //RIORDARSI..NON METTERE GLI SPAZI..
     public scegliHost tipoHost = scegliHost.remotehost;
     public string zona = "BasicExamples";
     private string host;
@@ -121,7 +121,7 @@ public class ControllerLogin : MonoBehaviour
 
     string GiveMeText()
     {
-        string[] testo = { "DFTStudent......Dove finisce la realta..e inizia L'incubo...", "Loggati come ti pare..basta che non scrivi Nomi alla cazzum","....Benvenuto nella terra dei Cachi  ", "......Lasciate Ogni speranza o Voi Che Entrate","....Hai mai Pensato di fare un corso Accelerato Di java???","...Se non riuscite ad attaccare...sappiate che e' colpa di Piero","...Il Miglior gestore di Percorsi mai Implementato in un gioco ","....Occhio che ninfea ha disseminato Trappole Lungo Il percorso","...Pino..eddai,fai una partita pure tu", "..mentre aspetti...Stringi forte i denti con la lingua in mezzo", "...Hai vinto un biglietto per Pinolandia...","....(insert coin per continuare)","...Mai mangiato la pizza ai frutti di bosco? ","..Se trovi il principe con i capelli fucsia....ritira Coupon per una ceretta Gratis da Piero (Rif Piero p.c.)"};
+        string[] testo = { "DFTStudent......Dove finisce la realta..e inizia L'incubo...", "Loggati come ti pare..basta che non scrivi Nomi alla cazzum","....perche non giochi con i Bigodini ai capelli??","....Benvenuto nella terra dei Cachi  ", "......Lasciate Ogni speranza o Voi Che Entrate","..Ti posso offrire un Mandarino mentre aspetti ??","....Hai mai Pensato di fare un corso Accelerato Di java???","...Se non riuscite ad attaccare...sappiate che e' colpa di Piero","...Il Miglior gestore di Percorsi mai Implementato in un gioco ","....Occhio che ninfea ha disseminato Trappole Lungo Il percorso","...Pino..eddai,fai una partita pure tu","...invece di giocare vai a raddrizzare i Radicchi nell'orto","..mentre aspetti...Stringi forte i denti con la lingua in mezzo", "...Hai vinto un biglietto per Pinolandia...","....(insert coin per continuare)","...Mai mangiato la pizza ai frutti di Bosco? ","..Se trovi il principe con i capelli fucsia....ritira Coupon per una ceretta Gratis da Piero (Rif Piero p.c.)"};
         int g = Random.Range(0, (testo.Length));   //usato testo.Lenght anziche Lenght-1 perche negli interi occorre incrementarlo di uno (vedi lezione in cui ne ha parlato)
         return testo[g];
     }
@@ -150,12 +150,13 @@ public class ControllerLogin : MonoBehaviour
                 break;
 
             case scegliHost.remotehost:
-                host = remoteHost;
+                host = remoteHost;  //cosi' toglie gli spazi
                 break;
 
             default:
                 break;
         }
+        host = host.Trim();   //cosi' toglie gli spazi ( se ci lascio gli spazi non va)
     }
 
     // Update is called once per frame
