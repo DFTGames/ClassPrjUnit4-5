@@ -1,20 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum azioniPlayer
+{
+    attacco1=1,
+    attacco2=2,
+}
+
 public class NetworkPlayer : MonoBehaviour
 {
-
+    
     private int user = -2; //inizializzato alla cazzum...(e' fuori dal intervallo che verra usato)
     public bool playerLocale { get; set; }
     // private float tempoInvioTransorm = 0.1f;
     private float timeCorrente;
     private float timeAfterStop;
     private bool movimentoDirty;
+    private float rotazione;
 
     private Animator anim;
     private ControllerMaga controller;
     private NetworkTransformInterpolation inter;
-
 
     private byte attacchi;
 
@@ -48,25 +54,19 @@ public class NetworkPlayer : MonoBehaviour
     { //QUA DENTRO C'E LA LOGICA PER I PLAYER LOCALI
 
           if (!playerLocale || (playerLocale && !Statici.partenza)) return; //Statici.partenza controllar
-      
+
+        if (Statici.IsPointAndClick) rotazione = transform.rotation.eulerAngles.y;  //unico comportamento diverso se siamo punta & clicca o tastiera
+               else rotazione = controller.Rotazione;
         attacchi = 0;
-        if (controller.Attacco1) attacchi = 1;
-        if (controller.Attacco2) attacchi = 2;
+        if (controller.Attacco1) attacchi =(int)azioniPlayer.attacco1;
+        if (controller.Attacco2) attacchi =(int)azioniPlayer.attacco2;
 
         if (attacchi > 0) movimentoDirty = true;
-        /*//METODO RIPORTATO DAL CONTROLLER MAGA.....PER RICORDARMI COME L'AVEVO FATTO...
 
-        if (Statici.multigiocatoreOn && net != null)
-        {
-            net.alimentaAnimazione(forward, rotazione, aTerra, jump, jumpLeg, attacco1, attacco2);
-        }
-        attacco1 = false;
-        attacco2 = false;
-    */
 
         if (Statici.multigiocatoreOn && Statici.inGioco)
         {
-            if ((controller.NavMeshAgent.velocity.magnitude > 0))
+            if (controller.Forward > 0)
             {
                 movimentoDirty = true;
                 timeAfterStop = Time.time;
@@ -77,8 +77,8 @@ public class NetworkPlayer : MonoBehaviour
 
         if ((timeCorrente + Statici.tempoInvioTransform) < Time.time)
         {
-         //   Debug.Log("sto inviando " + "MOVIMENTO dIRTY " + movimentoDirty);
-            NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(transform.position, transform.rotation.eulerAngles.y, controller.Forward, attacchi, 0);  //nel invio messo time a zero in quanto non lo uso (esempuio del shooter che lo manda sul server ma non viene usato)
+
+            NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(transform.position, rotazione, controller.Forward, attacchi, 0,controller.Jump,controller.JumpLeg);  //nel invio messo time a zero in quanto non lo uso (esempuio del shooter che lo manda sul server ma non viene usato)
             ManagerNetwork.InviaTransformAnimazioniLocali(net);
             attacchi = 0;  //azzero l'attacco
             timeCorrente = Time.time;
@@ -86,8 +86,6 @@ public class NetworkPlayer : MonoBehaviour
         }
 
     }
-
-
 
     //QUESTO METODO E' PER I PLAYER REMOTI
     public void ricevitransform(NetworkTransform net, int netUser)
@@ -108,8 +106,15 @@ public class NetworkPlayer : MonoBehaviour
             Debug.Log("Net position" + net.position + "transform position " + transform.position);
         }
 
-        if (net.attacchi == 1) anim.SetTrigger("attacco1");
-        else if (net.attacchi == 2) anim.SetTrigger("attacco2");
+        if ((net.attacchi & (int)azioniPlayer.attacco1) == (int)azioniPlayer.attacco1) anim.SetTrigger("attacco1");    //ho usato operatori binari 
+        else if ((net.attacchi & (int)azioniPlayer.attacco2) == (int)azioniPlayer.attacco2) anim.SetTrigger("attacco2");  //ho usato operatori binari 
+
+        if (Statici.IsPointAndClick)
+        {
+            anim.SetFloat("Jump", net.jump);
+            anim.SetFloat("JumpLeg", net.jumpLeg);
+
+        }
 
     }
 

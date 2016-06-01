@@ -1201,7 +1201,8 @@ MonoBehaviour:
   casellaNome: {fileID: 388341505}
   erroreText: {fileID: 579993535}
   localhost: 127.0.0.1
-  port: 9933
+  TcpPort: 9933
+  UdpPort: 9933
   remoteHost: 40.68.126.217
   tipoHost: 0
   zona: BasicExamples

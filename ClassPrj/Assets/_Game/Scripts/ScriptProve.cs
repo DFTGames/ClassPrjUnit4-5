@@ -42,7 +42,7 @@ public class ScriptProve : MonoBehaviour {
 
     public void UsaTastiera(bool t)
     {
-        Statici.IsPointAndClick = t;
+        Statici.IsPointAndClick = !t;
       //  Debug.Log("Invio isPoint click " + Statici.IsPointAndClick);
 
     }

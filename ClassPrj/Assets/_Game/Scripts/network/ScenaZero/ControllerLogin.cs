@@ -49,6 +49,7 @@ public class ControllerLogin : MonoBehaviour
         sfs.AddEventListener(SFSEvent.UDP_INIT, OnUdpInit); 
 
         sfs.Connect(cfg);
+       
     }
 
     private void OnConnection(BaseEvent evt)
@@ -57,6 +58,7 @@ public class ControllerLogin : MonoBehaviour
         if (connessioneAvvenuta)
         {
             SmartFoxConnection.Connection = sfs;
+         //   sfs.InitUDP();
             sfs.Send(new LoginRequest(casellaNome.text));
         }
         else
@@ -100,7 +102,7 @@ public class ControllerLogin : MonoBehaviour
         User user = (User)evt.Params["user"];
         Statici.userLocaleId = user.Id;
         //  sfs.InitUDP(host,UdpPort);
-        sfs.InitUDP();
+       sfs.InitUDP();
          sfs.Send(new JoinRoomRequest("The Lobby"));
     }
 

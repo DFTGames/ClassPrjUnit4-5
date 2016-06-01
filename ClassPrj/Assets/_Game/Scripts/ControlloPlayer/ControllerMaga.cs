@@ -35,7 +35,8 @@ public class ControllerMaga : MonoBehaviour
     private bool Destinazione = false;
     private EventoAudio ev_Audio;
     private GestoreCanvasNetwork gestoreCanvas;
-    private float h, v, rotazione;
+    private float h, v;
+    private float rotazione;
     private RaycastHit hit;
     private float jumpLeg;
     private LayerMask layer = 1 << 13;
@@ -132,6 +133,41 @@ public class ControllerMaga : MonoBehaviour
         }
 
 
+    }
+
+    public float Rotazione
+    {
+        get
+        {
+            return rotazione;
+        }
+
+    }
+
+    public bool ATerra
+    {
+        get
+        {
+            return aTerra;
+        }
+
+    }
+
+    public float JumpLeg
+    {
+        get
+        {
+            return jumpLeg;
+        }
+
+    }
+
+    public float Jump
+    {
+        get
+        {
+            return jump;
+        }
     }
 
 

@@ -19,14 +19,13 @@ import java.util.List;
  *
  * @author Ninfea
  */
-public class TransformPlayer extends BaseClientRequestHandler{
+public class TransformPlayerClick extends BaseClientRequestHandler{
 
  //  private Dictionary<User,Player> dizionarioUtentiPlayer=new Hashtable();
     
     @Override
     public void handleClientRequest(User user, ISFSObject isfso) {
-     
-            trace("sono nel 1");    
+       
         float x=isfso.getFloat("x");
        float y=isfso.getFloat("y");
        float z=isfso.getFloat("z");
@@ -54,9 +53,9 @@ public class TransformPlayer extends BaseClientRequestHandler{
  
   
         objOut.putInt("u", user.getId()); 
-        trace("sono nel 2");
+
        //  send("regT", objOut ,user.getLastJoinedRoom().getUserList());}
-        send("regT", objOut ,mondo.GetUtentiInScena(user.getLastJoinedRoom(), mondo.dizionarioUtentiPlayer.get(user).scena),true);
+        send("regC", objOut ,mondo.GetUtentiInScena(user.getLastJoinedRoom(), mondo.dizionarioUtentiPlayer.get(user).scena),true);
     }
 
   

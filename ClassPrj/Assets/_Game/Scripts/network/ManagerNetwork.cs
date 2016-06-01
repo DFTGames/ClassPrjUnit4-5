@@ -40,17 +40,23 @@ public class ManagerNetwork : MonoBehaviour
 
     public static void InviaTransformAnimazioniLocali(NetworkTransform ne)  //MODIFICA BY LUCA
     {
-        ISFSObject objOut = new SFSObject();
-        objOut.PutFloat("x", ne.position.x);
-        objOut.PutFloat("y", ne.position.y);
-        objOut.PutFloat("z", ne.position.z);
-        objOut.PutFloat("ry", ne.rotation);
-        objOut.PutFloat("forw", ne.forward);
-        objOut.PutByte("a1", ne.attacchi);
-        Debug.Log("sono invio ");
-        me.sfs.Send(new ExtensionRequest("regT", objOut, me.sfs.LastJoinedRoom, true));
-        //  me.controllerPlayer.MovementDirty = false;
-
+            ISFSObject objOut = new SFSObject();
+            objOut.PutFloat("x", ne.position.x);
+            objOut.PutFloat("y", ne.position.y);
+            objOut.PutFloat("z", ne.position.z);
+            objOut.PutFloat("ry", ne.rotation);
+            objOut.PutFloat("forw", ne.forward);
+            objOut.PutByte("a1", ne.attacchi);
+        if (Statici.IsPointAndClick)   //ho pensato di scomporlo qua il pacchetto ..se e' punta clicca o tastiera ..Mi assumo le responsabilita del caso      
+            me.sfs.Send(new ExtensionRequest("regC", objOut, me.sfs.LastJoinedRoom, true));
+       
+        else
+        {
+         //   Debug.Log("Invio  " + "x " + ne.position.x + "y " + ne.position.y + "for " + ne.forward);
+            objOut.PutFloat("t", ne.jump);
+            objOut.PutFloat("j", ne.jumpLeg);
+            me.sfs.Send(new ExtensionRequest("regT", objOut, me.sfs.LastJoinedRoom, true));
+        }   
     }
 
     public static void TimeSyncRequest()
@@ -246,7 +252,7 @@ public class ManagerNetwork : MonoBehaviour
 
                 break;
 
-            case ("regT"):   //MODIFCA BY LUCA
+            case ("regC"):  
                 int user = sfsObjIn.GetInt("u");
                 if (Statici.datiPersonaggioLocale.Utente == user)
                     return;
@@ -259,12 +265,32 @@ public class ManagerNetwork : MonoBehaviour
                 float forw= sfsObjIn.GetFloat("forw");
                 double time = Convert.ToDouble(sfsObjIn.GetLong("time"));
                 byte at1 = sfsObjIn.GetByte("a1");
-                Debug.Log("Sono in ricezione ");
-                NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(pos, rot,forw,at1,time);
+                NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(pos, rot,forw,at1,time,0,0);
 
                 if (Statici.playerRemotiGestore.ContainsKey(user))
                     Statici.playerRemotiGestore[user].networkPlayer.ricevitransform(net, user);
+                break;
 
+            case ("regT"):  
+                 user = sfsObjIn.GetInt("u");
+                if (Statici.datiPersonaggioLocale.Utente == user)
+                    return;
+
+                pos = new Vector3(0, 1, 0);   // ??
+                pos.x = sfsObjIn.GetFloat("x");
+                pos.y = sfsObjIn.GetFloat("y");
+                pos.z = sfsObjIn.GetFloat("z");
+                rot = sfsObjIn.GetFloat("ry");
+                forw = sfsObjIn.GetFloat("forw");
+                time = Convert.ToDouble(sfsObjIn.GetLong("time"));
+                at1 = sfsObjIn.GetByte("a1");
+                float t= sfsObjIn.GetFloat("t");
+                float j = sfsObjIn.GetFloat("j");
+             //   Debug.Log("Ricevo  " + "x "+ pos.x+ "y "+ pos.y+ "for " + forw);
+                net = NetworkTransform.CreaOggettoNetworktransform(pos, rot, forw, at1, time, t, j);
+
+                if (Statici.playerRemotiGestore.ContainsKey(user))
+                    Statici.playerRemotiGestore[user].networkPlayer.ricevitransform(net, user);
                 break;
 
             case ("danno"):
