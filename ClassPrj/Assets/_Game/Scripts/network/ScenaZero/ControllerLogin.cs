@@ -47,6 +47,7 @@ public class ControllerLogin : MonoBehaviour
         sfs.AddEventListener(SFSEvent.ROOM_JOIN, OnRoomJoin);
         sfs.AddEventListener(SFSEvent.ROOM_JOIN_ERROR, OnRoomJoinError);
         sfs.AddEventListener(SFSEvent.UDP_INIT, OnUdpInit); 
+        //ciao
 
         sfs.Connect(cfg);
        
