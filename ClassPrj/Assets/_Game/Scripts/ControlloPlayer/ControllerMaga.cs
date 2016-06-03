@@ -58,6 +58,7 @@ public class ControllerMaga : MonoBehaviour
     private Transform transform_m;
     private float velocitaSpostamento;
     private bool voglioSaltare = false;
+    private bool rotBool=false;  //serve per il multigiocatore, quando uso modalita tastiera..(gli fa passare true se abilito la rotazione )
 
     //Classe Network
     private NetworkPlayer net;
@@ -170,6 +171,15 @@ public class ControllerMaga : MonoBehaviour
         }
     }
 
+    public bool RotBool
+    {
+        get
+        {
+            return rotBool;
+        }
+
+    }
+
 
     #endregion Variabili PRIVATE
 
@@ -279,17 +289,19 @@ public class ControllerMaga : MonoBehaviour
             forward = movimento.z * velocitaSpostamento;
         }
 
+      //  Debug.Log("transform.localEulerAngles.y  " + transform.localEulerAngles.y);
         animatore.SetBool("OnGround", aTerra);
         animatore.SetFloat("Forward", forward);
-        animatore.SetFloat("Turn", rotazione);
-        animatore.SetFloat("JumpLeg", jumpLeg);
+        animatore.SetFloat("Turn", rotazione);  //server solo se si muove personaggio tramite tastiera
+        animatore.SetFloat("JumpLeg", jumpLeg); //server solo se si muove personaggio tramite tastiera
 
+      //  Debug.Log(" position" + transform.position + "rotazione " + transform.rotation + "Contro rotaz " + rotazione);
 
         //animatore.SetBool("Crouch", abbassato);
         if (!aTerra && !Statici.IsPointAndClick)
         {
             jump = rigidBody.velocity.y;
-            animatore.SetFloat("Jump", jump);
+            animatore.SetFloat("Jump", jump);  //server solo se si muove personaggio tramite tastiera
         }
 
     }
@@ -422,7 +434,10 @@ public class ControllerMaga : MonoBehaviour
             h = Input.GetAxis("Horizontal");
             v = Input.GetAxis("Vertical");
 
-            movimento = new Vector3(h, 0.0f, v);
+            rotBool = false;
+            if (Input.GetButtonDown("Horizontal")) rotBool = true;  //server multigiocatore...uso con tastiera..
+
+                movimento = new Vector3(h, 0.0f, v);
             rotazione = Mathf.Atan2(h, v) * Mathf.Rad2Deg;
             velocitaSpostamento = !Input.GetKey(KeyCode.LeftShift) && corsaPerDefault ||
                                   !corsaPerDefault && Input.GetKey(KeyCode.LeftShift) ? 1f : 0.5f;

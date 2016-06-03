@@ -18,7 +18,6 @@ public class ScriptProve : MonoBehaviour {
         sliderTempoTransform.value = Statici.tempoInvioTransform;
         textTimeTrans.text = (Mathf.Round(Statici.tempoInvioTransform * 100) / 100).ToString();
 
-        isPointClick.isOn = Statici.IsPointAndClick;
         inter.value = 0;
       //  suonoAmbiente.value = ManagerIniziale.datiAudio.Dati.volEnvironment;
       //  suonoSFX.value = ManagerIniziale.datiAudio.Dati.volSFX;
@@ -43,7 +42,7 @@ public class ScriptProve : MonoBehaviour {
     public void UsaTastiera(bool t)
     {
         Statici.IsPointAndClick = !t;
-      //  Debug.Log("Invio isPoint click " + Statici.IsPointAndClick);
+
 
     }
     public void TipoINterpolazione(int ob)

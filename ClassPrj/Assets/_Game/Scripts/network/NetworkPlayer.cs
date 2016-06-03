@@ -17,7 +17,7 @@ public class NetworkPlayer : MonoBehaviour
     private float timeAfterStop;
     private bool movimentoDirty;
     private float rotazione;
-
+    //private float Protazione;
     private Animator anim;
     private ControllerMaga controller;
     private NetworkTransformInterpolation inter;
@@ -55,8 +55,12 @@ public class NetworkPlayer : MonoBehaviour
 
           if (!playerLocale || (playerLocale && !Statici.partenza)) return; //Statici.partenza controllar
 
-        if (Statici.IsPointAndClick) rotazione = transform.rotation.eulerAngles.y;  //unico comportamento diverso se siamo punta & clicca o tastiera
-               else rotazione = controller.Rotazione;
+        // DA SISTEMARE
+     //   if (Statici.IsPointAndClick) rotazione = transform.localEulerAngles.y;                     // rotazione = transform.rotation.eulerAngles.y;  //unico comportamento diverso se siamo punta & clicca o tastiera
+     //   else rotazione = transform.localEulerAngles.y;//controller.Rotazione;
+
+
+
         attacchi = 0;
         if (controller.Attacco1) attacchi =(int)azioniPlayer.attacco1;
         if (controller.Attacco2) attacchi =(int)azioniPlayer.attacco2;
@@ -66,10 +70,14 @@ public class NetworkPlayer : MonoBehaviour
 
         if (Statici.multigiocatoreOn && Statici.inGioco)
         {
-            if (controller.Forward > 0)
+           // Debug.Log("****rotazione "+ rotazione);
+            // if (controller.Forward > 0)   come era prima
+            if (controller.Forward > 0 || controller.RotBool)
             {
                 movimentoDirty = true;
                 timeAfterStop = Time.time;
+                rotazione = transform.localEulerAngles.y; //memorizzo il ultimo movimento effettuato ...
+             //   Debug.Log(" ruotando " + rotazione);
             }
         }
 
@@ -78,9 +86,9 @@ public class NetworkPlayer : MonoBehaviour
         if ((timeCorrente + Statici.tempoInvioTransform) < Time.time)
         {
 
-            NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(transform.position, rotazione, controller.Forward, attacchi, 0,controller.Jump,controller.JumpLeg);  //nel invio messo time a zero in quanto non lo uso (esempuio del shooter che lo manda sul server ma non viene usato)
-            ManagerNetwork.InviaTransformAnimazioniLocali(net);
-            attacchi = 0;  //azzero l'attacco
+            NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(transform.position, transform.localEulerAngles.y, controller.Forward, attacchi, 0,controller.Jump,controller.JumpLeg);  //nel invio messo time a zero in quanto non lo uso (esempuio del shooter che lo manda sul server ma non viene usato)
+            ManagerNetwork.InviaTransformAnimazioniLocali(net);           
+            attacchi = 0;  //azzero l'attacco  (potevo usare operatore binario per azzerarlo : attacchi^= attacchi (Xor);
             timeCorrente = Time.time;
             if ((timeAfterStop + 0.5f) < Time.time) movimentoDirty = false;  //mi aspetta tot tempo per fare in modo che mi prenda con sicurezza anche l'arresto..considerando che siamo in UDP..e non tutti i pacchetti arrivano(vedere lezione 11 modulo 7)
         }
@@ -96,6 +104,7 @@ public class NetworkPlayer : MonoBehaviour
         {
             inter.ReceivedTransform(net, anim);
             Debug.Log("non sono nullo " + " Inter  " + Statici.inter);
+            Debug.Log("Net position" + net.position + "transform rotazione " + net.rotation);
         }
         else
         {
@@ -103,13 +112,13 @@ public class NetworkPlayer : MonoBehaviour
             transform.rotation = Quaternion.Euler(0, net.rotation, 0);
             anim.SetFloat("Forward", net.forward);       
             Debug.Log(" sono nullo " + " Inter  " + Statici.inter);
-            Debug.Log("Net position" + net.position + "transform position " + transform.position);
+            Debug.Log("Net position" + net.position + "rotazione " + transform.rotation + "Contro rotaz " + controller.Rotazione);
         }
 
         if ((net.attacchi & (int)azioniPlayer.attacco1) == (int)azioniPlayer.attacco1) anim.SetTrigger("attacco1");    //ho usato operatori binari 
         else if ((net.attacchi & (int)azioniPlayer.attacco2) == (int)azioniPlayer.attacco2) anim.SetTrigger("attacco2");  //ho usato operatori binari 
 
-        if (Statici.IsPointAndClick)
+        if (!Statici.IsPointAndClick)
         {
             anim.SetFloat("Jump", net.jump);
             anim.SetFloat("JumpLeg", net.jumpLeg);

@@ -47,7 +47,6 @@ public class ControllerLogin : MonoBehaviour
         sfs.AddEventListener(SFSEvent.ROOM_JOIN, OnRoomJoin);
         sfs.AddEventListener(SFSEvent.ROOM_JOIN_ERROR, OnRoomJoinError);
         sfs.AddEventListener(SFSEvent.UDP_INIT, OnUdpInit); 
-        //ciao
 
         sfs.Connect(cfg);
        
@@ -122,7 +121,7 @@ public class ControllerLogin : MonoBehaviour
 
     string GiveMeText()
     {
-        string[] testo = { "DFTStudent......Dove finisce la realta..e inizia L'incubo...", "Loggati come ti pare..basta che non scrivi Nomi alla cazzum","....perche non giochi con i Bigodini ai capelli??","....Benvenuto nella terra dei Cachi  ", "......Lasciate Ogni speranza o Voi Che Entrate","..Ti posso offrire un Mandarino mentre aspetti ??","....Hai mai Pensato di fare un corso Accelerato Di java???","...Se non riuscite ad attaccare...sappiate che e' colpa di Piero","...Il Miglior gestore di Percorsi mai Implementato in un gioco ","....Occhio che ninfea ha disseminato Trappole Lungo Il percorso","...Pino..eddai,fai una partita pure tu","...invece di giocare vai a raddrizzare i Radicchi nell'orto","..mentre aspetti...Stringi forte i denti con la lingua in mezzo", "...Hai vinto un biglietto per Pinolandia...","....(insert coin per continuare)","...Mai mangiato la pizza ai frutti di Bosco? ","..Se trovi il principe con i capelli fucsia....ritira Coupon per una ceretta Gratis da Piero (Rif Piero p.c.)"};
+        string[] testo = { "DFTStudent......Dove finisce la realta..e inizia L'incubo...", "Loggati come ti pare..basta che non scrivi Nomi alla cazzum","....perche non giochi con i Bigodini ai capelli??","....Benvenuto nella terra dei Cachi  ", "..MmHmmmhhh..MmmmmMmHmm......non pensare male...mi sto mangiando una Papaya","......Lasciate Ogni speranza o Voi Che Entrate","..Mentre aspetti ..mangiati un Mandarino","....Hai mai Pensato di fare un corso Accelerato Di java???","...Se non riuscite ad attaccare...sappiate che e' colpa di Piero","...Il Miglior gestore di Percorsi mai Implementato in un gioco ","....Occhio che ninfea ha disseminato Trappole Lungo Il percorso","...Pino..eddai,fai una partita pure tu","...invece di giocare vai a raddrizzare i Radicchi nell'orto","..mentre aspetti...Stringi forte i denti con la lingua in mezzo", "...Hai vinto un biglietto per Pinolandia...","....(insert coin per continuare)","...Mai mangiato la pizza ai frutti di Bosco? ","..Se trovi il principe con i capelli fucsia....ritira Coupon per una ceretta Gratis da Piero (Rif Piero p.c.)"};
         int g = Random.Range(0, (testo.Length));   //usato testo.Lenght anziche Lenght-1 perche negli interi occorre incrementarlo di uno (vedi lezione in cui ne ha parlato)
         return testo[g];
     }

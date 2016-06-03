@@ -3238,7 +3238,7 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!114 &11437826
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4774,7 +4774,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11431274}
   m_HandleRect: {fileID: 22457604}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
