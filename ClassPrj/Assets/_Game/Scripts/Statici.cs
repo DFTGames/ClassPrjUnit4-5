@@ -60,32 +60,12 @@ public class Statici
     public static string posizioneInizialeMulti = string.Empty;
     public static Dictionary<int, DatiPersonaggio> registroDatiPersonaggi = new Dictionary<int, DatiPersonaggio>();
     public static bool sonoPassatoDallaScenaIniziale = false;
-    public static float tempoInvioAnimazione = 0.1f;
-    public static float tempoInvioTransform = 0.1f;
+    public static float tempoInvioTransform = 0.06f;
     public static int userLocaleId = 0;
     private static SqliteConnection conn;
     private static string destinazione = Application.persistentDataPath + "/dbgioco.db";
     private static string origine = Application.streamingAssetsPath + "/dbgioco.db";
 
-    public static void aggiungiComponenteAnimazione(GameObject obj, bool locale)
-    {
-        if (obj == null) return;
-
-        ControllerMaga t = obj.GetComponent<ControllerMaga>();
-
-        if (!locale && obj.GetComponent<AnimSyncronRiceiver>() == null)
-        {
-            AnimSyncronRiceiver tmp = obj.AddComponent<AnimSyncronRiceiver>();
-            tmp.controller = t;
-        }
-
-        if (locale && obj.GetComponent<AnimSyncronizeSender>() == null)
-        {
-            AnimSyncronizeSender tmp = obj.AddComponent<AnimSyncronizeSender>();
-            t.SyncAnimS = tmp;
-            //   tmp.controller = t;
-        }
-    }
 
     public static void assegnaAssetDatabase()
     {

@@ -26,16 +26,14 @@ public class RespawnHandler extends BaseClientRequestHandler{
         float x=isfso.getFloat("x");
         float y=isfso.getFloat("y");
         float z=isfso.getFloat("z");
-        float rx=isfso.getFloat("rx");
         float ry=isfso.getFloat("ry");
-        float rz=isfso.getFloat("rz");
 
        
         String scena=isfso.getUtfString("scena");
         SfereNetSfsExtension ext = (SfereNetSfsExtension) this.getParentExtension();         
         Mondo mondo=ext.world; 
         Player player=new Player();
-        player.t=new Transform(x, y, z,rx,ry,rz);
+        player.t=new Transform(x, y, z,ry);
         
         mondo.dizionarioUtentiPlayer.get(user).t=player.t;
         mondo.dizionarioUtentiPlayer.get(user).scena=scena;
@@ -65,9 +63,7 @@ public class RespawnHandler extends BaseClientRequestHandler{
              objOut.putFloat("x",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).t.x);
              objOut.putFloat("y",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).t.y);
              objOut.putFloat("z",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).t.z);
-             objOut.putFloat("rx",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).t.rx);
              objOut.putFloat("ry",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).t.ry);
-             objOut.putFloat("rz",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).t.rz);
             objOut.putUtfString("scena", mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).scena);
             objOut.putInt("ut", utenteDiCuiMiServonoInfo.getId());
             if(utenteDiCuiMiServonoInfo==user)//se le informazioni riguardano l'utente che è entrato appena in scena le mando a tutti quelli in scena

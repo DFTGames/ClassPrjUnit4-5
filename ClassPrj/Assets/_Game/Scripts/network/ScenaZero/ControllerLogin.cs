@@ -17,8 +17,9 @@ public class ControllerLogin : MonoBehaviour
     public InputField casellaNome;
     public Text erroreText;
     public string localhost = "127.0.0.1";
-    public int port = 9933;
-    public string remoteHost = "40.68.126.217";
+    public int TcpPort = 9933;
+    public int UdpPort = 9933;
+    public string remoteHost = "40.118.64.248"; //RIORDARSI..NON METTERE GLI SPAZI..
     public scegliHost tipoHost = scegliHost.remotehost;
     public string zona = "BasicExamples";
     private string host;
@@ -30,8 +31,10 @@ public class ControllerLogin : MonoBehaviour
         erroreText.text = "";
 
         ConfigData cfg = new ConfigData();
-        cfg.Host = host;
-        cfg.Port = port;
+        cfg.Host = host; //tcp 
+        cfg.Port = TcpPort;  //tcp 
+        cfg.UdpHost = host;  //udp
+        cfg.UdpPort = UdpPort;  //udp
         cfg.Zone = zona;
 
         sfs = new SmartFox();
@@ -43,8 +46,11 @@ public class ControllerLogin : MonoBehaviour
         sfs.AddEventListener(SFSEvent.LOGIN_ERROR, OnLoginError);
         sfs.AddEventListener(SFSEvent.ROOM_JOIN, OnRoomJoin);
         sfs.AddEventListener(SFSEvent.ROOM_JOIN_ERROR, OnRoomJoinError);
+        sfs.AddEventListener(SFSEvent.UDP_INIT, OnUdpInit); 
+        //ciao
 
         sfs.Connect(cfg);
+       
     }
 
     private void OnConnection(BaseEvent evt)
@@ -53,6 +59,7 @@ public class ControllerLogin : MonoBehaviour
         if (connessioneAvvenuta)
         {
             SmartFoxConnection.Connection = sfs;
+         //   sfs.InitUDP();
             sfs.Send(new LoginRequest(casellaNome.text));
         }
         else
@@ -69,11 +76,35 @@ public class ControllerLogin : MonoBehaviour
             erroreText.text = "Connessione persa :" + ragione;
     }
 
+    private void OnUdpInit(BaseEvent evt)
+    {
+        // Remove SFS2X listeners
+
+       
+        if ((bool)evt.Params["success"])
+        {
+            // Set invert mouse Y option
+            //   OptionsManager.InvertMouseY = invertMouseToggle.isOn;
+            Debug.Log(" Udp funkia ");
+            // Load lobby scene
+            //    Application.LoadLevel("Lobby");
+        }
+        else
+        {
+            // Disconnect
+            sfs.Disconnect();
+            Debug.Log(" Udp non funkia ");
+            // Show error message
+            //  errorText.text = "UDP initialization failed: " + (string)evt.Params["errorMessage"];
+        }
+    }
     private void OnLogin(BaseEvent evt)
     {
         User user = (User)evt.Params["user"];
         Statici.userLocaleId = user.Id;
-        sfs.Send(new JoinRoomRequest("The Lobby"));
+        //  sfs.InitUDP(host,UdpPort);
+       sfs.InitUDP();
+         sfs.Send(new JoinRoomRequest("The Lobby"));
     }
 
     private void OnLoginError(BaseEvent evt)
@@ -86,9 +117,15 @@ public class ControllerLogin : MonoBehaviour
     private void OnRoomJoin(BaseEvent evt)
     {
         ResettaListnerAbilitaUI(false);
-        StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("Scena Iniziale", "Titolo gioco o qualsiasi altra cosa vogliamo scriverci.", ManagerScenaZero.ImmagineCaricamento, ManagerScenaZero.ScrittaCaricamento));
+        StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("Scena Iniziale", GiveMeText(), ManagerScenaZero.ImmagineCaricamento, ManagerScenaZero.ScrittaCaricamento));
     }
 
+    string GiveMeText()
+    {
+        string[] testo = { "DFTStudent......Dove finisce la realta..e inizia L'incubo...", "Loggati come ti pare..basta che non scrivi Nomi alla cazzum","....perche non giochi con i Bigodini ai capelli??","....Benvenuto nella terra dei Cachi  ", "......Lasciate Ogni speranza o Voi Che Entrate","..Ti posso offrire un Mandarino mentre aspetti ??","....Hai mai Pensato di fare un corso Accelerato Di java???","...Se non riuscite ad attaccare...sappiate che e' colpa di Piero","...Il Miglior gestore di Percorsi mai Implementato in un gioco ","....Occhio che ninfea ha disseminato Trappole Lungo Il percorso","...Pino..eddai,fai una partita pure tu","...invece di giocare vai a raddrizzare i Radicchi nell'orto","..mentre aspetti...Stringi forte i denti con la lingua in mezzo", "...Hai vinto un biglietto per Pinolandia...","....(insert coin per continuare)","...Mai mangiato la pizza ai frutti di Bosco? ","..Se trovi il principe con i capelli fucsia....ritira Coupon per una ceretta Gratis da Piero (Rif Piero p.c.)"};
+        int g = Random.Range(0, (testo.Length));   //usato testo.Lenght anziche Lenght-1 perche negli interi occorre incrementarlo di uno (vedi lezione in cui ne ha parlato)
+        return testo[g];
+    }
     private void OnRoomJoinError(BaseEvent evt)
     {
         ManagerScenaZero.AttivaDisattivaCanvasGroupLogin(true);
@@ -114,12 +151,13 @@ public class ControllerLogin : MonoBehaviour
                 break;
 
             case scegliHost.remotehost:
-                host = remoteHost;
+                host = remoteHost;  //cosi' toglie gli spazi
                 break;
 
             default:
                 break;
         }
+        host = host.Trim();   //cosi' toglie gli spazi ( se ci lascio gli spazi non va)
     }
 
     // Update is called once per frame

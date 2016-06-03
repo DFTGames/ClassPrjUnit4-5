@@ -6,16 +6,11 @@
 package sferenetsfsextension;
 
 import com.smartfoxserver.v2.core.SFSEventType;
-import com.smartfoxserver.v2.entities.Room;
 import com.smartfoxserver.v2.entities.SFSRoomRemoveMode;
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
-import com.smartfoxserver.v2.entities.variables.RoomVariable;
-import com.smartfoxserver.v2.entities.variables.SFSRoomVariable;
 import com.smartfoxserver.v2.extensions.SFSExtension;
-import java.util.Dictionary;
-import java.util.Hashtable;
 
 /**
  *
@@ -41,15 +36,15 @@ public class SfereNetSfsExtension extends SFSExtension{
         
         addRequestHandler("spawnMe", SpawnMeHandler.class); 
         addRequestHandler("respawn", RespawnHandler.class);
-        addRequestHandler("regT", TransformPlayer.class);      
+        addRequestHandler("regC", TransformPlayerClick.class);   
+        addRequestHandler("regT", TransformPlayerTast.class);   
         addRequestHandler("danno", DannoHandler.class);
         addRequestHandler("raggio", RaggioHandler.class);
         addRequestHandler("res", ResurrezioneHandler.class);
         addRequestHandler("del", DeleteAvatarHandler.class);     
         addRequestHandler("ready", ReadyHandler.class);
         addRequestHandler("getTime", GetTimeHandler.class);
-        addRequestHandler("SanT", GetAnimTHandler.class);
-        addRequestHandler("SanC", GetAnimCHandler.class);
+
         
       
         

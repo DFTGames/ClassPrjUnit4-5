@@ -46,7 +46,7 @@ public class TimeManager : MonoBehaviour
     }
 
     public void Synchronize(double timeValue)
-    { //TIME VALUE E' IL TEMPO QUADO VIENE INVIATO DAL SERVER (e' il tempo che c'e sul server quando viene fatto la richiesta)
+    { //TIME VALUE E' IL TEMPO QUANDO VIENE INVIATO DAL SERVER (e' il tempo che c'e sul server quando viene fatto la richiesta)
       // Measure the ping in milliseconds
         double ping = (Time.time - timeBeforeSync) * 1000;  //QUA FA LA DIFFERENZA TRA IL TEMPO DI PARTENZA DA CLIENT (TIMEbEFOREsYNC) E IL TEMPO ATTUALE AL MOMENTO DELLA RICEZIONE (dovrebbe essere il Ping pong)
         CalculateAveragePing(ping);   //fa la media aritmetica degli ultimi 10 ping CLIENT-SERVER  e lo memorizza nel AveragePing

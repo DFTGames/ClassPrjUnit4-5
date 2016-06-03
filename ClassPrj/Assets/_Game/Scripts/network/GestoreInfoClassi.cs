@@ -11,8 +11,6 @@ public class InfoPlayer : IDisposable
     public DatiPersonaggio datiPersonaggio;
     public SwitchVivoMorto switchVivoMorto;
     public TextMesh textmesh;
-    public AnimSyncronRiceiver animSyncRiceveir;
-    public AnimSyncronizeSender animSyncSender;
 
     public void Dispose()
     {
@@ -36,8 +34,7 @@ public class GestoreInfoClassi : Dictionary<int, InfoPlayer>, IDisposable
         info.datiPersonaggio = info.gameObject.GetComponent<DatiPersonaggio>(); ;
         info.switchVivoMorto = info.gameObject.GetComponent<SwitchVivoMorto>();
         info.textmesh =  info.gameObject.GetComponentInChildren<TextMesh>();
-        info.animSyncRiceveir= info.gameObject.GetComponent<AnimSyncronRiceiver>();
-        info.animSyncSender= info.gameObject.GetComponent<AnimSyncronizeSender>();
+
 
         this.Add(user, info);
         return true;
@@ -46,10 +43,14 @@ public class GestoreInfoClassi : Dictionary<int, InfoPlayer>, IDisposable
     private NetworkPlayer AddNetworkPlayer(InfoPlayer info)
     {
         NetworkPlayer nt = info.gameObject.GetComponent<NetworkPlayer>();
-        if (nt == null)
+        if (nt == null)       
             nt = info.gameObject.AddComponent<NetworkPlayer>();
-        if (info.gameObject.GetComponent<NetworkTransformInterpolation>()== null)
-             info.gameObject.AddComponent<NetworkTransformInterpolation>();
+
+        NetworkTransformInterpolation tmpInt = info.gameObject.GetComponent<NetworkTransformInterpolation>();
+        if (tmpInt== null)
+            tmpInt= info.gameObject.AddComponent<NetworkTransformInterpolation>();
+        nt.Inter = tmpInt;
+        tmpInt.StartReceiving();
         return nt;
     }
 

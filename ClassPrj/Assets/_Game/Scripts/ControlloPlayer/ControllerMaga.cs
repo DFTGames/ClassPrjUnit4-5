@@ -26,7 +26,6 @@ public class ControllerMaga : MonoBehaviour
     private bool abbassato;
     private float altezzaCapsula;
     private Animator animatore;
-    private bool at1, at2 = false;
     private bool aTerra;
     private AudioZona audioZona;
     private CapsuleCollider capsula;
@@ -36,7 +35,8 @@ public class ControllerMaga : MonoBehaviour
     private bool Destinazione = false;
     private EventoAudio ev_Audio;
     private GestoreCanvasNetwork gestoreCanvas;
-    private float h, v, rotazione;
+    private float h, v;
+    private float rotazione;
     private RaycastHit hit;
     private float jumpLeg;
     private LayerMask layer = 1 << 13;
@@ -49,14 +49,20 @@ public class ControllerMaga : MonoBehaviour
     private bool rimaniBasso;
     private SwitchVivoMorto switchVivoMorto;
 
-    //AGGIUNTO PER MULTIPLAYER
-    private AnimSyncronizeSender syncAnimS = null;
+    private float forward;
+    private bool attacco1 = false;
+    private bool attacco2 = false;
+    private float jump;
+
 
     private Transform transform_m;
     private float velocitaSpostamento;
     private bool voglioSaltare = false;
 
+    //Classe Network
+    private NetworkPlayer net;
     //
+
     public DatiPersonaggio DatiPersonaggio
     {
         get
@@ -86,18 +92,84 @@ public class ControllerMaga : MonoBehaviour
         }
     }
 
-    public AnimSyncronizeSender SyncAnimS
+    public NetworkPlayer Net
     {
         get
         {
-            return syncAnimS;
+            return net;
         }
 
         set
         {
-            syncAnimS = value;
+            net = value;
         }
     }
+
+    public float Forward
+    {
+        get
+        {
+            return forward;
+        }
+
+
+    }
+
+    public bool Attacco1
+    {
+        get
+        {
+            return attacco1;
+        }
+
+
+    }
+
+    public bool Attacco2
+    {
+        get
+        {
+            return attacco2;
+        }
+
+
+    }
+
+    public float Rotazione
+    {
+        get
+        {
+            return rotazione;
+        }
+
+    }
+
+    public bool ATerra
+    {
+        get
+        {
+            return aTerra;
+        }
+
+    }
+
+    public float JumpLeg
+    {
+        get
+        {
+            return jumpLeg;
+        }
+
+    }
+
+    public float Jump
+    {
+        get
+        {
+            return jump;
+        }
+    }
+
 
     #endregion Variabili PRIVATE
 
@@ -147,23 +219,29 @@ public class ControllerMaga : MonoBehaviour
             if (Input.GetMouseButtonDown(0) && !voglioSaltare && aTerra)
             {
                 animatore.SetTrigger("attacco1");
-                at1 = true;
+                attacco1 = true;
             }
 
             if (Input.GetMouseButtonDown(1) && !voglioSaltare && aTerra)
             {
                 animatore.SetTrigger("attacco2");
-                at2 = true;
+                attacco2 = true;
             }
         }
     }
 
     private void FixedUpdate()
     {
+        /*
+        if ((Statici.multigiocatoreOn && !DatiPersonaggio.SonoUtenteLocale))   //AGGIUNTO DA LUCA
+            { 
+            return;
+        }
+        */
         aTerra = false;
         RaycastHit hit;
 
-        Debug.DrawLine(transform_m.position + (Vector3.up * 0.1f), transform_m.position + (Vector3.down * 0.1f), Color.blue);
+        //  Debug.DrawLine(transform_m.position + (Vector3.up * 0.1f), transform_m.position + (Vector3.down * 0.1f), Color.blue);
         if (Physics.Raycast(transform_m.position + (Vector3.up * 0.1f), Vector3.down, out hit, distanzaDaTerra))
         {
             aTerra = true;
@@ -194,34 +272,29 @@ public class ControllerMaga : MonoBehaviour
             rimaniBasso = false;
          */
         /* ANIMATORE */
+
+        if (!Statici.IsPointAndClick)
+        {
+            animatore.SetFloat("Forward", movimento.z * velocitaSpostamento);
+            forward = movimento.z * velocitaSpostamento;
+        }
+
         animatore.SetBool("OnGround", aTerra);
-        animatore.SetFloat("Forward", movimento.z * velocitaSpostamento);
+        animatore.SetFloat("Forward", forward);
         animatore.SetFloat("Turn", rotazione);
         animatore.SetFloat("JumpLeg", jumpLeg);
+
+
         //animatore.SetBool("Crouch", abbassato);
         if (!aTerra && !Statici.IsPointAndClick)
-            animatore.SetFloat("Jump", rigidBody.velocity.y);
-
-        //AGGIUNTA MULTIPLAYER
-        if (Statici.multigiocatoreOn && syncAnimS != null)
         {
-            if (!Statici.IsPointAndClick)//DA CONTROLLARE IL NON PUNTA E CLICCA...
-                syncAnimS.Forward = movimento.z * velocitaSpostamento;
-            else
-                syncAnimS.Forward = navMeshAgent.velocity.normalized.magnitude;
-
-            syncAnimS.Turn = rotazione;
-            syncAnimS.OnGround = aTerra;
-            syncAnimS.Jump = rigidBody.velocity.y;
-            syncAnimS.JumpLeg = jumpLeg;
-            syncAnimS.Attacco1 = at1;
-            syncAnimS.Attacco2 = at2;
-
-            syncAnimS.controlloDirty();
-            at1 = false;  //essendo trigger dopo essere passato a syncANims lo riporto a false
-            at2 = false;   //essendo trigger dopo essere passato a syncANims lo riporto a false
+            jump = rigidBody.velocity.y;
+            animatore.SetFloat("Jump", jump);
         }
+
     }
+
+
 
     private void SalvaDatiVita()
     {
@@ -289,6 +362,8 @@ public class ControllerMaga : MonoBehaviour
 
     private void Update()
     {
+        attacco1 = false;
+        attacco2 = false;
         //AGGIUNTA MULTIPLAYER
         if (!Statici.inGioco || (Statici.multigiocatoreOn && !DatiPersonaggio.SonoUtenteLocale))
         {
@@ -329,9 +404,11 @@ public class ControllerMaga : MonoBehaviour
                     }
                 }
             }
-            animatore.SetFloat("Forward", navMeshAgent.velocity.normalized.magnitude);
-            //AGGIUNTA MULTIPLAYER
-            //  if (Statici.multigiocatoreOn && syncAnimS!=null) syncAnimS.forward = navMeshAgent.velocity.normalized.magnitude;
+            forward = navMeshAgent.velocity.normalized.magnitude;
+
+
+            //       animatore.SetFloat("Forward", forward);   TOLTO DA LUCA...va anche sensa..e' una ripetizione.
+
         }
         else // Not Point & Click
         {
@@ -376,6 +453,7 @@ public class ControllerMaga : MonoBehaviour
              }
              */
         }
+
     }
 
     /*
