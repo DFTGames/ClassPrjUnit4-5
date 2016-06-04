@@ -70,10 +70,14 @@ public class NetworkPlayer : MonoBehaviour
 
         if (Statici.multigiocatoreOn && Statici.inGioco)
         {
-           // Debug.Log("****rotazione "+ rotazione);
+            // Debug.Log("****rotazione "+ rotazione);
             // if (controller.Forward > 0)   come era prima
-            if (controller.Forward > 0 || controller.RotBool)
+              if (controller.Forward != 0 || controller.RotBool || !controller.ATerra)              
             {
+                Debug.Log("Sto saltando " + controller.Jump);
+                Debug.Log("jumleg " + controller.JumpLeg);
+             //   Debug.Log("controller.Forward  " + controller.Forward);
+             //   Debug.Log("controller.RotBool  " + controller.RotBool);
                 movimentoDirty = true;
                 timeAfterStop = Time.time;
                 rotazione = transform.localEulerAngles.y; //memorizzo il ultimo movimento effettuato ...
@@ -85,13 +89,14 @@ public class NetworkPlayer : MonoBehaviour
 
         if ((timeCorrente + Statici.tempoInvioTransform) < Time.time)
         {
-
-            NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(transform.position, transform.localEulerAngles.y, controller.Forward, attacchi, 0,controller.Jump,controller.JumpLeg);  //nel invio messo time a zero in quanto non lo uso (esempuio del shooter che lo manda sul server ma non viene usato)
+          //  Debug.Log("sto inviando ");
+            NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(transform.position, transform.localEulerAngles.y, controller.Forward, attacchi, 0,controller.Jump,controller.JumpLeg,controller.Rotazione);  //nel invio messo time a zero in quanto non lo uso (esempuio del shooter che lo manda sul server ma non viene usato)
             ManagerNetwork.InviaTransformAnimazioniLocali(net);           
             attacchi = 0;  //azzero l'attacco  (potevo usare operatore binario per azzerarlo : attacchi^= attacchi (Xor);
             timeCorrente = Time.time;
             if ((timeAfterStop + 0.5f) < Time.time) movimentoDirty = false;  //mi aspetta tot tempo per fare in modo che mi prenda con sicurezza anche l'arresto..considerando che siamo in UDP..e non tutti i pacchetti arrivano(vedere lezione 11 modulo 7)
         }
+
 
     }
 
@@ -100,30 +105,14 @@ public class NetworkPlayer : MonoBehaviour
     {
         if (playerLocale || user != netUser) return;
 
-        if (inter != null && Statici.inter != NetworkTransformInterpolation.InterpolationMode.NESSUNA)
-        {
-            inter.ReceivedTransform(net, anim);
-            Debug.Log("non sono nullo " + " Inter  " + Statici.inter);
-            Debug.Log("Net position" + net.position + "transform rotazione " + net.rotation);
-        }
-        else
-        {
-            transform.position = net.position;
-            transform.rotation = Quaternion.Euler(0, net.rotation, 0);
-            anim.SetFloat("Forward", net.forward);       
-            Debug.Log(" sono nullo " + " Inter  " + Statici.inter);
-            Debug.Log("Net position" + net.position + "rotazione " + transform.rotation + "Contro rotaz " + controller.Rotazione);
-        }
+        inter.ReceivedTransform(net);
+
+        //lo lascio qua invece di metterlo nel NetworkTransformInterpolation perche deve essere eseguito non nel update(vedi originale)
 
         if ((net.attacchi & (int)azioniPlayer.attacco1) == (int)azioniPlayer.attacco1) anim.SetTrigger("attacco1");    //ho usato operatori binari 
+
         else if ((net.attacchi & (int)azioniPlayer.attacco2) == (int)azioniPlayer.attacco2) anim.SetTrigger("attacco2");  //ho usato operatori binari 
-
-        if (!Statici.IsPointAndClick)
-        {
-            anim.SetFloat("Jump", net.jump);
-            anim.SetFloat("JumpLeg", net.jumpLeg);
-
-        }
+       
 
     }
 

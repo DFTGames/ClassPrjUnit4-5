@@ -53,8 +53,9 @@ public class ManagerNetwork : MonoBehaviour
         else
         {
          //   Debug.Log("Invio  " + "x " + ne.position.x + "y " + ne.position.y + "for " + ne.forward);
-            objOut.PutFloat("t", ne.jump);
+            objOut.PutFloat("t", ne.jump);//Debug.Log("sto inviando salto " + ne.jump);
             objOut.PutFloat("j", ne.jumpLeg);
+            objOut.PutFloat("r", ne.turn);
             me.sfs.Send(new ExtensionRequest("regT", objOut, me.sfs.LastJoinedRoom, true));
         }   
     }
@@ -265,7 +266,7 @@ public class ManagerNetwork : MonoBehaviour
                 float forw= sfsObjIn.GetFloat("forw");
                 double time = Convert.ToDouble(sfsObjIn.GetLong("time"));
                 byte at1 = sfsObjIn.GetByte("a1");
-                NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(pos, rot,forw,at1,time,0,0);
+                NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(pos, rot,forw,at1,time,0,0,0);
 
                 if (Statici.playerRemotiGestore.ContainsKey(user))
                     Statici.playerRemotiGestore[user].networkPlayer.ricevitransform(net, user);
@@ -286,9 +287,10 @@ public class ManagerNetwork : MonoBehaviour
                 at1 = sfsObjIn.GetByte("a1");
                 float t= sfsObjIn.GetFloat("t");
                 float j = sfsObjIn.GetFloat("j");
-             //   Debug.Log("Ricevo  " + "x "+ pos.x+ "y "+ pos.y+ "for " + forw);
-                net = NetworkTransform.CreaOggettoNetworktransform(pos, rot, forw, at1, time, t, j);
-
+                float r = sfsObjIn.GetFloat("r");
+                //   Debug.Log("Ricevo  " + "x "+ pos.x+ "y "+ pos.y+ "for " + forw);
+                net = NetworkTransform.CreaOggettoNetworktransform(pos, rot, forw, at1, time, t, j,r);
+               // Debug.Log("sto  ricevendo salto " + j);
                 if (Statici.playerRemotiGestore.ContainsKey(user))
                     Statici.playerRemotiGestore[user].networkPlayer.ricevitransform(net, user);
                 break;

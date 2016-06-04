@@ -242,12 +242,12 @@ public class ControllerMaga : MonoBehaviour
 
     private void FixedUpdate()
     {
-        /*
+      
         if ((Statici.multigiocatoreOn && !DatiPersonaggio.SonoUtenteLocale))   //AGGIUNTO DA LUCA
             { 
             return;
         }
-        */
+        
         aTerra = false;
         RaycastHit hit;
 
@@ -418,7 +418,7 @@ public class ControllerMaga : MonoBehaviour
             }
             forward = navMeshAgent.velocity.normalized.magnitude;
 
-
+            
             //       animatore.SetFloat("Forward", forward);   TOLTO DA LUCA...va anche sensa..e' una ripetizione.
 
         }
@@ -435,8 +435,8 @@ public class ControllerMaga : MonoBehaviour
             v = Input.GetAxis("Vertical");
 
             rotBool = false;
-            if (Input.GetButtonDown("Horizontal")) rotBool = true;  //server multigiocatore...uso con tastiera..
-
+            if (Input.GetButton("Horizontal")) rotBool = true;  //server multigiocatore...uso con tastiera..
+           //Debug.Log("jump  " + jump); 
                 movimento = new Vector3(h, 0.0f, v);
             rotazione = Mathf.Atan2(h, v) * Mathf.Rad2Deg;
             velocitaSpostamento = !Input.GetKey(KeyCode.LeftShift) && corsaPerDefault ||

@@ -3,19 +3,20 @@ using System.Collections;
 using Sfs2X.Entities.Data;
 using System;
 
-public class NetworkTransform : MonoBehaviour {
+public class NetworkTransform //: MonoBehaviour {   //CI SONO PROBLEMI A EREDITARE DA MONOBIEHEVOIUR?..perche c'e il New
 
-
+{ 
     public Vector3 position;
     public float rotation = 0f;
     public float forward = 0f;
     public byte attacchi=0;
     public float jump=0f;
     public float jumpLeg=0f;
+    public float turn = 0f;
 
     public double timeStamp=0;
 
-    public static NetworkTransform CreaOggettoNetworktransform(Vector3 posizione, float rotazione,float forw, byte attacchi,double time,float jump,float jumpLeg)
+    public static NetworkTransform CreaOggettoNetworktransform(Vector3 posizione, float rotazione,float forw, byte attacchi,double time,float jump,float jumpLeg,float turn)
     {
         NetworkTransform trans = new NetworkTransform();
 
@@ -26,6 +27,7 @@ public class NetworkTransform : MonoBehaviour {
         trans.timeStamp = time;
         trans.jump = jump;
         trans.jumpLeg = jumpLeg;
+        trans.turn = turn;
         
         return trans;
     }
