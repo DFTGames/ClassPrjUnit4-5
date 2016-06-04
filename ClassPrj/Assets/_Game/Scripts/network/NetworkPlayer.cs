@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum azioniPlayer
+public enum azioniPlayer : byte
 {
     attacco1=1,
     attacco2=2,
+    salto=4
 }
 
 public class NetworkPlayer : MonoBehaviour
@@ -62,8 +63,9 @@ public class NetworkPlayer : MonoBehaviour
 
 
         attacchi = 0;
-        if (controller.Attacco1) attacchi =(int)azioniPlayer.attacco1;
-        if (controller.Attacco2) attacchi =(int)azioniPlayer.attacco2;
+        if (controller.Attacco1) attacchi = (byte)azioniPlayer.attacco1;
+        if (controller.Attacco2) attacchi =(byte)azioniPlayer.attacco2;
+        if (!controller.ATerra) attacchi = (byte)azioniPlayer.salto;
 
         if (attacchi > 0) movimentoDirty = true;
 
@@ -74,8 +76,8 @@ public class NetworkPlayer : MonoBehaviour
             // if (controller.Forward > 0)   come era prima
               if (controller.Forward != 0 || controller.RotBool || !controller.ATerra)              
             {
-                Debug.Log("Sto saltando " + controller.Jump);
-                Debug.Log("jumleg " + controller.JumpLeg);
+              //  Debug.Log("Sto saltando " + controller.Jump);
+              //  Debug.Log("jumleg " + controller.JumpLeg);
              //   Debug.Log("controller.Forward  " + controller.Forward);
              //   Debug.Log("controller.RotBool  " + controller.RotBool);
                 movimentoDirty = true;
@@ -91,6 +93,7 @@ public class NetworkPlayer : MonoBehaviour
         {
           //  Debug.Log("sto inviando ");
             NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(transform.position, transform.localEulerAngles.y, controller.Forward, attacchi, 0,controller.Jump,controller.JumpLeg,controller.Rotazione);  //nel invio messo time a zero in quanto non lo uso (esempuio del shooter che lo manda sul server ma non viene usato)
+
             ManagerNetwork.InviaTransformAnimazioniLocali(net);           
             attacchi = 0;  //azzero l'attacco  (potevo usare operatore binario per azzerarlo : attacchi^= attacchi (Xor);
             timeCorrente = Time.time;
@@ -103,15 +106,15 @@ public class NetworkPlayer : MonoBehaviour
     //QUESTO METODO E' PER I PLAYER REMOTI
     public void ricevitransform(NetworkTransform net, int netUser)
     {
-        if (playerLocale || user != netUser) return;
+        if (playerLocale || user != netUser || net==null) return;
 
         inter.ReceivedTransform(net);
 
         //lo lascio qua invece di metterlo nel NetworkTransformInterpolation perche deve essere eseguito non nel update(vedi originale)
 
-        if ((net.attacchi & (int)azioniPlayer.attacco1) == (int)azioniPlayer.attacco1) anim.SetTrigger("attacco1");    //ho usato operatori binari 
+        if ((net.attacchi & (byte)azioniPlayer.attacco1) == (byte)azioniPlayer.attacco1) anim.SetTrigger("attacco1");    //ho usato operatori binari 
 
-        else if ((net.attacchi & (int)azioniPlayer.attacco2) == (int)azioniPlayer.attacco2) anim.SetTrigger("attacco2");  //ho usato operatori binari 
+        else if ((net.attacchi & (byte)azioniPlayer.attacco2) == (byte)azioniPlayer.attacco2) anim.SetTrigger("attacco2");  //ho usato operatori binari 
        
 
     }

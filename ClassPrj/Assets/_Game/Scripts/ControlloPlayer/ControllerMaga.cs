@@ -243,7 +243,7 @@ public class ControllerMaga : MonoBehaviour
     private void FixedUpdate()
     {
       
-        if ((Statici.multigiocatoreOn && !DatiPersonaggio.SonoUtenteLocale))   //AGGIUNTO DA LUCA
+        if (DatiPersonaggio!=null && (Statici.multigiocatoreOn && !DatiPersonaggio.SonoUtenteLocale))   //AGGIUNTO DA LUCA
             { 
             return;
         }

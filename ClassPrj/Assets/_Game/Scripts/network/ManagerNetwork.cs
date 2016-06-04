@@ -54,7 +54,7 @@ public class ManagerNetwork : MonoBehaviour
         {
          //   Debug.Log("Invio  " + "x " + ne.position.x + "y " + ne.position.y + "for " + ne.forward);
             objOut.PutFloat("t", ne.jump);//Debug.Log("sto inviando salto " + ne.jump);
-            objOut.PutFloat("j", ne.jumpLeg);
+            objOut.PutFloat("j", ne.jumpLeg); Debug.Log(" invio jump" + ne.jump);
             objOut.PutFloat("r", ne.turn);
             me.sfs.Send(new ExtensionRequest("regT", objOut, me.sfs.LastJoinedRoom, true));
         }   
@@ -286,8 +286,8 @@ public class ManagerNetwork : MonoBehaviour
                 time = Convert.ToDouble(sfsObjIn.GetLong("time"));
                 at1 = sfsObjIn.GetByte("a1");
                 float t= sfsObjIn.GetFloat("t");
-                float j = sfsObjIn.GetFloat("j");
-                float r = sfsObjIn.GetFloat("r");
+                float j = sfsObjIn.GetFloat("j"); Debug.Log(" ricevo jump" + t);
+                float r = sfsObjIn.GetFloat("r"); 
                 //   Debug.Log("Ricevo  " + "x "+ pos.x+ "y "+ pos.y+ "for " + forw);
                 net = NetworkTransform.CreaOggettoNetworktransform(pos, rot, forw, at1, time, t, j,r);
                // Debug.Log("sto  ricevendo salto " + j);

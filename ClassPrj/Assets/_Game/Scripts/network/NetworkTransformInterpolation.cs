@@ -94,7 +94,7 @@ public class NetworkTransformInterpolation : MonoBehaviour
     {
         
         if (!running) return;
-        if (statesCount == 0 && Statici.inter!=InterpolationMode.NESSUNA) return;
+        if (statesCount == 0 && Statici.inter != InterpolationMode.NESSUNA) return; // || (Statici.inter == InterpolationMode.NESSUNA && net==null)) return;
         
         UpdateValues();
         double currentTime = TimeManager.Instance.NetworkTime;// Debug.Log("currentTime" + currentTime);
@@ -194,9 +194,10 @@ public class NetworkTransformInterpolation : MonoBehaviour
                 }
                 break;
             case InterpolationMode.NESSUNA:
+               if (net == null) return;
                 Debug.Log("son qua******" + net.position);
-               if (net == null) Debug.Log("net e' nullo");
-           //     if (net == null) return;
+          //     if (net == null) Debug.Log("net e' nullo");
+              
                 transform.position = net.position;
                 transform.rotation = Quaternion.Euler(0, net.rotation, 0);
                 anim.SetFloat("Forward", net.forward);
@@ -210,7 +211,8 @@ public class NetworkTransformInterpolation : MonoBehaviour
 
         }
 
-        if (!Statici.IsPointAndClick && !contr.ATerra)
+
+        if ((net != null) && !Statici.IsPointAndClick && ((net.attacchi & (byte)azioniPlayer.salto)==(byte)azioniPlayer.salto)) 
         {
             anim.SetFloat("Jump", net.jump); Debug.Log("jump  " + net.jump);
             anim.SetFloat("JumpLeg", net.jumpLeg); Debug.Log("jumpLeg  " + net.jumpLeg);
