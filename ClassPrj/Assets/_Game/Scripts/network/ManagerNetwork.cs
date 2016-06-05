@@ -266,7 +266,7 @@ public class ManagerNetwork : MonoBehaviour
                 float forw= sfsObjIn.GetFloat("forw");
                 double time = Convert.ToDouble(sfsObjIn.GetLong("time"));
                 byte at1 = sfsObjIn.GetByte("a1");
-                NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(pos, rot,forw,at1,time,0,0,0);
+                NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(pos, rot,forw,at1,time,0,0,0,true);
 
                 if (Statici.playerRemotiGestore.ContainsKey(user))
                     Statici.playerRemotiGestore[user].networkPlayer.ricevitransform(net, user);
@@ -289,7 +289,7 @@ public class ManagerNetwork : MonoBehaviour
                 float j = sfsObjIn.GetFloat("j"); Debug.Log(" ricevo jump" + t);
                 float r = sfsObjIn.GetFloat("r"); 
                 //   Debug.Log("Ricevo  " + "x "+ pos.x+ "y "+ pos.y+ "for " + forw);
-                net = NetworkTransform.CreaOggettoNetworktransform(pos, rot, forw, at1, time, t, j,r);
+                net = NetworkTransform.CreaOggettoNetworktransform(pos, rot, forw, at1, time, t, j,r,false);
                // Debug.Log("sto  ricevendo salto " + j);
                 if (Statici.playerRemotiGestore.ContainsKey(user))
                     Statici.playerRemotiGestore[user].networkPlayer.ricevitransform(net, user);

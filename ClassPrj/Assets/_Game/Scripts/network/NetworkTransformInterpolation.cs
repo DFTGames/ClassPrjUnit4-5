@@ -212,7 +212,8 @@ public class NetworkTransformInterpolation : MonoBehaviour
         }
 
 
-        if ((net != null) && !Statici.IsPointAndClick && ((net.attacchi & (byte)azioniPlayer.salto)==(byte)azioniPlayer.salto)) 
+        Debug.Log("net attacchi" + net.attacchi);
+        if ((net != null) && !net.isPointAndClick && ((net.attacchi & (byte)azioniPlayer.salto)==(byte)azioniPlayer.salto)) 
         {
             anim.SetFloat("Jump", net.jump); Debug.Log("jump  " + net.jump);
             anim.SetFloat("JumpLeg", net.jumpLeg); Debug.Log("jumpLeg  " + net.jumpLeg);

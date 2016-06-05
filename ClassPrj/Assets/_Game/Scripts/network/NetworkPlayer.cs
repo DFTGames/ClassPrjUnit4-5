@@ -92,7 +92,7 @@ public class NetworkPlayer : MonoBehaviour
         if ((timeCorrente + Statici.tempoInvioTransform) < Time.time)
         {
           //  Debug.Log("sto inviando ");
-            NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(transform.position, transform.localEulerAngles.y, controller.Forward, attacchi, 0,controller.Jump,controller.JumpLeg,controller.Rotazione);  //nel invio messo time a zero in quanto non lo uso (esempuio del shooter che lo manda sul server ma non viene usato)
+            NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(transform.position, transform.localEulerAngles.y, controller.Forward, attacchi, 0,controller.Jump,controller.JumpLeg,controller.Rotazione,false);  //nel invio messo time a zero in quanto non lo uso (esempuio del shooter che lo manda sul server ma non viene usato)(idem per il ispointClick in invio non lo uso)
 
             ManagerNetwork.InviaTransformAnimazioniLocali(net);           
             attacchi = 0;  //azzero l'attacco  (potevo usare operatore binario per azzerarlo : attacchi^= attacchi (Xor);

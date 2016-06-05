@@ -14,8 +14,9 @@ public class NetworkTransform
     public float turn = 0f;
 
     public double timeStamp=0;
+    public bool isPointAndClick = false;
 
-    public static NetworkTransform CreaOggettoNetworktransform(Vector3 posizione, float rotazione,float forw, byte attacchi,double time,float jump,float jumpLeg,float turn)
+    public static NetworkTransform CreaOggettoNetworktransform(Vector3 posizione, float rotazione,float forw, byte attacchi,double time,float jump,float jumpLeg,float turn,bool isPointAndClick)
     {
         NetworkTransform trans = new NetworkTransform();  
 
@@ -27,6 +28,7 @@ public class NetworkTransform
         trans.jump = jump;
         trans.jumpLeg = jumpLeg;
         trans.turn = turn;
+        trans.isPointAndClick = isPointAndClick;
         
         return trans;
     }
