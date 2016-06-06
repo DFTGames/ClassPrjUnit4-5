@@ -18,7 +18,7 @@ public class ScriptProve : MonoBehaviour {
         sliderTempoTransform.value = Statici.tempoInvioTransform;
         textTimeTrans.text = (Mathf.Round(Statici.tempoInvioTransform * 100) / 100).ToString();
 
-        inter.value = 0;
+        inter.value = (int)Statici.inter;
       //  suonoAmbiente.value = ManagerIniziale.datiAudio.Dati.volEnvironment;
       //  suonoSFX.value = ManagerIniziale.datiAudio.Dati.volSFX;
 

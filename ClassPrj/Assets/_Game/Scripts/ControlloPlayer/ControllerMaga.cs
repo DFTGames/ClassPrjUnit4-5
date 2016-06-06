@@ -283,19 +283,14 @@ public class ControllerMaga : MonoBehaviour
          */
         /* ANIMATORE */
 
-        if (!Statici.IsPointAndClick)
-        {
-            animatore.SetFloat("Forward", movimento.z * velocitaSpostamento);
-            forward = movimento.z * velocitaSpostamento;
-        }
 
-      //  Debug.Log("transform.localEulerAngles.y  " + transform.localEulerAngles.y);
+
         animatore.SetBool("OnGround", aTerra);
         animatore.SetFloat("Forward", forward);
         animatore.SetFloat("Turn", rotazione);  //server solo se si muove personaggio tramite tastiera
         animatore.SetFloat("JumpLeg", jumpLeg); //server solo se si muove personaggio tramite tastiera
-
-      //  Debug.Log(" position" + transform.position + "rotazione " + transform.rotation + "Contro rotaz " + rotazione);
+       
+     
 
         //animatore.SetBool("Crouch", abbassato);
         if (!aTerra && !Statici.IsPointAndClick)
@@ -419,7 +414,7 @@ public class ControllerMaga : MonoBehaviour
             forward = navMeshAgent.velocity.normalized.magnitude;
 
             
-            //       animatore.SetFloat("Forward", forward);   TOLTO DA LUCA...va anche sensa..e' una ripetizione.
+          
 
         }
         else // Not Point & Click
@@ -467,6 +462,7 @@ public class ControllerMaga : MonoBehaviour
                  }
              }
              */
+            forward = movimento.z * velocitaSpostamento;
         }
 
     }

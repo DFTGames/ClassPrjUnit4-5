@@ -49,7 +49,7 @@ public class GestoreInfoClassi : Dictionary<int, InfoPlayer>, IDisposable
         NetworkTransformInterpolation tmpInt = info.gameObject.GetComponent<NetworkTransformInterpolation>();
         if (tmpInt== null)
             tmpInt= info.gameObject.AddComponent<NetworkTransformInterpolation>();
-        tmpInt.Contr = info.gameObject.GetComponent<ControllerMaga>();
+        tmpInt.NetRemoto = info.gameObject.GetComponent<NetworkPlayer>();
         tmpInt.Anim = info.gameObject.GetComponent<Animator>();
         nt.Inter = tmpInt;
         tmpInt.StartReceiving();

@@ -14,8 +14,6 @@ public class NetworkTransformInterpolation : MonoBehaviour
         NESSUNA
     }
 
-   // public InterpolationMode mode = Statici.inter;    //InterpolationMode.INTERPOLATION; //cambiato da Luca
-
     private double interpolationBackTime = 200;
 
     // The maximum time we try to extrapolate
@@ -23,8 +21,8 @@ public class NetworkTransformInterpolation : MonoBehaviour
 
     private bool running = false;
     private Animator anim;
-    private ControllerMaga contr;
-    private NetworkTransform net;
+    private NetworkPlayer netRemoto;
+  //  private NetworkTransform net;
     // We store twenty states with "playback" information
     NetworkTransform[] bufferedStates = new NetworkTransform[20];
     // Keep track of what slots are used
@@ -38,12 +36,12 @@ public class NetworkTransformInterpolation : MonoBehaviour
         }
     }
 
-    public ControllerMaga Contr
+    public NetworkPlayer NetRemoto
     {
 
         set
         {
-            contr = value;
+            netRemoto = value;
         }
     }
 
@@ -56,11 +54,6 @@ public class NetworkTransformInterpolation : MonoBehaviour
     public void ReceivedTransform(NetworkTransform ntransform)
     {
         if (!running) return;
-        if (Statici.inter == InterpolationMode.NESSUNA)
-        {          
-            net = ntransform;
-           return;
-        }
 
         // When receiving, buffer the information
         // Receive latest state information
@@ -92,11 +85,10 @@ public class NetworkTransformInterpolation : MonoBehaviour
     // This only runs where the component is enabled, which is only on remote peers (server/clients)
     void Update()
     {
-        
-        if (!running) return;
-        if (statesCount == 0 && Statici.inter != InterpolationMode.NESSUNA) return; // || (Statici.inter == InterpolationMode.NESSUNA && net==null)) return;
-        
-        UpdateValues();
+        if (!running || statesCount == 0) return;
+
+
+            UpdateValues();
         double currentTime = TimeManager.Instance.NetworkTime;// Debug.Log("currentTime" + currentTime);
         double interpolationTime = currentTime - interpolationBackTime;
 
@@ -110,13 +102,10 @@ public class NetworkTransformInterpolation : MonoBehaviour
         // Check if latest state exceeds interpolation time, if this is the case then
         // it is too old and extrapolation should be used
 
-      //  Debug.Log("son qua" + net.position);
-
 
         switch (Statici.inter)
         {
             case InterpolationMode.INTERPOLATION:
-             //   Debug.Log("interpolazione ");
                 if (bufferedStates[0].timeStamp > interpolationTime)
                 {
                    
@@ -145,8 +134,9 @@ public class NetworkTransformInterpolation : MonoBehaviour
                             transform.position = Vector3.Lerp(lhs.position, rhs.position, t);
                             transform.rotation = Quaternion.Slerp(Quaternion.Euler(0, lhs.rotation, 0), Quaternion.Euler(0, rhs.rotation, 0), t);
                             float lerpAnim = Mathf.Lerp(lhs.forward, rhs.forward, t);
-                            anim.SetFloat("Forward", lerpAnim);
-
+                            // anim.SetFloat("Forward", lerpAnim);
+                            if (netRemoto.ATerraRemoto) anim.SetFloat("Forward", lerpAnim);
+             
                             return;
                         }
                     }
@@ -161,7 +151,6 @@ public class NetworkTransformInterpolation : MonoBehaviour
                     float extrapolationLength = Convert.ToSingle(currentTime - bufferedStates[0].timeStamp) / 1000.0f;
                     if (extrapolationLength < extrapolationForwardTime && statesCount > 1)
                     {
-                        Debug.Log("extrapolation");
                         Vector3 dif = bufferedStates[0].position - bufferedStates[1].position;
                         float distance = Vector3.Distance(bufferedStates[0].position, bufferedStates[1].position);
                         float timeDif = Convert.ToSingle(bufferedStates[0].timeStamp - bufferedStates[1].timeStamp) / 1000.0f;
@@ -182,45 +171,28 @@ public class NetworkTransformInterpolation : MonoBehaviour
 
                         float lerpAnim = Mathf.Lerp(anim.GetFloat("Forward"), bufferedStates[0].forward, Time.deltaTime * speed);
                         // non penso sia corretto..ma non mi veniva in mente nient'altro..su come estrapolare una animazione di una transform da proiettare nel futuro
-                        anim.SetFloat("Forward", lerpAnim);
+                      //  anim.SetFloat("Forward", lerpAnim);
+                        if (netRemoto.ATerraRemoto) anim.SetFloat("Forward", lerpAnim);
                     }
                     else
                     {
                         transform.position = bufferedStates[0].position;
-                        anim.SetFloat("Forward", bufferedStates[0].forward);
+                        if (netRemoto.ATerraRemoto) anim.SetFloat("Forward", bufferedStates[0].forward);
                     }
                     // No extrapolation for the rotation
                     transform.rotation = Quaternion.Euler(0, bufferedStates[0].rotation, 0);
                 }
                 break;
-            case InterpolationMode.NESSUNA:
-               if (net == null) return;
-                Debug.Log("son qua******" + net.position);
-          //     if (net == null) Debug.Log("net e' nullo");
-              
-                transform.position = net.position;
-                transform.rotation = Quaternion.Euler(0, net.rotation, 0);
-                anim.SetFloat("Forward", net.forward);
-                Debug.Log("Net position" + net.position + "rotazione " + transform.rotation + "Contro rotaz " + net.rotation);
-                Debug.Log(" Interpolazione NEssuna");
-                break;
-
+          
             default:
-                Debug.LogError("Modo non implementato");
+               // Debug.LogError("Modo non implementato");
                 break;
 
         }
 
 
-        Debug.Log("net attacchi" + net.attacchi);
-        if ((net != null) && !net.isPointAndClick && ((net.attacchi & (byte)azioniPlayer.salto)==(byte)azioniPlayer.salto)) 
-        {
-            anim.SetFloat("Jump", net.jump); Debug.Log("jump  " + net.jump);
-            anim.SetFloat("JumpLeg", net.jumpLeg); Debug.Log("jumpLeg  " + net.jumpLeg);
-
+     
         }
-
-    }
 
     private void UpdateValues()
     {

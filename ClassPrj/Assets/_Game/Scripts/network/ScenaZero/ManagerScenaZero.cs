@@ -61,7 +61,7 @@ public class ManagerScenaZero : MonoBehaviour
     }
     public string test()
     {
-        string[] testo = { "..Benvenuto nel magico Mondo del SinglePlayer...Tristezza e solitudine regnano ", "....Premio Games Award 2016 come miglior Single player..ci sarai solo tu e se hai fortuna vedrai GOBLIN   ", ".......Malinconia    portami via.." };
+        string[] testo = { "..Benvenuto nel magico Mondo del SinglePlayer...dove Tristezza e solitudine regneranno ", "....Premio Games Award 2016 come miglior Single player..ci sarai solo tu e se hai fortuna vedrai GOBLIN   ", ".......Malinconia    portami via.." };
         return testo[Random.Range(0, testo.Length)];
 
     }
