@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum azioniPlayer
+public enum azioniPlayer : byte
 {
-    attacco1=1,
-    attacco2=2,
+    attacco1 = 1,
+    attacco2 = 2,
+    salto = 4
 }
 
 public class NetworkPlayer : MonoBehaviour
 {
-    
+
     private int user = -2; //inizializzato alla cazzum...(e' fuori dal intervallo che verra usato)
     public bool playerLocale { get; set; }
     // private float tempoInvioTransorm = 0.1f;
@@ -17,10 +18,11 @@ public class NetworkPlayer : MonoBehaviour
     private float timeAfterStop;
     private bool movimentoDirty;
     private float rotazione;
-
+    private bool aTerraRemoto=true;
     private Animator anim;
     private ControllerMaga controller;
     private NetworkTransformInterpolation inter;
+    private NetworkTransform nnet;
 
     private byte attacchi;
 
@@ -40,6 +42,19 @@ public class NetworkPlayer : MonoBehaviour
         }
     }
 
+    public bool ATerraRemoto
+    {
+        get
+        {
+            return aTerraRemoto;
+        }
+
+        set
+        {
+            aTerraRemoto = value;
+        }
+    }
+
     void Start()
     {
 
@@ -51,38 +66,83 @@ public class NetworkPlayer : MonoBehaviour
 
 
     void Update()
-    { //QUA DENTRO C'E LA LOGICA PER I PLAYER LOCALI
+    {
 
-          if (!playerLocale || (playerLocale && !Statici.partenza)) return; //Statici.partenza controllar
-
-        if (Statici.IsPointAndClick) rotazione = transform.rotation.eulerAngles.y;  //unico comportamento diverso se siamo punta & clicca o tastiera
-               else rotazione = controller.Rotazione;
-        attacchi = 0;
-        if (controller.Attacco1) attacchi =(int)azioniPlayer.attacco1;
-        if (controller.Attacco2) attacchi =(int)azioniPlayer.attacco2;
-
-        if (attacchi > 0) movimentoDirty = true;
+        //     if (!playerLocale || (playerLocale && !Statici.partenza)) return; //Statici.partenza controllar
 
 
-        if (Statici.multigiocatoreOn && Statici.inGioco)
+
+        // DA SISTEMARE
+        //   if (Statici.IsPointAndClick) rotazione = transform.localEulerAngles.y;                     // rotazione = transform.rotation.eulerAngles.y;  //unico comportamento diverso se siamo punta & clicca o tastiera
+        //   else rotazione = transform.localEulerAngles.y;//controller.Rotazione;
+
+        if (playerLocale)
         {
-            if (controller.Forward > 0)
+            if (!Statici.partenza) return;
+
+            attacchi = 0;
+            if (controller.Attacco1) attacchi = (byte)azioniPlayer.attacco1;
+            if (controller.Attacco2) attacchi = (byte)azioniPlayer.attacco2;
+            if (!controller.ATerra) attacchi = (byte)azioniPlayer.salto;
+
+            if (attacchi > 0) movimentoDirty = true;
+
+
+            if (Statici.multigiocatoreOn && Statici.inGioco)
             {
-                movimentoDirty = true;
-                timeAfterStop = Time.time;
+       
+                if (controller.Forward != 0 || controller.RotBool || !controller.ATerra)
+                {
+
+                    movimentoDirty = true;
+                    timeAfterStop = Time.time;
+                    rotazione = transform.localEulerAngles.y; //memorizzo il ultimo movimento effettuato ...
+                                                              
+                }
             }
+
+            if (!movimentoDirty) return;
+
+            if ((timeCorrente + Statici.tempoInvioTransform) < Time.time)
+            {
+                NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(transform.position, transform.localEulerAngles.y, controller.Forward, attacchi, 0, controller.Jump, controller.JumpLeg, controller.Rotazione, false);  //nel invio messo time a zero in quanto non lo uso (esempuio del shooter che lo manda sul server ma non viene usato)(idem per il ispointClick in invio non lo uso)
+
+                ManagerNetwork.InviaTransformAnimazioniLocali(net);
+                attacchi = 0;  //azzero l'attacco  (potevo usare operatore binario per azzerarlo : attacchi^= attacchi (Xor);
+                timeCorrente = Time.time;
+                if ((timeAfterStop + 0.5f) < Time.time) movimentoDirty = false;  //mi aspetta tot tempo per fare in modo che mi prenda con sicurezza anche l'arresto..considerando che siamo in UDP..e non tutti i pacchetti arrivano(vedere lezione 11 modulo 7)
+            }
+
         }
 
-        if (!movimentoDirty) return;
-
-        if ((timeCorrente + Statici.tempoInvioTransform) < Time.time)
+        else // if (playerlocale) 
         {
+            //ERA MEGLIO FARE UN UN COMPONENTE NETWORK PLAYER ISOLATO..SE SONO LOCALE O REMOTO...NON FATTO PER MANCANZA DI TEMPO...i'm Sorry :(
+            if (nnet == null) return;
 
-            NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(transform.position, rotazione, controller.Forward, attacchi, 0,controller.Jump,controller.JumpLeg);  //nel invio messo time a zero in quanto non lo uso (esempuio del shooter che lo manda sul server ma non viene usato)
-            ManagerNetwork.InviaTransformAnimazioniLocali(net);
-            attacchi = 0;  //azzero l'attacco
-            timeCorrente = Time.time;
-            if ((timeAfterStop + 0.5f) < Time.time) movimentoDirty = false;  //mi aspetta tot tempo per fare in modo che mi prenda con sicurezza anche l'arresto..considerando che siamo in UDP..e non tutti i pacchetti arrivano(vedere lezione 11 modulo 7)
+            aTerraRemoto = true;
+            if (nnet.attacchi == (byte)azioniPlayer.salto) aTerraRemoto = false;
+            anim.SetBool("OnGround", aTerraRemoto);
+
+
+            if (Statici.inter == NetworkTransformInterpolation.InterpolationMode.NESSUNA )
+            {
+                transform.position = nnet.position;
+                transform.rotation = Quaternion.Euler(0, nnet.rotation, 0);
+               if (aTerraRemoto) anim.SetFloat("Forward", nnet.forward);
+            }
+
+            if (nnet.isPointAndClick) return;
+
+            anim.SetFloat("Turn", nnet.turn);
+
+            if ((nnet.attacchi & (byte)azioniPlayer.salto) == (byte)azioniPlayer.salto)
+            {
+                anim.SetFloat("Jump", nnet.jump);
+                anim.SetFloat("JumpLeg", nnet.jumpLeg); 
+            }
+
+
         }
 
     }
@@ -90,31 +150,19 @@ public class NetworkPlayer : MonoBehaviour
     //QUESTO METODO E' PER I PLAYER REMOTI
     public void ricevitransform(NetworkTransform net, int netUser)
     {
-        if (playerLocale || user != netUser) return;
+        if (playerLocale || user != netUser || net == null) return;
 
-        if (inter != null && Statici.inter != NetworkTransformInterpolation.InterpolationMode.NESSUNA)
-        {
-            inter.ReceivedTransform(net, anim);
-            Debug.Log("non sono nullo " + " Inter  " + Statici.inter);
-        }
-        else
-        {
-            transform.position = net.position;
-            transform.rotation = Quaternion.Euler(0, net.rotation, 0);
-            anim.SetFloat("Forward", net.forward);       
-            Debug.Log(" sono nullo " + " Inter  " + Statici.inter);
-            Debug.Log("Net position" + net.position + "transform position " + transform.position);
-        }
+        if (Statici.inter != NetworkTransformInterpolation.InterpolationMode.NESSUNA)
+            inter.ReceivedTransform(net);
 
-        if ((net.attacchi & (int)azioniPlayer.attacco1) == (int)azioniPlayer.attacco1) anim.SetTrigger("attacco1");    //ho usato operatori binari 
-        else if ((net.attacchi & (int)azioniPlayer.attacco2) == (int)azioniPlayer.attacco2) anim.SetTrigger("attacco2");  //ho usato operatori binari 
+        nnet = net;
 
-        if (Statici.IsPointAndClick)
-        {
-            anim.SetFloat("Jump", net.jump);
-            anim.SetFloat("JumpLeg", net.jumpLeg);
+        //lo lascio qua  perche deve essere eseguito non nel update(vedi originale)
 
-        }
+        if ((net.attacchi & (byte)azioniPlayer.attacco1) == (byte)azioniPlayer.attacco1) anim.SetTrigger("attacco1");    //ho usato operatori binari 
+
+        else if ((net.attacchi & (byte)azioniPlayer.attacco2) == (byte)azioniPlayer.attacco2) anim.SetTrigger("attacco2");  //ho usato operatori binari 
+
 
     }
 

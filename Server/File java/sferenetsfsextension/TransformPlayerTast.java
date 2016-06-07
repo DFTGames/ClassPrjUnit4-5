@@ -34,6 +34,7 @@ public class TransformPlayerTast extends BaseClientRequestHandler{
         byte a1=isfso.getByte("a1");
         float jump= isfso.getFloat("t");
         float jleg= isfso.getFloat("j");
+        float rot= isfso.getFloat("r");
         
         Player player=new Player();        
         player.t=new Transform(x, y, z, ry);
@@ -55,6 +56,7 @@ public class TransformPlayerTast extends BaseClientRequestHandler{
         objOut.putByte("a1",a1); 
         objOut.putFloat("t",jump); 
         objOut.putFloat("j",jleg); 
+         objOut.putFloat("r",rot); 
   
         objOut.putInt("u", user.getId()); 
         

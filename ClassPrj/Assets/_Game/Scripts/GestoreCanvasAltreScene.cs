@@ -79,7 +79,7 @@ public class GestoreCanvasAltreScene : MonoBehaviour
             {
                 pannelloTest.SetActive(true);
                 //  Debug.Log(" VALORE DROPBOD " + pannelloTest.GetComponentInChildren<Dropdown>().value);
-                pannelloTest.GetComponentInChildren<Dropdown>().value = (int)Statici.inter;//  ?? SendMessageOptions DA ME MA NON FUNZIONA
+        if (Statici.multigiocatoreOn) pannelloTest.GetComponentInChildren<Dropdown>().value = (int)Statici.inter;//  ?? SendMessageOptions DA ME MA NON FUNZIONA
              //   GameObject.Find("TipoInterPollo").GetComponent<Dropdown>().value = (int)Statici.inter;
             }
             if (Statici.multigiocatoreOn) abilitaPannelloProveNetwork.SetActive(true);

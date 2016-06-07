@@ -58,6 +58,7 @@ public class ControllerMaga : MonoBehaviour
     private Transform transform_m;
     private float velocitaSpostamento;
     private bool voglioSaltare = false;
+    private bool rotBool=false;  //serve per il multigiocatore, quando uso modalita tastiera..(gli fa passare true se abilito la rotazione )
 
     //Classe Network
     private NetworkPlayer net;
@@ -170,6 +171,15 @@ public class ControllerMaga : MonoBehaviour
         }
     }
 
+    public bool RotBool
+    {
+        get
+        {
+            return rotBool;
+        }
+
+    }
+
 
     #endregion Variabili PRIVATE
 
@@ -232,12 +242,12 @@ public class ControllerMaga : MonoBehaviour
 
     private void FixedUpdate()
     {
-        /*
-        if ((Statici.multigiocatoreOn && !DatiPersonaggio.SonoUtenteLocale))   //AGGIUNTO DA LUCA
+      
+        if (DatiPersonaggio!=null && (Statici.multigiocatoreOn && !DatiPersonaggio.SonoUtenteLocale))   //AGGIUNTO DA LUCA
             { 
             return;
         }
-        */
+        
         aTerra = false;
         RaycastHit hit;
 
@@ -273,23 +283,20 @@ public class ControllerMaga : MonoBehaviour
          */
         /* ANIMATORE */
 
-        if (!Statici.IsPointAndClick)
-        {
-            animatore.SetFloat("Forward", movimento.z * velocitaSpostamento);
-            forward = movimento.z * velocitaSpostamento;
-        }
+
 
         animatore.SetBool("OnGround", aTerra);
         animatore.SetFloat("Forward", forward);
-        animatore.SetFloat("Turn", rotazione);
-        animatore.SetFloat("JumpLeg", jumpLeg);
-
+        animatore.SetFloat("Turn", rotazione);  //server solo se si muove personaggio tramite tastiera
+        animatore.SetFloat("JumpLeg", jumpLeg); //server solo se si muove personaggio tramite tastiera
+       
+     
 
         //animatore.SetBool("Crouch", abbassato);
         if (!aTerra && !Statici.IsPointAndClick)
         {
             jump = rigidBody.velocity.y;
-            animatore.SetFloat("Jump", jump);
+            animatore.SetFloat("Jump", jump);  //server solo se si muove personaggio tramite tastiera
         }
 
     }
@@ -406,8 +413,8 @@ public class ControllerMaga : MonoBehaviour
             }
             forward = navMeshAgent.velocity.normalized.magnitude;
 
-
-            //       animatore.SetFloat("Forward", forward);   TOLTO DA LUCA...va anche sensa..e' una ripetizione.
+            
+          
 
         }
         else // Not Point & Click
@@ -422,7 +429,10 @@ public class ControllerMaga : MonoBehaviour
             h = Input.GetAxis("Horizontal");
             v = Input.GetAxis("Vertical");
 
-            movimento = new Vector3(h, 0.0f, v);
+            rotBool = false;
+            if (Input.GetButton("Horizontal")) rotBool = true;  //server multigiocatore...uso con tastiera..
+           //Debug.Log("jump  " + jump); 
+                movimento = new Vector3(h, 0.0f, v);
             rotazione = Mathf.Atan2(h, v) * Mathf.Rad2Deg;
             velocitaSpostamento = !Input.GetKey(KeyCode.LeftShift) && corsaPerDefault ||
                                   !corsaPerDefault && Input.GetKey(KeyCode.LeftShift) ? 1f : 0.5f;
@@ -452,6 +462,7 @@ public class ControllerMaga : MonoBehaviour
                  }
              }
              */
+            forward = movimento.z * velocitaSpostamento;
         }
 
     }

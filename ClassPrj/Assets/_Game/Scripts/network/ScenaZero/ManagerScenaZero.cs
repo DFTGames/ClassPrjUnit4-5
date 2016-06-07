@@ -56,9 +56,15 @@ public class ManagerScenaZero : MonoBehaviour
         AttivaDisattivaCanvasGroupLogin(false);
         AttivaDisattivaCanvasGroupScelta(false);
         Statici.multigiocatoreOn = false;
-        StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("Scena Iniziale", "Titolo gioco o qualsiasi altra cosa vogliamo scriverci.", ImmagineCaricamento, ScrittaCaricamento));
-    }
+        StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("Scena Iniziale",test(),ImmagineCaricamento, ScrittaCaricamento));
 
+    }
+    public string test()
+    {
+        string[] testo = { "..Benvenuto nel magico Mondo del SinglePlayer...dove Tristezza e solitudine regneranno ", "....Premio Games Award 2016 come miglior Single player..ci sarai solo tu e se hai fortuna vedrai GOBLIN   ", ".......Malinconia    portami via.." };
+        return testo[Random.Range(0, testo.Length)];
+
+    }
     private void AttivaDisattivaCanvasGroupScelta(bool abilita)
     {
         canvasGroupScelta.interactable = abilita;
