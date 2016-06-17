@@ -43,9 +43,14 @@ public class SmartFoxConnection : MonoBehaviour
     // ** Important for Windows users - can cause crashes otherwise
     private void OnApplicationQuit()
     {
+        //mi disconnetto da smartfox
         if (sfs.IsConnected)
         {
             sfs.Disconnect();
         }
+
+        //chiudo la connessione con il DB locale
+        if (Statici.conn.State == System.Data.ConnectionState.Open)
+            Statici.conn.Close();
     }
 }

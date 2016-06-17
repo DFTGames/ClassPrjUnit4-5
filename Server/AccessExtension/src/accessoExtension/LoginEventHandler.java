@@ -21,9 +21,12 @@ import com.smartfoxserver.v2.exceptions.SFSLoginException;
 import com.smartfoxserver.v2.extensions.BaseServerEventHandler;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Objects;
 
 public class LoginEventHandler extends BaseServerEventHandler {
@@ -69,27 +72,36 @@ public class LoginEventHandler extends BaseServerEventHandler {
                     errData.addParameter(soprannome);
                     connection.close();
                     throw new SFSLoginException("Username gia' presente (" + soprannome + ")", errData);
+              
                 }
                 trace("Utente non presente controlla email...");
                 querySql = "SELECT email FROM Utenti WHERE email = ?";
                 rit = dbManager.executeQuery(querySql, new Object[]{email});
                 if (rit.size() > 0) {
                     trace("Ha trovato un utente gia' presente con la stessa email");
-                    SFSErrorData errData = new SFSErrorData(SFSErrorCode.LOGIN_BAD_USERNAME);
+                    SFSErrorData errData = new SFSErrorData(SFSErrorCode.LOGIN_BAD_USERNAME);                    
                     errData.addParameter(email);
                     connection.close();
                     throw new SFSLoginException("Email utente gia' presente (" + email + ")", errData);
                 }
+                Calendar calendar = Calendar.getInstance();
+                Timestamp currentTimestamp = new Timestamp(calendar.getTime().getTime());
                 trace("Utente ed email non presenti procede con insert...");
                 //in questo caso viene restituito l'IdUtente (ID della tabella)
-                querySql = "INSERT INTO Utenti(email, password, username) values (?, ?, ?)";
-                long id = (long) dbManager.executeInsert(querySql, new Object[]{email, password, soprannome});
+                querySql = "INSERT INTO Utenti(email, password, username,timeStampUtente) values (?, ?, ?,?)";
+                int id =(int)(long) dbManager.executeInsert(querySql, new Object[]{email, password, soprannome,currentTimestamp.toString()});
                 
                 trace("Aggiunto utente con ID: " + id);
                 sessione.setProperty("idDB", id);
+                
+                //dico al client quale è il suo id e il timestamp di registrazione per metterli nella sua tabella locale
+               /* ISFSObject outData = (ISFSObject) event.getParameter(SFSEventParam.LOGIN_OUT_DATA);
+                outData.putInt("idDB",id);
+                outData.putBool("isReg", true);
+                outData.putUtfString("tsUT",currentTimestamp.toString());*/
 
             } else {
-                stmt = connection.prepareStatement("SELECT idUtente, password FROM Utenti WHERE username=?");
+                stmt = connection.prepareStatement("SELECT idUtente, password, timeStampUtente FROM Utenti WHERE username=?");
                 stmt.setString(1, soprannome);
 
                 res = stmt.executeQuery();
@@ -114,9 +126,11 @@ public class LoginEventHandler extends BaseServerEventHandler {
                 } else {
                     trace("sono nell'else");
                 }
+               
                 int idDB = res.getInt("idUtente");
                 trace("Login: tutto liscio!");
-                sessione.setProperty("idBD", idDB);
+                sessione.setProperty("idDB", idDB);            
+            
                 res.close();
                 stmt.close();
             }
