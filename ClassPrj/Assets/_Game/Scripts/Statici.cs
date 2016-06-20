@@ -1,4 +1,6 @@
 ﻿using Mono.Data.Sqlite;
+using Sfs2X.Entities.Data;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -62,10 +64,681 @@ public class Statici
     public static bool sonoPassatoDallaScenaIniziale = false;
     public static float tempoInvioTransform = 0.06f;
     public static int userLocaleId = 0;
-    private static SqliteConnection conn;
+    public static int contatoreTimeStampOk = 0;//contatore dei timeStamp aggiornati
+    public static int contatoreTabelleDiUtentiOk = 0;//contatore delle tabelle aggiornate dopo il controllo del timestamp della tabella Utenti  
+    public static int numeroTabelleAggTimeStamp = 0;//numero delle tabelle locali di cui si deve controllare il loro timeStamp:righe della tabella sincronizzazioneDB+tabella Utenti
+    public static SqliteConnection conn;
     private static string destinazione = Application.persistentDataPath + "/dbgioco.db";
     private static string origine = Application.streamingAssetsPath + "/dbgioco.db";
+    public static int idDB=0;
 
+    public static bool AggiornaPersonaggi(SFSArray arrayPers)
+    {
+        bool valoreRitorno = false;
+        SqliteTransaction tr = null;
+        try
+        {         
+            tr = conn.BeginTransaction();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.Transaction = tr;
+            int numeroRighe = 0;
+            int recordAgg = 0;
+            for (int i = 0; i < arrayPers.Size(); i++)
+            {
+                SFSObject objArr = (SFSObject)arrayPers.GetSFSObject(i);
+                int idPersonaggio = objArr.GetInt("idPersonaggio");
+                int idClasse = objArr.GetInt("ClassiPersonaggi_idClassiPersonaggi");
+                int eliminato = objArr.GetInt("eliminato");
+                int giocabile = objArr.GetInt("giocabile");
+                string modelloM = objArr.GetUtfString("modelloM");
+                string modelloF = objArr.GetUtfString("modelloF");
+                string nome = objArr.GetUtfString("nome");
+                double vitaMassima = objArr.GetDouble("vitaMassima");
+                double vitaAttuale = objArr.GetDouble("vitaAttuale");
+                double manaMassimo = objArr.GetDouble("manaMassimo");
+                double manaAttuale = objArr.GetDouble("manaAttuale");
+                double livelloPartenza = objArr.GetDouble("livelloPartenza");
+                double xpPartenza = objArr.GetDouble("xpPartenza");
+                double attaccoBase = objArr.GetDouble("attaccoBase");
+                double difesaBase = objArr.GetDouble("difesaBase");
+
+                try
+                {
+                    cmd.CommandText = @"INSERT INTO Personaggi VALUES (@idPersonaggio,@idClasse, @eliminato,  @giocabile," +
+                    " @modelloM, @modelloF, @nome, @vitaMassima, @vitaAttuale,  @manaMassimo, @manaAttuale, @livelloPartenza, @xpPartenza, @attaccoBase, @difesaBase)";
+                    cmd.Parameters.Add(new SqliteParameter("@idPersonaggio", idPersonaggio));
+                    cmd.Parameters.Add(new SqliteParameter("@idClasse", idClasse));
+                    cmd.Parameters.Add(new SqliteParameter("@eliminato", eliminato));
+                    cmd.Parameters.Add(new SqliteParameter("@giocabile", giocabile));
+                    cmd.Parameters.Add(new SqliteParameter("@modelloM", modelloM));
+                    cmd.Parameters.Add(new SqliteParameter("@modelloF", modelloF));
+                    cmd.Parameters.Add(new SqliteParameter("@nome", nome));
+                    cmd.Parameters.Add(new SqliteParameter("@vitaMassima", vitaMassima));
+                    cmd.Parameters.Add(new SqliteParameter("@vitaAttuale", vitaAttuale));
+                    cmd.Parameters.Add(new SqliteParameter("@manaMassimo", manaMassimo));
+                    cmd.Parameters.Add(new SqliteParameter("@manaAttuale", manaAttuale));
+                    cmd.Parameters.Add(new SqliteParameter("@livelloPartenza", livelloPartenza));
+                    cmd.Parameters.Add(new SqliteParameter("@xpPartenza", xpPartenza));
+                    cmd.Parameters.Add(new SqliteParameter("@attaccoBase", attaccoBase));
+                    cmd.Parameters.Add(new SqliteParameter("@difesaBase", difesaBase));
+                    numeroRighe = cmd.ExecuteNonQuery();
+                    Debug.Log("Inserimento nella tabella Personaggi della riga: " + idPersonaggio);
+                    recordAgg++;
+                }
+                catch
+                {
+                    
+                    try
+                    {
+                        cmd.CommandText = @"UPDATE Personaggi SET idPersonaggio = @idPersonaggio, ClassiPersonaggi_idClassiPersonaggi = @idClasse ,eliminato = @eliminato" +
+                                ", giocabile = @giocabile, modelloM = @modelloM, modelloF = @modelloF, nome = @nome, vitaMassima = @vitaMassima" +
+                                ", vitaAttuale = @vitaAttuale, manaMassimo = @manaMassimo, manaAttuale = @manaAttuale, livelloPartenza = @livelloPartenza" +
+                                ", xpPartenza = @xpPartenza, attaccoBase = @attaccoBase, difesaBase = @difesaBase WHERE idPersonaggio = @idPersonaggio";
+                        cmd.Parameters.Add(new SqliteParameter("@idPersonaggio", idPersonaggio));
+                        cmd.Parameters.Add(new SqliteParameter("@idClasse", idClasse));
+                        cmd.Parameters.Add(new SqliteParameter("@eliminato", eliminato));
+                        cmd.Parameters.Add(new SqliteParameter("@giocabile", giocabile));
+                        cmd.Parameters.Add(new SqliteParameter("@modelloM", modelloM));
+                        cmd.Parameters.Add(new SqliteParameter("@modelloF", modelloF));
+                        cmd.Parameters.Add(new SqliteParameter("@nome", nome));
+                        cmd.Parameters.Add(new SqliteParameter("@vitaMassima", vitaMassima));
+                        cmd.Parameters.Add(new SqliteParameter("@vitaAttuale", vitaAttuale));
+                        cmd.Parameters.Add(new SqliteParameter("@manaMassimo", manaMassimo));
+                        cmd.Parameters.Add(new SqliteParameter("@manaAttuale", manaAttuale));
+                        cmd.Parameters.Add(new SqliteParameter("@livelloPartenza", livelloPartenza));
+                        cmd.Parameters.Add(new SqliteParameter("@xpPartenza", xpPartenza));
+                        cmd.Parameters.Add(new SqliteParameter("@attaccoBase", attaccoBase));
+                        cmd.Parameters.Add(new SqliteParameter("@difesaBase", difesaBase));
+                        numeroRighe = cmd.ExecuteNonQuery();
+
+                        Debug.Log("Aggiornamento tabella personaggi riga :" + idPersonaggio);
+                        if (numeroRighe == 0)
+                            ControllerLogin.SollevaErroreAggiornamentoDB("nessuna riga modificata nella tabella Personaggi");
+                        else
+                            recordAgg++;
+                       
+                    }
+                    catch (Exception ex)
+                    {
+                        ControllerLogin.SollevaErroreAggiornamentoDB("errore nell'aggiornamento del db locale tabella Personaggi" + ex.Message);
+                        Debug.LogError("errore nell'aggiornamento del db locale tabella Personaggi" + ex.Message);
+                    }
+                
+                }
+            }
+
+            if (recordAgg == arrayPers.Size())
+            {
+                valoreRitorno = true;
+                tr.Commit();
+            }
+      
+        }
+        catch (Exception ex)
+        {
+
+            Debug.LogError("errore aggiornamento archivio Personaggi: " + ex.Message);
+            ControllerLogin.SollevaErroreAggiornamentoDB("errore aggiornamento archivio Personaggi: " + ex.Message);
+            if (tr != null)
+            {
+                try
+                {
+                    tr.Rollback();
+
+                }
+                catch (SqliteException ex2)
+                {
+                    Debug.LogError("rollback della transazione riguardante l'aggiornamento della tabella Personaggi fallito: " + ex2.ToString());
+
+                }
+                finally
+                {
+                    tr.Dispose();
+                }
+            }
+        }
+
+        return valoreRitorno;
+    }
+
+    internal static void AggiornaTsUtenti(string timeStampRemotoNew)
+    {
+       
+        SqliteTransaction tr = null;
+
+        try
+        {           
+            tr = conn.BeginTransaction();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.Transaction = tr;
+            int numeroRighe = 0;
+
+            cmd.CommandText = @"UPDATE Utenti SET timeStampUtente = @timeStampUtente WHERE idUtente=@idUtente";
+            cmd.Parameters.Add(new SqliteParameter("@timeStampUtente", timeStampRemotoNew));
+            cmd.Parameters.Add(new SqliteParameter("@idUtente", Statici.idDB));
+            numeroRighe = cmd.ExecuteNonQuery();
+
+
+            if (numeroRighe == 0)
+                ControllerLogin.SollevaErroreAggiornamentoDB("errore nell'aggiornamento del timeStamp Utente");
+            else
+            {
+                tr.Commit();            
+                contatoreTimeStampOk++;
+                ControllaNumeroTimeStampAggiornati();
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Errore nell'aggiornamento del timeStamp Utente: " + ex.Message);
+            ControllerLogin.SollevaErroreAggiornamentoDB("Errore nell'aggiornamento del timeStamp Utente: " + ex.Message);
+            if (tr != null)
+            {
+                try
+                {
+                    tr.Rollback();
+
+                }
+                catch (SqliteException ex2)
+                {
+                    Debug.LogError("rollback della transazione riguardante l'aggiornamento della tabella SincronizzazioneDB fallito: " + ex2.ToString());
+
+                }
+                finally
+                {
+                    tr.Dispose();
+                }
+            }
+
+        }     
+        
+    }
+
+    internal static bool AggiornaDiplomaziaPersonaggio(SFSArray arrayPers)
+    {
+        bool valoreRitorno = false;
+        SqliteTransaction tr = null;
+        try
+        {
+            tr = conn.BeginTransaction();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.Transaction = tr;
+            int numeroRighe = 0;
+            int recordAgg = 0;
+            for (int i = 0; i < arrayPers.Size(); i++)
+            {
+                SFSObject objArr = (SFSObject)arrayPers.GetSFSObject(i);
+                int idUtente = objArr.GetInt("PersonaggiUtente_Utenti_idUtente");
+                int idPersonaggio = objArr.GetInt("PersonaggiUtente_Personaggi_idPersonaggio");
+                int idClasse1 = objArr.GetInt("Diplomazia_ClassiPersonaggi_idClasse");
+                int idClasse2 = objArr.GetInt("Diplomazia_ClassiPersonaggi2_idClasse");
+                int eliminato = objArr.GetInt("eliminato");
+                int relazione = objArr.GetInt("relazione");
+
+                try
+                {
+                    cmd.CommandText = @"INSERT INTO DiplomaziaPersonaggio VALUES (@PersonaggiUtente_Utenti_idUtente,@PersonaggiUtente_Personaggi_idPersonaggio,"+
+                        "@Diplomazia_ClassiPersonaggi_idClasse,@Diplomazia_ClassiPersonaggi2_idClasse, @eliminato,  @relazione)";
+                    cmd.Parameters.Add(new SqliteParameter("@PersonaggiUtente_Utenti_idUtente", idUtente));
+                    cmd.Parameters.Add(new SqliteParameter("@PersonaggiUtente_Personaggi_idPersonaggio", idPersonaggio));
+                    cmd.Parameters.Add(new SqliteParameter("@Diplomazia_ClassiPersonaggi_idClasse", idClasse1));
+                    cmd.Parameters.Add(new SqliteParameter("@Diplomazia_ClassiPersonaggi2_idClasse", idClasse2));
+                    cmd.Parameters.Add(new SqliteParameter("@eliminato", eliminato));
+                    cmd.Parameters.Add(new SqliteParameter("@relazione", relazione));
+
+                    numeroRighe = cmd.ExecuteNonQuery();
+                    if(numeroRighe>0)
+                     Debug.Log("ho inserito 1 riga nella tabella DiplomaziaPersonaggio:idUtente: "+idUtente+" idPersonaggio: "+idPersonaggio+" idClasse1: "+idClasse1+" idClasse2: "+idClasse2);
+                    recordAgg++;
+                }
+                catch
+                {
+                    try
+                    {
+                        cmd.CommandText = @"UPDATE DiplomaziaPersonaggio SET eliminato = @eliminato, relazione = @relazione " +
+                            "WHERE PersonaggiUtente_Utenti_idUtente = @idUtente AND PersonaggiUtente_Personaggi_idPersonaggio = @idPersonaggio " +
+                            "AND Diplomazia_ClassiPersonaggi_idClasse = @idClasse1 AND Diplomazia_ClassiPersonaggi2_idClasse = @idClasse2";
+                        cmd.Parameters.Add(new SqliteParameter("@idUtente", idUtente));
+                        cmd.Parameters.Add(new SqliteParameter("@idPersonaggio", idPersonaggio));
+                        cmd.Parameters.Add(new SqliteParameter("@idClasse1", idClasse1));
+                        cmd.Parameters.Add(new SqliteParameter("@idClasse2", idClasse2));
+                        cmd.Parameters.Add(new SqliteParameter("@eliminato", eliminato));
+                        cmd.Parameters.Add(new SqliteParameter("@relazione", relazione));
+                        numeroRighe = cmd.ExecuteNonQuery();
+
+                        if (numeroRighe == 0)
+                        {
+                            ControllerLogin.SollevaErroreAggiornamentoDB("errore:impossibile aggiornare la riga nella tabella DiplomaziaPersonaggio:idUtente: " + idUtente + " idPersonaggio: " + idPersonaggio + " idClasse1: " + idClasse1 + " idClasse2: " + idClasse2);
+                            Debug.LogError("errore: impossibile aggiornare la riga nella tabella DiplomaziaPersonaggio: idUtente: " + idUtente + " idPersonaggio: " + idPersonaggio + " idClasse1: " + idClasse1 + " idClasse2: " + idClasse2);
+                        }
+                        else
+                        {
+                            Debug.Log("ho aggiornato 1 riga nella tabella DiplomaziaPersonaggio:idUtente: " + idUtente + " idPersonaggio: " + idPersonaggio + " idClasse1: " + idClasse1 + " idClasse2: " + idClasse2);
+                            recordAgg++;
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ControllerLogin.SollevaErroreAggiornamentoDB("errore nell'aggiornamento del db locale DiplomaziaPersonaggio" + ex.Message);
+                        Debug.LogError("errore nell'aggiornamento del db locale DiplomaziaPersonaggio" + ex.Message);
+                    }
+
+                }
+            }
+
+            if (recordAgg == arrayPers.Size())
+            {
+                contatoreTabelleDiUtentiOk++;
+                Debug.Log("numero tabelle di utenti aggiornate:" + contatoreTabelleDiUtentiOk);
+                tr.Commit();
+                valoreRitorno = true;
+               
+            }
+
+        }
+        catch (Exception ex)
+        {
+
+            Debug.LogError("errore aggiornamento archivio DiplomaziaPersonaggio: " + ex.Message);
+            ControllerLogin.SollevaErroreAggiornamentoDB("errore aggiornamento archivio DiplomaziaPersonaggio: " + ex.Message);
+            if (tr != null)
+            {
+                try
+                {
+                    tr.Rollback();
+
+                }
+                catch (SqliteException ex2)
+                {
+                    Debug.LogError("rollback della transazione riguardante l'aggiornamento della tabella DiplomaziaPersonaggio fallito: " + ex2.ToString());
+
+                }
+                finally
+                {
+                    tr.Dispose();
+                }
+            }
+        }
+
+        return valoreRitorno;
+    }
+
+    public static bool AggiornaDiplomazia(SFSArray arrayPers)
+    {
+        bool valoreRitorno = false;
+        SqliteTransaction tr = null;
+        try
+        {
+            tr = conn.BeginTransaction();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.Transaction = tr;
+            int numeroRighe = 0;
+            int recordAgg = 0;
+            for (int i = 0; i < arrayPers.Size(); i++)
+            {
+                SFSObject objArr = (SFSObject)arrayPers.GetSFSObject(i);
+                int idClasse1 = objArr.GetInt("ClassiPersonaggi_idClasse");
+                int idClasse2 = objArr.GetInt("ClassiPersonaggi2_idClasse");
+                int eliminato = objArr.GetInt("eliminato");
+                int relazione = objArr.GetInt("relazione");             
+
+                try
+                {
+                    cmd.CommandText = @"INSERT INTO Diplomazia VALUES (@idClasse1,@idClasse2, @eliminato,  @relazione)";
+                    cmd.Parameters.Add(new SqliteParameter("@idClasse1", idClasse1));
+                    cmd.Parameters.Add(new SqliteParameter("@idClasse2", idClasse2));
+                    cmd.Parameters.Add(new SqliteParameter("@eliminato", eliminato));
+                    cmd.Parameters.Add(new SqliteParameter("@relazione", relazione));                  
+                    numeroRighe = cmd.ExecuteNonQuery();
+                    Debug.Log("ho inserito 1 riga nella tabella Diplomazia");
+                    recordAgg++;
+                }
+                catch
+                {
+
+                    try
+                    {
+                        cmd.CommandText = @"UPDATE Diplomazia SET ClassiPersonaggi_idClasse = @idClasse1, ClassiPersonaggi2_idClasse = @idClasse2 ," +
+                            "eliminato = @eliminato, relazione=@relazione WHERE ClassiPersonaggi_idClasse = @idClasse1 AND ClassiPersonaggi2_idClasse=@idClasse2";
+
+                        cmd.Parameters.Add(new SqliteParameter("@idClasse1", idClasse1));
+                        cmd.Parameters.Add(new SqliteParameter("@idClasse2", idClasse2));
+                        cmd.Parameters.Add(new SqliteParameter("@eliminato", eliminato));
+                        cmd.Parameters.Add(new SqliteParameter("@relazione", relazione));
+                        numeroRighe = cmd.ExecuteNonQuery();
+
+                        if (numeroRighe == 0)
+                        {
+                            ControllerLogin.SollevaErroreAggiornamentoDB("nessuna riga modificata nella tabella Diplomazia");
+                            Debug.LogError("nessuna riga modificata nella tabella Diplomazia");
+                        }
+                        else
+                        {
+                            Debug.Log("ho aggiornato una riga della tabella Diplomazia");
+                            recordAgg++;
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        ControllerLogin.SollevaErroreAggiornamentoDB("errore nell'aggiornamento del db locale Diplomazia" + ex.Message);
+                        Debug.LogError("errore nell'aggiornamento del db locale Diplomazia" + ex.Message);
+                    }
+
+                }
+            }
+
+            if (recordAgg == arrayPers.Size())
+            {
+                valoreRitorno = true;
+                tr.Commit();
+            }
+
+        }
+        catch (Exception ex)
+        {
+
+            Debug.LogError("errore aggiornamento archivio Diplomazia: " + ex.Message);
+            ControllerLogin.SollevaErroreAggiornamentoDB("errore aggiornamento archivio Diplomazia: " + ex.Message);
+            if (tr != null)
+            {
+                try
+                {
+                    tr.Rollback();
+
+                }
+                catch (SqliteException ex2)
+                {
+                    Debug.LogError("rollback della transazione riguardante l'aggiornamento della tabella Diplomazia fallito: " + ex2.ToString());
+                }
+                finally
+                {
+                    tr.Dispose();
+                }
+            }
+        }
+
+        return valoreRitorno;
+    }
+
+    internal static void ControllaTSUtenti(int idDB, string timeStampRemoto, bool isRegistrazione)
+    {
+        SqliteTransaction tr = null;
+        if (isRegistrazione)
+        {
+            try
+            {
+                tr = conn.BeginTransaction();
+                SqliteCommand cmd = conn.CreateCommand();
+                cmd.Transaction = tr;
+                int numeroRighe = 0;                
+                cmd.CommandText = @"INSERT INTO Utenti VALUES (@idUtente,@timeStampUtente)";
+                cmd.Parameters.Add(new SqliteParameter("@idUtente", idDB));
+                cmd.Parameters.Add(new SqliteParameter("@timeStampUtente", timeStampRemoto));
+                numeroRighe = cmd.ExecuteNonQuery();
+                if (numeroRighe > 0)
+                {
+                    Debug.Log("Inserimento nella tabella Utenti della riga: " + idDB);
+                    tr.Commit();
+                    ControllerLogin.RichiediTSUtentiNew();
+                  
+                }            
+                
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("errore aggiornamento archivio Utenti: " + ex.Message);
+                ControllerLogin.SollevaErroreAggiornamentoDB("errore aggiornamento archivio Utenti: " + ex.Message);
+                if (tr != null)
+                {
+                    try
+                    {
+                        tr.Rollback();
+
+                    }
+                    catch (SqliteException ex2)
+                    {
+                        Debug.LogError("rollback della transazione riguardante l'aggiornamento della tabella Utenti fallito: " + ex2.ToString());
+
+                    }
+                    finally
+                    {
+                        tr.Dispose();
+                    }
+                }
+            }
+        }
+        else//if !isRegistrazione
+        {
+            SqliteDataReader _reader = null;
+            try
+            {
+
+                SqliteCommand cmd = conn.CreateCommand();
+                cmd.CommandText = @"SELECT timeStampUtente FROM Utenti WHERE idUtente= @idUtente";
+                cmd.Parameters.Add(new SqliteParameter("@idUtente", idDB));
+                _reader = cmd.ExecuteReader();
+                if (_reader.HasRows)
+                {
+                    while (_reader.Read())
+                    {
+                        string tsLocale = (string)_reader["timeStampUtente"];
+
+                        if (String.Compare(timeStampRemoto, tsLocale) != 0)
+                        {//se sono diversi si deve aggiornare
+                            ControllerLogin.RichiestaDatiTabellaRemota("PersonaggiUtente");
+                            ControllerLogin.RichiestaDatiTabellaRemota("DiplomaziaPersonaggio");
+                            Debug.Log("Le tabelle PersonaggiUtente e DiplomaziaPersonaggio necessitano di aggiornamento, timeStampUtente  locale vecchio!");
+                        }
+                        else
+                        {
+                            Debug.Log("Le tabelle PersonaggiUtente e DiplomaziaPersonaggio NON necessitano di aggiornamento, timeStampUtente  locale aggiornato!");
+                            ControllerLogin.RichiediTSUtentiNew();
+                        }
+                    }
+                }             
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("errore lettura dalla tabella Utenti"+ex.Message);
+                ControllerLogin.SollevaErroreAggiornamentoDB("errore lettura dalla tabella Utenti" + ex.Message);
+
+            }
+            finally
+            {
+                if (!_reader.IsClosed)
+                    _reader.Close();                
+            }
+
+        }
+    }
+
+    public static bool AggiornaPersonaggiUtente(SFSArray arrayPers)
+    {
+        bool valoreRitorno = false;
+        SqliteTransaction tr = null;       
+        try
+        {
+            tr = conn.BeginTransaction();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.Transaction = tr;
+            int numeroRighe = 0;
+            int recordAgg = 0;
+            for (int i = 0; i < arrayPers.Size(); i++)
+            {
+                //Legge i dati provenienti dal remoto (record per record)
+                SFSObject objArr = (SFSObject)arrayPers.GetSFSObject(i);
+                int Utenti_idUtente = objArr.GetInt("Utenti_idUtente");
+                int idPersonaggio = objArr.GetInt("Personaggi_idPersonaggio");
+                string nomeModello = objArr.GetUtfString("nomeModello");
+                string nome = objArr.GetUtfString("nomePersonaggio");
+                int eliminato = objArr.GetInt("eliminato");
+                double vitaMassima = objArr.GetDouble("vitaMassima");
+                double vitaAttuale = objArr.GetDouble("vitaAttuale");
+                double manaMassimo = objArr.GetDouble("manaMassimo");
+                double manaAttuale = objArr.GetDouble("manaAttuale");
+                double livelloPartenza = objArr.GetDouble("livelloAttuale");
+                double xpPartenza = objArr.GetDouble("xpAttuale");
+                double attaccoBase = objArr.GetDouble("attaccoBase");
+                double difesaBase = objArr.GetDouble("difesaBase");
+
+                try
+                {
+                    cmd.CommandText = @"INSERT INTO PersonaggiUtente VALUES (@Utenti_idUtente,@idPersonaggio,@nomeModello, @nome, @eliminato," +
+                    " @vitaMassima, @vitaAttuale,  @manaMassimo, @manaAttuale, @livelloPartenza, @xpPartenza, @attaccoBase, @difesaBase)";
+                    cmd.Parameters.Add(new SqliteParameter("@Utenti_idUtente", Utenti_idUtente));
+                    cmd.Parameters.Add(new SqliteParameter("@idPersonaggio", idPersonaggio));
+                    cmd.Parameters.Add(new SqliteParameter("@nomeModello", nomeModello));
+                    cmd.Parameters.Add(new SqliteParameter("@nome", nome));
+                    cmd.Parameters.Add(new SqliteParameter("@eliminato", eliminato));
+                    cmd.Parameters.Add(new SqliteParameter("@vitaMassima", vitaMassima));
+                    cmd.Parameters.Add(new SqliteParameter("@vitaAttuale", vitaAttuale));
+                    cmd.Parameters.Add(new SqliteParameter("@manaMassimo", manaMassimo));
+                    cmd.Parameters.Add(new SqliteParameter("@manaAttuale", manaAttuale));
+                    cmd.Parameters.Add(new SqliteParameter("@livelloPartenza", livelloPartenza));
+                    cmd.Parameters.Add(new SqliteParameter("@xpPartenza", xpPartenza));
+                    cmd.Parameters.Add(new SqliteParameter("@attaccoBase", attaccoBase));
+                    cmd.Parameters.Add(new SqliteParameter("@difesaBase", difesaBase));
+                    numeroRighe = cmd.ExecuteNonQuery();
+                    Debug.Log("Inserimento nella tabella PersonaggiUtente id Utente" +Utenti_idUtente +" idPersonaggio"+idPersonaggio);
+                    recordAgg++;
+                }
+                catch
+                {
+                    try
+                    {
+                        cmd.CommandText = "UPDATE PersonaggiUtente SET nomeModello=@nomeModello ,nomePersonaggio = @nome, eliminato = @eliminato, vitaMassima = @vitaMassima" +
+                                ", vitaAttuale = @vitaAttuale, manaMassimo = @manaMassimo, manaAttuale = @manaAttuale, livelloAttuale = @livelloPartenza" +
+                                ", xpAttuale = @xpPartenza, attaccoBase = @attaccoBase, difesaBase = @difesaBase WHERE (Utenti_idUtente = @Utenti_idUtente AND  Personaggi_idPersonaggio=@idPersonaggio)";
+                        cmd.Parameters.Add(new SqliteParameter("@Utenti_idUtente", Utenti_idUtente));
+                        cmd.Parameters.Add(new SqliteParameter("@idPersonaggio", idPersonaggio));
+                        cmd.Parameters.Add(new SqliteParameter("@nomeModello", nomeModello));
+                        cmd.Parameters.Add(new SqliteParameter("@nome", nome));
+                        cmd.Parameters.Add(new SqliteParameter("@eliminato", eliminato));
+                        cmd.Parameters.Add(new SqliteParameter("@vitaMassima", vitaMassima));
+                        cmd.Parameters.Add(new SqliteParameter("@vitaAttuale", vitaAttuale));
+                        cmd.Parameters.Add(new SqliteParameter("@manaMassimo", manaMassimo));
+                        cmd.Parameters.Add(new SqliteParameter("@manaAttuale", manaAttuale));
+                        cmd.Parameters.Add(new SqliteParameter("@livelloPartenza", livelloPartenza));
+                        cmd.Parameters.Add(new SqliteParameter("@xpPartenza", xpPartenza));
+                        cmd.Parameters.Add(new SqliteParameter("@attaccoBase", attaccoBase));
+                        cmd.Parameters.Add(new SqliteParameter("@difesaBase", difesaBase));
+                        numeroRighe = cmd.ExecuteNonQuery();
+
+
+                        //Update buono come comando MA non ha aggiornato righe
+                        if (numeroRighe == 0)
+                        {
+                            ControllerLogin.SollevaErroreAggiornamentoDB("errore:impossibile aggiornare la riga della tabella PersonaggiUtente: idUtente" + Utenti_idUtente + " idPersonaggio:" + idPersonaggio);
+                            Debug.LogError("errore:impossibile aggiornare la riga della tabella PersonaggiUtente: idUtente" + Utenti_idUtente + " idPersonaggio:" + idPersonaggio);
+                        }
+                        else
+                        {
+                            Debug.Log("Aggiornamento tabella personaggiUtente idUtente :" + Utenti_idUtente + " idPersonaggio: " + idPersonaggio);
+                            recordAgg++;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ControllerLogin.SollevaErroreAggiornamentoDB("errore nell'aggiornamento del db locale tabella PersonaggiUtente" + ex.Message);
+                        Debug.LogError("errore nell'aggiornamento del db locale tabella PersonaggiUtente" + ex.Message);
+                    }
+                }
+
+            }//fine for
+
+            if (recordAgg == arrayPers.Size())
+            {
+                contatoreTabelleDiUtentiOk++;
+                Debug.Log("numero tabelle di utenti aggiornate:" + contatoreTabelleDiUtentiOk);
+                tr.Commit();
+                valoreRitorno = true;
+               
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("errore aggiornamento archivio PersonaggiUtente: " + ex.Message);
+            ControllerLogin.SollevaErroreAggiornamentoDB("errore aggiornamento archivio PersonaggiUtente: " + ex.Message);
+            if (tr != null)
+            {
+                try
+                {
+                    tr.Rollback();
+
+                }
+                catch (SqliteException ex2)
+                {
+                    Debug.LogError("rollback della transazione riguardante l'aggiornamento della tabella PersonaggiUtente fallito: " + ex2.ToString());                    
+
+                }
+                finally
+                {
+                    tr.Dispose();
+                }
+            }
+        }
+       
+        return valoreRitorno;
+    }
+
+    internal static bool AggiornaTimeStampTabelleBase(string nomeTab, string timestamp)
+    {
+        bool valoreRitorno = false;
+        SqliteTransaction tr = null;
+     
+        try
+        {
+            tr = conn.BeginTransaction();
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.Transaction = tr;
+            int numeroRighe = 0;
+
+            cmd.CommandText = @"UPDATE SincronizzazioneDB SET nomeTabella = @nomeTabella, aggiornatoAl = @timestamp  WHERE nomeTabella = @nomeTabella";
+            cmd.Parameters.Add(new SqliteParameter("@nomeTabella", nomeTab));
+            cmd.Parameters.Add(new SqliteParameter("@timeStamp", timestamp));
+            numeroRighe = cmd.ExecuteNonQuery();
+
+            if (numeroRighe == 0)
+            {
+                ControllerLogin.SollevaErroreAggiornamentoDB("errore nell'aggiornamento del db di sincronizzazione locale");
+                Debug.LogError("errore nell'aggiornamento del db di sincronizzazione locale");
+            }
+            else
+            {
+                tr.Commit();
+                valoreRitorno = true;
+                contatoreTimeStampOk++;
+                ControllaNumeroTimeStampAggiornati();
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Errore nell'aggiornamento del db di sincronizzazione locale: " + ex.Message);
+            ControllerLogin.SollevaErroreAggiornamentoDB("Errore nell'aggiornamento del db di sincronizzazione locale: " + ex.Message);
+            if (tr != null)
+            {
+                try
+                {
+                    tr.Rollback();
+
+                }
+                catch (SqliteException ex2)
+                {
+                    Debug.LogError("rollback della transazione riguardante l'aggiornamento della tabella SincronizzazioneDB fallito: " + ex2.ToString());
+
+                }
+                finally
+                {
+                    tr.Dispose();
+                }
+            }
+
+        }
+     
+        return valoreRitorno;
+    }
 
     public static void assegnaAssetDatabase()
     {
@@ -75,6 +748,66 @@ public class Statici
         databaseInizialePercorsi = DataBase.GiveMePercorsi();
     }
 
+    public static void ControllaTimeStampTabelleBase(string nomeTabella, string tsRemoto)
+    {
+        SqliteDataReader _reader = null;
+        try
+        {
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT aggiornatoAl FROM SincronizzazioneDB WHERE nomeTabella= @nomeTabella";
+            cmd.Parameters.Add(new SqliteParameter("@nomeTabella", nomeTabella));
+            _reader = cmd.ExecuteReader();
+            if (_reader.HasRows)
+            {
+                while (_reader.Read())
+                {
+                    string tsLocale = (string)_reader["aggiornatoAl"];
+
+                    if (String.Compare(tsRemoto, tsLocale) != 0)
+                    {//se sono diversi si deve aggiornare
+                        ControllerLogin.RichiestaDatiTabellaRemota(nomeTabella);
+                        Debug.Log("la tabella necessita aggiornamento " + nomeTabella);
+                    }
+                    else
+                    {
+                        Debug.Log("la tabella NON necessita aggiornamento " + nomeTabella);
+                        contatoreTimeStampOk++;                       
+                        ControllaNumeroTimeStampAggiornati();
+                    }
+                }
+            }
+            else
+            {
+                if (!_reader.IsClosed)
+                    _reader.Close();
+                cmd.CommandText = @"INSERT INTO SincronizzazioneDB VALUES(@nomeTabella,@aggiornatoAl)";
+                cmd.Parameters.Add(new SqliteParameter("@nomeTabella", nomeTabella));
+                cmd.Parameters.Add(new SqliteParameter("@aggiornatoAl", "SENZA DATA"));
+                cmd.ExecuteNonQuery();
+                Debug.Log("il nome tabella era MANCANTE nella Tabella SincronizzazioneDB ma è stata aggiunta e aggiornata: " + nomeTabella);
+                ControllerLogin.RichiestaDatiTabellaRemota(nomeTabella);
+                
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Errore nel controllo TimeStamp tabelle SincronizzazioneDB:" +ex.Message);
+            ControllerLogin.SollevaErroreAggiornamentoDB("Errore nel controllo TimeStamp tabelle SincronizzazioneDB:" + ex.Message);
+
+        }
+        finally
+        {
+            if (!_reader.IsClosed)
+                _reader.Close();
+        
+        }
+    }
+    public static void ControllaNumeroTimeStampAggiornati()
+    {
+        if (contatoreTimeStampOk >= numeroTabelleAggTimeStamp)
+            ControllerLogin.EntraNellaLobby();
+    }
+
     public static void CopiaIlDB(bool sovrascrivi = false)
     {
         if (!File.Exists(destinazione) || sovrascrivi)
@@ -82,14 +815,7 @@ public class Statici
             Debug.Log("Copio il DB in " + Application.persistentDataPath);
             File.Copy(origine, destinazione, sovrascrivi);
         }
-        conn = new SqliteConnection("URI=file:" + destinazione);
-        conn.StateChange += Conn_StateChange;
-        conn.Open();
-        while (conn.State != System.Data.ConnectionState.Open)
-        {
-            // Aspetta
-        }
-        conn.Close();
+        ConnettiEdApriSQLite();    
     }
 
     public static void provaErrore(string scriviNomeVariabile, object oggetto)
@@ -177,5 +903,15 @@ public class Statici
         {
             Debug.Log("Chiusa!");
         }
+    }
+
+    /// <summary>
+    /// Crea una connessione a SQLite e la apre
+    /// </summary>
+    private static void ConnettiEdApriSQLite()
+    {
+        conn = new SqliteConnection("URI=file:" + destinazione);
+        conn.StateChange += Conn_StateChange;
+        conn.Open();
     }
 }

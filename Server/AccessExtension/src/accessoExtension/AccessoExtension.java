@@ -23,6 +23,10 @@ public class AccessoExtension extends SFSExtension {
         addEventHandler(SFSEventType.USER_LOGIN, LoginEventHandler.class);
         addEventHandler(SFSEventType.USER_JOIN_ZONE, PostLoginEventHandler.class);
 
-        addRequestHandler("regUt", RegistraUtenteHandler.class);    
+        addRequestHandler("persg", RichiestaPersonaggiHandler.class);    
+         addRequestHandler("persU", RichiestaPersonaggiUtenteHandler.class); 
+         addRequestHandler("dip", RichiestaDiplomaziaHandler.class); 
+         addRequestHandler("dipP", RichiestaDiplomaziaPersonaggioHandler.class);
+         addRequestHandler("tsUtenti", RichiestaTsUtentiHandler.class);
     }
 }

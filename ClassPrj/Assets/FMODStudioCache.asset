@@ -28,8 +28,23 @@ MonoBehaviour:
   - {fileID: 11445916}
   - {fileID: 11472508}
   MasterBankRef: {fileID: 11409300}
-  stringsBankWriteTime: 635942534653924457
+  stringsBankWriteTime: 635938512109004922
   cacheVersion: 1
+--- !u!114 &11400452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: CriticalDamage
+  Min: 0
+  Max: 100
+  Default: 0
 --- !u!114 &11403558
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,7 +147,7 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   Path: ./..\FMOD\ClassPrj\Build\Desktop\Bank_SFX.bank
-  lastModified: 635942534653504433
+  lastModified: 635938512108994921
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -240,7 +255,7 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   Path: ./..\FMOD\ClassPrj\Build\Desktop\Bank_BGM.bank
-  lastModified: 635942534653144412
+  lastModified: 635938512108534578
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -285,7 +300,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: 
+  m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   Name: Oceano
   Min: 0
@@ -466,7 +481,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11444908}
+  - {fileID: 11449292}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11436690
@@ -488,7 +503,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11487826}
+  - {fileID: 11492238}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11437022
@@ -525,7 +540,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11410812}
+  - {fileID: 11400452}
   MinDistance: 1
   MaxDistance: 20
 --- !u!114 &11437560
@@ -607,7 +622,7 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11418342}
+  - {fileID: 11468564}
   MinDistance: 0
   MaxDistance: 10
 --- !u!114 &11443296
@@ -727,6 +742,21 @@ MonoBehaviour:
   Min: 0
   Max: 3
   Default: 0
+--- !u!114 &11449292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Death
+  Min: 0
+  Max: 100
+  Default: 100
 --- !u!114 &11451334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -797,9 +827,24 @@ MonoBehaviour:
   Is3D: 1
   IsOneShot: 0
   Parameters:
-  - {fileID: 11443296}
+  - {fileID: 11459422}
   MinDistance: 1
   MaxDistance: 20
+--- !u!114 &11459422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: FMODStudioCache
+  m_EditorClassIdentifier: 
+  Name: Attack
+  Min: 0
+  Max: 3
+  Default: 0
 --- !u!114 &11459596
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -902,6 +947,21 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   Name: CampFire
+  Min: 0
+  Max: 1
+  Default: 0
+--- !u!114 &11468564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Oceano
   Min: 0
   Max: 1
   Default: 0
@@ -1077,6 +1137,21 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
   m_Name: FMODStudioCache
+  m_EditorClassIdentifier: 
+  Name: CampFire
+  Min: 0
+  Max: 1
+  Default: 0
+--- !u!114 &11492238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
   m_EditorClassIdentifier: 
   Name: CampFire
   Min: 0

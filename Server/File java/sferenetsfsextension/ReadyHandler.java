@@ -45,7 +45,7 @@ import java.util.logging.Logger;
                         Logger.getLogger(ReadyHandler.class.getName()).log(Level.SEVERE, null, ex);
                     }
                      getApi().setRoomVariables(user.getLastJoinedRoom().getOwner(), user.getLastJoinedRoom(), user.getLastJoinedRoom().getVariables());
-
+                     
                 }
                 send("ready",new SFSObject(),user.getLastJoinedRoom().getUserList());
            }
