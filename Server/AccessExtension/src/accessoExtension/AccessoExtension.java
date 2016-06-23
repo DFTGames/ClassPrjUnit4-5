@@ -28,5 +28,8 @@ public class AccessoExtension extends SFSExtension {
          addRequestHandler("dip", RichiestaDiplomaziaHandler.class); 
          addRequestHandler("dipP", RichiestaDiplomaziaPersonaggioHandler.class);
          addRequestHandler("tsUtenti", RichiestaTsUtentiHandler.class);
+         addRequestHandler("insP", RichiestaAggiuntaNuovoPgHandler.class);
+         addRequestHandler("nExist", RichiestaControlloNomeHandler.class);
+         addRequestHandler("delP", RichiestaEliminazionePersonaggioHandler.class);
     }
 }

@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using Mono.Data.Sqlite;
+using Sfs2X.Entities.Data;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,11 +45,8 @@ public class ManagerIniziale : MonoBehaviour
     private float alpha;
     private Transform cameraT;
     private bool caricaPartita = false;
-    private List<string> cartelleLocali = new List<string>();
     private int contatoreGiocabili = 0;
     private Serializzabile<ClasseAudio> datiAudio;
-    private Serializzabile<AmicizieSerializzabili> datiDiplomazia;
-    private Serializzabile<ValoriPersonaggioS> datiPersonaggio;
     private Dictionary<string, GameObject> dizionarioCollegamentoNomiConModelli = new Dictionary<string, GameObject>();
     private Dictionary<string, Transform> dizionarioPosizioniPrecedenti = new Dictionary<string, Transform>();
     private FMOD.Studio.Bus EnviromentBus;
@@ -56,6 +54,13 @@ public class ManagerIniziale : MonoBehaviour
     private float ics;
     private bool indiceCambiato = false;
     private int indiceClasseSuccessivaPrecedente = 0;
+
+    //liste per carica personaggio
+    private List<DatiPersonaggioPartenza> listaDatiPersLoad = new List<DatiPersonaggioPartenza>();
+
+    //liste per nuovo personaggio
+    private List<DatiPersonaggioPartenza> listaDatiPersNew = new List<DatiPersonaggioPartenza>();
+
     private bool nuovaPartita = false;
     private Vector3 obiettivoDaInquadrare;
     private Vector3[] percorso;
@@ -67,9 +72,8 @@ public class ManagerIniziale : MonoBehaviour
     private Vector3 targetT;
     private GameObject tmpGODaEliminareSeSelezioniAltroGO = null;
     private GameObject tmpGOPrecedente = null;
+    private int valoreMassimo = 0;
     private Vector3 velocita = Vector3.zero;
-
-    //mi serve per capire se sono passato da una classe ad un'altra
     private float zeta;
 
     public int IndiceClasseSuccessivaPrecedente
@@ -81,7 +85,6 @@ public class ManagerIniziale : MonoBehaviour
         set
         {
             int valoreMinimo = 0;
-            int valoreMassimo = Statici.databaseInizialeProprieta.classePersonaggio.Count - 1;
             indiceClasseSuccessivaPrecedente = Mathf.Clamp(value, valoreMinimo, valoreMassimo);
             if (value > valoreMassimo)
                 indiceClasseSuccessivaPrecedente = valoreMinimo;
@@ -116,6 +119,21 @@ public class ManagerIniziale : MonoBehaviour
         }
     }
 
+    public static void AggiornaElencoPersonaggiEsistenti()
+    {
+        int indiceDaRimuovere = 0;
+        for (int i = 0; i < me.listaDatiPersLoad.Count; i++)
+        {
+            if (me.listaDatiPersLoad[i].NomePersonaggio == Statici.nomePersonaggio)
+            {
+                indiceDaRimuovere = i;
+                break;
+            }
+        }
+        me.listaDatiPersLoad.RemoveAt(indiceDaRimuovere);
+        me.RecuperaElencoPersonaggiEsistenti();
+    }
+
     public static void CaricaScena(string nomeScena, string scrittaCaricamento)
     {
         me.animatoreMenuCarica.gameObject.SetActive(false);
@@ -123,7 +141,21 @@ public class ManagerIniziale : MonoBehaviour
         me.animatoreMainMenu.gameObject.SetActive(false);
         me.NomeScenaText.gameObject.SetActive(true);
         me.PannelloImmagineSfondo.GetComponent<Image>().color = new Color(1f, 1f, 1f, 1f);
+        me.listaDatiPersNew.Clear();
+        me.listaDatiPersLoad.Clear();
+        me.listaDatiPersLoad = null;
+        me.listaDatiPersNew = null;
         me.StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica(nomeScena, scrittaCaricamento, me.PannelloImmagineSfondo.gameObject, me.NomeScenaText));
+    }
+
+    public static void SollevaErroreScenaInizialeCaricamentoPg(string testo)
+    {
+        me.erroreCaricamento.text = testo;
+    }
+
+    public static void SollevaErroreScenaInizialeCreazionePg(string testo)
+    {
+        me.erroreCreazioneText.text = testo;
     }
 
     public void AnnullaDaCaricamento()
@@ -161,27 +193,9 @@ public class ManagerIniziale : MonoBehaviour
         datiAudio.Salva();
     }
 
-    /*
-    public static void cambiaSfx_(float p )  //fatto per richiamarlo dentro al PannelloProve (dato che mettendo statico il metodo non riuscivo )
-    {
-        me.sliderSFX(p);
-    }
-    public static void cambiaAmbiente(float p)  //vedi sopra..
-    {
-        me.cambiaAmbiente(p);
-    }
-    */
-
     public void CancellaPartita()
     {
-        if (Directory.Exists(Path.Combine
-            (Application.persistentDataPath, Statici.nomePersonaggio)))
-        {
-            cartelleLocali.Remove(Statici.nomePersonaggio);
-            Directory.Delete(Path.Combine
-            (Application.persistentDataPath, Statici.nomePersonaggio), true);
-            RecuperaElencoCartelle();
-        }
+        ScenaInizialeNetwork.CancellaPersonaggio(Statici.nomePersonaggio);
     }
 
     public void CaricaPartita()
@@ -189,7 +203,7 @@ public class ManagerIniziale : MonoBehaviour
         caricaPartita = true;
         animatoreMenuCarica.SetBool("Torna", true);
         animatoreMainMenu.SetBool("Via", true);
-        RecuperaElencoCartelle();
+        RecuperaElencoPersonaggiEsistenti();
         RecuperaDatiGiocatore();
         CambiaAlphaPannelloSfondo();
         cameraT.position = new Vector3(posizioneCameraCarica.transform.position.x, posizioneCameraCarica.transform.position.y + altezzaCamera, posizioneCameraCarica.transform.position.z + ZOffSet);
@@ -203,61 +217,7 @@ public class ManagerIniziale : MonoBehaviour
         else
         {
             erroreCreazioneText.text = string.Empty;
-            if (cartelleLocali.Contains(testoNome.text.Trim()))
-                erroreCreazioneText.text = "Esiste Gia Un Personaggio con questo nome";
-            else
-            {
-                canvasGroupCreazione.interactable = false;
-                canvasGroupCarica.interactable = false;
-                erroreCaricamento.text = string.Empty;
-                Statici.sonoPassatoDallaScenaIniziale = true;
-                Statici.nomePersonaggio = testoNome.text;
-                datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-                if (datiPersonaggio.Dati.nomePersonaggio == null)
-                {
-                    datiPersonaggio.Dati.Vita = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita;
-                    datiPersonaggio.Dati.Attacco = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Attacco;
-                    datiPersonaggio.Dati.difesa = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].difesa;
-                    datiPersonaggio.Dati.Xp = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Xp;
-                    datiPersonaggio.Dati.Livello = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Livello;
-                    if (elencoSessiDropDown.value == 0)
-                        datiPersonaggio.Dati.nomeModello = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM;
-                    else
-                        datiPersonaggio.Dati.nomeModello = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF;
-                    datiPersonaggio.Dati.nomePersonaggio = testoNome.text;
-                    datiPersonaggio.Dati.classe = casellaTipo.text;
-                    datiPersonaggio.Dati.VitaMassima = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita;
-                    datiPersonaggio.Dati.ManaMassimo = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Mana;
-                    datiPersonaggio.Dati.XPMassimo = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Xp;
-                    datiPersonaggio.Dati.posizioneCheckPoint = "start";
-                    datiPersonaggio.Dati.nomeScena = "Isola";
-                    datiPersonaggio.Salva();
-                }
-                datiDiplomazia = new Serializzabile<AmicizieSerializzabili>(Statici.nomeFileDiplomazia);
-
-                if (datiDiplomazia.Dati.tipoEssere[0] == null)
-                {
-                    for (int i = 0; i < Statici.databseInizialeAmicizie.classiEssere.Length; i++)
-                    {
-                        datiDiplomazia.Dati.tipoEssere[i] = Statici.databseInizialeAmicizie.classiEssere[i];
-                    }
-                    for (int i = 0; i < Statici.databseInizialeAmicizie.classiEssere.Length; i++)
-                    {
-                        datiDiplomazia.Dati.matriceAmicizie[i] = Statici.databseInizialeAmicizie.matriceAmicizie[i];
-
-                        for (int j = 0; j < Statici.databseInizialeAmicizie.classiEssere.Length; j++)
-                        {
-                            datiDiplomazia.Dati.matriceAmicizie[i].elementoAmicizia[j] = Statici.databseInizialeAmicizie.matriceAmicizie[i].elementoAmicizia[j];
-                        }
-                    }
-                    datiDiplomazia.Salva();
-                }
-
-                if (!Statici.multigiocatoreOn)//SOLO SINGLEPLAYER
-                    CaricaScena(datiPersonaggio.Dati.nomeScena, datiPersonaggio.Dati.nomeScena);
-                else//solo multiplayer
-                    ScenaInizialeNetwork.VaiAlleStanze();
-            }
+            ScenaInizialeNetwork.ControllaSeNomeEsiste(testoNome.text.Trim());
         }
     }
 
@@ -266,10 +226,10 @@ public class ManagerIniziale : MonoBehaviour
         canvasGroupCreazione.interactable = false;
         canvasGroupCarica.interactable = false;
         Statici.sonoPassatoDallaScenaIniziale = true;
-        if (!Statici.multigiocatoreOn)//SOLO SINGLEPLAYER
-            CaricaScena(datiPersonaggio.Dati.nomeScena, datiPersonaggio.Dati.nomeScena);
-        else//solo multiplayer
-            ScenaInizialeNetwork.VaiAlleStanze();
+        if (!Statici.multigiocatoreOn)
+            ScenaInizialeNetwork.VaiAlleStanze(listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena, listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena);
+        else
+            ScenaInizialeNetwork.VaiAlleStanze("ScenaStanze", "The Lobby");
     }
 
     public void DecisionePercorsoCambioSesso()
@@ -301,8 +261,6 @@ public class ManagerIniziale : MonoBehaviour
     public void Precedente()
     {
         IndiceClasseSuccessivaPrecedente--;
-        while (!Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].giocabile)
-            IndiceClasseSuccessivaPrecedente--;
         VisualizzaValoriPersonaggio();
         indiceCambiato = true;
         DecisionePercorsoCambioClasse();
@@ -313,17 +271,16 @@ public class ManagerIniziale : MonoBehaviour
         if (elencoCartelleDropDown.options.Count <= 0) return;
         if (nuovaPartita) return;
         Statici.nomePersonaggio = elencoCartelleDropDown.options[elencoCartelleDropDown.value].text;
-        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-        vitaCaricamento.text = datiPersonaggio.Dati.Vita.ToString();
-        attaccoCaricamento.text = datiPersonaggio.Dati.Attacco.ToString();
-        difesaCaricamento.text = datiPersonaggio.Dati.difesa.ToString();
+        vitaCaricamento.text = listaDatiPersLoad[elencoCartelleDropDown.value].VitaMassima.ToString();
+        attaccoCaricamento.text = listaDatiPersLoad[elencoCartelleDropDown.value].AttaccoBase.ToString();
+        difesaCaricamento.text = listaDatiPersLoad[elencoCartelleDropDown.value].DifesaBase.ToString();
         if (tmpGOPrecedente != null)
         {
             tmpGOPrecedente.transform.position = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].position;
             tmpGOPrecedente.transform.rotation = dizionarioPosizioniPrecedenti[tmpGOPrecedente.name].rotation;
         }
-        if (datiPersonaggio == null) return;
-        if (!dizionarioCollegamentoNomiConModelli.ContainsKey(datiPersonaggio.Dati.nomeModello))
+
+        if (!dizionarioCollegamentoNomiConModelli.ContainsKey(listaDatiPersLoad[elencoCartelleDropDown.value].NomeModello))
         {
             erroreCaricamento.text = "Errore..Questo personaggio non e' più valido";
             bottoneCaricaDaCaricamento.interactable = false;
@@ -334,26 +291,27 @@ public class ManagerIniziale : MonoBehaviour
             erroreCaricamento.text = "";
             bottoneCaricaDaCaricamento.interactable = true;
         }
-        GameObject tmOj = dizionarioCollegamentoNomiConModelli[datiPersonaggio.Dati.nomeModello];
+
+        GameObject tmOj = dizionarioCollegamentoNomiConModelli[listaDatiPersLoad[elencoCartelleDropDown.value].NomeModello];
         tmOj.transform.position = posizionePersonaggioCarica.position;
         tmOj.transform.rotation = posizionePersonaggioCarica.rotation;
         tmpGOPrecedente = tmOj;
     }
 
-    public void RecuperaElencoCartelle()
+    public void RecuperaElencoPersonaggiEsistenti()
     {
         personaggioProvaEsiste = false;
         erroreCaricamento.text = string.Empty;
         Dropdown.OptionData Tmp = null;
         elencoCartelleDropDown.options.Clear();
 
-        for (int i = 0; i < cartelleLocali.Count; i++)
+        for (int i = 0; i < listaDatiPersLoad.Count; i++)
         {
             Tmp = new Dropdown.OptionData();
 
-            Tmp.text = cartelleLocali[i];
+            Tmp.text = listaDatiPersLoad[i].NomePersonaggio;
 
-            if (cartelleLocali[i] == "PersonaggioDiProva")
+            if (listaDatiPersLoad[i].NomePersonaggio == "PersonaggioDiProva")
             {
                 personaggioProvaEsiste = true;
                 continue;
@@ -361,9 +319,9 @@ public class ManagerIniziale : MonoBehaviour
 
             elencoCartelleDropDown.options.Add(Tmp);
         }
-        int numeroCartelleMinimo = 0;
-        numeroCartelleMinimo = !personaggioProvaEsiste ? 0 : 1;
-        if (cartelleLocali.Count > numeroCartelleMinimo)
+        int numeroPersonaggiLoadMinimo = 0;
+        numeroPersonaggiLoadMinimo = !personaggioProvaEsiste ? 0 : 1;
+        if (listaDatiPersLoad.Count > numeroPersonaggiLoadMinimo)
         {
             personaggiInCarica = true;
             bottoneCaricaDaMainManu.interactable = true;
@@ -394,11 +352,59 @@ public class ManagerIniziale : MonoBehaviour
     public void Sucessivo()
     {
         IndiceClasseSuccessivaPrecedente++;
-        while (!Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].giocabile)
-            IndiceClasseSuccessivaPrecedente++;
         VisualizzaValoriPersonaggio();
         indiceCambiato = true;
         DecisionePercorsoCambioClasse();
+    }
+
+    internal static void InserimentoNuovoPersonaggio()
+    {
+        me.canvasGroupCreazione.interactable = false;
+        me.canvasGroupCarica.interactable = false;
+        me.erroreCaricamento.text = string.Empty;
+        Statici.sonoPassatoDallaScenaIniziale = true;
+        Statici.nomePersonaggio = me.testoNome.text;
+        byte sesso = 0;
+        if (me.elencoSessiDropDown.value == 0)
+        {
+            sesso = 0;
+            Statici.nomeModello = me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].NomeModelloM;
+        }
+        else
+        {
+            sesso = 1;
+            Statici.nomeModello = me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].NomeModelloF;
+        }
+        SFSObject obj = new SFSObject();
+        obj.PutUtfString("nomePersonaggio", Statici.nomePersonaggio);
+        obj.PutInt("Utenti_idUtente", Statici.idDB);
+        obj.PutUtfString("nomeModello", Statici.nomeModello);
+        obj.PutInt("eliminato", 0);
+        obj.PutDouble("vitaMassima", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].VitaMassima);
+        obj.PutDouble("vitaAttuale", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].VitaAttuale);
+        obj.PutDouble("manaMassimo", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].ManaMassimo);
+        obj.PutDouble("manaAttuale", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].ManaAttuale);
+        obj.PutDouble("livelloPartenza", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].LivelloPartenza);
+        obj.PutDouble("xpPartenza", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].XpPartenza);
+        obj.PutUtfString("nomeScena", "Isola");
+        obj.PutUtfString("checkPoint", "start");
+        Statici.arrayPersNewPersUt.AddSFSObject(obj);
+        SqliteDataReader reader = Statici.GiveMeDiplomaziaLocale(me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].IdClassePersonaggio);
+        if (reader.HasRows)
+        {
+            while (reader.Read())
+            {
+                SFSObject obj2 = new SFSObject();
+                obj2.PutUtfString("PersonaggiUtente_nomePersonaggio", Statici.nomePersonaggio);
+                obj2.PutInt("PersonaggiUtente_Utenti_idUtente", Statici.idDB);
+                obj2.PutInt("Diplomazia_ClassiPersonaggi_idClasse", (int)reader["ClassiPersonaggi_idClasse"]);
+                obj2.PutInt("Diplomazia_ClassiPersonaggi2_idClasse", (int)reader["ClassiPersonaggi2_idClasse"]);
+                obj2.PutInt("eliminato", 0);
+                obj2.PutInt("relazione", (int)reader["relazione"]);
+                Statici.arrayPersNewPersDipPers.AddSFSObject(obj2);
+            }
+        }
+        ScenaInizialeNetwork.RichiestaCreazionePersonaggio(me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].NomeClasse, sesso);
     }
 
     private void CambiaAlphaPannelloSfondo()
@@ -446,26 +452,69 @@ public class ManagerIniziale : MonoBehaviour
         PannelloImmagineSfondo = pannelloImmagineSfondo;
         NomeScenaText = nomeScenaText;
         cameraT = Camera.main.transform;
-        datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
-        for (int i = 0; i < Statici.databaseInizialeProprieta.matriceProprieta.Count; i++)
+
+        //mi faccio dare i dati della tabella Personaggi da cui prendo i dati in caso di nuovo personaggio
+        SqliteDataReader reader = Statici.GiveMePersonaggiDBLocale();
+        listaDatiPersNew.Clear();
+        listaDatiPersNew = null;
+
+        valoreMassimo = 0;
+        if (reader.HasRows)
         {
-            if (!Statici.databaseInizialeProprieta.matriceProprieta[i].giocabile)
-                continue;
-            string tmpNomeModelloM = Statici.databaseInizialeProprieta.matriceProprieta[i].nomeM;
-            string tmpNomeModelloF = Statici.databaseInizialeProprieta.matriceProprieta[i].nomeF;
-            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloM, Instantiate(Resources.Load(tmpNomeModelloM), GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneM").position, new Quaternion(0f, 180f, 0f, 0f)) as GameObject);
-            dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloF, Instantiate(Resources.Load(tmpNomeModelloF), GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneF").position, Quaternion.identity) as GameObject);
-            dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloM].name, GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneM"));
-            dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloF].name, GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneF"));
-            contatoreGiocabili += 1;
+            while (reader.Read())
+            {
+                DatiPersonaggioPartenza dpp = new DatiPersonaggioPartenza();
+                dpp.IdPersonaggio = (int)reader["idPersonaggio"];
+                dpp.IdClassePersonaggio = (int)reader["ClassiPersonaggi_idClassiPersonaggi"];
+                dpp.VitaMassima = (decimal)reader["vitaMassima"];
+                dpp.VitaAttuale = (decimal)reader["vitaAttuale"];
+                dpp.ManaMassimo = (decimal)reader["manaMassimo"];
+                dpp.ManaAttuale = (decimal)reader["manaAttuale"];
+                dpp.LivelloPartenza = (decimal)reader["livelloPartenza"];
+                dpp.XpPartenza = (decimal)reader["xpPartenza"];
+                dpp.NomeClasse = (string)reader["nome"];
+                dpp.AttaccoBase = (decimal)reader["attaccoBase"];
+                dpp.DifesaBase = (decimal)reader["difesaBase"];
+                dpp.NomeModelloM = (string)reader["modelloM"];
+                dpp.NomeModelloF = (string)reader["modelloF"];
+
+                listaDatiPersNew.Add(dpp);
+                string tmpNomeModelloM = (string)reader["modelloM"];
+                string tmpNomeModelloF = (string)reader["modelloF"];
+                dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloM, Instantiate(Resources.Load(tmpNomeModelloM), GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneM").position, new Quaternion(0f, 180f, 0f, 0f)) as GameObject);
+                dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloF, Instantiate(Resources.Load(tmpNomeModelloF), GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneF").position, Quaternion.identity) as GameObject);
+                dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloM].name, GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneM"));
+                dizionarioPosizioniPrecedenti.Add(dizionarioCollegamentoNomiConModelli[tmpNomeModelloF].name, GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneF"));
+                contatoreGiocabili += 1;
+                valoreMassimo++;
+            }
         }
-        Statici.CopiaIlDB();
-        DirectoryInfo dI = new DirectoryInfo(Application.persistentDataPath);
-        DirectoryInfo[] dirs = dI.GetDirectories();
-        for (int i = 0; i < dirs.Length; i++)
+
+        valoreMassimo--;
+        if (!reader.IsClosed)
+            reader.Close();
+
+        //mi facio dare i dati dalla tabella PersonaggiUtente in caso di personaggi già esistenti
+        listaDatiPersLoad.Clear();
+        listaDatiPersLoad = null;
+        reader = Statici.GiveMePersonaggiUtenteDBLocale();
+        if (reader.HasRows)
         {
-            cartelleLocali.Add(dirs[i].Name);
+            while (reader.Read())
+            {
+                DatiPersonaggioPartenza dpp = new DatiPersonaggioPartenza();
+                dpp.VitaMassima = (decimal)reader["vitaMassima"];
+                dpp.AttaccoBase = (decimal)reader["attaccoBase"];
+                dpp.DifesaBase = (decimal)reader["difesaBase"];
+                dpp.NomePersonaggio = (string)reader["nomePersonaggio"];
+                dpp.NomeModello = (string)reader["nomeModello"];
+                dpp.NomeScena = (string)reader["nomeScena"];
+                dpp.CheckPoint = (string)reader["checkPoint"];
+                listaDatiPersLoad.Add(dpp);
+            }
         }
+        if (!reader.IsClosed)
+            reader.Close();
 
         SFXBus = FMODUnity.RuntimeManager.GetBus("bus:/SFX");
         EnviromentBus = FMODUnity.RuntimeManager.GetBus("bus:/Environment");
@@ -490,9 +539,9 @@ public class ManagerIniziale : MonoBehaviour
 
     private void VisualizzaValoriPersonaggio()
     {
-        casellaTipo.text = Statici.databaseInizialeProprieta.classePersonaggio[IndiceClasseSuccessivaPrecedente].ToString();
-        valoreVita.text = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Vita.ToString();
-        valoreAttacco.text = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].Attacco.ToString();
-        valoreDifesa.text = Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].difesa.ToString();
+        casellaTipo.text = listaDatiPersNew[IndiceClasseSuccessivaPrecedente].NomeClasse;
+        valoreVita.text = listaDatiPersNew[IndiceClasseSuccessivaPrecedente].VitaMassima.ToString();
+        valoreAttacco.text = listaDatiPersNew[IndiceClasseSuccessivaPrecedente].AttaccoBase.ToString();
+        valoreDifesa.text = listaDatiPersNew[IndiceClasseSuccessivaPrecedente].DifesaBase.ToString();
     }
 }
