@@ -24,12 +24,6 @@ public class ControllerLogin : MonoBehaviour
     const string STR_SUCCESSO = "successo";
     const string STR_MESSAGGIO_ERRORE = "messaggioErrore";
     const string STR_ID_UTENTE = "idUtente";
-    const string CMD_RICHIESTA_PERSONAGGI = "persg";
-    const string CMD_RICHIESTA_PERSONAGGI_UTENTE = "persU";
-    const string CMD_RICHIESTA_DIPLOMAZIA = "dip";
-    const string CMD_RICHIESTA_DIPLOMAZIA_PERSONAGGIO = "dipP";
-    const string CMD_RICHIESTA_TS_UTENTI = "tsUtenti";
-    const string CMD_NESSUN_PERSONAGGIO_TROVATO = "noPers";
     const string TIMESTAMP = "tStamp";
     const string CMD_TIMESTAMP = "timeS";
     const int NUMERO_TAB_LEGATI_AD_UTENTE = 2;//tabelle PersonaggiUtenti e DiplomaziaPersonaggio che sono legate al timestamp di Utenti
@@ -38,7 +32,7 @@ public class ControllerLogin : MonoBehaviour
     public Text erroreText;
     public InputField password;
     public InputField email;
-    
+
 
     public string localhost = "127.0.0.1";
     public int TcpPort = 9933;
@@ -48,7 +42,7 @@ public class ControllerLogin : MonoBehaviour
     public string zona = "ZonaAccessoGioco";
 
     private string host;
-    private SmartFox sfs;
+    //private SmartFox sfs;
     private bool IsRegistrazione;
     private static ControllerLogin me;
 
@@ -57,28 +51,30 @@ public class ControllerLogin : MonoBehaviour
     /// </summary>
     private void InizializzaSFS()
     {
-        if (sfs == null)
+        if (Statici.sfs == null)
         {
-            sfs = new SmartFox();
+            Statici.sfs = new SmartFox();
 
-            sfs.ThreadSafeMode = true;
-            sfs.AddEventListener(SFSEvent.CONNECTION, OnConnection);
-            sfs.AddEventListener(SFSEvent.CONNECTION_LOST, OnConnectionLost);
-            sfs.AddEventListener(SFSEvent.LOGIN, OnLogin);
-            sfs.AddEventListener(SFSEvent.LOGIN_ERROR, OnLoginError);
-            sfs.AddEventListener(SFSEvent.ROOM_JOIN, OnRoomJoin);
-            sfs.AddEventListener(SFSEvent.ROOM_JOIN_ERROR, OnRoomJoinError);
-            sfs.AddEventListener(SFSEvent.UDP_INIT, OnUdpInit);
-            sfs.AddEventListener(SFSEvent.EXTENSION_RESPONSE, OnExtensionResponse);
-            sfs.AddEventListener(SFSEvent.USER_VARIABLES_UPDATE, OnUserVariableUpdate);
+            Statici.sfs.ThreadSafeMode = true;
+            Statici.sfs.AddEventListener(SFSEvent.CONNECTION, OnConnection);
+            Statici.sfs.AddEventListener(SFSEvent.CONNECTION_LOST, OnConnectionLost);
+            Statici.sfs.AddEventListener(SFSEvent.LOGIN, OnLogin);
+            Statici.sfs.AddEventListener(SFSEvent.LOGIN_ERROR, OnLoginError);
+            Statici.sfs.AddEventListener(SFSEvent.ROOM_JOIN, OnRoomJoin);
+            Statici.sfs.AddEventListener(SFSEvent.ROOM_JOIN_ERROR, OnRoomJoinError);
+            Statici.sfs.AddEventListener(SFSEvent.UDP_INIT, OnUdpInit);
+            Statici.sfs.AddEventListener(SFSEvent.EXTENSION_RESPONSE, OnExtensionResponse);
+            Statici.sfs.AddEventListener(SFSEvent.USER_VARIABLES_UPDATE, OnUserVariableUpdate);
 
         }
     }
 
     private void OnUserVariableUpdate(BaseEvent evt)
     {
-        Statici.idDB = sfs.MySelf.GetVariable("dbid").GetIntValue();       
-        string timeStampUtente = sfs.MySelf.GetVariable("tsU").GetStringValue();      
+
+        Statici.idDB = Statici.sfs.MySelf.GetVariable("dbid").GetIntValue();
+        string timeStampUtente = Statici.sfs.MySelf.GetVariable("tsU").GetStringValue();
+        Debug.Log("recupero timeStamp da remoto" + timeStampUtente);
         Statici.ControllaTSUtenti(Statici.idDB, timeStampUtente, IsRegistrazione);
     }
 
@@ -91,44 +87,45 @@ public class ControllerLogin : MonoBehaviour
         switch (cmd)
         {
             case (CMD_TIMESTAMP):
-               SFSArray arrayTime =(SFSArray) objIn.GetSFSArray("timeList");
-                Statici.numeroTabelleAggTimeStamp = arrayTime.Size()+1;//num record Tab sincronizzazioneDB+Utenti               
+                SFSArray arrayTime = (SFSArray)objIn.GetSFSArray("timeList");
+                Statici.numeroTabelleAggTimeStamp = arrayTime.Size() + 1;//num record Tab sincronizzazioneDB+Utenti               
 
                 for (int i = 0; i < arrayTime.Size(); i++)
                 {
-                    SFSObject objArr =(SFSObject) arrayTime.GetSFSObject(i);
+                    SFSObject objArr = (SFSObject)arrayTime.GetSFSObject(i);
                     string nomeTabella = objArr.GetUtfString("nomeTabella");
                     ts = objArr.GetUtfString("aggiornatoAl");
                     Statici.ControllaTimeStampTabelleBase(nomeTabella, ts);
-                }           
+                }
                 break;
-            case (CMD_RICHIESTA_PERSONAGGI):
+            case (Statici.CMD_RICHIESTA_PERSONAGGI):
                 Debug.Log("sto elaborando Personaggi");
-                arrayPers = (SFSArray)objIn.GetSFSArray("persL");               
+                arrayPers = (SFSArray)objIn.GetSFSArray("persL");
                 if (objIn.ContainsKey(TIMESTAMP))//controllo paranoia
                 {
                     ts = objIn.GetUtfString(TIMESTAMP);
-                    if (Statici.AggiornaPersonaggi(arrayPers))                   
+                    if (Statici.AggiornaPersonaggi(arrayPers))
                         Statici.AggiornaTimeStampTabelleBase("Personaggi", ts);
                 }
                 else
                     Debug.LogError("non è stato ricevuto il timeStamp");
                 break;
-            case (CMD_RICHIESTA_PERSONAGGI_UTENTE):
+            case (Statici.CMD_RICHIESTA_PERSONAGGI_UTENTE):
                 Debug.Log("sto elaborando PersonaggiUtenti");
-                arrayPers = (SFSArray)objIn.GetSFSArray("persL");             
-               
+                arrayPers = (SFSArray)objIn.GetSFSArray("persL");
+
                 if (Statici.AggiornaPersonaggiUtente(arrayPers))
                 {
-                    if (Statici.contatoreTabelleDiUtentiOk == NUMERO_TAB_LEGATI_AD_UTENTE) {
+                    if (Statici.contatoreTabelleDiUtentiOk == NUMERO_TAB_LEGATI_AD_UTENTE)
+                    {
                         Debug.Log("posso richiedere il nuovo ts Utenti");
-                        RichiediTSUtentiNew();
+                        Statici.RichiediTSUtentiNew();
                     }
                 }
-                    
-             
+
+
                 break;
-            case (CMD_RICHIESTA_DIPLOMAZIA):
+            case (Statici.CMD_RICHIESTA_DIPLOMAZIA):
                 Debug.Log("sto elaborando Diplomazia");
                 arrayPers = (SFSArray)objIn.GetSFSArray("dipL");
                 if (objIn.ContainsKey(TIMESTAMP))//controllo paranoia
@@ -142,7 +139,7 @@ public class ControllerLogin : MonoBehaviour
                     Debug.LogError("non è stato ricevuto il timeStamp");
 
                 break;
-            case (CMD_RICHIESTA_DIPLOMAZIA_PERSONAGGIO):
+            case (Statici.CMD_RICHIESTA_DIPLOMAZIA_PERSONAGGIO):
                 Debug.Log("sto elaborando DiplomaziaPersonaggio");
                 arrayPers = (SFSArray)objIn.GetSFSArray("dipL");
                 if (Statici.AggiornaDiplomaziaPersonaggio(arrayPers))
@@ -150,32 +147,29 @@ public class ControllerLogin : MonoBehaviour
                     if (Statici.contatoreTabelleDiUtentiOk == NUMERO_TAB_LEGATI_AD_UTENTE)//se PersonaggiUtente e DiplomaziaPersonaggio sono stati aggiornati posso chiedere il nuovo timeStamp
                     {
                         Debug.Log("posso richiedere il nuovo ts Utenti");
-                        RichiediTSUtentiNew();
+                        Statici.RichiediTSUtentiNew();
                     }
-                }          
+                }
 
                 break;
-            case (CMD_RICHIESTA_TS_UTENTI):
-                Debug.Log("sto elaborando Utenti");               
-                string timeStampRemotoNew= objIn.GetUtfString("ts");
+            case (Statici.CMD_RICHIESTA_TS_UTENTI):
+                Debug.Log("sto elaborando Utenti");
+                string timeStampRemotoNew = objIn.GetUtfString("ts");
                 Statici.AggiornaTsUtenti(timeStampRemotoNew);
-              
+
                 break;
-            case (CMD_NESSUN_PERSONAGGIO_TROVATO):
+            case (Statici.CMD_NESSUN_PERSONAGGIO_TROVATO):
                 Statici.contatoreTabelleDiUtentiOk++;
                 if (Statici.contatoreTabelleDiUtentiOk == NUMERO_TAB_LEGATI_AD_UTENTE)
                 {
                     Debug.Log("posso richiedere il nuovo ts Utenti");
-                    RichiediTSUtentiNew();
+                    Statici.RichiediTSUtentiNew();
                 }
                 break;
         }
     }
 
-    public static void RichiediTSUtentiNew()
-    {
-        me.sfs.Send(new ExtensionRequest(CMD_RICHIESTA_TS_UTENTI, new SFSObject()));
-    }
+
     //Chiamato dal bottone Registrazione sul canvas Registrazione/Login
     public void BottoneRegistrazione()
     {
@@ -198,30 +192,17 @@ public class ControllerLogin : MonoBehaviour
 
         InizializzaSFS();
 
-        sfs.Connect(cfg);
+        Statici.sfs.Connect(cfg);
     }
 
-    public static void RichiestaDatiTabellaRemota(string nomeTabella)
-    {
-        if (nomeTabella == "Personaggi")
-            me.sfs.Send(new ExtensionRequest(CMD_RICHIESTA_PERSONAGGI, new SFSObject()));
-        else if (nomeTabella == "PersonaggiUtente")   
-            me.sfs.Send(new ExtensionRequest(CMD_RICHIESTA_PERSONAGGI_UTENTE, new SFSObject()));
-      
-        else if (nomeTabella == "Diplomazia")
-            me.sfs.Send(new ExtensionRequest(CMD_RICHIESTA_DIPLOMAZIA, new SFSObject()));
-        else if (nomeTabella == "DiplomaziaPersonaggio")      
-            me.sfs.Send(new ExtensionRequest(CMD_RICHIESTA_DIPLOMAZIA_PERSONAGGIO, new SFSObject()));
-        
-        //aggiungere altri else if se necessario
-    }
+
 
     //Chiamato dal bottone LOGIN sul canvas Registrazione/login
     public void BottoneLogin()
     {
         IsRegistrazione = false;
         if (string.IsNullOrEmpty(casellaNome.text.Trim())
-          || string.IsNullOrEmpty(password.text.Trim()))          
+          || string.IsNullOrEmpty(password.text.Trim()))
         {
             erroreText.text = "Compilare correttamente nome, password ed email";
             return;
@@ -239,7 +220,7 @@ public class ControllerLogin : MonoBehaviour
 
         InizializzaSFS();
 
-        sfs.Connect(cfg);
+        Statici.sfs.Connect(cfg);
     }
 
     private void OnConnection(BaseEvent evt)
@@ -248,7 +229,7 @@ public class ControllerLogin : MonoBehaviour
         if (connessioneAvvenuta)
         {
             Statici.CopiaIlDB();
-            SmartFoxConnection.Connection = sfs;           
+            SmartFoxConnection.Connection = Statici.sfs;
             CryptoManager crMan = new CryptoManager();
             string pwdCriptata = crMan.CriptaPassword(password.text.Trim(), false);
 
@@ -265,7 +246,7 @@ public class ControllerLogin : MonoBehaviour
                 sfso.PutBool("isReg", true);
                 //eventualmente nome e cognome quando avremo quei campi a video, conviene magari riorganizzare un attimo la GUI
                 Debug.Log("Siamo in registrazione utente");
-                sfs.Send(new LoginRequest(casellaNome.text, "", zona, sfso));
+                Statici.sfs.Send(new LoginRequest(casellaNome.text, "", zona, sfso));
             }
             else
             {
@@ -273,7 +254,7 @@ public class ControllerLogin : MonoBehaviour
                 sfso.PutUtfString("pwd", pwdCriptata);
                 sfso.PutBool("isReg", false);
                 Debug.Log("Siamo in Login utente");
-                sfs.Send(new LoginRequest(casellaNome.text, "", zona, sfso));
+                Statici.sfs.Send(new LoginRequest(casellaNome.text, "", zona, sfso));
             }
         }
         else
@@ -288,53 +269,62 @@ public class ControllerLogin : MonoBehaviour
         string ragione = (string)evt.Params["reason"];
         if (ragione != ClientDisconnectionReason.MANUAL)
             erroreText.text = "Connessione persa :" + ragione;
-        ResettaVariabiliPerDB();
+        ResettaVariabiliPerDBeSfs(true);
         ManagerScenaZero.AttivaDisattivaCanvasGroupLogin(true);
 
     }
 
     private void OnUdpInit(BaseEvent evt)
     {
-       
+
 
 
         if ((bool)evt.Params["success"])
         {
-         
+
             Debug.Log(" Udp funkia ");
-           
+
         }
         else
         {
-          
-            sfs.Disconnect();
+
+            Statici.sfs.Disconnect();
             Debug.Log(" Udp non funkia ");
-            
+
         }
     }
 
     private void OnLogin(BaseEvent evt)
     {
         User user = (User)evt.Params["user"];
-        Statici.userLocaleId = user.Id;       
-        sfs.InitUDP();
-      
+        Statici.userLocaleId = user.Id;
+        Statici.sfs.InitUDP();
+
     }
 
     private void OnLoginError(BaseEvent evt)
     {
-        sfs.Disconnect();     
+        Statici.sfs.Disconnect();
         ManagerScenaZero.AttivaDisattivaCanvasGroupLogin(true);
         erroreText.text = "Login fallito :" + (string)evt.Params["errorMessage"];
-        
+
     }
 
     private void OnRoomJoin(BaseEvent evt)
     {
         ResettaListnerAbilitaUI(false);
-        StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("Scena Iniziale", GiveMeText(), ManagerScenaZero.ImmagineCaricamento, ManagerScenaZero.ScrittaCaricamento));
+        ResettaVariabiliPerDBeSfs();
+        if (Statici.multigiocatoreOn)
+            StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("Scena Iniziale", GiveMeText(), ManagerScenaZero.ImmagineCaricamento, ManagerScenaZero.ScrittaCaricamento));
+        else
+            StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("Scena Iniziale", test(), ManagerScenaZero.ImmagineCaricamento, ManagerScenaZero.ScrittaCaricamento));
     }
+    public string test()
+    {
+        string[] testo = { "..Benvenuto nel magico Mondo del SinglePlayer...dove Tristezza e solitudine regneranno ", "....Premio Games Award 2016 come miglior Single player..ci sarai solo tu e se hai fortuna vedrai GOBLIN   ", ".......Malinconia    portami via.." };
+        return testo[UnityEngine.Random.Range(0, testo.Length)];
 
+    }
     string GiveMeText()
     {
         string[] testo = { "..una leggera brezza ti spettina le ciglia..ma tu hai l'ombrellino ", "PinoStudent......Dove finisce la realta..e inizia L'incubo...", "Loggati come ti pare..basta che non scrivi Nomi alla cazzum", "....perche non giochi con i Bigodini ai capelli??", "....Benvenuto nella terra dei Cachi  ", "..MmHmmmhhh..MmmmmMmHmm......non pensare male...mi sto mangiando una Papaya", "......Lasciate Ogni speranza o Voi Che Entrate", "..Mentre aspetti ..mangiati un Mandarino", "....Hai mai Pensato di fare un corso Accelerato Di java???", "...Se non riuscite ad attaccare...sappiate che e' colpa di Piero", "...Il Miglior gestore di Percorsi mai Implementato in un gioco ", "....il prodotto potrebbe contenere traccie di Automi..", "....Occhio che ninfea ha disseminato Trappole Lungo Il percorso", "...Pino..eddai,fai una partita pure tu", "...invece di giocare vai a raddrizzare i Radicchi nell'orto del vicino", "..mentre aspetti...Stringi forte i denti con la lingua in mezzo", "...Hai vinto un biglietto per Pinolandia...", "....(insert coin per continuare)", "...Mai mangiato la pizza ai frutti di Bosco? ", "..Se trovi il principe con i capelli fucsia....ritira Coupon per una ceretta Gratis da Piero (Rif Piero p.c.)" };
@@ -355,7 +345,7 @@ public class ControllerLogin : MonoBehaviour
 
     private void ResettaListnerAbilitaUI(bool abilita)
     {
-        sfs.RemoveAllEventListeners();
+        Statici.sfs.RemoveAllEventListeners();
         ManagerScenaZero.AttivaDisattivaCanvasGroupLogin(abilita);
         erroreText.text = "";
     }
@@ -364,11 +354,11 @@ public class ControllerLogin : MonoBehaviour
     // Use this for initialization
     private void Start()
     {
-     
+
         Application.runInBackground = true;
-        ResettaVariabiliPerDB();
+        ResettaVariabiliPerDBeSfs(true);
         erroreText.text = string.Empty;
-        me = this;       
+        me = this;
         switch (tipoHost)
         {
             case scegliHost.localhost:
@@ -385,30 +375,36 @@ public class ControllerLogin : MonoBehaviour
         host = host.Trim();   //cosi' toglie gli spazi ( se ci lascio gli spazi non va)
     }
 
-    private void ResettaVariabiliPerDB()
+    private void ResettaVariabiliPerDBeSfs(bool disconnettiDB = false)
     {
-          Statici.contatoreTimeStampOk = 0;//contatore dei timeStamp aggiornati
-          Statici.contatoreTabelleDiUtentiOk = 0;//contatore delle tabelle aggiornate dopo il controllo del timestamp della tabella Utenti  
-          Statici.numeroTabelleAggTimeStamp = 0;//numero delle tabelle locali di cui si deve controllare il loro timeStamp:righe della tabella sincronizzazioneDB+tabella Utenti
-                                                //chiudo la connessione con il DB locale
-        if (Statici.conn != null && Statici.conn.State == System.Data.ConnectionState.Open)
+        Statici.contatoreTimeStampOk = 0;//contatore dei timeStamp aggiornati
+        Statici.contatoreTabelleDiUtentiOk = 0;//contatore delle tabelle aggiornate dopo il controllo del timestamp della tabella Utenti  
+        Statici.numeroTabelleAggTimeStamp = 0;//numero delle tabelle locali di cui si deve controllare il loro timeStamp:righe della tabella sincronizzazioneDB+tabella Utenti
+                                              //chiudo la connessione con il DB locale
+
+        if (disconnettiDB)
         {
-            Statici.conn.Close();
-            Statici.conn = null;
+            if (Statici.sfs != null)
+                Statici.sfs = null;
+            if (Statici.conn != null && Statici.conn.State == System.Data.ConnectionState.Open)
+            {
+                Statici.conn.Close();
+                Statici.conn = null;
+            }
+            Statici.idDB = 0;
         }
-          Statici.idDB = 0;
-   }
+    }
 
     internal static void EntraNellaLobby()
     {
-        me.sfs.Send(new JoinRoomRequest("The Lobby"));
+        Statici.sfs.Send(new JoinRoomRequest("The Lobby"));
     }
 
     // Update is called once per frame
     private void Update()
     {
-        if (sfs != null)
-            sfs.ProcessEvents();
-        
+        if (Statici.sfs != null)
+            Statici.sfs.ProcessEvents();
+
     }
 }

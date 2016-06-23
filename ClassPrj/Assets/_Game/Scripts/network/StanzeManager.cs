@@ -37,7 +37,7 @@ public class StanzeManager : MonoBehaviour
     private bool messaggioSuSchermoOwnerOn = false;
     private short numeroMassimoUtentiInStanza = 4;
     private short numeroMaxDecisoDaOwner = 1;
-    private SmartFox sfs;
+    //private SmartFox sfs;
     private float tempo = 0f;
     private int utentiInStanza = 0;
 
@@ -64,7 +64,7 @@ public class StanzeManager : MonoBehaviour
                 roomVariableStart.IsPersistent = true;
                 settings.Variables.Add(roomVariableStart);
                 settings.Extension = new RoomExtension(EXTENSION_ID, EXTENSION_CLASS);
-                sfs.Send(new CreateRoomRequest(settings, true, sfs.LastJoinedRoom));
+                Statici.sfs.Send(new CreateRoomRequest(settings, true, Statici.sfs.LastJoinedRoom));
             }
             else
                 erroreText.text = "Assegnare un nome alla partita";
@@ -81,14 +81,14 @@ public class StanzeManager : MonoBehaviour
     {
         listaPronti.Clear();
         buttonReady.gameObject.SetActive(false);
-        sfs.Send(new JoinRoomRequest("The Lobby"));
+        Statici.sfs.Send(new JoinRoomRequest("The Lobby"));
         BloccaSbloccaCanvas(true);
     }
 
     public void ButtonReady()
     {
         buttonReady.interactable = false;
-        sfs.Send(new ExtensionRequest("ready", new SFSObject(), sfs.LastJoinedRoom));
+        Statici.sfs.Send(new ExtensionRequest("ready", new SFSObject(), Statici.sfs.LastJoinedRoom));
     }
 
     public void ClickBottonePartita(int roomId)
@@ -96,7 +96,7 @@ public class StanzeManager : MonoBehaviour
         if (Statici.nomePersonaggio != string.Empty && Statici.datiPersonaggio.Dati.nomeModello != string.Empty)
         {
             BloccaSbloccaCanvas(false);
-            sfs.Send(new JoinRoomRequest(roomId));
+            Statici.sfs.Send(new JoinRoomRequest(roomId));
         }
         else
             erroreText.text = "Inserire un nome e scegliere una classe";
@@ -104,7 +104,7 @@ public class StanzeManager : MonoBehaviour
 
     public void Disconnect()
     {
-        sfs.Disconnect();
+        Statici.sfs.Disconnect();
     }
 
     public void InviaMessaggioChat()
@@ -115,7 +115,7 @@ public class StanzeManager : MonoBehaviour
         inputChat.text = string.Empty;
         SFSObject objOut = new SFSObject();
         objOut.PutUtfString("nome", Statici.nomePersonaggio);
-        sfs.Send(new PublicMessageRequest(messaggioChat, objOut));
+        Statici.sfs.Send(new PublicMessageRequest(messaggioChat, objOut));
         canvasGroupChat.interactable = false;
     }
 
@@ -193,13 +193,13 @@ public class StanzeManager : MonoBehaviour
         objOut.PutFloat("dif", Statici.datiPersonaggio.Dati.difesa);
         objOut.PutUtfString("scena", SceneManager.GetActiveScene().name);
         objOut.PutInt("usIn", userId);
-        sfs.Send(new ExtensionRequest("spawnMe", objOut, sfs.LastJoinedRoom));
+        Statici.sfs.Send(new ExtensionRequest("spawnMe", objOut, Statici.sfs.LastJoinedRoom));
     }
 
     private void OnApplicationQuit()
     {
         buttonReady.gameObject.SetActive(false);
-        sfs.Send(new LeaveRoomRequest());
+        Statici.sfs.Send(new LeaveRoomRequest());
         Disconnect();
     }
 
@@ -208,7 +208,7 @@ public class StanzeManager : MonoBehaviour
         Statici.nomePersonaggio = string.Empty;
         ResettaErrore();
         BloccaSbloccaCanvas(true);
-        sfs.RemoveAllEventListeners();
+        Statici.sfs.RemoveAllEventListeners();
         StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("ScenaZero", "Connection Lost", immagineCaricamento, scrittaCaricamento));
     }
 
@@ -236,7 +236,7 @@ public class StanzeManager : MonoBehaviour
 
                 int utente = sfsObjIn.GetInt("ut");
                 int numeroSpawn = sfsObjIn.GetInt("nSpawn");
-                if (sfs.MySelf.Id == utente)
+                if (Statici.sfs.MySelf.Id == utente)
                 {
                     Statici.numeroPostoSpawn = numeroSpawn;
                     Vector3 posizioneIniziale = GameObject.Find("Postazione" + Statici.numeroPostoSpawn.ToString()).transform.position;
@@ -276,7 +276,7 @@ public class StanzeManager : MonoBehaviour
 
             case ("uR"):
                 int utentePronto = sfsObjIn.GetInt("uReady");
-                if (utentePronto == sfs.MySelf.Id)
+                if (utentePronto == Statici.sfs.MySelf.Id)
                     Statici.playerLocaleGO.GetComponentInChildren<TextMesh>().color = Color.green;
                 else
                     Statici.playerRemotiGestore[utentePronto].textmesh.color = Color.green;
@@ -378,7 +378,7 @@ public class StanzeManager : MonoBehaviour
     {
         Room room = (Room)evt.Params["room"];
         User user = (User)evt.Params["user"];
-        if (room.IsGame && user != sfs.MySelf)
+        if (room.IsGame && user != Statici.sfs.MySelf)
             InvioDatiPlayerLocale(user.Id);
     }
 
@@ -391,7 +391,7 @@ public class StanzeManager : MonoBehaviour
     {
         User user = (User)evt.Params["user"];
         Room room = (Room)evt.Params["room"];
-        if (!room.IsGame || user == sfs.MySelf)
+        if (!room.IsGame || user == Statici.sfs.MySelf)
             return;
         if (Statici.playerRemotiGestore.ContainsKey(user.Id))
         {
@@ -404,7 +404,7 @@ public class StanzeManager : MonoBehaviour
 
     private void PopolaListaPartite()
     {//sostituire i dizionari fare un getcomponentin children nel contenitore delle partite così mi recupero l'id dal gamelistitem
-        List<Room> rooms = sfs.RoomManager.GetRoomList();
+        List<Room> rooms = Statici.sfs.RoomManager.GetRoomList();
 
         for (int i = 0; i < rooms.Count; i++)
         {
@@ -439,7 +439,7 @@ public class StanzeManager : MonoBehaviour
 
     private void ResettaEventListner()
     {
-        sfs.RemoveAllEventListeners();
+        Statici.sfs.RemoveAllEventListeners();
     }
 
     private void SpawnRemotePlayer(int user, string modello, string nomeP, int numeroSpawn, Vector3 posizione, Quaternion rotazione)
@@ -475,19 +475,19 @@ public class StanzeManager : MonoBehaviour
             StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("ScenaZero", "You're not connected to the server.", immagineCaricamento, scrittaCaricamento));
             return;
         }
-        sfs = SmartFoxConnection.Connection;
-        sfs.ThreadSafeMode = true;
-        sfs.AddEventListener(SFSEvent.CONNECTION_LOST, OnConnectionLost);
-        sfs.AddEventListener(SFSEvent.ROOM_JOIN, OnRoomJoin);
-        sfs.AddEventListener(SFSEvent.ROOM_JOIN_ERROR, OnRoomJoinError);
-        sfs.AddEventListener(SFSEvent.ROOM_ADD, OnRoomAdded);
-        sfs.AddEventListener(SFSEvent.ROOM_CREATION_ERROR, OnRoomCreationError);
-        sfs.AddEventListener(SFSEvent.ROOM_REMOVE, OnRoomRemoved);
-        sfs.AddEventListener(SFSEvent.USER_ENTER_ROOM, OnUserEnterRoom);
-        sfs.AddEventListener(SFSEvent.USER_EXIT_ROOM, OnUserExitRoom);
-        sfs.AddEventListener(SFSEvent.USER_COUNT_CHANGE, OnUserCountChange);
-        sfs.AddEventListener(SFSEvent.EXTENSION_RESPONSE, OnExtensionResponse);
-        sfs.AddEventListener(SFSEvent.PUBLIC_MESSAGE, OnPublicMessage);
+//        sfs = SmartFoxConnection.Connection;
+        Statici.sfs.ThreadSafeMode = true;
+        Statici.sfs.AddEventListener(SFSEvent.CONNECTION_LOST, OnConnectionLost);
+        Statici.sfs.AddEventListener(SFSEvent.ROOM_JOIN, OnRoomJoin);
+        Statici.sfs.AddEventListener(SFSEvent.ROOM_JOIN_ERROR, OnRoomJoinError);
+        Statici.sfs.AddEventListener(SFSEvent.ROOM_ADD, OnRoomAdded);
+        Statici.sfs.AddEventListener(SFSEvent.ROOM_CREATION_ERROR, OnRoomCreationError);
+        Statici.sfs.AddEventListener(SFSEvent.ROOM_REMOVE, OnRoomRemoved);
+        Statici.sfs.AddEventListener(SFSEvent.USER_ENTER_ROOM, OnUserEnterRoom);
+        Statici.sfs.AddEventListener(SFSEvent.USER_EXIT_ROOM, OnUserExitRoom);
+        Statici.sfs.AddEventListener(SFSEvent.USER_COUNT_CHANGE, OnUserCountChange);
+        Statici.sfs.AddEventListener(SFSEvent.EXTENSION_RESPONSE, OnExtensionResponse);
+        Statici.sfs.AddEventListener(SFSEvent.PUBLIC_MESSAGE, OnPublicMessage);
 
         Statici.playerLocaleGO = Instantiate(Resources.Load(Statici.datiPersonaggio.Dati.nomeModello), startPoint.position, Quaternion.identity) as GameObject;
         NetworkPlayer netPlayer = Statici.playerLocaleGO.AddComponent<NetworkPlayer>();
@@ -501,8 +501,8 @@ public class StanzeManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (sfs != null)
-            sfs.ProcessEvents();
+        if (Statici.sfs != null)
+            Statici.sfs.ProcessEvents();
 
         //Se l'owner è uscito e la partita non è finita avviso che la stanza è stata rimossa
         if (Statici.ownerUscito && !Statici.finePartita)

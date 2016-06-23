@@ -23,7 +23,7 @@ public class ManagerNetwork : MonoBehaviour
     private GestoreCanvasNetwork gestoreCanvasNetwork;
     private Minimappa minimappa;
     private string nomeScenaSuccessiva = string.Empty;
-    private SmartFox sfs;
+    //private SmartFox sfs;
     private float tempo = 5f;
 
     public static void AggiornaPunteggi(int indicePunteggio, string nome, int numeroUccisioni)
@@ -33,7 +33,7 @@ public class ManagerNetwork : MonoBehaviour
 
     public static void CambiaScenaPortale(string nomeScena)
     {
-        me.sfs.Send(new ExtensionRequest("del", new SFSObject(), me.sfs.LastJoinedRoom));
+        Statici.sfs.Send(new ExtensionRequest("del", new SFSObject(), Statici.sfs.LastJoinedRoom));
         me.nomeScenaSuccessiva = nomeScena;
     }
 
@@ -49,7 +49,7 @@ public class ManagerNetwork : MonoBehaviour
             objOut.PutByte("a1", ne.attacchi);
       //  Debug.Log("invio attacchi " + ne.attacchi);
         if (Statici.IsPointAndClick)   //ho pensato di scomporlo qua il pacchetto ..se e' punta clicca o tastiera ..Mi assumo le responsabilita del caso      
-            me.sfs.Send(new ExtensionRequest("regC", objOut, me.sfs.LastJoinedRoom, true));
+            Statici.sfs.Send(new ExtensionRequest("regC", objOut, Statici.sfs.LastJoinedRoom, true));
        
         else
         {
@@ -57,14 +57,14 @@ public class ManagerNetwork : MonoBehaviour
             objOut.PutFloat("t", ne.jump);//Debug.Log("sto inviando salto " + ne.jump);
             objOut.PutFloat("j", ne.jumpLeg); //Debug.Log(" invio jump" + ne.jump);
             objOut.PutFloat("r", ne.turn);
-            me.sfs.Send(new ExtensionRequest("regT", objOut, me.sfs.LastJoinedRoom, true));
+            Statici.sfs.Send(new ExtensionRequest("regT", objOut, Statici.sfs.LastJoinedRoom, true));
         }   
     }
 
     public static void TimeSyncRequest()
     {
         if (!Statici.inGioco) return;
-        me.sfs.Send(new ExtensionRequest("getTime", new SFSObject(), me.sfs.LastJoinedRoom));
+        Statici.sfs.Send(new ExtensionRequest("getTime", new SFSObject(), Statici.sfs.LastJoinedRoom));
     }
 
     /// <summary>
@@ -73,19 +73,19 @@ public class ManagerNetwork : MonoBehaviour
     /// </summary>
     public void BottoneSgruppa()
     {
-        sfs.Send(new JoinRoomRequest("The Lobby"));
+        Statici.sfs.Send(new JoinRoomRequest("The Lobby"));
     }
 
     public void Disconnect()
     {
-        sfs.Disconnect();
+        Statici.sfs.Disconnect();
     }
 
     public void ModificaRaggioRemoto(float distanzaRaggio)
     {
         ISFSObject sfsObjOut = new SFSObject();
         sfsObjOut.PutFloat("dr", distanzaRaggio);
-        sfs.Send(new ExtensionRequest("raggio", sfsObjOut, sfs.LastJoinedRoom));
+        Statici.sfs.Send(new ExtensionRequest("raggio", sfsObjOut, Statici.sfs.LastJoinedRoom));
     }
 
     public void NemicoColpito(int utenteColpito)
@@ -93,7 +93,7 @@ public class ManagerNetwork : MonoBehaviour
         ISFSObject sfsObjOut = new SFSObject();
         sfsObjOut.PutInt("uco", utenteColpito);
 
-        sfs.Send(new ExtensionRequest("danno", sfsObjOut, me.sfs.LastJoinedRoom));
+        Statici.sfs.Send(new ExtensionRequest("danno", sfsObjOut, Statici.sfs.LastJoinedRoom));
     }
 
     public void OnObjectMessage(BaseEvent evt)
@@ -117,14 +117,14 @@ public class ManagerNetwork : MonoBehaviour
     {
         SFSObject objOut = new SFSObject();
         objOut.PutUtfString("nome", Statici.nomePersonaggio);
-        sfs.Send(new PublicMessageRequest(text, objOut));
+        Statici.sfs.Send(new PublicMessageRequest(text, objOut));
     }
 
     internal void Resuscita()
     {
         SFSObject objOut = new SFSObject();
         objOut.PutFloat("vitaM", Statici.datiPersonaggioLocale.VitaMassima);
-        sfs.Send(new ExtensionRequest("res", objOut, sfs.LastJoinedRoom));
+        Statici.sfs.Send(new ExtensionRequest("res", objOut, Statici.sfs.LastJoinedRoom));
     }
 
     private IEnumerator FinePartita()
@@ -148,19 +148,19 @@ public class ManagerNetwork : MonoBehaviour
         objOut.PutFloat("ry", Statici.playerLocaleGO.transform.rotation.eulerAngles.y);
 
         objOut.PutUtfString("scena", SceneManager.GetActiveScene().name);
-        sfs.Send(new ExtensionRequest("respawn", objOut, sfs.LastJoinedRoom));
+        Statici.sfs.Send(new ExtensionRequest("respawn", objOut, Statici.sfs.LastJoinedRoom));
  
     }
 
     private void OnApplicationQuit()
     {
-        sfs.Send(new LeaveRoomRequest());
+        Statici.sfs.Send(new LeaveRoomRequest());
         Disconnect();
     }
 
     private void OnConnectionLost(BaseEvent evt)
     {
-        sfs.RemoveAllEventListeners();
+        Statici.sfs.RemoveAllEventListeners();
         SceneManager.LoadScene("ScenaConnessione");
     }
 
@@ -199,7 +199,7 @@ public class ManagerNetwork : MonoBehaviour
                 Vector3 rotazioneIniziale = new Vector3(0, 0, 0);
                 rotazioneIniziale.y = sfsObjIn.GetFloat("ry");
 
-                if (sfs.MySelf.Id == utente)
+                if (Statici.sfs.MySelf.Id == utente)
                 {
                     Statici.datiPersonaggioLocale.VitaMassima = vitaMax;
                     Statici.datiPersonaggioLocale.Vita = vitaIniziale;
@@ -351,7 +351,7 @@ public class ManagerNetwork : MonoBehaviour
                     Statici.playerRemotiGestore.Clear();
                     Destroy(Statici.playerLocaleGO);
                     Statici.playerLocaleGO = null;
-                    sfs.RemoveAllEventListeners();
+                    Statici.sfs.RemoveAllEventListeners();
                     GameObject immagineCaricamento = GestoreCanvasAltreScene.ImmagineCaricamento;
                     Text casellaScrittaCaricamento = GestoreCanvasAltreScene.NomeScenaText;
                     StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica(nomeScenaSuccessiva, nomeScenaSuccessiva, immagineCaricamento, casellaScrittaCaricamento));
@@ -430,7 +430,7 @@ public class ManagerNetwork : MonoBehaviour
             }
             sgruppaButton.interactable = false;
             Statici.numeroPostoSpawn = -1;
-            sfs.RemoveAllEventListeners();
+            Statici.sfs.RemoveAllEventListeners();
             GameObject immagineCaricamento = GestoreCanvasAltreScene.ImmagineCaricamento;
             Text casellaScrittaCaricamento = GestoreCanvasAltreScene.NomeScenaText;
             StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("ScenaStanze", "The Lobby", immagineCaricamento, casellaScrittaCaricamento));
@@ -442,7 +442,7 @@ public class ManagerNetwork : MonoBehaviour
     {
         /*   Room room = (Room)evt.Params["room"];
            User user = (User)evt.Params["user"];
-           if (room.IsGame && user != sfs.MySelf)
+           if (room.IsGame && user != Statici.sfs.MySelf)
                //InvioDatiPlayerLocale(user.Id);
                InvioDatiPlayerLocale(-1);*/
     }
@@ -457,12 +457,12 @@ public class ManagerNetwork : MonoBehaviour
     {
         SFSObject obj = new SFSObject();
         obj.PutUtfString("cmd", "rm");
-        sfs.Send(new ObjectMessageRequest(obj, sfs.LastJoinedRoom));
+        Statici.sfs.Send(new ObjectMessageRequest(obj, Statici.sfs.LastJoinedRoom));
     }
 
     private void RemoveRemotePlayer(SFSUser user)
     {
-        if (user == sfs.MySelf) return;
+        if (user == Statici.sfs.MySelf) return;
 
         if (Statici.playerRemotiGestore.ContainsKey(user.Id))
         {
@@ -512,15 +512,15 @@ public class ManagerNetwork : MonoBehaviour
             StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("ScenaZero", "You're not connected to the server.", immagineCaricamento, casellaScrittaCaricamento));
             return;
         }
-        sfs = SmartFoxConnection.Connection;
-        sfs.ThreadSafeMode = true;
-        sfs.AddEventListener(SFSEvent.OBJECT_MESSAGE, OnObjectMessage);
-        sfs.AddEventListener(SFSEvent.CONNECTION_LOST, OnConnectionLost);
-        sfs.AddEventListener(SFSEvent.USER_EXIT_ROOM, OnUserExitRoom);
-        sfs.AddEventListener(SFSEvent.USER_ENTER_ROOM, OnUserEnterRoom);
-        sfs.AddEventListener(SFSEvent.EXTENSION_RESPONSE, OnExtensionResponse);
-        sfs.AddEventListener(SFSEvent.PUBLIC_MESSAGE, OnPublicMessage);
-        sfs.AddEventListener(SFSEvent.ROOM_JOIN, OnRoomJoin);
+        //Statici.sfs = SmartFoxConnection.Connection;
+        Statici.sfs.ThreadSafeMode = true;
+        Statici.sfs.AddEventListener(SFSEvent.OBJECT_MESSAGE, OnObjectMessage);
+        Statici.sfs.AddEventListener(SFSEvent.CONNECTION_LOST, OnConnectionLost);
+        Statici.sfs.AddEventListener(SFSEvent.USER_EXIT_ROOM, OnUserExitRoom);
+        Statici.sfs.AddEventListener(SFSEvent.USER_ENTER_ROOM, OnUserEnterRoom);
+        Statici.sfs.AddEventListener(SFSEvent.EXTENSION_RESPONSE, OnExtensionResponse);
+        Statici.sfs.AddEventListener(SFSEvent.PUBLIC_MESSAGE, OnPublicMessage);
+        Statici.sfs.AddEventListener(SFSEvent.ROOM_JOIN, OnRoomJoin);
 
         SpawnaPlayerLocale();
     }
@@ -528,7 +528,7 @@ public class ManagerNetwork : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (sfs != null)
-            sfs.ProcessEvents();
+        if (Statici.sfs != null)
+            Statici.sfs.ProcessEvents();
     }
 }
