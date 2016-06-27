@@ -25,10 +25,10 @@ public class ResurrezioneHandler extends BaseClientRequestHandler {
     Mondo mondo=ext.world; 
     
     Player player=mondo.dizionarioUtentiPlayer.get(user); 
-    float vitaAttuale=player.RiceviVita(player.vita, vitaAggiuntiva,player.vitaMax);
+    double vitaAttuale= player.RiceviVita(player.vita, vitaAggiuntiva,player.vitaMax);
     mondo.dizionarioUtentiPlayer.get(user).vita=vitaAttuale;//salvo la vita attuale dopo averla aggiunta.
     ISFSObject objOut=new SFSObject();
-    objOut.putFloat("vita", vitaAttuale);
+    objOut.putDouble("vita", vitaAttuale);
     objOut.putInt("u", user.getId());
     send("res",objOut,mondo.GetUtentiInScena(user.getLastJoinedRoom(), mondo.dizionarioUtentiPlayer.get(user).scena));
     }

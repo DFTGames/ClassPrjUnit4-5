@@ -5,12 +5,17 @@
  */
 package sferenetsfsextension;
 
+import com.smartfoxserver.v2.db.IDBManager;
 import com.smartfoxserver.v2.entities.Room;
 import com.smartfoxserver.v2.entities.User;
+import com.smartfoxserver.v2.entities.data.ISFSArray;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
+import com.smartfoxserver.v2.entities.data.SFSArray;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.entities.variables.RoomVariable;
 import com.smartfoxserver.v2.entities.variables.SFSRoomVariable;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -91,6 +96,8 @@ public class Mondo {
                 sonoPronti=true;
             return sonoPronti;
         }
+        
+       
         
       
 }

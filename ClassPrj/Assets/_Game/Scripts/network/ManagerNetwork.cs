@@ -123,7 +123,7 @@ public class ManagerNetwork : MonoBehaviour
     internal void Resuscita()
     {
         SFSObject objOut = new SFSObject();
-        objOut.PutFloat("vitaM", Statici.datiPersonaggioLocale.VitaMassima);
+        objOut.PutFloat("vitaM", (float)Statici.datiPersonaggioLocale.VitaMassima);
         Statici.sfs.Send(new ExtensionRequest("res", objOut, Statici.sfs.LastJoinedRoom));
     }
 
@@ -180,15 +180,15 @@ public class ManagerNetwork : MonoBehaviour
                     return;
                 string modello = sfsObjIn.GetUtfString("model");
                 string nome = sfsObjIn.GetUtfString("nome");
-                float vitaIniziale = sfsObjIn.GetFloat("vita");
-                float vitaMax = sfsObjIn.GetFloat("vitaM");
-                float mana = sfsObjIn.GetFloat("mana");
-                float manaMax = sfsObjIn.GetFloat("manaM");
-                float xp = sfsObjIn.GetFloat("xp");
-                float xpMax = sfsObjIn.GetFloat("xpM");
-                float attacco = sfsObjIn.GetFloat("att");
-                float difesa = sfsObjIn.GetFloat("dif");
-                int livello = sfsObjIn.GetInt("liv");
+                double vitaIniziale = sfsObjIn.GetDouble("vita");
+                double vitaMax = sfsObjIn.GetDouble("vitaM");
+                double mana = sfsObjIn.GetDouble("mana");
+                double manaMax = sfsObjIn.GetDouble("manaM");
+                double xp = sfsObjIn.GetDouble("xp");
+                double xpMax = sfsObjIn.GetDouble("xpM");
+                double attacco = sfsObjIn.GetDouble("att");
+                double difesa = sfsObjIn.GetDouble("dif");
+                double livello = sfsObjIn.GetDouble("liv");
                 bool giocabile = sfsObjIn.GetBool("gioc");
 
                 Vector3 posizioneIniziale = new Vector3(0, 1, 0);
@@ -298,7 +298,7 @@ public class ManagerNetwork : MonoBehaviour
 
             case ("danno"):
                 int utenteColpitoId = sfsObjIn.GetInt("uci");
-                float vita = sfsObjIn.GetFloat("vita");
+                double vita = sfsObjIn.GetDouble("vita");
                 int utenteCheHaInflittoDannoId = sfsObjIn.GetInt("userI");
                 if (Statici.datiPersonaggioLocale.Utente == utenteColpitoId)
                 {
@@ -327,7 +327,7 @@ public class ManagerNetwork : MonoBehaviour
 
             case ("res"):
                 int uId = sfsObjIn.GetInt("u");
-                float vitaResurrezione = sfsObjIn.GetFloat("vita");
+                double vitaResurrezione = sfsObjIn.GetDouble("vita");
                 if (Statici.datiPersonaggioLocale.Utente != uId)
                 {
                     DatiPersonaggio datiPersonaggioRemoto = Statici.playerRemotiGestore[uId].datiPersonaggio;

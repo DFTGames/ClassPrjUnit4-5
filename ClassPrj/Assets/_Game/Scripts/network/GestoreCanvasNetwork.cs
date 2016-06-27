@@ -81,7 +81,7 @@ public class GestoreCanvasNetwork : MonoBehaviour
         vitaNomeText.text = "Io: Nome:" + nome + " " + "Vita:" + vita + "Id:" + Statici.userLocaleId.ToString();
     }
 
-    public void VisualizzaDatiUserSelezionato(string nome, float vita)
+    public void VisualizzaDatiUserSelezionato(string nome, double vita)
     {
         ResettaScrittaNemicoAttaccato(true);
         vitaNemicoText.text = "Nome :" + nome + ": Vita: " + vita;

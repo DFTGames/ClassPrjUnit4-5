@@ -31,12 +31,12 @@ public class DannoHandler extends BaseClientRequestHandler{
         Mondo mondo=ext.world;    
         
         
-        float dannoInflitto=mondo.dizionarioUtentiPlayer.get(user).attacco-mondo.dizionarioUtentiPlayer.get(utenteColpitoUser).difesa;      
+        double dannoInflitto=mondo.dizionarioUtentiPlayer.get(user).attacco-mondo.dizionarioUtentiPlayer.get(utenteColpitoUser).difesa;      
         if(dannoInflitto<0)//se l'attacco è minore della difesa avrei un danno negativo e non posso avere un danno negativo
             dannoInflitto=0;
           
         Player player=mondo.dizionarioUtentiPlayer.get(utenteColpitoUser);   
-        float vitaAttuale=player.RiceviDanno(player.vita, dannoInflitto,player.vitaMax);//calcolo il nuovo valore della vita in base al danno inflitto
+        double vitaAttuale=player.RiceviDanno(player.vita, dannoInflitto,player.vitaMax);//calcolo il nuovo valore della vita in base al danno inflitto
         
         //salvo il nuovo valore della vita calcolato dopo aver fatto danno:
         mondo.dizionarioUtentiPlayer.get(utenteColpitoUser).vita=vitaAttuale;
@@ -52,7 +52,7 @@ public class DannoHandler extends BaseClientRequestHandler{
         
          ISFSObject isfsoOut = new SFSObject();
          isfsoOut.putInt("uci", utenteColpito);
-         isfsoOut.putFloat("vita", vitaAttuale);
+         isfsoOut.putDouble("vita", vitaAttuale);
          isfsoOut.putInt("userI", user.getId());   
        
          send("danno", isfsoOut,mondo.GetUtentiInScena(user.getLastJoinedRoom(), mondo.dizionarioUtentiPlayer.get(user).scena));

@@ -34,10 +34,10 @@ public class SwitchVivoMortoAI : MonoBehaviour {
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
-            cervello.RiceviDanno(cervello.DatiPersonaggio.VitaMassima);
+            cervello.RiceviDanno((float)cervello.DatiPersonaggio.VitaMassima);
         else
             if (Input.GetKeyDown(KeyCode.G))        
-            cervello.Resuscita(cervello.DatiPersonaggio.VitaMassima);       
+            cervello.Resuscita((float)cervello.DatiPersonaggio.VitaMassima);       
       
     }
 

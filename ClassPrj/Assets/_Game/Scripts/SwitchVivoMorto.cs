@@ -62,7 +62,7 @@ public class SwitchVivoMorto : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F))
         {
             if (!Statici.multigiocatoreOn)
-                controller.RiceviDanno(controller.DatiPersonaggio.VitaMassima);
+                controller.RiceviDanno((float)controller.DatiPersonaggio.VitaMassima);
             /*  else
               {
                   if (Statici.datiPersonaggioLocale.SonoUtenteLocale)
@@ -73,7 +73,7 @@ public class SwitchVivoMorto : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.G))
         {
             if (!Statici.multigiocatoreOn)
-                controller.Resuscita(controller.DatiPersonaggio.VitaMassima);
+                controller.Resuscita((float)controller.DatiPersonaggio.VitaMassima);
         }
     }
 }

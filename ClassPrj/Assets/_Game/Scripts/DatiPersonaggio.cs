@@ -4,23 +4,23 @@ public class DatiPersonaggio : MonoBehaviour
 {
     public classiPersonaggi miaClasse;
 
-    private float attacco;
-    private float difesa;
+    private double attacco;
+    private double difesa;
     private GestoreCanvasNetwork gestoreCanvas;
     private bool giocabile;
     private int indicePunteggio = 0;
-    private int livello;
-    private float mana;
-    private float manaMassimo;
+    private double livello;
+    private double mana;
+    private double manaMassimo;
     private string nome;
     private bool sonoUtenteLocale = false;
     private int utente;
-    private float vita;
-    private float vitaMassima;
-    private float xp;
-    private float xpMassimo;
+    private double vita;
+    private double vitaMassima;
+    private double xp;
+    private double xpMassimo;
 
-    public float Attacco
+    public double Attacco
     {
         get
         {
@@ -33,7 +33,7 @@ public class DatiPersonaggio : MonoBehaviour
         }
     }
 
-    public float Difesa
+    public double Difesa
     {
         get
         {
@@ -72,7 +72,7 @@ public class DatiPersonaggio : MonoBehaviour
         }
     }
 
-    public int Livello
+    public double Livello
     {
         get
         {
@@ -85,7 +85,7 @@ public class DatiPersonaggio : MonoBehaviour
         }
     }
 
-    public float Mana
+    public double Mana
     {
         get
         {
@@ -94,11 +94,11 @@ public class DatiPersonaggio : MonoBehaviour
 
         set
         {
-            mana = Mathf.Clamp(value, 0, manaMassimo);
+            mana = Statici.ClampDouble(value, 0, manaMassimo);
         }
     }
 
-    public float ManaMassimo
+    public double ManaMassimo
     {
         get
         {
@@ -150,7 +150,7 @@ public class DatiPersonaggio : MonoBehaviour
         }
     }
 
-    public float Vita
+    public double Vita
     {
         get
         {
@@ -159,11 +159,11 @@ public class DatiPersonaggio : MonoBehaviour
 
         set
         {
-            vita = Mathf.Clamp(value, 0, vitaMassima);
+            vita = Statici.ClampDouble(value, 0, vitaMassima);
         }
     }
 
-    public float VitaMassima
+    public double VitaMassima
     {
         get
         {
@@ -176,7 +176,7 @@ public class DatiPersonaggio : MonoBehaviour
         }
     }
 
-    public float Xp
+    public double Xp
     {
         get
         {
@@ -185,11 +185,11 @@ public class DatiPersonaggio : MonoBehaviour
 
         set
         {
-            xp = Mathf.Clamp(value, 0, xpMassimo);
+            xp = Statici.ClampDouble(value, 0, xpMassimo);
         }
     }
 
-    public float XpMassimo
+    public double XpMassimo
     {
         get
         {
@@ -202,14 +202,14 @@ public class DatiPersonaggio : MonoBehaviour
         }
     }
 
-    private float CalcolaAttaccoCorrente()
+    private double CalcolaAttaccoCorrente()
     {
         //aggiungere tutta la logica per calcolare l'attacco in base agli oggetti che indossa il personaggio che aumentano l'attacco base
         //come l'arma, o che ne so un cappello particolare ecc...
         return attacco;
     }
 
-    private float CalcolaDifesaCorrente()
+    private double CalcolaDifesaCorrente()
     {
         //aggiungere tutta la logica per calcolare la difesa in base agli oggetti che indossa il personaggio che aumentano l'attacco base
         //come la difesa che ha la tunica, o che ne so un cappello particolare ecc...

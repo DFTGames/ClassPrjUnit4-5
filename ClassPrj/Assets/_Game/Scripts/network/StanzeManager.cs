@@ -36,8 +36,7 @@ public class StanzeManager : MonoBehaviour
     private List<int> listaPronti = null;
     private bool messaggioSuSchermoOwnerOn = false;
     private short numeroMassimoUtentiInStanza = 4;
-    private short numeroMaxDecisoDaOwner = 1;
-    //private SmartFox sfs;
+    private short numeroMaxDecisoDaOwner = 1;  
     private float tempo = 0f;
     private int utentiInStanza = 0;
 
@@ -49,8 +48,7 @@ public class StanzeManager : MonoBehaviour
 
     public void BottoneGioca()
     {
-        if (Statici.nomePersonaggio != string.Empty && Statici.datiPersonaggio.Dati.nomePersonaggio != string.Empty)
-        {
+        
             if (inputNomePartita.text.Replace(" ", "") != string.Empty)
             {
                 ResettaErrore();
@@ -68,9 +66,7 @@ public class StanzeManager : MonoBehaviour
             }
             else
                 erroreText.text = "Assegnare un nome alla partita";
-        }
-        else
-            erroreText.text = "Inserire un nome e scegliere una classe";
+      
     }
 
     /// <summary>
@@ -93,13 +89,10 @@ public class StanzeManager : MonoBehaviour
 
     public void ClickBottonePartita(int roomId)
     {
-        if (Statici.nomePersonaggio != string.Empty && Statici.datiPersonaggio.Dati.nomeModello != string.Empty)
-        {
+       
             BloccaSbloccaCanvas(false);
             Statici.sfs.Send(new JoinRoomRequest(roomId));
-        }
-        else
-            erroreText.text = "Inserire un nome e scegliere una classe";
+      
     }
 
     public void Disconnect()
@@ -114,7 +107,7 @@ public class StanzeManager : MonoBehaviour
             return;
         inputChat.text = string.Empty;
         SFSObject objOut = new SFSObject();
-        objOut.PutUtfString("nome", Statici.nomePersonaggio);
+        objOut.PutUtfString("nome", Statici.valoriPersonaggioScelto.NomePersonaggio);
         Statici.sfs.Send(new PublicMessageRequest(messaggioChat, objOut));
         canvasGroupChat.interactable = false;
     }
@@ -176,21 +169,9 @@ public class StanzeManager : MonoBehaviour
     /// <param name="userId"></param>
     private void InvioDatiPlayerLocale(int userId)
     {
-        //passare tutti i dati e non solo questi
-        SFSObject objOut = new SFSObject();
-        objOut.PutUtfString("model", Statici.datiPersonaggio.Dati.nomeModello);
-        objOut.PutUtfString("nome", Statici.datiPersonaggio.Dati.nomePersonaggio);
-        objOut.PutUtfString("classe", Statici.datiPersonaggio.Dati.classe);
-        objOut.PutBool("gioc", true);
-        objOut.PutInt("liv", Statici.datiPersonaggio.Dati.Livello);
-        objOut.PutFloat("mana", Statici.datiPersonaggio.Dati.Mana);
-        objOut.PutFloat("manaM", Statici.datiPersonaggio.Dati.ManaMassimo);
-        objOut.PutFloat("exp", Statici.datiPersonaggio.Dati.Xp);
-        objOut.PutFloat("expM", Statici.datiPersonaggio.Dati.XPMassimo);
-        objOut.PutFloat("vita", Statici.datiPersonaggio.Dati.Vita);
-        objOut.PutFloat("vitaM", Statici.datiPersonaggio.Dati.VitaMassima);
-        objOut.PutFloat("att", Statici.datiPersonaggio.Dati.Attacco);
-        objOut.PutFloat("dif", Statici.datiPersonaggio.Dati.difesa);
+        SFSObject objOut = new SFSObject();    
+        objOut.PutUtfString("nome", Statici.valoriPersonaggioScelto.NomePersonaggio);
+        objOut.PutUtfString("classe", Statici.valoriPersonaggioScelto.NomeClasse);       
         objOut.PutUtfString("scena", SceneManager.GetActiveScene().name);
         objOut.PutInt("usIn", userId);
         Statici.sfs.Send(new ExtensionRequest("spawnMe", objOut, Statici.sfs.LastJoinedRoom));
@@ -241,7 +222,7 @@ public class StanzeManager : MonoBehaviour
                     Statici.numeroPostoSpawn = numeroSpawn;
                     Vector3 posizioneIniziale = GameObject.Find("Postazione" + Statici.numeroPostoSpawn.ToString()).transform.position;
                     Statici.playerLocaleGO.transform.position = posizioneIniziale;
-                    Statici.playerLocaleGO.GetComponentInChildren<TextMesh>().text = Statici.nomePersonaggio;
+                    Statici.playerLocaleGO.GetComponentInChildren<TextMesh>().text = Statici.valoriPersonaggioScelto.NomePersonaggio;
 
                     Statici.playerLocaleGO.GetComponent<NetworkPlayer>().User = utente;
 
@@ -269,7 +250,7 @@ public class StanzeManager : MonoBehaviour
                 break;
 
             case ("ready"):
-                Statici.nomeModello = Statici.datiPersonaggio.Dati.nomeModello;
+                Statici.nomeModello = Statici.valoriPersonaggioScelto.NomeModello;
                 Statici.posizioneInizialeMulti = "start";
                 CaricaScena();
                 break;
@@ -287,6 +268,9 @@ public class StanzeManager : MonoBehaviour
                 int[] utentiPronti = sfsObjIn.GetIntArray("listUP");
                 listaPronti = new List<int>(utentiPronti);
 
+                break;
+            case (Statici.CMD_NESSUN_PERSONAGGIO_TROVATO):
+                Debug.LogError("nessun personaggio trovato con questo nome in PersonaggioUtente remoto");//decidere cosa fare in questo caso se disconnettersi o fare altro buuuu.
                 break;
 
             default:
@@ -475,7 +459,7 @@ public class StanzeManager : MonoBehaviour
             StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("ScenaZero", "You're not connected to the server.", immagineCaricamento, scrittaCaricamento));
             return;
         }
-//        sfs = SmartFoxConnection.Connection;
+
         Statici.sfs.ThreadSafeMode = true;
         Statici.sfs.AddEventListener(SFSEvent.CONNECTION_LOST, OnConnectionLost);
         Statici.sfs.AddEventListener(SFSEvent.ROOM_JOIN, OnRoomJoin);
@@ -489,12 +473,12 @@ public class StanzeManager : MonoBehaviour
         Statici.sfs.AddEventListener(SFSEvent.EXTENSION_RESPONSE, OnExtensionResponse);
         Statici.sfs.AddEventListener(SFSEvent.PUBLIC_MESSAGE, OnPublicMessage);
 
-        Statici.playerLocaleGO = Instantiate(Resources.Load(Statici.datiPersonaggio.Dati.nomeModello), startPoint.position, Quaternion.identity) as GameObject;
+        Statici.playerLocaleGO = Instantiate(Resources.Load(Statici.valoriPersonaggioScelto.NomeModello), startPoint.position, Quaternion.identity) as GameObject;
         NetworkPlayer netPlayer = Statici.playerLocaleGO.AddComponent<NetworkPlayer>();
         netPlayer.playerLocale = true;
         Statici.playerLocaleGO.GetComponent<ControllerMaga>().Net = netPlayer;
 
-        Statici.playerLocaleGO.GetComponentInChildren<TextMesh>().text = Statici.nomePersonaggio;
+        Statici.playerLocaleGO.GetComponentInChildren<TextMesh>().text = Statici.valoriPersonaggioScelto.NomePersonaggio;
         PopolaListaPartite();
     }
 

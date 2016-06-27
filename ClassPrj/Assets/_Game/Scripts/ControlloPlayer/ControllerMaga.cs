@@ -202,7 +202,7 @@ public class ControllerMaga : MonoBehaviour
         if (DatiPersonaggio.Vita > 0f)
         {
             DatiPersonaggio.Vita += quanto;
-            SalvaDatiVita();
+            GestoreCanvasAltreScene.AggiornaVita();
         }
     }
 
@@ -210,7 +210,7 @@ public class ControllerMaga : MonoBehaviour
     {
         DatiPersonaggio.Vita += quanto;
         switchVivoMorto.DisattivaRagdoll();
-        SalvaDatiVita();
+        GestoreCanvasAltreScene.AggiornaVita();
         Statici.PersonaggioPrincipaleT.position = GameObject.Find(Statici.datiPersonaggio.Dati.posizioneCheckPoint).transform.position;
     }
 
@@ -219,7 +219,7 @@ public class ControllerMaga : MonoBehaviour
         DatiPersonaggio.Vita -= quanto;
         if (DatiPersonaggio.Vita <= 0f)
             switchVivoMorto.AttivaRagdoll();
-        SalvaDatiVita();
+        GestoreCanvasAltreScene.AggiornaVita();
     }
 
     private void Attacco()
@@ -303,12 +303,12 @@ public class ControllerMaga : MonoBehaviour
 
 
 
-    private void SalvaDatiVita()
+  /*  private void SalvaDatiVita()
     {
         Statici.datiPersonaggio.Dati.Vita = DatiPersonaggio.Vita;
         Statici.datiPersonaggio.Salva();
         GestoreCanvasAltreScene.AggiornaVita();
-    }
+    }*/
 
     private void Start()
     {
@@ -357,7 +357,7 @@ public class ControllerMaga : MonoBehaviour
             if (DatiPersonaggio.Vita <= 0f)
             {
                 DatiPersonaggio.Vita = 1f;
-                SalvaDatiVita();
+                GestoreCanvasAltreScene.AggiornaVita();
             }
         }
         else
