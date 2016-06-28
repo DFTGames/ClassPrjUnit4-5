@@ -22,6 +22,7 @@ public class DatiPersonaggioPartenza
     public string NomeModelloF { get; set; }
     public string NomeScena { get; set; }
     public string CheckPoint { get; set; }
+   
 
     
 }

@@ -87,7 +87,7 @@ public class Statici
     public static SmartFox sfs;
     public static SFSArray arrayPersNewPersUt = new SFSArray();//array da passare ai metodi per aggiornare la tabella locale PersonaggiUtente se si crea un nuovo personaggio
     public static SFSArray arrayPersNewPersDipPers = new SFSArray();//array da passare ai metodi per aggiornare la tabella locale DiplomaziaPersonaggio se si crea un nuovo personaggio
-    
+    public static DatiPersonaggioPartenza valoriPersonaggioScelto = new DatiPersonaggioPartenza();//dati iniziali da considerare una volta scelto il personaggio sia da nuovo personaggio che da carica personaggio.
 
     public static bool EliminatoPersonaggioDaDbLocale(string nomePersonaggioDaEliminare)
     {
@@ -581,7 +581,8 @@ public class Statici
         {
 
             SqliteCommand cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT Personaggi_idPersonaggio, nomeModello, nomePersonaggio, vitaMassima, attaccoBase, difesaBase, nomeScena, checkPoint "+
+            cmd.CommandText = @"SELECT Personaggi_idPersonaggio, nomeModello, nomePersonaggio, vitaMassima, vitaAttuale, manaMassimo, manaAttuale, "+
+                "livelloAttuale, xpAttuale,attaccoBase, difesaBase, nomeScena, checkPoint " +
                 "FROM VistaPersonaggiUtenteValidi WHERE Utenti_idUtente = @idUtente";
             cmd.Parameters.Add(new SqliteParameter("@idUtente", idDB));
             _reader = cmd.ExecuteReader();
@@ -777,6 +778,49 @@ public class Statici
             Statici.sfs.Send(new ExtensionRequest(CMD_RICHIESTA_DIPLOMAZIA_PERSONAGGIO, new SFSObject()));
 
         //aggiungere altri else if se necessario
+    }
+
+    public static string GiveMeNomeClasse(int idClasse)
+    {
+        string nomeClasse = string.Empty;
+        SqliteDataReader _reader = null;
+        try
+        {
+
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT nome FROM VistaPersonaggiGiocabiliValidi WHERE ClassiPersonaggi_idClassiPersonaggi = @idClasse";
+            cmd.Parameters.Add(new SqliteParameter("@idClasse", idClasse));
+            _reader = cmd.ExecuteReader();
+            if (_reader.HasRows)
+            {
+                while (_reader.Read())
+                {
+                    nomeClasse = (string)_reader["nome"];
+                    
+                }
+            }
+            else
+            {
+                if (!_reader.IsClosed)
+                    _reader.Close();
+                Debug.LogError("personaggio non trovato durante la ricerca della classe");
+            }
+
+            }
+        catch (Exception ex)
+        {
+            Debug.LogError("errore lettura nomeClasse dalla tabella Personaggi" + ex.Message);
+           
+
+        }
+        finally
+        {
+            if (!_reader.IsClosed)
+                _reader.Close();
+
+        }
+
+        return nomeClasse;
     }
 
     public static bool AggiornaPersonaggiUtente(SFSArray arrayPers)
@@ -1144,4 +1188,14 @@ public class Statici
         conn.StateChange += Conn_StateChange;
         conn.Open();
     }
+
+    public static double ClampDouble(double val, double min, double max) 
+    {
+        if (val.CompareTo(min)<0) return min;
+        else if (val.CompareTo(max) > 0) return max;
+        else return val;
+    }
+
+   
 }
+

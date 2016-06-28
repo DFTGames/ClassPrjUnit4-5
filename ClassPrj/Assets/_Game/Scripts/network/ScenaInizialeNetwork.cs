@@ -8,12 +8,12 @@ public class ScenaInizialeNetwork : MonoBehaviour
     private static ScenaInizialeNetwork me;
    
 
-    public static void RichiestaCreazionePersonaggio(string classePersonaggio, byte sesso)
+    public static void RichiestaCreazionePersonaggio(string classePersonaggio, byte sesso, string nomePersonaggio)
     {
         SFSObject objOut = new SFSObject();
         objOut.PutUtfString("classe", classePersonaggio);
         objOut.PutByte("sesso", sesso);
-        objOut.PutUtfString("nome", Statici.nomePersonaggio);
+        objOut.PutUtfString("nome", nomePersonaggio);
         Statici.sfs.Send(new ExtensionRequest(Statici.CMD_INSERISCI_NUOVO_PERSONAGGIO, objOut));
     }
 
@@ -23,10 +23,10 @@ public class ScenaInizialeNetwork : MonoBehaviour
         ManagerIniziale.CaricaScena(nomeScena, scritta);
     }
 
-    internal static void CancellaPersonaggio(string nomePersonaggio)
+    internal static void CancellaPersonaggio()
     {
         SFSObject objOut = new SFSObject();
-        objOut.PutUtfString("nome", nomePersonaggio);
+        objOut.PutUtfString("nome", Statici.nomePersonaggio);
         Statici.sfs.Send(new ExtensionRequest(Statici.CMD_CANCELLA_PERSONAGGIO, objOut));
     }
 

@@ -3,6 +3,7 @@ using Sfs2X.Entities.Data;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class ManagerIniziale : MonoBehaviour
 {
@@ -136,6 +137,38 @@ public class ManagerIniziale : MonoBehaviour
 
     public static void CaricaScena(string nomeScena, string scrittaCaricamento)
     {
+        //copio i dati del personaggio scelto in una lista da usare nelle altre scene all'inizio del gioco per non dover riaprire di nuovo il db
+        List<DatiPersonaggioPartenza> listaDaCopiare = new List<DatiPersonaggioPartenza>();
+        int indice = 0;
+        if(me.caricaPartita)
+        {
+            listaDaCopiare = me.listaDatiPersLoad;
+            indice = me.elencoCartelleDropDown.value;
+        }else
+        {
+            listaDaCopiare = me.listaDatiPersNew;
+            indice = me.IndiceClasseSuccessivaPrecedente;
+        }
+        
+               
+        Statici.valoriPersonaggioScelto.IdClassePersonaggio = listaDaCopiare[indice].IdClassePersonaggio;
+        Statici.valoriPersonaggioScelto.NomePersonaggio = listaDaCopiare[indice].NomePersonaggio;
+        Statici.valoriPersonaggioScelto.NomeModello = listaDaCopiare[indice].NomeModello;
+        Statici.valoriPersonaggioScelto.NomeScena = listaDaCopiare[indice].NomeScena;
+        Statici.valoriPersonaggioScelto.AttaccoBase = listaDaCopiare[indice].AttaccoBase;
+        Statici.valoriPersonaggioScelto.DifesaBase = listaDaCopiare[indice].DifesaBase;
+        Statici.valoriPersonaggioScelto.LivelloPartenza = listaDaCopiare[indice].LivelloPartenza;
+        Statici.valoriPersonaggioScelto.XpPartenza = listaDaCopiare[indice].XpPartenza;
+        Statici.valoriPersonaggioScelto.VitaMassima = listaDaCopiare[indice].VitaMassima;
+        Statici.valoriPersonaggioScelto.VitaAttuale = listaDaCopiare[indice].VitaAttuale;
+        Statici.valoriPersonaggioScelto.ManaMassimo = listaDaCopiare[indice].ManaMassimo;
+        Statici.valoriPersonaggioScelto.ManaAttuale = listaDaCopiare[indice].ManaAttuale;
+        Statici.valoriPersonaggioScelto.NomeClasse = Statici.GiveMeNomeClasse(listaDaCopiare[indice].IdClassePersonaggio);
+    
+
+        Statici.nomePersonaggio= listaDaCopiare[indice].NomePersonaggio;
+        Statici.nomeModello= listaDaCopiare[indice].NomeModello;
+
         me.animatoreMenuCarica.gameObject.SetActive(false);
         me.animatoreMenuCreazione.gameObject.SetActive(false);
         me.animatoreMainMenu.gameObject.SetActive(false);
@@ -150,12 +183,15 @@ public class ManagerIniziale : MonoBehaviour
 
     public static void SollevaErroreScenaInizialeCaricamentoPg(string testo)
     {
+        me.canvasGroupCarica.interactable = true;
         me.erroreCaricamento.text = testo;
     }
 
     public static void SollevaErroreScenaInizialeCreazionePg(string testo)
     {
+        me.canvasGroupCreazione.interactable = true;        
         me.erroreCreazioneText.text = testo;
+
     }
 
     public void AnnullaDaCaricamento()
@@ -195,7 +231,8 @@ public class ManagerIniziale : MonoBehaviour
 
     public void CancellaPartita()
     {
-        ScenaInizialeNetwork.CancellaPersonaggio(Statici.nomePersonaggio);
+        Statici.nomePersonaggio = listaDatiPersLoad[elencoCartelleDropDown.value].NomePersonaggio;
+        ScenaInizialeNetwork.CancellaPersonaggio();
     }
 
     public void CaricaPartita()
@@ -216,7 +253,8 @@ public class ManagerIniziale : MonoBehaviour
             erroreCreazioneText.text = "Inserire un nome";
         else
         {
-            erroreCreazioneText.text = string.Empty;
+            
+            erroreCreazioneText.text = string.Empty;            
             ScenaInizialeNetwork.ControllaSeNomeEsiste(testoNome.text.Trim());
         }
     }
@@ -226,11 +264,17 @@ public class ManagerIniziale : MonoBehaviour
         canvasGroupCreazione.interactable = false;
         canvasGroupCarica.interactable = false;
         Statici.sonoPassatoDallaScenaIniziale = true;
-        if (!Statici.multigiocatoreOn)
-            ScenaInizialeNetwork.VaiAlleStanze(listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena, listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena);
-        else
-            ScenaInizialeNetwork.VaiAlleStanze("ScenaStanze", "The Lobby");
+        
+            if (!Statici.multigiocatoreOn)
+                ScenaInizialeNetwork.VaiAlleStanze(listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena, listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena);
+            else
+                ScenaInizialeNetwork.VaiAlleStanze("ScenaStanze", "The Lobby");
+        
     }
+
+   
+      
+   
 
     public void DecisionePercorsoCambioSesso()
     {
@@ -270,7 +314,7 @@ public class ManagerIniziale : MonoBehaviour
     {
         if (elencoCartelleDropDown.options.Count <= 0) return;
         if (nuovaPartita) return;
-        Statici.nomePersonaggio = elencoCartelleDropDown.options[elencoCartelleDropDown.value].text;
+        Statici.nomePersonaggio = elencoCartelleDropDown.options[elencoCartelleDropDown.value].text.Trim();
         vitaCaricamento.text = listaDatiPersLoad[elencoCartelleDropDown.value].VitaMassima.ToString();
         attaccoCaricamento.text = listaDatiPersLoad[elencoCartelleDropDown.value].AttaccoBase.ToString();
         difesaCaricamento.text = listaDatiPersLoad[elencoCartelleDropDown.value].DifesaBase.ToString();
@@ -328,6 +372,7 @@ public class ManagerIniziale : MonoBehaviour
             bottoneEliminaPartita.interactable = true;
             elencoCartelleDropDown.value = -1;    //visualizzo sempre il primo elemento della lista
             Statici.nomePersonaggio = elencoCartelleDropDown.options[elencoCartelleDropDown.value].text;
+            
         }
         else
         {
@@ -363,29 +408,32 @@ public class ManagerIniziale : MonoBehaviour
         me.canvasGroupCarica.interactable = false;
         me.erroreCaricamento.text = string.Empty;
         Statici.sonoPassatoDallaScenaIniziale = true;
-        Statici.nomePersonaggio = me.testoNome.text;
+        me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].NomePersonaggio = me.testoNome.text;
         byte sesso = 0;
         if (me.elencoSessiDropDown.value == 0)
         {
             sesso = 0;
-            Statici.nomeModello = me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].NomeModelloM;
+            me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].NomeModello = me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].NomeModelloM;
         }
         else
         {
             sesso = 1;
-            Statici.nomeModello = me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].NomeModelloF;
+            me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].NomeModello = me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].NomeModelloF;
         }
         SFSObject obj = new SFSObject();
-        obj.PutUtfString("nomePersonaggio", Statici.nomePersonaggio);
+        obj.PutUtfString("nomePersonaggio", me.testoNome.text);
         obj.PutInt("Utenti_idUtente", Statici.idDB);
-        obj.PutUtfString("nomeModello", Statici.nomeModello);
+        obj.PutInt("Personaggi_idPersonaggio", me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].IdClassePersonaggio);
+        obj.PutUtfString("nomeModello", me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].NomeModello);
         obj.PutInt("eliminato", 0);
         obj.PutDouble("vitaMassima", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].VitaMassima);
         obj.PutDouble("vitaAttuale", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].VitaAttuale);
         obj.PutDouble("manaMassimo", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].ManaMassimo);
         obj.PutDouble("manaAttuale", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].ManaAttuale);
-        obj.PutDouble("livelloPartenza", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].LivelloPartenza);
-        obj.PutDouble("xpPartenza", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].XpPartenza);
+        obj.PutDouble("livelloAttuale", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].LivelloPartenza);
+        obj.PutDouble("xpAttuale", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].XpPartenza);
+        obj.PutDouble("attaccoBase", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].AttaccoBase);
+        obj.PutDouble("difesaBase", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].DifesaBase);
         obj.PutUtfString("nomeScena", "Isola");
         obj.PutUtfString("checkPoint", "start");
         Statici.arrayPersNewPersUt.AddSFSObject(obj);
@@ -404,7 +452,7 @@ public class ManagerIniziale : MonoBehaviour
                 Statici.arrayPersNewPersDipPers.AddSFSObject(obj2);
             }
         }
-        ScenaInizialeNetwork.RichiestaCreazionePersonaggio(me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].NomeClasse, sesso);
+        ScenaInizialeNetwork.RichiestaCreazionePersonaggio(me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].NomeClasse, sesso, me.testoNome.text.Trim());
     }
 
     private void CambiaAlphaPannelloSfondo()
@@ -456,7 +504,7 @@ public class ManagerIniziale : MonoBehaviour
         //mi faccio dare i dati della tabella Personaggi da cui prendo i dati in caso di nuovo personaggio
         SqliteDataReader reader = Statici.GiveMePersonaggiDBLocale();
         listaDatiPersNew.Clear();
-        listaDatiPersNew = null;
+       
 
         valoreMassimo = 0;
         if (reader.HasRows)
@@ -477,8 +525,8 @@ public class ManagerIniziale : MonoBehaviour
                 dpp.DifesaBase = (decimal)reader["difesaBase"];
                 dpp.NomeModelloM = (string)reader["modelloM"];
                 dpp.NomeModelloF = (string)reader["modelloF"];
-
                 listaDatiPersNew.Add(dpp);
+
                 string tmpNomeModelloM = (string)reader["modelloM"];
                 string tmpNomeModelloF = (string)reader["modelloF"];
                 dizionarioCollegamentoNomiConModelli.Add(tmpNomeModelloM, Instantiate(Resources.Load(tmpNomeModelloM), GameObject.Find("postazione" + contatoreGiocabili).transform.FindChild("posizioneM").position, new Quaternion(0f, 180f, 0f, 0f)) as GameObject);
@@ -496,7 +544,7 @@ public class ManagerIniziale : MonoBehaviour
 
         //mi facio dare i dati dalla tabella PersonaggiUtente in caso di personaggi già esistenti
         listaDatiPersLoad.Clear();
-        listaDatiPersLoad = null;
+      
         reader = Statici.GiveMePersonaggiUtenteDBLocale();
         if (reader.HasRows)
         {
@@ -504,12 +552,19 @@ public class ManagerIniziale : MonoBehaviour
             {
                 DatiPersonaggioPartenza dpp = new DatiPersonaggioPartenza();
                 dpp.VitaMassima = (decimal)reader["vitaMassima"];
+                dpp.VitaAttuale = (decimal)reader["vitaAttuale"];
+                dpp.ManaMassimo = (decimal)reader["manaMassimo"];
+                dpp.ManaAttuale = (decimal)reader["manaAttuale"];
                 dpp.AttaccoBase = (decimal)reader["attaccoBase"];
                 dpp.DifesaBase = (decimal)reader["difesaBase"];
                 dpp.NomePersonaggio = (string)reader["nomePersonaggio"];
                 dpp.NomeModello = (string)reader["nomeModello"];
                 dpp.NomeScena = (string)reader["nomeScena"];
                 dpp.CheckPoint = (string)reader["checkPoint"];
+                dpp.LivelloPartenza = (decimal)reader["livelloAttuale"];
+                dpp.XpPartenza = (decimal)reader["xpAttuale"];
+                dpp.IdPersonaggio = (int)reader["Personaggi_idPersonaggio"];
+
                 listaDatiPersLoad.Add(dpp);
             }
         }

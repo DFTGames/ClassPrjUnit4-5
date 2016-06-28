@@ -56,15 +56,15 @@ public class GestoreCanvasAltreScene : MonoBehaviour
         me.valoreAttaccoText.text = datiPersonaggio.Attacco.ToString();
         me.valoreDifesaText.text = datiPersonaggio.Difesa.ToString();
         me.sliderVita.minValue = 0f;
-        me.sliderVita.maxValue = datiPersonaggio.VitaMassima;
-        me.sliderVita.value = datiPersonaggio.Vita;
+        me.sliderVita.maxValue =(float) datiPersonaggio.VitaMassima;
+        me.sliderVita.value =(float) datiPersonaggio.Vita;
         me.personaggio = datiPersonaggio;
     }
 
     public static void AggiornaVita()
     {
         me.valoreVitaText.text = me.personaggio.Vita.ToString();
-        me.sliderVita.value = me.personaggio.Vita;
+        me.sliderVita.value =(float) me.personaggio.Vita;
     }
 
     public void Update()

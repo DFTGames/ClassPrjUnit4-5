@@ -16,8 +16,8 @@ import java.util.Hashtable;
 public class Player {
     
     Transform t;
-    float vita;
-    float vitaMax;            
+    double vita;
+    double vitaMax;            
     String modello;
     String nome;
     String classe;
@@ -27,31 +27,38 @@ public class Player {
     int numeroSpawn=0;
     boolean postoAssegnato=false;
     boolean pronto=false;
-    float mana;
-    float manaMax;
-    float attacco;
-    float difesa;
+    double mana;
+    double manaMax;
+    double attacco;
+    double difesa;
     boolean giocabile=false;
-    float xp;
-    float xpMax;
-    int livello=0;
+    double xp;
+    double xpMax;
+    double livello=0;
      
     //l'ho usato per risorgere passandogli la vita massima ma questo metodo si può usare anche nel caso si beva una pozione:
-    public float RiceviVita(float vitaAttuale,float vitaAggiuntiva, float vitaMassima){
+    public double RiceviVita(double vitaAttuale,double vitaAggiuntiva, double vitaMassima){
         vitaAttuale+=vitaAggiuntiva;
-        vitaAttuale=Clamp(vitaAttuale, 0, vitaMassima);
+        
+        vitaAttuale= clamp(vitaAttuale, 0d, vitaMassima);
         return vitaAttuale;
     }  
     
-    public float RiceviDanno(float vitaAttuale,float danno,float vitaMassima){               
+    public double RiceviDanno(double vitaAttuale,double danno,double vitaMassima){               
         vitaAttuale-=danno;  
-        vitaAttuale=Clamp(vitaAttuale, 0, vitaMassima);
+        vitaAttuale=clamp(vitaAttuale, 0d, vitaMassima);
         return vitaAttuale;
     }   
     
+    //clamp di float
       public float Clamp(float valore, float minimo, float massimo){
         return Math.max(minimo, Math.min(massimo, valore));
    }
     
- 
+      //clamp di qualsiasi tipo
+  public static <T extends Comparable<T>> T clamp(T val, T min, T max) {
+    if (val.compareTo(min) < 0) return min;
+    else if (val.compareTo(max) > 0) return max;
+    else return val;
+}
 }
