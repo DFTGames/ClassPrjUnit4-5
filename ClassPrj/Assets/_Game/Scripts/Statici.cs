@@ -9,6 +9,7 @@ using UnityEngine;
 
 //using UnityEditor;
 
+
 public class Statici
 {
     public const string NomeFileAudio = "Audio.dat";
@@ -28,7 +29,10 @@ public class Statici
     public const string CMD_INSERISCI_NUOVO_PERSONAGGIO = "insP";
     public const string CMD_CANCELLA_PERSONAGGIO = "delP";
     public const string CMD_RICHIESTA_SE_NOME_ESISTE = "nExist";
-    
+    public const string CMD_REGISTRA_SINGLEPLAYER_START = "reg";
+    public const int NEUTRO = 1;
+    public const int AMICO = 2;
+    public const int NEMICO = 3;
 
     //fine variabili multigiocatore
     public const string STR_PercorsoConfig2 = "PercorsoConfigurazione";
@@ -44,9 +48,9 @@ public class Statici
     public static Serializzabile<ValoriPersonaggioS> datiPersonaggio;
     public static DatiPersonaggio datiPersonaggioLocale;
     public static bool diplomaziaAggiornata = false;
-    public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiAmici = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
-    public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiIndifferenti = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
-    public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiNemici = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
+    public static Dictionary<int, List<int>> dizionarioDiAmici = new Dictionary<int, List<int>>();
+    public static Dictionary<int, List<int>> dizionarioDiIndifferenti = new Dictionary<int, List<int>>();
+    public static Dictionary<int, List<int>> dizionarioDiNemici = new Dictionary<int, List<int>>();
     public static bool finePartita = false;
 
     //da verificare se servirà ancora o no
@@ -88,6 +92,7 @@ public class Statici
     public static SFSArray arrayPersNewPersUt = new SFSArray();//array da passare ai metodi per aggiornare la tabella locale PersonaggiUtente se si crea un nuovo personaggio
     public static SFSArray arrayPersNewPersDipPers = new SFSArray();//array da passare ai metodi per aggiornare la tabella locale DiplomaziaPersonaggio se si crea un nuovo personaggio
     public static DatiPersonaggioPartenza valoriPersonaggioScelto = new DatiPersonaggioPartenza();//dati iniziali da considerare una volta scelto il personaggio sia da nuovo personaggio che da carica personaggio.
+    public static List<int> listaIdPersonaggiAI = new List<int>();
 
     public static bool EliminatoPersonaggioDaDbLocale(string nomePersonaggioDaEliminare)
     {
@@ -158,6 +163,70 @@ public class Statici
         }
 
         return valoreRitorno;
+    }
+
+    internal static void RecuperaDizionariDiplomazia(int idClasse)
+    {
+        dizionarioDiNemici.Clear();
+        dizionarioDiIndifferenti.Clear();
+        dizionarioDiAmici.Clear();
+        List<int> tmpNemici = null;
+        List<int> tmpAmici = null;
+        List<int> tmpIndifferenti = null;
+        SqliteDataReader reader = null;
+        tmpNemici = new List<int>();
+        tmpIndifferenti = new List<int>();
+        tmpAmici = new List<int>();
+
+        reader = GiveMeDiplomaziaLocale(idClasse);
+        if (reader.HasRows)
+        {
+            while (reader.Read())
+            {
+                SFSObject obj2 = new SFSObject();
+                int idClasse1 = obj2.GetInt("ClassiPersonaggi_idClasse");
+                int idClasse2 = obj2.GetInt("ClassiPersonaggi2_idClasse");
+                int relazione= obj2.GetInt("relazione");
+                
+                switch (relazione)
+                {
+                    case 1://neutro
+                        if (!tmpIndifferenti.Contains(NEUTRO))
+                            tmpIndifferenti.Add(relazione);
+                        break;
+
+                    case 2://amico
+                        if (!tmpAmici.Contains(AMICO))
+                            tmpAmici.Add(relazione);
+                        break;
+
+                    case 3://nemico
+                        if (!tmpNemici.Contains(NEMICO))
+                            tmpNemici.Add(relazione);
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
+        }
+        
+
+            if (!Statici.dizionarioDiNemici.ContainsKey(NEMICO))
+                Statici.dizionarioDiNemici.Add(NEMICO, tmpNemici);
+            if (!Statici.dizionarioDiAmici.ContainsKey(AMICO))
+                Statici.dizionarioDiAmici.Add(AMICO, tmpAmici);
+            if (!Statici.dizionarioDiIndifferenti.ContainsKey(NEUTRO))
+                Statici.dizionarioDiIndifferenti.Add(NEUTRO, tmpIndifferenti);
+
+
+        
+       /* if (vistaGoblin != null)
+            vistaGoblin.AmiciziaCambiata = true;
+        if (oggettoDaMarcare != null)
+            oggettoDaMarcare.ControllaAmicizia = true;*/
+       diplomaziaAggiornata = true;
     }
 
     public static bool AggiornaPersonaggi(SFSArray arrayPers)
@@ -573,6 +642,7 @@ public class Statici
 
         return _reader;
     }
+    
 
     internal static SqliteDataReader GiveMePersonaggiUtenteDBLocale()
     {
@@ -617,6 +687,29 @@ public class Statici
 
         }
    
+        return _reader;
+    }
+
+    internal static SqliteDataReader GiveMePersonaggiAIDBLocale(int idClasse)
+    {
+        SqliteDataReader _reader = null;
+        try
+        {
+
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT idPersonaggio, ClassiPersonaggi_idClassiPersonaggi, modelloM, nome, vitaMassima, vitaAttuale, manaMassimo, manaAttuale, livelloPartenza, xpPartenza, " +
+                "attaccoBase, difesaBase FROM VistaPersonaggiNonGiocabiliValidi WHERE ClassiPersonaggi_idClassiPersonaggi = @idClasse";
+            cmd.Parameters.Add(new SqliteParameter("@idClasse", idDB));
+            _reader = cmd.ExecuteReader();
+
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("errore lettura dalla tabella Personaggi per goblin" + ex.Message);
+            
+
+        }
+
         return _reader;
     }
 
@@ -1105,39 +1198,61 @@ public class Statici
     /// <param name="datiStatistici"></param>
     public static void RecuperaDati(DatiPersonaggio datiStatistici)
     {
-        int tmpID = datiStatistici.GetInstanceID();
-        int indice = databaseInizialeProprieta.classePersonaggio.IndexOf(registroDatiPersonaggi[tmpID].miaClasse.ToString());
-        registroDatiPersonaggi[tmpID].Giocabile = databaseInizialeProprieta.matriceProprieta[indice].giocabile;
+        int tmpID = datiStatistici.GetInstanceID();        
+        registroDatiPersonaggi[tmpID].Giocabile = datiStatistici.Giocabile;
         if (!registroDatiPersonaggi[tmpID].Giocabile)
         { //se è un personaggio AI recupero i dati dallo scriptble object
-            registroDatiPersonaggi[tmpID].VitaMassima = databaseInizialeProprieta.matriceProprieta[indice].Vita;
-            registroDatiPersonaggi[tmpID].Vita = databaseInizialeProprieta.matriceProprieta[indice].Vita;
-            registroDatiPersonaggi[tmpID].ManaMassimo = databaseInizialeProprieta.matriceProprieta[indice].Mana;
-            registroDatiPersonaggi[tmpID].Mana = databaseInizialeProprieta.matriceProprieta[indice].Mana;
-            registroDatiPersonaggi[tmpID].Livello = databaseInizialeProprieta.matriceProprieta[indice].Livello;
-            registroDatiPersonaggi[tmpID].XpMassimo = databaseInizialeProprieta.matriceProprieta[indice].Xp;
-            registroDatiPersonaggi[tmpID].Xp = databaseInizialeProprieta.matriceProprieta[indice].Xp;
-            registroDatiPersonaggi[tmpID].Attacco = databaseInizialeProprieta.matriceProprieta[indice].Attacco;
-            registroDatiPersonaggi[tmpID].Difesa = databaseInizialeProprieta.matriceProprieta[indice].difesa;
+
+            SqliteDataReader _reader = GiveMePersonaggiAIDBLocale(datiStatistici.IdMiaClasse);
+            if (_reader.HasRows)
+            {
+                while (_reader.Read())
+                {
+                 
+                    registroDatiPersonaggi[tmpID].VitaMassima = (double)_reader["vitaMassima"];
+                    registroDatiPersonaggi[tmpID].Vita = (double)_reader["vitaAttuale"];
+                    registroDatiPersonaggi[tmpID].ManaMassimo = (double)_reader["manaMassimo"];
+                    registroDatiPersonaggi[tmpID].Mana = (double)_reader["manaAttuale"];
+                    registroDatiPersonaggi[tmpID].Livello = (double)_reader["livelloPartenza"];
+                    registroDatiPersonaggi[tmpID].XpMassimo = (double)_reader["xpPartenza"];
+                    registroDatiPersonaggi[tmpID].Xp = (double)_reader["xpPartenza"];
+                    registroDatiPersonaggi[tmpID].Attacco = (double)_reader["attaccoBase"];
+                    registroDatiPersonaggi[tmpID].Difesa = (double)_reader["difesaBase"];
+                    registroDatiPersonaggi[tmpID].Nome = (string)_reader["nome"];
+                    registroDatiPersonaggi[tmpID].IdMiaClasse = (int)_reader["ClassiPersonaggi_idClassiPersonaggi"];
+                    registroDatiPersonaggi[tmpID].NomeClasse = (string)_reader["nome"];
+                    PersonaggioPrincipaleT.GetComponentInChildren<TextMesh>().text = registroDatiPersonaggi[tmpID].Nome;
+
+                }
+            }
+            else
+            {
+                if (!_reader.IsClosed)
+                    _reader.Close();
+                Debug.LogError("personaggio AI non trovato durante la ricerca della classe");
+            }
+           
         }
         else
         {  //se è giocabile recupero i dati dal file serializzato
-            registroDatiPersonaggi[tmpID].VitaMassima = Statici.datiPersonaggio.Dati.VitaMassima;
-            registroDatiPersonaggi[tmpID].Vita = Statici.datiPersonaggio.Dati.Vita;
-            registroDatiPersonaggi[tmpID].ManaMassimo = Statici.datiPersonaggio.Dati.ManaMassimo;
-            registroDatiPersonaggi[tmpID].Mana = Statici.datiPersonaggio.Dati.Mana;
-            registroDatiPersonaggi[tmpID].Livello = Statici.datiPersonaggio.Dati.Livello;
-            registroDatiPersonaggi[tmpID].XpMassimo = Statici.datiPersonaggio.Dati.XPMassimo;
-            registroDatiPersonaggi[tmpID].Xp = Statici.datiPersonaggio.Dati.Xp;
-            registroDatiPersonaggi[tmpID].Attacco = Statici.datiPersonaggio.Dati.Attacco;
-            registroDatiPersonaggi[tmpID].Difesa = Statici.datiPersonaggio.Dati.difesa;
-            registroDatiPersonaggi[tmpID].Nome = Statici.datiPersonaggio.Dati.nomePersonaggio;
+            registroDatiPersonaggi[tmpID].VitaMassima = (double)valoriPersonaggioScelto.VitaMassima;
+            registroDatiPersonaggi[tmpID].Vita =(double)valoriPersonaggioScelto.VitaAttuale;
+            registroDatiPersonaggi[tmpID].ManaMassimo = (double)valoriPersonaggioScelto.ManaMassimo;
+            registroDatiPersonaggi[tmpID].Mana = (double)valoriPersonaggioScelto.ManaAttuale;
+            registroDatiPersonaggi[tmpID].Livello = (double)valoriPersonaggioScelto.LivelloPartenza;
+            registroDatiPersonaggi[tmpID].XpMassimo = (double)valoriPersonaggioScelto.XpPartenza;
+            registroDatiPersonaggi[tmpID].Xp = (double)valoriPersonaggioScelto.XpPartenza;
+            registroDatiPersonaggi[tmpID].Attacco = (double)valoriPersonaggioScelto.AttaccoBase;
+            registroDatiPersonaggi[tmpID].Difesa = (double)valoriPersonaggioScelto.DifesaBase;
+            registroDatiPersonaggi[tmpID].Nome = valoriPersonaggioScelto.NomePersonaggio;
+            registroDatiPersonaggi[tmpID].IdMiaClasse= valoriPersonaggioScelto.IdClassePersonaggio;
+            registroDatiPersonaggi[tmpID].NomeClasse= valoriPersonaggioScelto.NomeClasse;
             PersonaggioPrincipaleT.GetComponentInChildren<TextMesh>().text = registroDatiPersonaggi[tmpID].Nome;
 
             GestoreCanvasAltreScene.AggiornaDati(datiStatistici);
 
             Statici.personaggio = datiStatistici;
-            classeDiColuiCheVuoleCambiareAmicizia = datiStatistici.miaClasse.ToString();
+            classeDiColuiCheVuoleCambiareAmicizia = datiStatistici.IdMiaClasse.ToString();
         }
     }
 

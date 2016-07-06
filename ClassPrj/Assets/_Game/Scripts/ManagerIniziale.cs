@@ -37,7 +37,7 @@ public class ManagerIniziale : MonoBehaviour
     public Text valoreVita;
     public Text vitaCaricamento;
     public Slider volumiAmbiente;
-    public Slider volumiSFX;
+    public Slider volumiSFX;   
 
     [Range(-20f, 20f)]
     public float ZOffSet;
@@ -76,6 +76,8 @@ public class ManagerIniziale : MonoBehaviour
     private int valoreMassimo = 0;
     private Vector3 velocita = Vector3.zero;
     private float zeta;
+
+   
 
     public int IndiceClasseSuccessivaPrecedente
     {
@@ -264,11 +266,15 @@ public class ManagerIniziale : MonoBehaviour
         canvasGroupCreazione.interactable = false;
         canvasGroupCarica.interactable = false;
         Statici.sonoPassatoDallaScenaIniziale = true;
-        
-            if (!Statici.multigiocatoreOn)
-                ScenaInizialeNetwork.VaiAlleStanze(listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena, listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena);
-            else
-                ScenaInizialeNetwork.VaiAlleStanze("ScenaStanze", "The Lobby");
+
+        if (!Statici.multigiocatoreOn)
+        {
+            Statici.valoriPersonaggioScelto.NomeScena = listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena;
+            ScenaInizialeNetwork.CreaStanzaSinglePlayer();
+        }
+        //  ScenaInizialeNetwork.VaiAlleStanze(listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena, listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena);
+        else
+            ScenaInizialeNetwork.VaiAlleStanze("ScenaStanze", "The Lobby");
         
     }
 
@@ -479,14 +485,15 @@ public class ManagerIniziale : MonoBehaviour
     private void ObiettivoDaInquadrareXZ()
     {
         obiettivoDaInquadrare = (elencoSessiDropDown.value == 0) ?
-           dizionarioCollegamentoNomiConModelli[Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM].transform.position :
-           dizionarioCollegamentoNomiConModelli[Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF].transform.position;
+           dizionarioCollegamentoNomiConModelli[listaDatiPersNew[IndiceClasseSuccessivaPrecedente].NomeModelloM].transform.position :
+           dizionarioCollegamentoNomiConModelli[listaDatiPersNew[IndiceClasseSuccessivaPrecedente].NomeModelloF].transform.position;
         zeta = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.z - ZOffSet) : obiettivoDaInquadrare.z + ZOffSet;
         ics = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.x + 5) : (obiettivoDaInquadrare.x - 5);
     }
 
     private void ResettaIndiceCambiato()
     {
+       
         indiceCambiato = false;
     }
 

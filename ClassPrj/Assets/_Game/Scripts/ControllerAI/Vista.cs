@@ -49,7 +49,7 @@ public class Vista : MonoBehaviour
         datiAltroPersonaggio = coll.GetComponent<DatiPersonaggio>();
         if (datiAltroPersonaggio != null)
         {
-            if (Statici.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
+            if (Statici.dizionarioDiNemici[datiPersonaggio.IdMiaClasse].Contains(datiAltroPersonaggio.IdMiaClasse))
                 listaNemiciDentroNonVisti.Add(coll.transform);
         }
     }
@@ -70,11 +70,11 @@ public class Vista : MonoBehaviour
             datiAltroPersonaggio = coll.GetComponent<DatiPersonaggio>();
             if (datiAltroPersonaggio != null)
             {
-                if (Statici.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
+                if (Statici.dizionarioDiNemici[datiPersonaggio.IdMiaClasse].Contains(datiAltroPersonaggio.IdMiaClasse) && !listaNemiciDentroNonVisti.Contains(coll.transform) && !listaNemiciVisti.Contains(coll.transform))
                     listaNemiciDentroNonVisti.Add(coll.transform);
-                else if (listaNemiciVisti.Contains(coll.transform) && !Statici.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
+                else if (listaNemiciVisti.Contains(coll.transform) && !Statici.dizionarioDiNemici[datiPersonaggio.IdMiaClasse].Contains(datiAltroPersonaggio.IdMiaClasse))
                     listaNemiciVisti.Remove(coll.transform);
-                else if (listaNemiciDentroNonVisti.Contains(coll.transform) && !Statici.dizionarioDiNemici[datiPersonaggio.miaClasse].Contains(datiAltroPersonaggio.miaClasse))
+                else if (listaNemiciDentroNonVisti.Contains(coll.transform) && !Statici.dizionarioDiNemici[datiPersonaggio.IdMiaClasse].Contains(datiAltroPersonaggio.IdMiaClasse))
                     listaNemiciDentroNonVisti.Remove(coll.transform);
                 AmiciziaCambiata = false;
             }

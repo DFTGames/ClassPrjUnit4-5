@@ -17,3 +17,6 @@ Isola/Assets/Free_Rocks/demo
 Isola/Assets/Water FX Pack/Demo Scenes
 Library/
 *.pdb
+/Server/SinglePlayerExtension/SinglePlayerExtension/nbproject/private/
+/Server/SinglePlayerExtension/SinglePlayerExtension/build/
+/Server/SinglePlayerExtension/SinglePlayerExtension/dist/

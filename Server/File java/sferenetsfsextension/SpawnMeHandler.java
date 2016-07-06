@@ -36,22 +36,23 @@ public class SpawnMeHandler extends BaseClientRequestHandler {
         SfereNetSfsExtension ext = (SfereNetSfsExtension) this.getParentExtension();
         Mondo mondo = ext.world;
         Player player = new Player();
-       
+
         try {
             IDBManager dbManager = null;
             Connection connection = null;
             dbManager = getParentExtension().getParentZone().getDBManager();
             connection = dbManager.getConnection();
+            //cerco il personaggio nella tabella PersonaggiUtente per ricavarne i valori
             String querySql = "SELECT * FROM PersonaggiUtente WHERE nomePersonaggio=? ";
             ISFSArray rit = dbManager.executeQuery(querySql, new Object[]{isfso.getUtfString("nome")});
             if (rit.size() > 0) {
                 player.nome = isfso.getUtfString("nome");
                 player.scena = isfso.getUtfString("scena");
-                player.classe = isfso.getUtfString("classe");
+                //player.classe = isfso.getUtfString("classe");
 
-                ISFSObject obj = rit.getSFSObject(0);
-                player.vita = obj.getDouble("vitaAttuale");
+                ISFSObject obj = rit.getSFSObject(0);               
                 player.vitaMax = obj.getDouble("vitaMassima");
+                player.vita = player.vitaMax;
                 player.modello = obj.getUtfString("nomeModello");
                 player.attacco = obj.getDouble("attaccoBase");
                 player.difesa = obj.getDouble("difesaBase");
@@ -63,28 +64,36 @@ public class SpawnMeHandler extends BaseClientRequestHandler {
                 player.giocabile = true;
                 player.vivo = true;
                 player.numeroUccisioni = 0;
+                player.idClasse = obj.getInt("Personaggi_idPersonaggio");
 
-                if (mondo.dizionarioUtentiPlayer.get(user) == null) {
+                //cerco il nome della classe in base all'idClasse nella tabella Personaggi e se lo trovo assegno tutti i valori al dizionario
+                querySql = "SELECT nome FROM Personaggi WHERE ClassiPersonaggi_idClassiPersonaggi=? ";
+                ISFSArray rit2 = dbManager.executeQuery(querySql, new Object[]{player.idClasse});
+                if (rit2.size() > 0) {
+                    ISFSObject obj2 = rit2.getSFSObject(0);
+                    player.classe = obj2.getUtfString("nome");
 
-                    player.numeroSpawn = mondo.listaSpawnPointLiberi.get(0);
-                    mondo.listaSpawnPointLiberi.remove(0);
-                    mondo.dizionarioUtentiPlayer.put(user, player);
-                    mondo.utenteOwner = user.getLastJoinedRoom().getOwner();
+                    if (mondo.dizionarioUtentiPlayer.get(user) == null) {
 
-                }
+                        player.numeroSpawn = mondo.listaSpawnPointLiberi.get(0);
+                        mondo.listaSpawnPointLiberi.remove(0);
+                        mondo.dizionarioUtentiPlayer.put(user, player);
+                        mondo.utenteOwner = user.getLastJoinedRoom().getOwner();
 
-                ISFSObject objOut = new SFSObject();
-                objOut.putUtfString("model", mondo.dizionarioUtentiPlayer.get(user).modello);
-                objOut.putUtfString("nome", mondo.dizionarioUtentiPlayer.get(user).nome);
+                    }
 
-                objOut.putInt("ut", user.getId());
-                objOut.putInt("nSpawn", mondo.dizionarioUtentiPlayer.get(user).numeroSpawn);
-                if (userDaAvvisare == -1)//avviso tutti quelli dentro la stanza
-                {
-                    send("spawnMe", objOut, user.getLastJoinedRoom().getUserList());
-                } else//avviso solo quello specificato cioè quello appena entrato
-                {
-                    send("spawnMe", objOut, user.getLastJoinedRoom().getUserById(userDaAvvisare));
+                    ISFSObject objOut = new SFSObject();
+                    objOut.putUtfString("model", mondo.dizionarioUtentiPlayer.get(user).modello);
+                    objOut.putUtfString("nome", mondo.dizionarioUtentiPlayer.get(user).nome);
+                    objOut.putInt("ut", user.getId());
+                    objOut.putInt("nSpawn", mondo.dizionarioUtentiPlayer.get(user).numeroSpawn);
+                    if (userDaAvvisare == -1)//avviso tutti quelli dentro la stanza
+                    {
+                        send("spawnMe", objOut, user.getLastJoinedRoom().getUserList());
+                    } else//avviso solo quello specificato cioè quello appena entrato
+                    {
+                        send("spawnMe", objOut, user.getLastJoinedRoom().getUserById(userDaAvvisare));
+                    }
                 }
 
             } else {

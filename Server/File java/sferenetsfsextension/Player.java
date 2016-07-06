@@ -21,6 +21,7 @@ public class Player {
     String modello;
     String nome;
     String classe;
+    int idClasse;
     String scena; 
     boolean vivo=true;
     int numeroUccisioni=0;

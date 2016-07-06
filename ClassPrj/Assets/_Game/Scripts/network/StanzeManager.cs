@@ -171,7 +171,7 @@ public class StanzeManager : MonoBehaviour
     {
         SFSObject objOut = new SFSObject();    
         objOut.PutUtfString("nome", Statici.valoriPersonaggioScelto.NomePersonaggio);
-        objOut.PutUtfString("classe", Statici.valoriPersonaggioScelto.NomeClasse);       
+       // objOut.PutUtfString("classe", Statici.valoriPersonaggioScelto.NomeClasse);       
         objOut.PutUtfString("scena", SceneManager.GetActiveScene().name);
         objOut.PutInt("usIn", userId);
         Statici.sfs.Send(new ExtensionRequest("spawnMe", objOut, Statici.sfs.LastJoinedRoom));
@@ -448,7 +448,7 @@ public class StanzeManager : MonoBehaviour
         canvasGroup.interactable = true;
         Statici.datiPersonaggio = new Serializzabile<ValoriPersonaggioS>(Statici.NomeFilePersonaggio);
         Statici.finePartita = false;
-        sliderUserMax.minValue = 2;
+        sliderUserMax.minValue = 1;
         sliderUserMax.maxValue = numeroMassimoUtentiInStanza;
         contenutoPartiteCanvasGroup = ContenutoListaPartite.GetComponent<CanvasGroup>();
         BloccaSbloccaCanvas(true);

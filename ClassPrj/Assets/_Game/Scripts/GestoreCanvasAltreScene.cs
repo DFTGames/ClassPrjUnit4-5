@@ -52,7 +52,7 @@ public class GestoreCanvasAltreScene : MonoBehaviour
     {
         me.nomeText.text = datiPersonaggio.Nome;
         me.valoreVitaText.text = datiPersonaggio.Vita.ToString();
-        me.valoreTipoText.text = datiPersonaggio.miaClasse.ToString();
+        me.valoreTipoText.text = datiPersonaggio.NomeClasse;
         me.valoreAttaccoText.text = datiPersonaggio.Attacco.ToString();
         me.valoreDifesaText.text = datiPersonaggio.Difesa.ToString();
         me.sliderVita.minValue = 0f;

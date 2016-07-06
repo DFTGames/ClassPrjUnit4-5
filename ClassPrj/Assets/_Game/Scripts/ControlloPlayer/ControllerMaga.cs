@@ -352,7 +352,9 @@ public class ControllerMaga : MonoBehaviour
 
         if (!Statici.multigiocatoreOn)
         {
+            DatiPersonaggio.IdMiaClasse = Statici.valoriPersonaggioScelto.IdClassePersonaggio;
             Statici.RegistraDatiPersonaggio(DatiPersonaggio);
+            Statici.RecuperaDizionariDiplomazia(DatiPersonaggio.IdMiaClasse);
             //se all'inizio della partita si ritrova a 0 di vita, gli do 1 di vita così non nasce morto.
             if (DatiPersonaggio.Vita <= 0f)
             {

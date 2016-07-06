@@ -616,7 +616,7 @@ GameObject:
   m_IsActive: 1
 --- !u!1 &128070
 GameObject:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 4
@@ -624,6 +624,7 @@ GameObject:
   - 224: {fileID: 22476980}
   - 114: {fileID: 11405580}
   - 114: {fileID: 11406820}
+  - 114: {fileID: 11455504}
   m_Layer: 5
   m_Name: ManagerNetwork
   m_TagString: Untagged
@@ -3252,7 +3253,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animatoreChat: {fileID: 9585822}
   canvaMultiGO: {fileID: 186364}
-  canvasGroup: {fileID: 22596332}
+  canvasGroupChat: {fileID: 22596332}
+  chat: {fileID: 121484}
   chiAttaccaText: {fileID: 11489782}
   contenutoChat: {fileID: 11461356}
   inputChat: {fileID: 11416690}
@@ -3815,6 +3817,21 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &11455504
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 128070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0775e0b60ee53b442965209e9612fe9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  punteggi: {fileID: 0}
+  punteggiGiocatori:
+  - {fileID: 11435120}
+  sgruppaButton: {fileID: 0}
 --- !u!114 &11455762
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4774,7 +4791,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 11431274}
   m_HandleRect: {fileID: 22457604}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -5912,6 +5929,7 @@ RectTransform:
   - {fileID: 22439754}
   - {fileID: 22482704}
   - {fileID: 22420644}
+  - {fileID: 22476980}
   - {fileID: 22436034}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -6465,10 +6483,9 @@ RectTransform:
   - {fileID: 22452786}
   - {fileID: 22434368}
   - {fileID: 22448350}
-  - {fileID: 22476980}
   - {fileID: 22463572}
   m_Father: {fileID: 22403810}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
@@ -7123,7 +7140,7 @@ RectTransform:
   - {fileID: 22458082}
   - {fileID: 22477736}
   m_Father: {fileID: 22436034}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 164, y: 0}
@@ -7362,8 +7379,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
-  m_Father: {fileID: 22436034}
-  m_RootOrder: 10
+  m_Father: {fileID: 22403810}
+  m_RootOrder: 5
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
