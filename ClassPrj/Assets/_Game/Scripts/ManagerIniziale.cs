@@ -160,6 +160,7 @@ public class ManagerIniziale : MonoBehaviour
         Statici.valoriPersonaggioScelto.AttaccoBase = listaDaCopiare[indice].AttaccoBase;
         Statici.valoriPersonaggioScelto.DifesaBase = listaDaCopiare[indice].DifesaBase;
         Statici.valoriPersonaggioScelto.LivelloPartenza = listaDaCopiare[indice].LivelloPartenza;
+        Statici.valoriPersonaggioScelto.XpMassimo = listaDaCopiare[indice].XpMassimo;
         Statici.valoriPersonaggioScelto.XpPartenza = listaDaCopiare[indice].XpPartenza;
         Statici.valoriPersonaggioScelto.VitaMassima = listaDaCopiare[indice].VitaMassima;
         Statici.valoriPersonaggioScelto.VitaAttuale = listaDaCopiare[indice].VitaAttuale;
@@ -437,6 +438,7 @@ public class ManagerIniziale : MonoBehaviour
         obj.PutDouble("manaMassimo", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].ManaMassimo);
         obj.PutDouble("manaAttuale", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].ManaAttuale);
         obj.PutDouble("livelloAttuale", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].LivelloPartenza);
+        obj.PutDouble("xpMassimo", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].XpMassimo);
         obj.PutDouble("xpAttuale", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].XpPartenza);
         obj.PutDouble("attaccoBase", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].AttaccoBase);
         obj.PutDouble("difesaBase", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].DifesaBase);
@@ -526,6 +528,7 @@ public class ManagerIniziale : MonoBehaviour
                 dpp.ManaMassimo = (decimal)reader["manaMassimo"];
                 dpp.ManaAttuale = (decimal)reader["manaAttuale"];
                 dpp.LivelloPartenza = (decimal)reader["livelloPartenza"];
+                dpp.XpMassimo = (decimal)reader["xpMassimo"];
                 dpp.XpPartenza = (decimal)reader["xpPartenza"];
                 dpp.NomeClasse = (string)reader["nome"];
                 dpp.AttaccoBase = (decimal)reader["attaccoBase"];
@@ -569,6 +572,7 @@ public class ManagerIniziale : MonoBehaviour
                 dpp.NomeScena = (string)reader["nomeScena"];
                 dpp.CheckPoint = (string)reader["checkPoint"];
                 dpp.LivelloPartenza = (decimal)reader["livelloAttuale"];
+                dpp.XpMassimo = (decimal)reader["xpMassimo"];
                 dpp.XpPartenza = (decimal)reader["xpAttuale"];
                 dpp.IdPersonaggio = (int)reader["Personaggi_idPersonaggio"];
 

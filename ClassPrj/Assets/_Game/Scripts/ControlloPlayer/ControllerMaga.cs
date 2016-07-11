@@ -376,7 +376,7 @@ public class ControllerMaga : MonoBehaviour
         //AGGIUNTA MULTIPLAYER
         if (!Statici.inGioco || (Statici.multigiocatoreOn && !DatiPersonaggio.SonoUtenteLocale))
         {
-            rigidBody.isKinematic = false;
+           // rigidBody.isKinematic = false;
             capsula.enabled = true;
             navMeshAgent.enabled = false;
             return;

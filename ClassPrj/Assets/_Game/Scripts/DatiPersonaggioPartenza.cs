@@ -12,6 +12,7 @@ public class DatiPersonaggioPartenza
     public decimal ManaMassimo { get; set; }
     public decimal ManaAttuale { get; set; }
     public decimal LivelloPartenza { get; set; }
+    public decimal XpMassimo { get; set; }
     public decimal XpPartenza { get; set; }
     public string NomeClasse { get; set; }
     public decimal AttaccoBase { get; set; }

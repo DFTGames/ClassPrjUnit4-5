@@ -161,7 +161,7 @@ public class ManagerNetwork : MonoBehaviour
     private void OnConnectionLost(BaseEvent evt)
     {
         Statici.sfs.RemoveAllEventListeners();
-        SceneManager.LoadScene("ScenaConnessione");
+        SceneManager.LoadScene("ScenaZero");
     }
 
     private void OnExtensionResponse(BaseEvent evt)
@@ -402,7 +402,7 @@ public class ManagerNetwork : MonoBehaviour
                 break;
 
             default:
-                break;
+                break;               
         }
     }
 
@@ -438,7 +438,7 @@ public class ManagerNetwork : MonoBehaviour
             Statici.numeroPostoSpawn = -1;
             Statici.sfs.RemoveAllEventListeners();
             GameObject immagineCaricamento = GestoreCanvasAltreScene.ImmagineCaricamento;
-            Text casellaScrittaCaricamento = GestoreCanvasAltreScene.NomeScenaText;
+            Text casellaScrittaCaricamento = GestoreCanvasAltreScene.NomeScenaText;            
             StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("ScenaStanze", "The Lobby", immagineCaricamento, casellaScrittaCaricamento));
             gestoreCanvasNetwork.VisualizzaNascondiCanvasGroup(false);
         }
@@ -456,7 +456,14 @@ public class ManagerNetwork : MonoBehaviour
     private void OnUserExitRoom(BaseEvent evt)
     {
         SFSUser user = (SFSUser)evt.Params["user"];
+        Room room = (Room)evt.Params["room"];
         RemoveRemotePlayer(user);
+        if (user == Statici.sfs.MySelf && room.IsGame)
+        {
+            if (Statici.SalvaPersonaggiUtente())
+                Debug.Log("dati personaggio utente salvti in db locale, richiedere ts");
+        }
+
     }
 
     private void RemoveLocalPlayer()

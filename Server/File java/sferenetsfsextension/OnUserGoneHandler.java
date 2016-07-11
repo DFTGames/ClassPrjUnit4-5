@@ -39,13 +39,18 @@ public class OnUserGoneHandler extends BaseServerEventHandler{
            send("ownOut", new SFSObject(),room.getUserList());
             trace("owner Uscito");
         }
-        if(mondo.dizionarioUtentiPlayer.get(user)!=null)  {  
-            int numeroSpawnLibero=mondo.dizionarioUtentiPlayer.get(user).numeroSpawn;
+        Player player=mondo.dizionarioUtentiPlayer.get(user);
+        if(player!=null)  {  
+            if ( player.SalvaDati(ext)){
+                trace("dati player salvati");
+            }else
+                trace("dati player non salvati");
+            int numeroSpawnLibero=player.numeroSpawn;
             mondo.listaSpawnPointLiberi.add(numeroSpawnLibero);
             mondo.RiordinaListaSpawnPoint();
              if(mondo.listaUtentiPronti.contains(user.getId())){
                  mondo.numeroUtentiPronti--;
-                 mondo.dizionarioUtentiPlayer.get(user).pronto=false;
+                 player.pronto=false;
                mondo.listaUtentiPronti.remove(user);
                
             }
