@@ -2,8 +2,10 @@
 
 public class DatiPersonaggio : MonoBehaviour
 {
-    public classiPersonaggi miaClasse;
+    //public classiPersonaggi miaClasse;//sistemare questo per i percorsi perchè questo va sostituito con idMiaClasse
 
+    private int idMiaClasse;
+    private string nomeClasse;
     private double attacco;
     private double difesa;
     private GestoreCanvasNetwork gestoreCanvas;
@@ -19,6 +21,33 @@ public class DatiPersonaggio : MonoBehaviour
     private double vitaMassima;
     private double xp;
     private double xpMassimo;
+
+    public int IdMiaClasse
+    {
+        get
+        {
+            return idMiaClasse;
+        }
+
+        set
+        {
+            idMiaClasse = value;
+        }
+    }
+
+    public string NomeClasse
+    {
+        get
+        {
+            return nomeClasse;
+        }
+
+        set
+        {
+            nomeClasse = value;
+        }
+    }
+
 
     public double Attacco
     {
@@ -202,6 +231,7 @@ public class DatiPersonaggio : MonoBehaviour
         }
     }
 
+  
     private double CalcolaAttaccoCorrente()
     {
         //aggiungere tutta la logica per calcolare l'attacco in base agli oggetti che indossa il personaggio che aumentano l'attacco base

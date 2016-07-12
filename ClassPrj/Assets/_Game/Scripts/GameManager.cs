@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
     private Collider precedente = null;
     private Vista vistaGoblin;
 
-    public void RecuperaDizionariDiplomazia()
+   /* public void RecuperaDizionariDiplomazia()
     {
         Statici.dizionarioDiNemici.Clear();
         Statici.dizionarioDiIndifferenti.Clear();
@@ -58,19 +58,14 @@ public class GameManager : MonoBehaviour
             if (!Statici.dizionarioDiIndifferenti.ContainsKey((classiPersonaggi)i))
                 Statici.dizionarioDiIndifferenti.Add((classiPersonaggi)i, tmpIndifferenti);
 
-            /*
-            foreach (KeyValuePair<classiPersonaggi, List<classiPersonaggi>> pair in Statici.dizionarioDiNemici)
-            {
-                Debug.Log("chiave  " + pair.Key + "valore   " + pair.Value[0]);
-            }
-            */
+           
         }
         if (vistaGoblin != null)
             vistaGoblin.AmiciziaCambiata = true;
         if (oggettoDaMarcare != null)
             oggettoDaMarcare.ControllaAmicizia = true;
         Statici.diplomaziaAggiornata = true;
-    }
+    }*/
 
     private void Awake()
     {
@@ -98,7 +93,7 @@ public class GameManager : MonoBehaviour
             GameObject tmpObjP = Instantiate(Resources.Load(Statici.datiPersonaggio.Dati.nomeModello), GameObject.Find(Statici.datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
 
             Statici.PersonaggioPrincipaleT = tmpObjP.transform;
-            RecuperaDizionariDiplomazia();
+           // Statici.RecuperaDizionariDiplomazia();
         }
         else
         {
@@ -138,7 +133,7 @@ public class GameManager : MonoBehaviour
             }
             GameObject tmpObjP = Instantiate(Resources.Load(Statici.datiPersonaggio.Dati.nomeModello), GameObject.Find(Statici.datiPersonaggio.Dati.posizioneCheckPoint).transform.position, Quaternion.identity) as GameObject;
             Statici.PersonaggioPrincipaleT = tmpObjP.transform;
-            RecuperaDizionariDiplomazia();
+            //Statici.RecuperaDizionariDiplomazia();
             Statici.CopiaIlDB();
             Statici.sonoPassatoDallaScenaIniziale = true;
         }

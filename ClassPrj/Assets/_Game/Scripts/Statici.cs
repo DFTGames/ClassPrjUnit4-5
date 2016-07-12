@@ -9,6 +9,7 @@ using UnityEngine;
 
 //using UnityEditor;
 
+
 public class Statici
 {
     public const string NomeFileAudio = "Audio.dat";
@@ -28,7 +29,10 @@ public class Statici
     public const string CMD_INSERISCI_NUOVO_PERSONAGGIO = "insP";
     public const string CMD_CANCELLA_PERSONAGGIO = "delP";
     public const string CMD_RICHIESTA_SE_NOME_ESISTE = "nExist";
-    
+    public const string CMD_REGISTRA_SINGLEPLAYER_START = "reg";
+    public const int NEUTRO = 1;
+    public const int AMICO = 2;
+    public const int NEMICO = 3;
 
     //fine variabili multigiocatore
     public const string STR_PercorsoConfig2 = "PercorsoConfigurazione";
@@ -44,9 +48,9 @@ public class Statici
     public static Serializzabile<ValoriPersonaggioS> datiPersonaggio;
     public static DatiPersonaggio datiPersonaggioLocale;
     public static bool diplomaziaAggiornata = false;
-    public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiAmici = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
-    public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiIndifferenti = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
-    public static Dictionary<classiPersonaggi, List<classiPersonaggi>> dizionarioDiNemici = new Dictionary<classiPersonaggi, List<classiPersonaggi>>();
+    public static Dictionary<int, List<int>> dizionarioDiAmici = new Dictionary<int, List<int>>();
+    public static Dictionary<int, List<int>> dizionarioDiIndifferenti = new Dictionary<int, List<int>>();
+    public static Dictionary<int, List<int>> dizionarioDiNemici = new Dictionary<int, List<int>>();
     public static bool finePartita = false;
 
     //da verificare se servirà ancora o no
@@ -83,11 +87,12 @@ public class Statici
     public static SqliteConnection conn;
     private static string destinazione = Application.persistentDataPath + "/dbgioco.db";
     private static string origine = Application.streamingAssetsPath + "/dbgioco.db";
-    public static int idDB=0;
+    public static int idDB = 0;
     public static SmartFox sfs;
     public static SFSArray arrayPersNewPersUt = new SFSArray();//array da passare ai metodi per aggiornare la tabella locale PersonaggiUtente se si crea un nuovo personaggio
     public static SFSArray arrayPersNewPersDipPers = new SFSArray();//array da passare ai metodi per aggiornare la tabella locale DiplomaziaPersonaggio se si crea un nuovo personaggio
     public static DatiPersonaggioPartenza valoriPersonaggioScelto = new DatiPersonaggioPartenza();//dati iniziali da considerare una volta scelto il personaggio sia da nuovo personaggio che da carica personaggio.
+    public static List<int> listaIdPersonaggiAI = new List<int>();
 
     public static bool EliminatoPersonaggioDaDbLocale(string nomePersonaggioDaEliminare)
     {
@@ -99,8 +104,8 @@ public class Statici
             SqliteCommand cmd = conn.CreateCommand();
             cmd.Transaction = tr;
             int numeroRighe = 0;
-         
-           
+
+
             cmd.CommandText = @"UPDATE PersonaggiUtente SET eliminato = @eliminato WHERE nomePersonaggio = @nomePersonaggio";
 
             cmd.Parameters.Add(new SqliteParameter("@nomePersonaggio", nomePersonaggioDaEliminare));
@@ -125,7 +130,8 @@ public class Statici
                     Debug.Log("ho aggiornato una riga della tabella DiplomaziaPersonaggio");
                     valoreRitorno = true;
                     tr.Commit();
-                }else
+                }
+                else
                 {
                     ManagerIniziale.SollevaErroreScenaInizialeCaricamentoPg("fallita eliminazione personaggio da DiplomaziaPersonaggio perchè il personaggio non esiste");
                     Debug.LogError("fallita eliminazione personaggio da DiplomaziaPersonaggio perchè il personaggio non esiste");
@@ -160,12 +166,76 @@ public class Statici
         return valoreRitorno;
     }
 
+    internal static void RecuperaDizionariDiplomazia(int idClasse)
+    {
+        dizionarioDiNemici.Clear();
+        dizionarioDiIndifferenti.Clear();
+        dizionarioDiAmici.Clear();
+        List<int> tmpNemici = null;
+        List<int> tmpAmici = null;
+        List<int> tmpIndifferenti = null;
+        SqliteDataReader reader = null;
+        tmpNemici = new List<int>();
+        tmpIndifferenti = new List<int>();
+        tmpAmici = new List<int>();
+
+        reader = GiveMeDiplomaziaLocale(idClasse);
+        if (reader.HasRows)
+        {
+            while (reader.Read())
+            {
+                SFSObject obj2 = new SFSObject();
+                int idClasse1 = obj2.GetInt("ClassiPersonaggi_idClasse");
+                int idClasse2 = obj2.GetInt("ClassiPersonaggi2_idClasse");
+                int relazione = obj2.GetInt("relazione");
+
+                switch (relazione)
+                {
+                    case 1://neutro
+                        if (!tmpIndifferenti.Contains(NEUTRO))
+                            tmpIndifferenti.Add(relazione);
+                        break;
+
+                    case 2://amico
+                        if (!tmpAmici.Contains(AMICO))
+                            tmpAmici.Add(relazione);
+                        break;
+
+                    case 3://nemico
+                        if (!tmpNemici.Contains(NEMICO))
+                            tmpNemici.Add(relazione);
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
+        }
+
+
+        if (!Statici.dizionarioDiNemici.ContainsKey(NEMICO))
+            Statici.dizionarioDiNemici.Add(NEMICO, tmpNemici);
+        if (!Statici.dizionarioDiAmici.ContainsKey(AMICO))
+            Statici.dizionarioDiAmici.Add(AMICO, tmpAmici);
+        if (!Statici.dizionarioDiIndifferenti.ContainsKey(NEUTRO))
+            Statici.dizionarioDiIndifferenti.Add(NEUTRO, tmpIndifferenti);
+
+
+
+        /* if (vistaGoblin != null)
+             vistaGoblin.AmiciziaCambiata = true;
+         if (oggettoDaMarcare != null)
+             oggettoDaMarcare.ControllaAmicizia = true;*/
+        diplomaziaAggiornata = true;
+    }
+
     public static bool AggiornaPersonaggi(SFSArray arrayPers)
     {
         bool valoreRitorno = false;
         SqliteTransaction tr = null;
         try
-        {         
+        {
             tr = conn.BeginTransaction();
             SqliteCommand cmd = conn.CreateCommand();
             cmd.Transaction = tr;
@@ -186,6 +256,7 @@ public class Statici
                 double manaMassimo = objArr.GetDouble("manaMassimo");
                 double manaAttuale = objArr.GetDouble("manaAttuale");
                 double livelloPartenza = objArr.GetDouble("livelloPartenza");
+                double xpMassimo = objArr.GetDouble("xpMassimo");
                 double xpPartenza = objArr.GetDouble("xpPartenza");
                 double attaccoBase = objArr.GetDouble("attaccoBase");
                 double difesaBase = objArr.GetDouble("difesaBase");
@@ -193,7 +264,7 @@ public class Statici
                 try
                 {
                     cmd.CommandText = @"INSERT INTO Personaggi VALUES (@idPersonaggio,@idClasse, @eliminato,  @giocabile," +
-                    " @modelloM, @modelloF, @nome, @vitaMassima, @vitaAttuale,  @manaMassimo, @manaAttuale, @livelloPartenza, @xpPartenza, @attaccoBase, @difesaBase)";
+                    " @modelloM, @modelloF, @nome, @vitaMassima, @vitaAttuale,  @manaMassimo, @manaAttuale, @livelloPartenza, @xpPartenza, @attaccoBase, @difesaBase, @xpMassimo)";
                     cmd.Parameters.Add(new SqliteParameter("@idPersonaggio", idPersonaggio));
                     cmd.Parameters.Add(new SqliteParameter("@idClasse", idClasse));
                     cmd.Parameters.Add(new SqliteParameter("@eliminato", eliminato));
@@ -206,6 +277,7 @@ public class Statici
                     cmd.Parameters.Add(new SqliteParameter("@manaMassimo", manaMassimo));
                     cmd.Parameters.Add(new SqliteParameter("@manaAttuale", manaAttuale));
                     cmd.Parameters.Add(new SqliteParameter("@livelloPartenza", livelloPartenza));
+                    cmd.Parameters.Add(new SqliteParameter("@xpMassimo", xpMassimo));
                     cmd.Parameters.Add(new SqliteParameter("@xpPartenza", xpPartenza));
                     cmd.Parameters.Add(new SqliteParameter("@attaccoBase", attaccoBase));
                     cmd.Parameters.Add(new SqliteParameter("@difesaBase", difesaBase));
@@ -215,7 +287,7 @@ public class Statici
                 }
                 catch
                 {
-                    
+
                     try
                     {
                         cmd.CommandText = @"UPDATE Personaggi SET idPersonaggio = @idPersonaggio, ClassiPersonaggi_idClassiPersonaggi = @idClasse ,eliminato = @eliminato" +
@@ -244,14 +316,14 @@ public class Statici
                             ControllerLogin.SollevaErroreAggiornamentoDB("nessuna riga modificata nella tabella Personaggi");
                         else
                             recordAgg++;
-                       
+
                     }
                     catch (Exception ex)
                     {
                         ControllerLogin.SollevaErroreAggiornamentoDB("errore nell'aggiornamento del db locale tabella Personaggi" + ex.Message);
                         Debug.LogError("errore nell'aggiornamento del db locale tabella Personaggi" + ex.Message);
                     }
-                
+
                 }
             }
 
@@ -260,7 +332,7 @@ public class Statici
                 valoreRitorno = true;
                 tr.Commit();
             }
-      
+
         }
         catch (Exception ex)
         {
@@ -289,15 +361,15 @@ public class Statici
         return valoreRitorno;
     }
 
-   
+
 
     internal static void AggiornaTsUtenti(string timeStampRemotoNew)
     {
-       
+
         SqliteTransaction tr = null;
 
         try
-        {           
+        {
             tr = conn.BeginTransaction();
             SqliteCommand cmd = conn.CreateCommand();
             cmd.Transaction = tr;
@@ -313,7 +385,7 @@ public class Statici
                 ControllerLogin.SollevaErroreAggiornamentoDB("errore nell'aggiornamento del timeStamp Utente");
             else
             {
-                tr.Commit();            
+                tr.Commit();
                 contatoreTimeStampOk++;
                 ControllaNumeroTimeStampAggiornati();
             }
@@ -340,8 +412,8 @@ public class Statici
                 }
             }
 
-        }     
-        
+        }
+
     }
 
     internal static bool AggiornaDiplomaziaPersonaggio(SFSArray arrayPers)
@@ -359,7 +431,7 @@ public class Statici
             {
                 SFSObject objArr = (SFSObject)arrayPers.GetSFSObject(i);
                 string nomePers = objArr.GetUtfString("PersonaggiUtente_nomePersonaggio");
-                int idUtente = objArr.GetInt("PersonaggiUtente_Utenti_idUtente");                
+                int idUtente = objArr.GetInt("PersonaggiUtente_Utenti_idUtente");
                 int idClasse1 = objArr.GetInt("Diplomazia_ClassiPersonaggi_idClasse");
                 int idClasse2 = objArr.GetInt("Diplomazia_ClassiPersonaggi2_idClasse");
                 int eliminato = objArr.GetInt("eliminato");
@@ -367,18 +439,18 @@ public class Statici
 
                 try
                 {
-                    cmd.CommandText = @"INSERT INTO DiplomaziaPersonaggio VALUES (@nomePersonaggio, @PersonaggiUtente_Utenti_idUtente,"+
+                    cmd.CommandText = @"INSERT INTO DiplomaziaPersonaggio VALUES (@nomePersonaggio, @PersonaggiUtente_Utenti_idUtente," +
                         "@Diplomazia_ClassiPersonaggi_idClasse, @Diplomazia_ClassiPersonaggi2_idClasse, @eliminato,  @relazione)";
                     cmd.Parameters.Add(new SqliteParameter("@nomePersonaggio", nomePers));
-                    cmd.Parameters.Add(new SqliteParameter("@PersonaggiUtente_Utenti_idUtente", idUtente));                   
+                    cmd.Parameters.Add(new SqliteParameter("@PersonaggiUtente_Utenti_idUtente", idUtente));
                     cmd.Parameters.Add(new SqliteParameter("@Diplomazia_ClassiPersonaggi_idClasse", idClasse1));
                     cmd.Parameters.Add(new SqliteParameter("@Diplomazia_ClassiPersonaggi2_idClasse", idClasse2));
                     cmd.Parameters.Add(new SqliteParameter("@eliminato", eliminato));
                     cmd.Parameters.Add(new SqliteParameter("@relazione", relazione));
 
                     numeroRighe = cmd.ExecuteNonQuery();
-                    if(numeroRighe>0)
-                     Debug.Log("ho inserito 1 riga nella tabella DiplomaziaPersonaggio:nome personaggio:"+ nomePersonaggio+" idUtente: "+idUtente+" idClasse1: "+idClasse1+" idClasse2: "+idClasse2);
+                    if (numeroRighe > 0)
+                        Debug.Log("ho inserito 1 riga nella tabella DiplomaziaPersonaggio:nome personaggio:" + nomePersonaggio + " idUtente: " + idUtente + " idClasse1: " + idClasse1 + " idClasse2: " + idClasse2);
                     recordAgg++;
                 }
                 catch
@@ -389,7 +461,7 @@ public class Statici
                             "WHERE PersonaggiUtente_nomePersonaggio = @nomePersonaggio AND PersonaggiUtente_Utenti_idUtente = @idUtente " +
                             "AND Diplomazia_ClassiPersonaggi_idClasse = @idClasse1 AND Diplomazia_ClassiPersonaggi2_idClasse = @idClasse2";
                         cmd.Parameters.Add(new SqliteParameter("@nomePersonaggio", nomePers));
-                        cmd.Parameters.Add(new SqliteParameter("@idUtente", idUtente));                        
+                        cmd.Parameters.Add(new SqliteParameter("@idUtente", idUtente));
                         cmd.Parameters.Add(new SqliteParameter("@idClasse1", idClasse1));
                         cmd.Parameters.Add(new SqliteParameter("@idClasse2", idClasse2));
                         cmd.Parameters.Add(new SqliteParameter("@eliminato", eliminato));
@@ -423,7 +495,7 @@ public class Statici
                 Debug.Log("numero tabelle di utenti aggiornate:" + contatoreTabelleDiUtentiOk);
                 tr.Commit();
                 valoreRitorno = true;
-               
+
             }
 
         }
@@ -471,7 +543,7 @@ public class Statici
                 int idClasse1 = objArr.GetInt("ClassiPersonaggi_idClasse");
                 int idClasse2 = objArr.GetInt("ClassiPersonaggi2_idClasse");
                 int eliminato = objArr.GetInt("eliminato");
-                int relazione = objArr.GetInt("relazione");             
+                int relazione = objArr.GetInt("relazione");
 
                 try
                 {
@@ -479,7 +551,7 @@ public class Statici
                     cmd.Parameters.Add(new SqliteParameter("@idClasse1", idClasse1));
                     cmd.Parameters.Add(new SqliteParameter("@idClasse2", idClasse2));
                     cmd.Parameters.Add(new SqliteParameter("@eliminato", eliminato));
-                    cmd.Parameters.Add(new SqliteParameter("@relazione", relazione));                  
+                    cmd.Parameters.Add(new SqliteParameter("@relazione", relazione));
                     numeroRighe = cmd.ExecuteNonQuery();
                     Debug.Log("ho inserito 1 riga nella tabella Diplomazia");
                     recordAgg++;
@@ -574,6 +646,7 @@ public class Statici
         return _reader;
     }
 
+
     internal static SqliteDataReader GiveMePersonaggiUtenteDBLocale()
     {
         SqliteDataReader _reader = null;
@@ -581,8 +654,8 @@ public class Statici
         {
 
             SqliteCommand cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT Personaggi_idPersonaggio, nomeModello, nomePersonaggio, vitaMassima, vitaAttuale, manaMassimo, manaAttuale, "+
-                "livelloAttuale, xpAttuale,attaccoBase, difesaBase, nomeScena, checkPoint " +
+            cmd.CommandText = @"SELECT Personaggi_idPersonaggio, nomeModello, nomePersonaggio, vitaMassima, vitaAttuale, manaMassimo, manaAttuale, " +
+                "livelloAttuale, xpAttuale,attaccoBase, difesaBase, nomeScena, checkPoint, xpMassimo " +
                 "FROM VistaPersonaggiUtenteValidi WHERE Utenti_idUtente = @idUtente";
             cmd.Parameters.Add(new SqliteParameter("@idUtente", idDB));
             _reader = cmd.ExecuteReader();
@@ -605,10 +678,10 @@ public class Statici
         {
 
             SqliteCommand cmd = conn.CreateCommand();
-            cmd.CommandText = @"SELECT idPersonaggio, ClassiPersonaggi_idClassiPersonaggi, modelloM, modelloF, nome, vitaMassima, vitaAttuale, manaMassimo, manaAttuale, livelloPartenza, xpPartenza, "+
-                "attaccoBase, difesaBase FROM VistaPersonaggiGiocabiliValidi";         
-            _reader = cmd.ExecuteReader();          
-      
+            cmd.CommandText = @"SELECT idPersonaggio, ClassiPersonaggi_idClassiPersonaggi, modelloM, modelloF, nome, vitaMassima, vitaAttuale, manaMassimo, manaAttuale, livelloPartenza, xpPartenza, " +
+                "attaccoBase, difesaBase, xpMassimo FROM VistaPersonaggiGiocabiliValidi";
+            _reader = cmd.ExecuteReader();
+
         }
         catch (Exception ex)
         {
@@ -616,23 +689,46 @@ public class Statici
             ManagerIniziale.SollevaErroreScenaInizialeCreazionePg("errore lettura dalla tabella Personaggi" + ex.Message);
 
         }
-   
+
+        return _reader;
+    }
+
+    internal static SqliteDataReader GiveMePersonaggiAIDBLocale(int idClasse)
+    {
+        SqliteDataReader _reader = null;
+        try
+        {
+
+            SqliteCommand cmd = conn.CreateCommand();
+            cmd.CommandText = @"SELECT idPersonaggio, ClassiPersonaggi_idClassiPersonaggi, modelloM, nome, vitaMassima, vitaAttuale, manaMassimo, manaAttuale, livelloPartenza, xpPartenza, " +
+                "attaccoBase, difesaBase FROM VistaPersonaggiNonGiocabiliValidi WHERE ClassiPersonaggi_idClassiPersonaggi = @idClasse";
+            cmd.Parameters.Add(new SqliteParameter("@idClasse", idDB));
+            _reader = cmd.ExecuteReader();
+
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("errore lettura dalla tabella Personaggi per goblin" + ex.Message);
+
+
+        }
+
         return _reader;
     }
 
     internal static void ControllaTSUtenti(int idDB, string timeStampRemoto, bool isRegistrazione)
     {
         SqliteTransaction tr = null;
-       
+
         SqliteCommand cmd = conn.CreateCommand();
-       
+
         if (isRegistrazione)
         {
             try
             {
                 tr = conn.BeginTransaction();
                 cmd.Transaction = tr;
-                int numeroRighe = 0;                
+                int numeroRighe = 0;
                 cmd.CommandText = @"INSERT INTO Utenti VALUES (@idUtente,@timeStampUtente)";
                 cmd.Parameters.Add(new SqliteParameter("@idUtente", idDB));
                 cmd.Parameters.Add(new SqliteParameter("@timeStampUtente", timeStampRemoto));
@@ -642,9 +738,9 @@ public class Statici
                     Debug.Log("Inserimento nella tabella Utenti della riga: " + idDB);
                     tr.Commit();
                     RichiediTSUtentiNew();
-                  
-                }            
-                
+
+                }
+
             }
             catch (Exception ex)
             {
@@ -744,18 +840,18 @@ public class Statici
                         }
                     }
                 }
-                                
+
             }
             catch (Exception ex)
             {
-                Debug.LogError("errore lettura dalla tabella Utenti"+ex.Message);
+                Debug.LogError("errore lettura dalla tabella Utenti" + ex.Message);
                 ControllerLogin.SollevaErroreAggiornamentoDB("errore lettura dalla tabella Utenti" + ex.Message);
 
             }
             finally
             {
                 if (!_reader.IsClosed)
-                    _reader.Close();                
+                    _reader.Close();
             }
 
         }
@@ -796,7 +892,7 @@ public class Statici
                 while (_reader.Read())
                 {
                     nomeClasse = (string)_reader["nome"];
-                    
+
                 }
             }
             else
@@ -806,11 +902,11 @@ public class Statici
                 Debug.LogError("personaggio non trovato durante la ricerca della classe");
             }
 
-            }
+        }
         catch (Exception ex)
         {
             Debug.LogError("errore lettura nomeClasse dalla tabella Personaggi" + ex.Message);
-           
+
 
         }
         finally
@@ -823,10 +919,58 @@ public class Statici
         return nomeClasse;
     }
 
+    public static bool SalvaPersonaggiUtente()
+    {
+        bool valoreRitorno = false;
+
+        try
+        {
+
+            SqliteCommand cmd = conn.CreateCommand();
+            int numeroRighe = 0;
+
+
+            cmd.CommandText = "UPDATE PersonaggiUtente SET  vitaMassima = @vitaMassima" +
+                    ", manaMassimo = @manaMassimo, livelloAttuale = @livelloPartenza" +
+                    ", xpAttuale = @xpPartenza, attaccoBase = @attaccoBase, difesaBase = @difesaBase, xpMassimo = @xpMassimo " +
+                    "WHERE nomePersonaggio = @nomePersonaggio";
+            cmd.Parameters.Add(new SqliteParameter("@nomePersonaggio", nomePersonaggio));
+            cmd.Parameters.Add(new SqliteParameter("@vitaMassima", datiPersonaggioLocale.VitaMassima));
+            cmd.Parameters.Add(new SqliteParameter("@manaMassimo", datiPersonaggioLocale.ManaMassimo));
+            cmd.Parameters.Add(new SqliteParameter("@livelloPartenza", datiPersonaggioLocale.Livello));
+            cmd.Parameters.Add(new SqliteParameter("@xpMassimo", datiPersonaggioLocale.XpMassimo));
+            cmd.Parameters.Add(new SqliteParameter("@xpPartenza", datiPersonaggioLocale.Xp));
+            cmd.Parameters.Add(new SqliteParameter("@attaccoBase", datiPersonaggioLocale.Attacco));
+            cmd.Parameters.Add(new SqliteParameter("@difesaBase", datiPersonaggioLocale.Difesa));
+            numeroRighe = cmd.ExecuteNonQuery();
+
+
+            //Update buono come comando MA non ha aggiornato righe
+            if (numeroRighe == 0)
+            {
+                ControllerLogin.SollevaErroreAggiornamentoDB("errore:impossibile aggiornare la riga della tabella PersonaggiUtente: nomePersonaggio" + nomePersonaggio);
+                Debug.LogError("errore:impossibile aggiornare la riga della tabella PersonaggiUtente: nomePersonaggio" + nomePersonaggio);
+            }
+            else
+            {
+                Debug.Log("PersonaggioUtente salvato in db locale");
+                valoreRitorno = true;
+            }
+
+
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("errore aggiornamento archivio PersonaggiUtente: " + ex.Message);
+
+        }
+
+        return valoreRitorno;
+    }
     public static bool AggiornaPersonaggiUtente(SFSArray arrayPers)
     {
         bool valoreRitorno = false;
-        SqliteTransaction tr = null;       
+        SqliteTransaction tr = null;
         try
         {
             tr = conn.BeginTransaction();
@@ -841,13 +985,14 @@ public class Statici
                 string nomePers = objArr.GetUtfString("nomePersonaggio");
                 int Utenti_idUtente = objArr.GetInt("Utenti_idUtente");
                 int idPersonaggio = objArr.GetInt("Personaggi_idPersonaggio");
-                string nomeModello = objArr.GetUtfString("nomeModello");               
+                string nomeModello = objArr.GetUtfString("nomeModello");
                 int eliminato = objArr.GetInt("eliminato");
                 double vitaMassima = objArr.GetDouble("vitaMassima");
                 double vitaAttuale = objArr.GetDouble("vitaAttuale");
                 double manaMassimo = objArr.GetDouble("manaMassimo");
                 double manaAttuale = objArr.GetDouble("manaAttuale");
                 double livelloPartenza = objArr.GetDouble("livelloAttuale");
+                double xpMassimo = objArr.GetDouble("xpMassimo");
                 double xpPartenza = objArr.GetDouble("xpAttuale");
                 double attaccoBase = objArr.GetDouble("attaccoBase");
                 double difesaBase = objArr.GetDouble("difesaBase");
@@ -857,24 +1002,25 @@ public class Statici
                 try
                 {
                     cmd.CommandText = @"INSERT INTO PersonaggiUtente VALUES (@nomePersonaggio,@Utenti_idUtente,@idPersonaggio,@nomeModello, @eliminato," +
-                    " @vitaMassima, @vitaAttuale,  @manaMassimo, @manaAttuale, @livelloPartenza, @xpPartenza, @attaccoBase, @difesaBase, @nomeScena, @checkPoint)";
+                    " @vitaMassima, @vitaAttuale,  @manaMassimo, @manaAttuale, @livelloPartenza, @xpPartenza, @attaccoBase, @difesaBase, @nomeScena, @checkPoint, @xpMassimo)";
                     cmd.Parameters.Add(new SqliteParameter("@nomePersonaggio", nomePers));
                     cmd.Parameters.Add(new SqliteParameter("@Utenti_idUtente", Utenti_idUtente));
                     cmd.Parameters.Add(new SqliteParameter("@idPersonaggio", idPersonaggio));
-                    cmd.Parameters.Add(new SqliteParameter("@nomeModello", nomeModello));                 
+                    cmd.Parameters.Add(new SqliteParameter("@nomeModello", nomeModello));
                     cmd.Parameters.Add(new SqliteParameter("@eliminato", eliminato));
                     cmd.Parameters.Add(new SqliteParameter("@vitaMassima", vitaMassima));
                     cmd.Parameters.Add(new SqliteParameter("@vitaAttuale", vitaAttuale));
                     cmd.Parameters.Add(new SqliteParameter("@manaMassimo", manaMassimo));
                     cmd.Parameters.Add(new SqliteParameter("@manaAttuale", manaAttuale));
                     cmd.Parameters.Add(new SqliteParameter("@livelloPartenza", livelloPartenza));
+                    cmd.Parameters.Add(new SqliteParameter("@xpMassimo", xpMassimo));
                     cmd.Parameters.Add(new SqliteParameter("@xpPartenza", xpPartenza));
                     cmd.Parameters.Add(new SqliteParameter("@attaccoBase", attaccoBase));
                     cmd.Parameters.Add(new SqliteParameter("@difesaBase", difesaBase));
                     cmd.Parameters.Add(new SqliteParameter("@nomeScena", nomeScena));
                     cmd.Parameters.Add(new SqliteParameter("@checkPoint", checkPoint));
                     numeroRighe = cmd.ExecuteNonQuery();
-                    Debug.Log("Inserimento nella tabella PersonaggiUtente nomePersonaggio"+ nomePersonaggio+", id Utente" +Utenti_idUtente +" idPersonaggio,"+idPersonaggio);
+                    Debug.Log("Inserimento nella tabella PersonaggiUtente nomePersonaggio" + nomePersonaggio + ", id Utente" + Utenti_idUtente + " idPersonaggio," + idPersonaggio);
                     recordAgg++;
                 }
                 catch
@@ -883,16 +1029,17 @@ public class Statici
                     {
                         cmd.CommandText = "UPDATE PersonaggiUtente SET nomeModello=@nomeModello, eliminato = @eliminato, vitaMassima = @vitaMassima" +
                                 ", vitaAttuale = @vitaAttuale, manaMassimo = @manaMassimo, manaAttuale = @manaAttuale, livelloAttuale = @livelloPartenza" +
-                                ", xpAttuale = @xpPartenza, attaccoBase = @attaccoBase, difesaBase = @difesaBase, nomeScena = @nomeScena, checkPoint = @checkPoint "+
+                                ", xpAttuale = @xpPartenza, attaccoBase = @attaccoBase, difesaBase = @difesaBase, nomeScena = @nomeScena, checkPoint = @checkPoint, xpMassimo = @xpMassimo " +
                                 "WHERE nomePersonaggio = @nomePersonaggio";
-                        cmd.Parameters.Add(new SqliteParameter("@nomePersonaggio", nomePers));                       
-                        cmd.Parameters.Add(new SqliteParameter("@nomeModello", nomeModello));                      
+                        cmd.Parameters.Add(new SqliteParameter("@nomePersonaggio", nomePers));
+                        cmd.Parameters.Add(new SqliteParameter("@nomeModello", nomeModello));
                         cmd.Parameters.Add(new SqliteParameter("@eliminato", eliminato));
                         cmd.Parameters.Add(new SqliteParameter("@vitaMassima", vitaMassima));
                         cmd.Parameters.Add(new SqliteParameter("@vitaAttuale", vitaAttuale));
                         cmd.Parameters.Add(new SqliteParameter("@manaMassimo", manaMassimo));
                         cmd.Parameters.Add(new SqliteParameter("@manaAttuale", manaAttuale));
                         cmd.Parameters.Add(new SqliteParameter("@livelloPartenza", livelloPartenza));
+                        cmd.Parameters.Add(new SqliteParameter("@xpMassimo", xpMassimo));
                         cmd.Parameters.Add(new SqliteParameter("@xpPartenza", xpPartenza));
                         cmd.Parameters.Add(new SqliteParameter("@attaccoBase", attaccoBase));
                         cmd.Parameters.Add(new SqliteParameter("@difesaBase", difesaBase));
@@ -928,7 +1075,7 @@ public class Statici
                 Debug.Log("numero tabelle di utenti aggiornate:" + contatoreTabelleDiUtentiOk);
                 tr.Commit();
                 valoreRitorno = true;
-               
+
             }
         }
         catch (Exception ex)
@@ -944,7 +1091,7 @@ public class Statici
                 }
                 catch (SqliteException ex2)
                 {
-                    Debug.LogError("rollback della transazione riguardante l'aggiornamento della tabella PersonaggiUtente fallito: " + ex2.ToString());                    
+                    Debug.LogError("rollback della transazione riguardante l'aggiornamento della tabella PersonaggiUtente fallito: " + ex2.ToString());
 
                 }
                 finally
@@ -953,7 +1100,7 @@ public class Statici
                 }
             }
         }
-       
+
         return valoreRitorno;
     }
 
@@ -961,7 +1108,7 @@ public class Statici
     {
         bool valoreRitorno = false;
         SqliteTransaction tr = null;
-     
+
         try
         {
             tr = conn.BeginTransaction();
@@ -1010,7 +1157,7 @@ public class Statici
             }
 
         }
-     
+
         return valoreRitorno;
     }
 
@@ -1045,7 +1192,7 @@ public class Statici
                     else
                     {
                         Debug.Log("la tabella NON necessita aggiornamento " + nomeTabella);
-                        contatoreTimeStampOk++;                       
+                        contatoreTimeStampOk++;
                         ControllaNumeroTimeStampAggiornati();
                     }
                 }
@@ -1060,12 +1207,12 @@ public class Statici
                 cmd.ExecuteNonQuery();
                 Debug.Log("il nome tabella era MANCANTE nella Tabella SincronizzazioneDB ma è stata aggiunta e aggiornata: " + nomeTabella);
                 RichiestaDatiTabellaRemota(nomeTabella);
-                
+
             }
         }
         catch (Exception ex)
         {
-            Debug.LogError("Errore nel controllo TimeStamp tabelle SincronizzazioneDB:" +ex.Message);
+            Debug.LogError("Errore nel controllo TimeStamp tabelle SincronizzazioneDB:" + ex.Message);
             ControllerLogin.SollevaErroreAggiornamentoDB("Errore nel controllo TimeStamp tabelle SincronizzazioneDB:" + ex.Message);
 
         }
@@ -1073,7 +1220,7 @@ public class Statici
         {
             if (!_reader.IsClosed)
                 _reader.Close();
-        
+
         }
     }
     public static void ControllaNumeroTimeStampAggiornati()
@@ -1089,7 +1236,7 @@ public class Statici
             Debug.Log("Copio il DB in " + Application.persistentDataPath);
             File.Copy(origine, destinazione, sovrascrivi);
         }
-        ConnettiEdApriSQLite();    
+        ConnettiEdApriSQLite();
     }
 
     public static void provaErrore(string scriviNomeVariabile, object oggetto)
@@ -1106,38 +1253,60 @@ public class Statici
     public static void RecuperaDati(DatiPersonaggio datiStatistici)
     {
         int tmpID = datiStatistici.GetInstanceID();
-        int indice = databaseInizialeProprieta.classePersonaggio.IndexOf(registroDatiPersonaggi[tmpID].miaClasse.ToString());
-        registroDatiPersonaggi[tmpID].Giocabile = databaseInizialeProprieta.matriceProprieta[indice].giocabile;
+        registroDatiPersonaggi[tmpID].Giocabile = datiStatistici.Giocabile;
         if (!registroDatiPersonaggi[tmpID].Giocabile)
         { //se è un personaggio AI recupero i dati dallo scriptble object
-            registroDatiPersonaggi[tmpID].VitaMassima = databaseInizialeProprieta.matriceProprieta[indice].Vita;
-            registroDatiPersonaggi[tmpID].Vita = databaseInizialeProprieta.matriceProprieta[indice].Vita;
-            registroDatiPersonaggi[tmpID].ManaMassimo = databaseInizialeProprieta.matriceProprieta[indice].Mana;
-            registroDatiPersonaggi[tmpID].Mana = databaseInizialeProprieta.matriceProprieta[indice].Mana;
-            registroDatiPersonaggi[tmpID].Livello = databaseInizialeProprieta.matriceProprieta[indice].Livello;
-            registroDatiPersonaggi[tmpID].XpMassimo = databaseInizialeProprieta.matriceProprieta[indice].Xp;
-            registroDatiPersonaggi[tmpID].Xp = databaseInizialeProprieta.matriceProprieta[indice].Xp;
-            registroDatiPersonaggi[tmpID].Attacco = databaseInizialeProprieta.matriceProprieta[indice].Attacco;
-            registroDatiPersonaggi[tmpID].Difesa = databaseInizialeProprieta.matriceProprieta[indice].difesa;
+
+            SqliteDataReader _reader = GiveMePersonaggiAIDBLocale(datiStatistici.IdMiaClasse);
+            if (_reader.HasRows)
+            {
+                while (_reader.Read())
+                {
+
+                    registroDatiPersonaggi[tmpID].VitaMassima = (double)_reader["vitaMassima"];
+                    registroDatiPersonaggi[tmpID].Vita = (double)_reader["vitaAttuale"];
+                    registroDatiPersonaggi[tmpID].ManaMassimo = (double)_reader["manaMassimo"];
+                    registroDatiPersonaggi[tmpID].Mana = (double)_reader["manaAttuale"];
+                    registroDatiPersonaggi[tmpID].Livello = (double)_reader["livelloPartenza"];
+                    registroDatiPersonaggi[tmpID].XpMassimo = (double)_reader["xpPartenza"];
+                    registroDatiPersonaggi[tmpID].Xp = (double)_reader["xpPartenza"];
+                    registroDatiPersonaggi[tmpID].Attacco = (double)_reader["attaccoBase"];
+                    registroDatiPersonaggi[tmpID].Difesa = (double)_reader["difesaBase"];
+                    registroDatiPersonaggi[tmpID].Nome = (string)_reader["nome"];
+                    registroDatiPersonaggi[tmpID].IdMiaClasse = (int)_reader["ClassiPersonaggi_idClassiPersonaggi"];
+                    registroDatiPersonaggi[tmpID].NomeClasse = (string)_reader["nome"];
+                    PersonaggioPrincipaleT.GetComponentInChildren<TextMesh>().text = registroDatiPersonaggi[tmpID].Nome;
+
+                }
+            }
+            else
+            {
+                if (!_reader.IsClosed)
+                    _reader.Close();
+                Debug.LogError("personaggio AI non trovato durante la ricerca della classe");
+            }
+
         }
         else
         {  //se è giocabile recupero i dati dal file serializzato
-            registroDatiPersonaggi[tmpID].VitaMassima = Statici.datiPersonaggio.Dati.VitaMassima;
-            registroDatiPersonaggi[tmpID].Vita = Statici.datiPersonaggio.Dati.Vita;
-            registroDatiPersonaggi[tmpID].ManaMassimo = Statici.datiPersonaggio.Dati.ManaMassimo;
-            registroDatiPersonaggi[tmpID].Mana = Statici.datiPersonaggio.Dati.Mana;
-            registroDatiPersonaggi[tmpID].Livello = Statici.datiPersonaggio.Dati.Livello;
-            registroDatiPersonaggi[tmpID].XpMassimo = Statici.datiPersonaggio.Dati.XPMassimo;
-            registroDatiPersonaggi[tmpID].Xp = Statici.datiPersonaggio.Dati.Xp;
-            registroDatiPersonaggi[tmpID].Attacco = Statici.datiPersonaggio.Dati.Attacco;
-            registroDatiPersonaggi[tmpID].Difesa = Statici.datiPersonaggio.Dati.difesa;
-            registroDatiPersonaggi[tmpID].Nome = Statici.datiPersonaggio.Dati.nomePersonaggio;
+            registroDatiPersonaggi[tmpID].VitaMassima = (double)valoriPersonaggioScelto.VitaMassima;
+            registroDatiPersonaggi[tmpID].Vita = (double)valoriPersonaggioScelto.VitaAttuale;
+            registroDatiPersonaggi[tmpID].ManaMassimo = (double)valoriPersonaggioScelto.ManaMassimo;
+            registroDatiPersonaggi[tmpID].Mana = (double)valoriPersonaggioScelto.ManaAttuale;
+            registroDatiPersonaggi[tmpID].Livello = (double)valoriPersonaggioScelto.LivelloPartenza;
+            registroDatiPersonaggi[tmpID].XpMassimo = (double)valoriPersonaggioScelto.XpPartenza;
+            registroDatiPersonaggi[tmpID].Xp = (double)valoriPersonaggioScelto.XpPartenza;
+            registroDatiPersonaggi[tmpID].Attacco = (double)valoriPersonaggioScelto.AttaccoBase;
+            registroDatiPersonaggi[tmpID].Difesa = (double)valoriPersonaggioScelto.DifesaBase;
+            registroDatiPersonaggi[tmpID].Nome = valoriPersonaggioScelto.NomePersonaggio;
+            registroDatiPersonaggi[tmpID].IdMiaClasse = valoriPersonaggioScelto.IdClassePersonaggio;
+            registroDatiPersonaggi[tmpID].NomeClasse = valoriPersonaggioScelto.NomeClasse;
             PersonaggioPrincipaleT.GetComponentInChildren<TextMesh>().text = registroDatiPersonaggi[tmpID].Nome;
 
             GestoreCanvasAltreScene.AggiornaDati(datiStatistici);
 
             Statici.personaggio = datiStatistici;
-            classeDiColuiCheVuoleCambiareAmicizia = datiStatistici.miaClasse.ToString();
+            classeDiColuiCheVuoleCambiareAmicizia = datiStatistici.IdMiaClasse.ToString();
         }
     }
 
@@ -1189,13 +1358,13 @@ public class Statici
         conn.Open();
     }
 
-    public static double ClampDouble(double val, double min, double max) 
+    public static double ClampDouble(double val, double min, double max)
     {
-        if (val.CompareTo(min)<0) return min;
+        if (val.CompareTo(min) < 0) return min;
         else if (val.CompareTo(max) > 0) return max;
         else return val;
     }
 
-   
+
 }
 

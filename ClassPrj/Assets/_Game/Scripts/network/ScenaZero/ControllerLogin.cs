@@ -384,7 +384,7 @@ public class ControllerLogin : MonoBehaviour
 
         if (disconnettiDB)
         {
-            if (Statici.sfs != null)
+           // if (Statici.sfs != null)
                 Statici.sfs = null;
             if (Statici.conn != null && Statici.conn.State == System.Data.ConnectionState.Open)
             {

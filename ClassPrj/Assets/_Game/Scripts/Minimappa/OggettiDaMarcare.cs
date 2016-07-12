@@ -6,13 +6,13 @@ public class OggettiDaMarcare : MonoBehaviour
     public bool nascondiSeFuoriMappa = true;
 
     private bool bloccaOggetto;
-    private classiPersonaggi classePlayer;
+    private int classePlayer;
     private bool controllaAmicizia = true;
     private DatiPersonaggio datiPersonaggio;
     private bool giocabile = false;
     private Image imageMarcatore;
     private GameObject marcatore;
-    private classiPersonaggi miaClasse;
+    private int miaClasse;
     private Minimappa minimappa;
     private float misuraSprite = 20f;
     private Vector2 nuovaPosizioneMarcatore;
@@ -122,11 +122,11 @@ public class OggettiDaMarcare : MonoBehaviour
 
             case (11):
                 datiPersonaggio = gameObject.GetComponent<DatiPersonaggio>();
-                miaClasse = datiPersonaggio.miaClasse;
+                miaClasse = datiPersonaggio.IdMiaClasse;
                 giocabile = datiPersonaggio.Giocabile;
                 if (!Statici.multigiocatoreOn)
                 {
-                    classePlayer = Statici.PersonaggioPrincipaleT.GetComponent<DatiPersonaggio>().miaClasse;
+                    classePlayer = Statici.PersonaggioPrincipaleT.GetComponent<DatiPersonaggio>().IdMiaClasse;
                     spriteOggetto = minimappa.spriteAmico;
                     misuraSprite = minimappa.misuraSpriteAmico;
                 }

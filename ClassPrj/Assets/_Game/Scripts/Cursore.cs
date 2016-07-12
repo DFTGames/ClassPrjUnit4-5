@@ -22,7 +22,7 @@ public class Cursore : MonoBehaviour
     /// </summary>
     /// <param name="numeroLayer"></param>
     /// <param name="miaClasse"></param>
-    public static void CambiaCursore(int numeroLayer, classiPersonaggi miaClasse)
+    public static void CambiaCursore(int numeroLayer, int miaClasse)
     {
         switch (numeroLayer)
         {
@@ -37,7 +37,7 @@ public class Cursore : MonoBehaviour
             case (11)://layer EssereVivente: l'immagine può essere un fumetto se si è amici o una spadina se si è nemici.
                 if (!Statici.multigiocatoreOn)
                 {
-                    if (Statici.dizionarioDiNemici[Statici.personaggio.miaClasse].Contains(miaClasse))
+                    if (Statici.dizionarioDiNemici[Statici.personaggio.IdMiaClasse].Contains(miaClasse))
                         me.immagineCursore = me.immagineCombattere;
                     else
                         me.immagineCursore = me.immagineParlare;

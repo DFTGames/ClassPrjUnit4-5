@@ -14,7 +14,7 @@ public class OggettoCheCambiaCursore : MonoBehaviour
     private DatiPersonaggio datiPersonaggio;
     private LayerMask layer;
     private GameObject luceSelezioneGO;
-    private classiPersonaggi miaClasse;
+    private int miaClasse;
 
     private void OnMouseExit()
     {
@@ -41,7 +41,7 @@ public class OggettoCheCambiaCursore : MonoBehaviour
         datiPersonaggio = GetComponent<DatiPersonaggio>();
         if (datiPersonaggio != null)
         {
-            miaClasse = GetComponent<DatiPersonaggio>().miaClasse;
+            miaClasse = GetComponent<DatiPersonaggio>().IdMiaClasse;
             luceSelezioneGO = transform.FindChild("luceSelezione").gameObject;
         }
     }

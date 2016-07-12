@@ -161,7 +161,7 @@ public class ManagerNetwork : MonoBehaviour
     private void OnConnectionLost(BaseEvent evt)
     {
         Statici.sfs.RemoveAllEventListeners();
-        SceneManager.LoadScene("ScenaConnessione");
+        SceneManager.LoadScene("ScenaZero");
     }
 
     private void OnExtensionResponse(BaseEvent evt)
@@ -174,7 +174,7 @@ public class ManagerNetwork : MonoBehaviour
 
                 int utente = sfsObjIn.GetInt("ut");
                 string nomeScenaAttualeAvatar = sfsObjIn.GetUtfString("scena");
-                string classe = sfsObjIn.GetUtfString("classe");
+            
 
                 if (nomeScenaAttualeAvatar != SceneManager.GetActiveScene().name)
                     return;
@@ -190,6 +190,8 @@ public class ManagerNetwork : MonoBehaviour
                 double difesa = sfsObjIn.GetDouble("dif");
                 double livello = sfsObjIn.GetDouble("liv");
                 bool giocabile = sfsObjIn.GetBool("gioc");
+                int idClasse = sfsObjIn.GetInt("idClasse");
+                string classe = sfsObjIn.GetUtfString("classe");
 
                 Vector3 posizioneIniziale = new Vector3(0, 1, 0);
                 posizioneIniziale.x = sfsObjIn.GetFloat("x");
@@ -201,6 +203,8 @@ public class ManagerNetwork : MonoBehaviour
 
                 if (Statici.sfs.MySelf.Id == utente)
                 {
+                    Statici.datiPersonaggioLocale.IdMiaClasse = idClasse;
+                    Statici.datiPersonaggioLocale.NomeClasse = classe;
                     Statici.datiPersonaggioLocale.VitaMassima = vitaMax;
                     Statici.datiPersonaggioLocale.Vita = vitaIniziale;
                     Statici.datiPersonaggioLocale.ManaMassimo = manaMax;
@@ -223,6 +227,8 @@ public class ManagerNetwork : MonoBehaviour
 
                     DatiPersonaggio datiPersonaggioRemoto = remotePlayer.GetComponent<DatiPersonaggio>();
                     datiPersonaggioRemoto.SonoUtenteLocale = false;
+                    datiPersonaggioRemoto.IdMiaClasse = idClasse;
+                    datiPersonaggioRemoto.NomeClasse = classe;
                     datiPersonaggioRemoto.VitaMassima = vitaMax;
                     datiPersonaggioRemoto.Vita = vitaIniziale;
                     datiPersonaggioRemoto.ManaMassimo = manaMax;
@@ -355,7 +361,7 @@ public class ManagerNetwork : MonoBehaviour
                     GameObject immagineCaricamento = GestoreCanvasAltreScene.ImmagineCaricamento;
                     Text casellaScrittaCaricamento = GestoreCanvasAltreScene.NomeScenaText;
                     StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica(nomeScenaSuccessiva, nomeScenaSuccessiva, immagineCaricamento, casellaScrittaCaricamento));
-                    gestoreCanvasNetwork.VisualizzaNascondiCanvasMultiplayer(false);
+                    gestoreCanvasNetwork.VisualizzaNascondiCanvasGroup(false);
                     return;
                 }
                 if (Statici.playerRemotiGestore.ContainsKey(userIdDaDeletare))
@@ -396,7 +402,7 @@ public class ManagerNetwork : MonoBehaviour
                 break;
 
             default:
-                break;
+                break;               
         }
     }
 
@@ -432,9 +438,9 @@ public class ManagerNetwork : MonoBehaviour
             Statici.numeroPostoSpawn = -1;
             Statici.sfs.RemoveAllEventListeners();
             GameObject immagineCaricamento = GestoreCanvasAltreScene.ImmagineCaricamento;
-            Text casellaScrittaCaricamento = GestoreCanvasAltreScene.NomeScenaText;
+            Text casellaScrittaCaricamento = GestoreCanvasAltreScene.NomeScenaText;            
             StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("ScenaStanze", "The Lobby", immagineCaricamento, casellaScrittaCaricamento));
-            gestoreCanvasNetwork.VisualizzaNascondiCanvasMultiplayer(false);
+            gestoreCanvasNetwork.VisualizzaNascondiCanvasGroup(false);
         }
     }
 
@@ -450,7 +456,14 @@ public class ManagerNetwork : MonoBehaviour
     private void OnUserExitRoom(BaseEvent evt)
     {
         SFSUser user = (SFSUser)evt.Params["user"];
+        Room room = (Room)evt.Params["room"];
         RemoveRemotePlayer(user);
+        if (user == Statici.sfs.MySelf && room.IsGame)
+        {
+            if (Statici.SalvaPersonaggiUtente())
+                Debug.Log("dati personaggio utente salvti in db locale, richiedere ts");
+        }
+
     }
 
     private void RemoveLocalPlayer()
@@ -503,7 +516,7 @@ public class ManagerNetwork : MonoBehaviour
         me = this;
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         gestoreCanvasNetwork = GameObject.Find("ManagerCanvasMultiplayer").GetComponent<GestoreCanvasNetwork>();
-        gestoreCanvasNetwork.VisualizzaNascondiCanvasMultiplayer(true);
+        gestoreCanvasNetwork.VisualizzaNascondiCanvasGroup(true);
         minimappa = GameObject.Find("Minimappa").GetComponent<Minimappa>();
         if (!SmartFoxConnection.NonNulla)
         {

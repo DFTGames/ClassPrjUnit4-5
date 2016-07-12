@@ -5,7 +5,8 @@ public class GestoreCanvasNetwork : MonoBehaviour
 {
     public Animator animatoreChat;
     public GameObject canvaMultiGO;
-    public CanvasGroup canvasGroup;
+    public CanvasGroup canvasGroupChat;
+    public GameObject chat;
     public Text chiAttaccaText;
     public Text contenutoChat;
     public InputField inputChat;
@@ -14,6 +15,7 @@ public class GestoreCanvasNetwork : MonoBehaviour
     public Text vitaNomeText;
     private static GestoreCanvasNetwork me;
     private ManagerNetwork managerNet;
+    private ManagerNetworkSinglePlayer managerNetSingle;
 
     //  private static GestoreCanvas me;
     private bool miStannoAttaccando = false;
@@ -27,7 +29,7 @@ public class GestoreCanvasNetwork : MonoBehaviour
 
     public void AttivaDisattivaInputChat(bool attiva)
     {
-        canvasGroup.interactable = attiva;
+        canvasGroupChat.interactable = attiva;
     }
 
     public void InviaMessaggioChat()
@@ -43,7 +45,10 @@ public class GestoreCanvasNetwork : MonoBehaviour
 
     public void PannelloMorteOff()
     {
-        managerNet.Resuscita();
+        if (Statici.multigiocatoreOn)
+            managerNet.Resuscita();
+        else
+            managerNetSingle.Resuscita();
         pannelloMorto.SetActive(false);
     }
 
@@ -87,26 +92,29 @@ public class GestoreCanvasNetwork : MonoBehaviour
         vitaNemicoText.text = "Nome :" + nome + ": Vita: " + vita;
     }
 
-    public void VisualizzaNascondiCanvasMultiplayer(bool attiva)
+    public void VisualizzaNascondiCanvasGroup(bool attiva)
     {
         canvaMultiGO.SetActive(attiva);
     }
+   
+
 
     // Use this for initialization
     private void Start()
     {
         me = this;
         if (!Statici.multigiocatoreOn)
-        {
-            VisualizzaNascondiCanvasMultiplayer(false);
-            return;
-        }
+            chat.SetActive(false);
+
 
         pannelloMorto.SetActive(false);
         ResettaScrittaChiAttacca(false);
         ResettaScrittaNemicoAttaccato(false);
         AttivaDisattivaInputChat(true);
-        managerNet = GameObject.Find("ManagerNetwork").GetComponent<ManagerNetwork>();
+        if(Statici.multigiocatoreOn)
+          managerNet = GameObject.Find("ManagerNetwork").GetComponent<ManagerNetwork>();
+        else
+          managerNetSingle= GameObject.Find("ManagerNetwork").GetComponent<ManagerNetworkSinglePlayer>();
     }
 
     // Update is called once per frame

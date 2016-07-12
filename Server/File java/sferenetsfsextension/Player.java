@@ -5,7 +5,11 @@
  */
 package sferenetsfsextension;
 
+import com.smartfoxserver.v2.db.IDBManager;
 import com.smartfoxserver.v2.entities.User;
+import com.smartfoxserver.v2.entities.data.SFSObject;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -14,51 +18,94 @@ import java.util.Hashtable;
  * @author Ninfea
  */
 public class Player {
-    
+
     Transform t;
     double vita;
-    double vitaMax;            
+    double vitaMax;
     String modello;
     String nome;
     String classe;
-    String scena; 
-    boolean vivo=true;
-    int numeroUccisioni=0;
-    int numeroSpawn=0;
-    boolean postoAssegnato=false;
-    boolean pronto=false;
+    int idClasse;
+    String scena;
+    boolean vivo = true;
+    int numeroUccisioni = 0;
+    int numeroSpawn = 0;
+    boolean postoAssegnato = false;
+    boolean pronto = false;
     double mana;
     double manaMax;
     double attacco;
     double difesa;
-    boolean giocabile=false;
+    boolean giocabile = false;
     double xp;
     double xpMax;
-    double livello=0;
-     
+    double livello = 0;
+
+    public boolean SalvaDati(SfereNetSfsExtension ext) {
+        IDBManager dbManager = null;
+        Connection connection = null;
+
+        try {
+            dbManager = ext.getParentZone().getDBManager();
+            connection = dbManager.getConnection();
+
+            String querySql = null;
+            querySql = "UPDATE PersonaggiUtente\n"
+                    + "SET\n"
+                    + "vitaMassima = ?,\n"
+                    + "manaMassimo = ?,\n"
+                    + "livelloAttuale = ?,\n"
+                    + "xpAttuale = ?,\n"
+                    + "attaccoBase = ?,\n"
+                    + "difesaBase = ?,\n"
+                    + "xpMassimo = ?\n"
+                    + "WHERE nomePersonaggio = ? ";
+            dbManager.executeUpdate(querySql, new Object[]{vitaMax, manaMax, livello, xp, attacco, difesa, xpMax, nome});
+            //calcolare timestamp e metterlo dentro la tabella Utenti
+            return true;
+
+        } catch (SQLException ex) {
+
+            return false;
+
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex3) {
+                //errore nella chiusura del db
+            }
+
+        }
+
+    }
+
     //l'ho usato per risorgere passandogli la vita massima ma questo metodo si può usare anche nel caso si beva una pozione:
-    public double RiceviVita(double vitaAttuale,double vitaAggiuntiva, double vitaMassima){
-        vitaAttuale+=vitaAggiuntiva;
-        
-        vitaAttuale= clamp(vitaAttuale, 0d, vitaMassima);
+    public double RiceviVita(double vitaAttuale, double vitaAggiuntiva, double vitaMassima) {
+        vitaAttuale += vitaAggiuntiva;
+
+        vitaAttuale = clamp(vitaAttuale, 0d, vitaMassima);
         return vitaAttuale;
-    }  
-    
-    public double RiceviDanno(double vitaAttuale,double danno,double vitaMassima){               
-        vitaAttuale-=danno;  
-        vitaAttuale=clamp(vitaAttuale, 0d, vitaMassima);
+    }
+
+    public double RiceviDanno(double vitaAttuale, double danno, double vitaMassima) {
+        vitaAttuale -= danno;
+        vitaAttuale = clamp(vitaAttuale, 0d, vitaMassima);
         return vitaAttuale;
-    }   
-    
+    }
+
     //clamp di float
-      public float Clamp(float valore, float minimo, float massimo){
+    public float Clamp(float valore, float minimo, float massimo) {
         return Math.max(minimo, Math.min(massimo, valore));
-   }
-    
-      //clamp di qualsiasi tipo
-  public static <T extends Comparable<T>> T clamp(T val, T min, T max) {
-    if (val.compareTo(min) < 0) return min;
-    else if (val.compareTo(max) > 0) return max;
-    else return val;
-}
+    }
+
+    //clamp di qualsiasi tipo
+    public static <T extends Comparable<T>> T clamp(T val, T min, T max) {
+        if (val.compareTo(min) < 0) {
+            return min;
+        } else if (val.compareTo(max) > 0) {
+            return max;
+        } else {
+            return val;
+        }
+    }
 }

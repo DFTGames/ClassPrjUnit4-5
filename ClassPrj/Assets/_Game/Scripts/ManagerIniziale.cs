@@ -37,7 +37,7 @@ public class ManagerIniziale : MonoBehaviour
     public Text valoreVita;
     public Text vitaCaricamento;
     public Slider volumiAmbiente;
-    public Slider volumiSFX;
+    public Slider volumiSFX;   
 
     [Range(-20f, 20f)]
     public float ZOffSet;
@@ -76,6 +76,8 @@ public class ManagerIniziale : MonoBehaviour
     private int valoreMassimo = 0;
     private Vector3 velocita = Vector3.zero;
     private float zeta;
+
+   
 
     public int IndiceClasseSuccessivaPrecedente
     {
@@ -158,6 +160,7 @@ public class ManagerIniziale : MonoBehaviour
         Statici.valoriPersonaggioScelto.AttaccoBase = listaDaCopiare[indice].AttaccoBase;
         Statici.valoriPersonaggioScelto.DifesaBase = listaDaCopiare[indice].DifesaBase;
         Statici.valoriPersonaggioScelto.LivelloPartenza = listaDaCopiare[indice].LivelloPartenza;
+        Statici.valoriPersonaggioScelto.XpMassimo = listaDaCopiare[indice].XpMassimo;
         Statici.valoriPersonaggioScelto.XpPartenza = listaDaCopiare[indice].XpPartenza;
         Statici.valoriPersonaggioScelto.VitaMassima = listaDaCopiare[indice].VitaMassima;
         Statici.valoriPersonaggioScelto.VitaAttuale = listaDaCopiare[indice].VitaAttuale;
@@ -264,11 +267,15 @@ public class ManagerIniziale : MonoBehaviour
         canvasGroupCreazione.interactable = false;
         canvasGroupCarica.interactable = false;
         Statici.sonoPassatoDallaScenaIniziale = true;
-        
-            if (!Statici.multigiocatoreOn)
-                ScenaInizialeNetwork.VaiAlleStanze(listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena, listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena);
-            else
-                ScenaInizialeNetwork.VaiAlleStanze("ScenaStanze", "The Lobby");
+
+        if (!Statici.multigiocatoreOn)
+        {
+            Statici.valoriPersonaggioScelto.NomeScena = listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena;
+            ScenaInizialeNetwork.CreaStanzaSinglePlayer();
+        }
+        //  ScenaInizialeNetwork.VaiAlleStanze(listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena, listaDatiPersLoad[elencoCartelleDropDown.value].NomeScena);
+        else
+            ScenaInizialeNetwork.VaiAlleStanze("ScenaStanze", "The Lobby");
         
     }
 
@@ -431,6 +438,7 @@ public class ManagerIniziale : MonoBehaviour
         obj.PutDouble("manaMassimo", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].ManaMassimo);
         obj.PutDouble("manaAttuale", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].ManaAttuale);
         obj.PutDouble("livelloAttuale", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].LivelloPartenza);
+        obj.PutDouble("xpMassimo", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].XpMassimo);
         obj.PutDouble("xpAttuale", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].XpPartenza);
         obj.PutDouble("attaccoBase", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].AttaccoBase);
         obj.PutDouble("difesaBase", (double)me.listaDatiPersNew[me.IndiceClasseSuccessivaPrecedente].DifesaBase);
@@ -479,14 +487,15 @@ public class ManagerIniziale : MonoBehaviour
     private void ObiettivoDaInquadrareXZ()
     {
         obiettivoDaInquadrare = (elencoSessiDropDown.value == 0) ?
-           dizionarioCollegamentoNomiConModelli[Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeM].transform.position :
-           dizionarioCollegamentoNomiConModelli[Statici.databaseInizialeProprieta.matriceProprieta[IndiceClasseSuccessivaPrecedente].nomeF].transform.position;
+           dizionarioCollegamentoNomiConModelli[listaDatiPersNew[IndiceClasseSuccessivaPrecedente].NomeModelloM].transform.position :
+           dizionarioCollegamentoNomiConModelli[listaDatiPersNew[IndiceClasseSuccessivaPrecedente].NomeModelloF].transform.position;
         zeta = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.z - ZOffSet) : obiettivoDaInquadrare.z + ZOffSet;
         ics = (elencoSessiDropDown.value == 0) ? (obiettivoDaInquadrare.x + 5) : (obiettivoDaInquadrare.x - 5);
     }
 
     private void ResettaIndiceCambiato()
     {
+       
         indiceCambiato = false;
     }
 
@@ -519,6 +528,7 @@ public class ManagerIniziale : MonoBehaviour
                 dpp.ManaMassimo = (decimal)reader["manaMassimo"];
                 dpp.ManaAttuale = (decimal)reader["manaAttuale"];
                 dpp.LivelloPartenza = (decimal)reader["livelloPartenza"];
+                dpp.XpMassimo = (decimal)reader["xpMassimo"];
                 dpp.XpPartenza = (decimal)reader["xpPartenza"];
                 dpp.NomeClasse = (string)reader["nome"];
                 dpp.AttaccoBase = (decimal)reader["attaccoBase"];
@@ -562,6 +572,7 @@ public class ManagerIniziale : MonoBehaviour
                 dpp.NomeScena = (string)reader["nomeScena"];
                 dpp.CheckPoint = (string)reader["checkPoint"];
                 dpp.LivelloPartenza = (decimal)reader["livelloAttuale"];
+                dpp.XpMassimo = (decimal)reader["xpMassimo"];
                 dpp.XpPartenza = (decimal)reader["xpAttuale"];
                 dpp.IdPersonaggio = (int)reader["Personaggi_idPersonaggio"];
 

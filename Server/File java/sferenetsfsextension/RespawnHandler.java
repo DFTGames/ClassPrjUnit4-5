@@ -50,6 +50,7 @@ public class RespawnHandler extends BaseClientRequestHandler{
             objOut.putUtfString("model", mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).modello);
             objOut.putUtfString("nome", mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).nome);
              objOut.putUtfString("classe", mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).classe);
+             objOut.putInt("idClasse", mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).idClasse);
             objOut.putDouble("vita",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).vita);
             objOut.putDouble("vitaM",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).vitaMax);
             objOut.putDouble("mana",  mondo.dizionarioUtentiPlayer.get(utenteDiCuiMiServonoInfo).mana);

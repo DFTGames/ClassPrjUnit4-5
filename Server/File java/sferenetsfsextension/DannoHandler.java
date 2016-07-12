@@ -44,7 +44,7 @@ public class DannoHandler extends BaseClientRequestHandler{
         //verifico se la partita è finita(la partita finisce quando uno degli utenti fa per primo 5 kill:
         if(vitaAttuale<=0f){
             mondo.dizionarioUtentiPlayer.get(utenteColpitoUser).vivo=false;
-            mondo.dizionarioUtentiPlayer.get(user).numeroUccisioni+=1;
+            mondo.dizionarioUtentiPlayer.get(user).numeroUccisioni+=1;            
             if(mondo.dizionarioUtentiPlayer.get(user).numeroUccisioni>=5)
                 ext.FinePartita(user);
         }else

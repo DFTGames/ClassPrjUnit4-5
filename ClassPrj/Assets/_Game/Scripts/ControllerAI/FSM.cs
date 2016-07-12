@@ -259,8 +259,9 @@ public class FSM : MonoBehaviour
         pattugliamento.Inizializza(this);
         inseguimento.Inizializza(this);
         morte.Inizializza(this);
-        statoCorrente = pattugliamento;
+        statoCorrente = pattugliamento;        
         Statici.RegistraDatiPersonaggio(DatiPersonaggio);
+        Statici.RecuperaDizionariDiplomazia(DatiPersonaggio.IdMiaClasse);
     }
 
     private void Update()
