@@ -737,7 +737,7 @@ public class Statici
                 {
                     Debug.Log("Inserimento nella tabella Utenti della riga: " + idDB);
                     tr.Commit();
-                    RichiediTSUtentiNew();
+                    RichiediTSUtentiNew();  //CONTROLLARE..PROBABILE NON SERVE PERCHE E' GIA AGGIORNATO
 
                 }
 
@@ -790,7 +790,7 @@ public class Statici
                         else
                         {
                             Debug.Log("Le tabelle PersonaggiUtente e DiplomaziaPersonaggio NON necessitano di aggiornamento, timeStampUtente  locale aggiornato!");
-                            RichiediTSUtentiNew();
+                            RichiediTSUtentiNew();   //DIRE A LUCA IL PERCHE FAI QUESTO DAL MOMENTO CHE SAI GIA IN PARTENZA CHE SONO UGUALI E IL TIMESTAMP SUL SERVER L'HAI AGGIORNATO IN TEMPO REALE PRIMA DI INVIARLO
                         }
                     }
                 }
