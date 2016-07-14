@@ -55,10 +55,10 @@ public class ControllerLogin : MonoBehaviour
         {
             Statici.sfs = new SmartFox();
 
-            Statici.sfs.ThreadSafeMode = true;
-            Statici.sfs.AddEventListener(SFSEvent.CONNECTION, OnConnection);
+            Statici.sfs.ThreadSafeMode = true;  //sti qua sotto vengono sempre sollevaati dal server..
+            Statici.sfs.AddEventListener(SFSEvent.CONNECTION, OnConnection);// chiamato serve
             Statici.sfs.AddEventListener(SFSEvent.CONNECTION_LOST, OnConnectionLost);
-            Statici.sfs.AddEventListener(SFSEvent.LOGIN, OnLogin);
+            Statici.sfs.AddEventListener(SFSEvent.LOGIN, OnLogin);  //chiamato dal server
             Statici.sfs.AddEventListener(SFSEvent.LOGIN_ERROR, OnLoginError);
             Statici.sfs.AddEventListener(SFSEvent.ROOM_JOIN, OnRoomJoin);
             Statici.sfs.AddEventListener(SFSEvent.ROOM_JOIN_ERROR, OnRoomJoinError);
@@ -71,7 +71,7 @@ public class ControllerLogin : MonoBehaviour
 
     private void OnUserVariableUpdate(BaseEvent evt)
     {
-
+        Debug.Log("Sollevato evento..mi richiama OnUserVariableUpdate");
         Statici.idDB = Statici.sfs.MySelf.GetVariable("dbid").GetIntValue();
         string timeStampUtente = Statici.sfs.MySelf.GetVariable("tsU").GetStringValue();
         Debug.Log("recupero timeStamp da remoto" + timeStampUtente);
@@ -87,6 +87,7 @@ public class ControllerLogin : MonoBehaviour
         switch (cmd)
         {
             case (CMD_TIMESTAMP):
+                Debug.Log("Sollevato evento..mi richiama Statici.ControllaTimeStampTabelleBase");
                 SFSArray arrayTime = (SFSArray)objIn.GetSFSArray("timeList");
                 Statici.numeroTabelleAggTimeStamp = arrayTime.Size() + 1;//num record Tab sincronizzazioneDB+Utenti               
 
@@ -296,6 +297,7 @@ public class ControllerLogin : MonoBehaviour
 
     private void OnLogin(BaseEvent evt)
     {
+       // Debug.Log("sono nel OnLogin");
         User user = (User)evt.Params["user"];
         Statici.userLocaleId = user.Id;
         Statici.sfs.InitUDP();

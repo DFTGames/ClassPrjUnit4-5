@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     private Collider precedente = null;
     private Vista vistaGoblin;
 
+
    /* public void RecuperaDizionariDiplomazia()
     {
         Statici.dizionarioDiNemici.Clear();
