@@ -25,6 +25,8 @@ public class ManagerNetwork : MonoBehaviour
     private string nomeScenaSuccessiva = string.Empty;
     //private SmartFox sfs;
     private float tempo = 5f;
+    private bool inLobby;
+
 
     public static void AggiornaPunteggi(int indicePunteggio, string nome, int numeroUccisioni)
     {
@@ -40,25 +42,25 @@ public class ManagerNetwork : MonoBehaviour
 
     public static void InviaTransformAnimazioniLocali(NetworkTransform ne)  //MODIFICA BY LUCA
     {
-            ISFSObject objOut = new SFSObject();
-            objOut.PutFloat("x", ne.position.x);
-            objOut.PutFloat("y", ne.position.y);
-            objOut.PutFloat("z", ne.position.z);
-            objOut.PutFloat("ry", ne.rotation);
-            objOut.PutFloat("forw", ne.forward);
-            objOut.PutByte("a1", ne.attacchi);
-      //  Debug.Log("invio attacchi " + ne.attacchi);
+        ISFSObject objOut = new SFSObject();
+        objOut.PutFloat("x", ne.position.x);
+        objOut.PutFloat("y", ne.position.y);
+        objOut.PutFloat("z", ne.position.z);
+        objOut.PutFloat("ry", ne.rotation);
+        objOut.PutFloat("forw", ne.forward);
+        objOut.PutByte("a1", ne.attacchi);
+        //  Debug.Log("invio attacchi " + ne.attacchi);
         if (Statici.IsPointAndClick)   //ho pensato di scomporlo qua il pacchetto ..se e' punta clicca o tastiera ..Mi assumo le responsabilita del caso      
             Statici.sfs.Send(new ExtensionRequest("regC", objOut, Statici.sfs.LastJoinedRoom, true));
-       
+
         else
         {
-         //   Debug.Log("Invio  " + "x " + ne.position.x + "y " + ne.position.y + "for " + ne.forward);
+            //   Debug.Log("Invio  " + "x " + ne.position.x + "y " + ne.position.y + "for " + ne.forward);
             objOut.PutFloat("t", ne.jump);//Debug.Log("sto inviando salto " + ne.jump);
             objOut.PutFloat("j", ne.jumpLeg); //Debug.Log(" invio jump" + ne.jump);
             objOut.PutFloat("r", ne.turn);
             Statici.sfs.Send(new ExtensionRequest("regT", objOut, Statici.sfs.LastJoinedRoom, true));
-        }   
+        }
     }
 
     public static void TimeSyncRequest()
@@ -69,11 +71,11 @@ public class ManagerNetwork : MonoBehaviour
 
     /// <summary>
     /// Se il player locale vuole uscire da una stanza di gioco
-    /// chiede di unirsi alla lobby e abilita la ui delle partite.
+    /// chiede di uscire dalla stanza corrente 
     /// </summary>
     public void BottoneSgruppa()
     {
-        Statici.sfs.Send(new JoinRoomRequest("The Lobby"));
+        Statici.sfs.Send(new LeaveRoomRequest());
     }
 
     public void Disconnect()
@@ -149,7 +151,7 @@ public class ManagerNetwork : MonoBehaviour
 
         objOut.PutUtfString("scena", SceneManager.GetActiveScene().name);
         Statici.sfs.Send(new ExtensionRequest("respawn", objOut, Statici.sfs.LastJoinedRoom));
- 
+
     }
 
     private void OnApplicationQuit()
@@ -174,7 +176,7 @@ public class ManagerNetwork : MonoBehaviour
 
                 int utente = sfsObjIn.GetInt("ut");
                 string nomeScenaAttualeAvatar = sfsObjIn.GetUtfString("scena");
-            
+
 
                 if (nomeScenaAttualeAvatar != SceneManager.GetActiveScene().name)
                     return;
@@ -247,7 +249,7 @@ public class ManagerNetwork : MonoBehaviour
                     Statici.playerRemotiGestore[utente].networkPlayer.User = utente;
 
                     Statici.playerRemotiGestore[utente].textmesh.text = nome;
-                  //  Statici.partenza = true;
+                    //  Statici.partenza = true;
                 }
 
                 break;
@@ -260,7 +262,7 @@ public class ManagerNetwork : MonoBehaviour
 
                 break;
 
-            case ("regC"):  
+            case ("regC"):
                 int user = sfsObjIn.GetInt("u");
                 if (Statici.datiPersonaggioLocale.Utente == user)
                     return;
@@ -270,17 +272,17 @@ public class ManagerNetwork : MonoBehaviour
                 pos.y = sfsObjIn.GetFloat("y");
                 pos.z = sfsObjIn.GetFloat("z");
                 float rot = sfsObjIn.GetFloat("ry");
-                float forw= sfsObjIn.GetFloat("forw");
+                float forw = sfsObjIn.GetFloat("forw");
                 double time = Convert.ToDouble(sfsObjIn.GetLong("time"));
                 byte at1 = sfsObjIn.GetByte("a1");
-                NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(pos, rot,forw,at1,time,0,0,0,true);
+                NetworkTransform net = NetworkTransform.CreaOggettoNetworktransform(pos, rot, forw, at1, time, 0, 0, 0, true);
 
                 if (Statici.playerRemotiGestore.ContainsKey(user))
                     Statici.playerRemotiGestore[user].networkPlayer.ricevitransform(net, user);
                 break;
 
-            case ("regT"):  
-                 user = sfsObjIn.GetInt("u");
+            case ("regT"):
+                user = sfsObjIn.GetInt("u");
                 if (Statici.datiPersonaggioLocale.Utente == user)
                     return;
 
@@ -292,12 +294,12 @@ public class ManagerNetwork : MonoBehaviour
                 forw = sfsObjIn.GetFloat("forw");
                 time = Convert.ToDouble(sfsObjIn.GetLong("time"));
                 at1 = sfsObjIn.GetByte("a1");
-                float t= sfsObjIn.GetFloat("t");
+                float t = sfsObjIn.GetFloat("t");
                 float j = sfsObjIn.GetFloat("j"); //Debug.Log(" ricevo jump" + t);
-                float r = sfsObjIn.GetFloat("r"); 
+                float r = sfsObjIn.GetFloat("r");
                 //   Debug.Log("Ricevo  " + "x "+ pos.x+ "y "+ pos.y+ "for " + forw);
-                net = NetworkTransform.CreaOggettoNetworktransform(pos, rot, forw, at1, time, t, j,r,false);
-             //   Debug.Log("sto  ricevendo byte " + at1);
+                net = NetworkTransform.CreaOggettoNetworktransform(pos, rot, forw, at1, time, t, j, r, false);
+                //   Debug.Log("sto  ricevendo byte " + at1);
                 if (Statici.playerRemotiGestore.ContainsKey(user))
                     Statici.playerRemotiGestore[user].networkPlayer.ricevitransform(net, user);
                 break;
@@ -401,10 +403,18 @@ public class ManagerNetwork : MonoBehaviour
                 HandleServerTime(sfsObjIn);
                 break;
 
+            case (Statici.CMD_RICHIESTA_TS_UTENTI):
+                Debug.Log("Ricevuto il nuovo ts, aggiorno il DB locale con questo dato");
+                string timeStampRemotoNew = sfsObjIn.GetUtfString("ts");
+                if (Statici.AggiornaTsUtenti(timeStampRemotoNew))
+                    Statici.sfs.Send(new JoinRoomRequest("The Lobby"));
+                break;
+
             default:
-                break;               
+                break;
         }
     }
+
 
     private void OnPublicMessage(BaseEvent evt)
     {
@@ -437,8 +447,9 @@ public class ManagerNetwork : MonoBehaviour
             sgruppaButton.interactable = false;
             Statici.numeroPostoSpawn = -1;
             Statici.sfs.RemoveAllEventListeners();
+            //inLobby = (room.Name.ToLower() == "the lobby");
             GameObject immagineCaricamento = GestoreCanvasAltreScene.ImmagineCaricamento;
-            Text casellaScrittaCaricamento = GestoreCanvasAltreScene.NomeScenaText;            
+            Text casellaScrittaCaricamento = GestoreCanvasAltreScene.NomeScenaText;
             StartCoroutine(GestoreCanvasAltreScene.ScenaInCarica("ScenaStanze", "The Lobby", immagineCaricamento, casellaScrittaCaricamento));
             gestoreCanvasNetwork.VisualizzaNascondiCanvasGroup(false);
         }
@@ -455,15 +466,24 @@ public class ManagerNetwork : MonoBehaviour
 
     private void OnUserExitRoom(BaseEvent evt)
     {
+        Debug.Log("Stiamo uscendo da una stanza...");
+        Statici.tsUtAggiornato = false;
+
         SFSUser user = (SFSUser)evt.Params["user"];
         Room room = (Room)evt.Params["room"];
         RemoveRemotePlayer(user);
+
         if (user == Statici.sfs.MySelf && room.IsGame)
         {
+            Debug.Log("Stiamo uscendo da una partita...");
             if (Statici.SalvaPersonaggiUtente())
-                Debug.Log("dati personaggio utente salvti in db locale, richiedere ts");
+            {
+                Debug.Log("Dati personaggio utente salvati nel db locale, aggiorna il TS.");
+                Statici.RichiediTSUtentiNew();
+            }
+            else
+                Debug.Log("Dati personaggio NON salvati per problemi di scrittura DB");
         }
-
     }
 
     private void RemoveLocalPlayer()

@@ -156,7 +156,7 @@ public class ControllerLogin : MonoBehaviour
             case (Statici.CMD_RICHIESTA_TS_UTENTI):
                 Debug.Log("sto elaborando Utenti");
                 string timeStampRemotoNew = objIn.GetUtfString("ts");
-                Statici.AggiornaTsUtenti(timeStampRemotoNew);
+                Statici.tsUtAggiornato = Statici.AggiornaTsUtenti(timeStampRemotoNew);
 
                 break;
             case (Statici.CMD_NESSUN_PERSONAGGIO_TROVATO):
@@ -226,6 +226,8 @@ public class ControllerLogin : MonoBehaviour
 
     private void OnConnection(BaseEvent evt)
     {
+        Statici.tsUtAggiornato = false;
+
         bool connessioneAvvenuta = (bool)evt.Params["success"];
         if (connessioneAvvenuta)
         {
@@ -297,7 +299,7 @@ public class ControllerLogin : MonoBehaviour
 
     private void OnLogin(BaseEvent evt)
     {
-       // Debug.Log("sono nel OnLogin");
+        // Debug.Log("sono nel OnLogin");
         User user = (User)evt.Params["user"];
         Statici.userLocaleId = user.Id;
         Statici.sfs.InitUDP();
@@ -386,8 +388,8 @@ public class ControllerLogin : MonoBehaviour
 
         if (disconnettiDB)
         {
-           // if (Statici.sfs != null)
-                Statici.sfs = null;
+            // if (Statici.sfs != null)
+            Statici.sfs = null;
             if (Statici.conn != null && Statici.conn.State == System.Data.ConnectionState.Open)
             {
                 Statici.conn.Close();
