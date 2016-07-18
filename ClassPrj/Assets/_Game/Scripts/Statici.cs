@@ -94,6 +94,8 @@ public class Statici
     public static DatiPersonaggioPartenza valoriPersonaggioScelto = new DatiPersonaggioPartenza();//dati iniziali da considerare una volta scelto il personaggio sia da nuovo personaggio che da carica personaggio.
     public static List<int> listaIdPersonaggiAI = new List<int>();
 
+    public static bool tsUtAggiornato;
+
     public static bool EliminatoPersonaggioDaDbLocale(string nomePersonaggioDaEliminare)
     {
         bool valoreRitorno = false;
@@ -362,9 +364,14 @@ public class Statici
     }
 
 
-
-    internal static void AggiornaTsUtenti(string timeStampRemotoNew)
+    /// <summary>
+    /// Aggiorna il timeStamp sulla tabella Utenti in corrispondenza dell'utente specifico
+    /// </summary>
+    /// <param name="timeStampRemotoNew">Valore TimeStamp da asseganre.</param>
+    /// <returns>True se l'aggioranmento e' andato a buon fine, False altrimenti.</returns>
+    internal static bool AggiornaTsUtenti(string timeStampRemotoNew)
     {
+        bool valRit = true;
 
         SqliteTransaction tr = null;
 
@@ -392,6 +399,7 @@ public class Statici
         }
         catch (Exception ex)
         {
+            valRit = false;
             Debug.LogError("Errore nell'aggiornamento del timeStamp Utente: " + ex.Message);
             ControllerLogin.SollevaErroreAggiornamentoDB("Errore nell'aggiornamento del timeStamp Utente: " + ex.Message);
             if (tr != null)
@@ -411,9 +419,9 @@ public class Statici
                     tr.Dispose();
                 }
             }
-
         }
 
+        return valRit;
     }
 
     internal static bool AggiornaDiplomaziaPersonaggio(SFSArray arrayPers)
