@@ -374,7 +374,7 @@ public class ControllerMaga : MonoBehaviour
         attacco1 = false;
         attacco2 = false;
         //AGGIUNTA MULTIPLAYER
-        Debug.Log("Is Kinemaatic" + rigidBody.isKinematic);
+       // Debug.Log("Is Kinemaatic" + rigidBody.isKinematic);
         if (!Statici.inGioco || (Statici.multigiocatoreOn && !DatiPersonaggio.SonoUtenteLocale))
         {          
             if (!Statici.inGioco) rigidBody.isKinematic = false;  //ADATTATO PER PROBLEMI DELLA SCELTA DEI  PERSONAGGI CHE NON STANNO SULLE PIATTAFORME
