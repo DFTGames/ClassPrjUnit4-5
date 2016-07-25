@@ -216,24 +216,21 @@ public class StanzeManager : MonoBehaviour
             case ("spawnMe"):
 
                 int utente = sfsObjIn.GetInt("ut");
-                int numeroSpawn = sfsObjIn.GetInt("nSpawn");
+                int numeroSpawn = sfsObjIn.GetInt("nSpawn");            
                 if (Statici.sfs.MySelf.Id == utente)
-                {
+                {                    
                     Statici.numeroPostoSpawn = numeroSpawn;
                     Vector3 posizioneIniziale = GameObject.Find("Postazione" + Statici.numeroPostoSpawn.ToString()).transform.position;
                     Statici.playerLocaleGO.transform.position = posizioneIniziale;
                     Statici.playerLocaleGO.GetComponentInChildren<TextMesh>().text = Statici.valoriPersonaggioScelto.NomePersonaggio;
-
                     Statici.playerLocaleGO.GetComponent<NetworkPlayer>().User = utente;
-
                     Statici.datiPersonaggioLocale = Statici.playerLocaleGO.GetComponent<DatiPersonaggio>();
                     Statici.datiPersonaggioLocale.IndicePunteggio = numeroSpawn;
                     Statici.datiPersonaggioLocale.Utente = Statici.userLocaleId;
                     buttonReady.gameObject.SetActive(true);
                     buttonReady.interactable = true;
-                    return;
-                }
-                if (!Statici.playerRemotiGestore.ContainsKey(utente))
+                    
+                }else if (!Statici.playerRemotiGestore.ContainsKey(utente))
                 {
                     string modello = sfsObjIn.GetUtfString("model");
                     string nome = sfsObjIn.GetUtfString("nome");
