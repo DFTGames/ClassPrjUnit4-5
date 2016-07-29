@@ -29,6 +29,7 @@ public class SpawnMeHandler extends BaseClientRequestHandler {
     @Override
     public void handleClientRequest(User user, ISFSObject isfso) {
 
+       
         int userDaAvvisare = isfso.getInt("usIn");
         String scena = isfso.getUtfString("scena");
 
@@ -64,29 +65,27 @@ public class SpawnMeHandler extends BaseClientRequestHandler {
                 player.giocabile = true;
                 player.vivo = true;
                 player.numeroUccisioni = 0;
-                player.idClasse = obj.getInt("Personaggi_idPersonaggio");
-
+                player.idClasse = obj.getInt("Personaggi_idPersonaggio");                
                 //cerco il nome della classe in base all'idClasse nella tabella Personaggi e se lo trovo assegno tutti i valori al dizionario
-                querySql = "SELECT nome FROM Personaggi WHERE ClassiPersonaggi_idClassiPersonaggi=? ";
+                querySql = "SELECT nome FROM Personaggi WHERE idPersonaggio=? ";
                 ISFSArray rit2 = dbManager.executeQuery(querySql, new Object[]{player.idClasse});
-                if (rit2.size() > 0) {
+        
+                if (rit2.size() > 0) {                  
                     ISFSObject obj2 = rit2.getSFSObject(0);
                     player.classe = obj2.getUtfString("nome");
 
-                    if (mondo.dizionarioUtentiPlayer.get(user) == null) {
-
+                    if (mondo.dizionarioUtentiPlayer.get(user) == null) {                  
                         player.numeroSpawn = mondo.listaSpawnPointLiberi.get(0);
                         mondo.listaSpawnPointLiberi.remove(0);
                         mondo.dizionarioUtentiPlayer.put(user, player);
                         mondo.utenteOwner = user.getLastJoinedRoom().getOwner();
 
-                    }
-
+                    }                     
                     ISFSObject objOut = new SFSObject();
                     objOut.putUtfString("model", mondo.dizionarioUtentiPlayer.get(user).modello);
                     objOut.putUtfString("nome", mondo.dizionarioUtentiPlayer.get(user).nome);
                     objOut.putInt("ut", user.getId());
-                    objOut.putInt("nSpawn", mondo.dizionarioUtentiPlayer.get(user).numeroSpawn);
+                    objOut.putInt("nSpawn", mondo.dizionarioUtentiPlayer.get(user).numeroSpawn);                
                     if (userDaAvvisare == -1)//avviso tutti quelli dentro la stanza
                     {
                         send("spawnMe", objOut, user.getLastJoinedRoom().getUserList());
@@ -103,6 +102,8 @@ public class SpawnMeHandler extends BaseClientRequestHandler {
             connection.close();
         } catch (SQLException ex) {
             trace("errore, non sono riuscito a fare la select in PersonaggiUtente" + ex.getMessage());
+        }catch(Exception e){
+             trace("errore" + e.getMessage());
         }
 
     }
